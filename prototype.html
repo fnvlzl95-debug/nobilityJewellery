@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>귀족 | 종로 귀금속 도매</title>
+  <meta name="description" content="종로 귀금속 도매 · 빠르고 단정한 거래. 도매 상담, 주문 제작, 수리·세공, 납품까지.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ============================================
+       귀족 - Design System
+       Ultra-minimal + One Bold Moment
+       ============================================ */
+
+    :root {
+      /* Colors */
+      --cream-50: #FDFCFA;
+      --cream-100: #FAF8F5;
+      --cream-200: #F5F2ED;
+      --cream-300: #EDE9E2;
+      --charcoal-700: #3D3D3D;
+      --charcoal-800: #2A2A2A;
+      --charcoal-900: #1A1A1A;
+      --gold-light: #D4B978;
+      --gold: #C9A962;
+      --gold-dark: #A88B4A;
+
+      /* Spacing */
+      --section-padding: clamp(6rem, 15vh, 12rem);
+      --content-max-width: 1200px;
+      --content-padding: clamp(1.5rem, 5vw, 4rem);
+
+      /* Transitions */
+      --transition-fast: 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
+      --transition-base: 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+      --transition-slow: 800ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      background-color: var(--cream-100);
+      color: var(--charcoal-900);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background-color: rgba(201, 169, 98, 0.2);
+      color: var(--charcoal-900);
+    }
+
+    /* Typography */
+    .font-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+
+    .text-display-xl {
+      font-size: clamp(3rem, 8vw, 7rem);
+    }
+
+    .text-display-lg {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+    }
+
+    .text-display-md {
+      font-size: clamp(1.75rem, 4vw, 3rem);
+    }
+
+    .text-body-lg {
+      font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    }
+
+    .text-body-md {
+      font-size: clamp(1rem, 1.25vw, 1.125rem);
+    }
+
+    .text-body-sm {
+      font-size: clamp(0.875rem, 1vw, 1rem);
+    }
+
+    .text-caption {
+      font-size: clamp(0.75rem, 0.9vw, 0.875rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Layout */
+    .container {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding);
+    }
+
+    .section {
+      padding: var(--section-padding) 0;
+    }
+
+    .section-sm {
+      padding: clamp(4rem, 10vh, 8rem) 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: clamp(0.875rem, 1vw, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      padding: 1rem 2rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--charcoal-900);
+      color: var(--cream-100);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--charcoal-800);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--charcoal-900);
+      border: 1px solid rgba(26, 26, 26, 0.2);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(26, 26, 26, 0.4);
+      background-color: rgba(26, 26, 26, 0.05);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background-color: rgba(26, 26, 26, 0.1);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .hero-title {
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-tagline {
+      color: var(--charcoal-700);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      color: rgba(61, 61, 61, 0.6);
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-info-divider {
+      width: 1px;
+      height: 12px;
+      background-color: rgba(26, 26, 26, 0.2);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @media (min-width: 640px) {
+      .hero-cta {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 64px;
+      background: linear-gradient(to bottom, transparent, rgba(26, 26, 26, 0.2), transparent);
+    }
+
+    /* ============================================
+       TRUST SECTION
+       ============================================ */
+    .trust {
+      background-color: var(--cream-50);
+    }
+
+    .trust-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .trust-label {
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .trust-steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .trust-steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .trust-step {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .trust-step-number {
+      display: inline-block;
+      color: rgba(26, 26, 26, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .trust-step-title {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .trust-step-desc {
+      color: rgba(61, 61, 61, 0.7);
+      line-height: 1.8;
+    }
+
+    .trust-statement {
+      text-align: center;
+      color: rgba(61, 61, 61, 0.8);
+      max-width: 36rem;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       SERVICES SECTION
+       ============================================ */
+    .services-list {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    .service-item {
+      border-top: 1px solid rgba(26, 26, 26, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .service-item:last-child {
+      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+    }
+
+    .service-button {
+      width: 100%;
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: color var(--transition-base);
+    }
+
+    .service-button:hover .service-title {
+      color: var(--gold);
+    }
+
+    .service-title {
+      font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+      color: var(--charcoal-900);
+      transition: color var(--transition-base);
+    }
+
+    .service-icon {
+      width: 20px;
+      height: 20px;
+      color: rgba(61, 61, 61, 0.4);
+      transition: transform var(--transition-base);
+    }
+
+    .service-icon.active {
+      transform: rotate(45deg);
+    }
+
+    .service-desc {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-base), padding var(--transition-base);
+    }
+
+    .service-desc.active {
+      max-height: 100px;
+      padding-bottom: 1.5rem;
+    }
+
+    .service-desc-text {
+      color: rgba(61, 61, 61, 0.7);
+    }
+
+    /* ============================================
+       ONE BOLD MOMENT
+       ============================================ */
+    .bold-moment {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(to bottom, var(--charcoal-900), var(--charcoal-800), var(--charcoal-900));
+    }
+
+    .bold-moment-visual {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bold-moment-circle {
+      position: relative;
+      width: 60vmin;
+      height: 60vmin;
+    }
+
+    .bold-moment-ring-outer {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(to bottom right, rgba(212, 185, 120, 0.2), rgba(201, 169, 98, 0.1), transparent);
+    }
+
+    .bold-moment-ring-inner {
+      position: absolute;
+      inset: 15%;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .bold-moment-core {
+      position: absolute;
+      inset: 35%;
+      border-radius: 50%;
+      background: linear-gradient(to top right, rgba(201, 169, 98, 0.3), rgba(212, 185, 120, 0.4), rgba(201, 169, 98, 0.2));
+      filter: blur(4px);
+    }
+
+    .bold-moment-sweep {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+
+    .bold-moment-sweep-inner {
+      position: absolute;
+      inset: -50%;
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: translateX(-100%) rotate(15deg);
+    }
+
+    .bold-moment-text {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 2rem;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .bold-moment-headline {
+      color: rgba(245, 242, 237, 0.8);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .bold-moment-subline {
+      color: rgba(237, 233, 226, 0.4);
+      letter-spacing: 0.1em;
+    }
+
+    .bold-moment-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background-color: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .particle-1 {
+      top: 25%;
+      left: 25%;
+      width: 4px;
+      height: 4px;
+      opacity: 0.2;
+    }
+
+    .particle-2 {
+      top: 75%;
+      right: 33%;
+      width: 2px;
+      height: 2px;
+      opacity: 0.3;
+      animation-delay: 0.5s;
+    }
+
+    .particle-3 {
+      top: 50%;
+      right: 25%;
+      width: 4px;
+      height: 4px;
+      opacity: 0.1;
+      animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.2); }
+    }
+
+    /* ============================================
+       GALLERY PREVIEW
+       ============================================ */
+    .gallery-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .gallery-label {
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: linear-gradient(to bottom right, var(--cream-200), var(--cream-300));
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .gallery-item:first-child {
+      grid-row: span 2;
+    }
+
+    @media (max-width: 767px) {
+      .gallery-item:first-child {
+        grid-row: span 1;
+      }
+    }
+
+    .gallery-item-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(26, 26, 26, 0.2);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: transparent;
+      transition: background-color var(--transition-slow);
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      background-color: rgba(26, 26, 26, 0.1);
+    }
+
+    .gallery-link {
+      display: inline-block;
+      text-align: center;
+      margin-top: 3rem;
+      position: relative;
+      text-decoration: none;
+      color: var(--charcoal-900);
+    }
+
+    .gallery-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-base);
+    }
+
+    .gallery-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ============================================
+       LOCATION
+       ============================================ */
+    .location {
+      background-color: var(--cream-50);
+    }
+
+    .location-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .location-label {
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .location-content {
+      text-align: center;
+    }
+
+    .location-address {
+      margin-bottom: 0.5rem;
+    }
+
+    .location-detail {
+      color: rgba(61, 61, 61, 0.7);
+      margin-bottom: 2rem;
+    }
+
+    .location-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 640px) {
+      .location-info {
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+      }
+    }
+
+    .location-info-item {
+      text-align: center;
+    }
+
+    .location-info-label {
+      color: rgba(61, 61, 61, 0.6);
+      margin-bottom: 0.25rem;
+    }
+
+    .location-info-value {
+      color: var(--charcoal-900);
+    }
+
+    .location-info-value a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .location-info-value a:hover {
+      color: var(--gold);
+    }
+
+    .location-info-divider {
+      display: none;
+      width: 1px;
+      height: 2rem;
+      background-color: rgba(26, 26, 26, 0.1);
+    }
+
+    @media (min-width: 640px) {
+      .location-info-divider {
+        display: block;
+      }
+    }
+
+    .location-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .location-note {
+      color: rgba(61, 61, 61, 0.5);
+    }
+
+    /* ============================================
+       CONTACT
+       ============================================ */
+    .contact-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .contact-label {
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .contact-subtitle {
+      color: rgba(61, 61, 61, 0.7);
+      margin-top: 1rem;
+    }
+
+    .contact-form {
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: clamp(0.75rem, 0.9vw, 0.875rem);
+      color: var(--charcoal-700);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(26, 26, 26, 0.15);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: clamp(1rem, 1.25vw, 1.125rem);
+      color: var(--charcoal-900);
+      outline: none;
+      transition: border-color var(--transition-base);
+    }
+
+    .form-input::placeholder {
+      color: rgba(61, 61, 61, 0.4);
+    }
+
+    .form-input:focus {
+      border-color: rgba(26, 26, 26, 0.4);
+    }
+
+    textarea.form-input {
+      resize: none;
+      min-height: 120px;
+    }
+
+    .form-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .form-radio-label {
+      cursor: pointer;
+    }
+
+    .form-radio {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .form-radio-text {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(26, 26, 26, 0.15);
+      font-size: clamp(0.875rem, 1vw, 1rem);
+      color: var(--charcoal-700);
+      transition: all var(--transition-base);
+    }
+
+    .form-radio:checked + .form-radio-text {
+      border-color: var(--charcoal-900);
+      color: var(--charcoal-900);
+    }
+
+    .form-checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .form-checkbox {
+      width: 1rem;
+      height: 1rem;
+      margin-top: 0.25rem;
+      accent-color: var(--charcoal-900);
+    }
+
+    .form-checkbox-text {
+      color: rgba(61, 61, 61, 0.7);
+    }
+
+    .form-checkbox-text a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 3rem 0;
+      border-top: 1px solid rgba(26, 26, 26, 0.05);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-copyright {
+      color: rgba(61, 61, 61, 0.6);
+    }
+
+    .footer-link {
+      color: rgba(61, 61, 61, 0.6);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .footer-link:hover {
+      color: var(--charcoal-900);
+    }
+
+    /* ============================================
+       FLOATING CTA (Mobile)
+       ============================================ */
+    .floating-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 1rem;
+      background-color: rgba(250, 248, 245, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(26, 26, 26, 0.05);
+      transform: translateY(100%);
+      transition: transform var(--transition-base);
+    }
+
+    .floating-cta.visible {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 768px) {
+      .floating-cta {
+        display: none;
+      }
+    }
+
+    .floating-cta-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .floating-cta .btn {
+      flex: 1;
+      padding: 0.875rem;
+      font-size: 0.875rem;
+    }
+
+    .floating-cta-icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    /* Bottom padding for mobile */
+    .mobile-bottom-padding {
+      height: 6rem;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-bottom-padding {
+        height: 0;
+      }
+    }
+
+    /* Utility */
+    .text-center {
+      text-align: center;
+    }
+
+    .max-w-3xl {
+      max-width: 48rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content container">
+      <h1 class="hero-title text-display-xl font-display">귀족</h1>
+      <p class="hero-tagline text-body-lg">종로 귀금속 도매 · 빠르고 단정한 거래</p>
+      <div class="hero-info text-caption">
+        <span>종묘귀금속상가</span>
+        <span class="hero-info-divider"></span>
+        <span>02-XXX-XXXX</span>
+      </div>
+      <div class="hero-cta">
+        <a href="tel:02-XXX-XXXX" class="btn btn-primary">
+          <svg class="floating-cta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          전화 상담
+        </a>
+        <a href="#contact" class="btn btn-outline">문의 남기기</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TRUST SECTION
+       ============================================ -->
+  <section class="trust section-sm" id="trust">
+    <div class="container max-w-3xl">
+      <div class="trust-header">
+        <p class="trust-label text-caption">Process</p>
+        <h2 class="text-display-md font-display">신뢰할 수 있는 거래</h2>
+      </div>
+
+      <div class="trust-steps">
+        <div class="trust-step">
+          <span class="trust-step-number text-display-lg font-display">01</span>
+          <h3 class="trust-step-title text-body-lg">상담</h3>
+          <p class="trust-step-desc text-body-sm">수량, 납기, 예산을 확인하고<br>최적의 방안을 제안합니다</p>
+        </div>
+        <div class="trust-step">
+          <span class="trust-step-number text-display-lg font-display">02</span>
+          <h3 class="trust-step-title text-body-lg">제작·수급</h3>
+          <p class="trust-step-desc text-body-sm">요청 사항에 맞춰<br>정확하게 준비합니다</p>
+        </div>
+        <div class="trust-step">
+          <span class="trust-step-number text-display-lg font-display">03</span>
+          <h3 class="trust-step-title text-body-lg">검수·출고</h3>
+          <p class="trust-step-desc text-body-sm">철저한 품질 검수 후<br>안전하게 전달합니다</p>
+        </div>
+      </div>
+
+      <div class="divider" style="margin: 4rem 0;"></div>
+
+      <p class="trust-statement text-body-md">
+        20년 이상 종로에서 쌓아온 신뢰를 바탕으로,<br class="hidden-mobile">
+        거래처마다 최적화된 조건을 제안드립니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SERVICES SECTION
+       ============================================ -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="trust-header">
+        <p class="trust-label text-caption">Services</p>
+        <h2 class="text-display-md font-display">취급 영역</h2>
+      </div>
+
+      <div class="services-list">
+        <div class="service-item">
+          <button class="service-button" onclick="toggleService(this)">
+            <span class="service-title">도매 상담</span>
+            <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div class="service-desc">
+            <p class="service-desc-text text-body-sm">수량, 납기, 예산에 맞춘 도매 거래 상담</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <button class="service-button" onclick="toggleService(this)">
+            <span class="service-title">주문 제작</span>
+            <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div class="service-desc">
+            <p class="service-desc-text text-body-sm">디자인 시안부터 완제품까지 맞춤 제작</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <button class="service-button" onclick="toggleService(this)">
+            <span class="service-title">수리·세공</span>
+            <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div class="service-desc">
+            <p class="service-desc-text text-body-sm">리사이징, 각인, 세공 및 수리 서비스</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <button class="service-button" onclick="toggleService(this)">
+            <span class="service-title">납품</span>
+            <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div class="service-desc">
+            <p class="service-desc-text text-body-sm">검수 후 안전한 포장과 신속한 배송</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <button class="service-button" onclick="toggleService(this)">
+            <span class="service-title">샘플 상담</span>
+            <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div class="service-desc">
+            <p class="service-desc-text text-body-sm">신규 거래처 샘플 확인 및 상담</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ONE BOLD MOMENT
+       ============================================ -->
+  <section class="bold-moment" id="bold-moment">
+    <div class="bold-moment-visual">
+      <div class="bold-moment-circle">
+        <div class="bold-moment-ring-outer"></div>
+        <div class="bold-moment-ring-inner"></div>
+        <div class="bold-moment-core"></div>
+        <div class="bold-moment-sweep">
+          <div class="bold-moment-sweep-inner" id="light-sweep"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bold-moment-text">
+      <p class="bold-moment-headline text-body-lg">빛으로 품질이 드러납니다</p>
+      <p class="bold-moment-subline text-caption">QUALITY REVEALED BY LIGHT</p>
+    </div>
+    <div class="bold-moment-particles">
+      <div class="particle particle-1"></div>
+      <div class="particle particle-2"></div>
+      <div class="particle particle-3"></div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GALLERY PREVIEW
+       ============================================ -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <div class="gallery-header">
+        <p class="gallery-label text-caption">Gallery</p>
+        <h2 class="text-display-md font-display">작품집</h2>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">골드 링 컬렉션</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">실버 목걸이</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">다이아몬드 세팅</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">웨딩 밴드</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">빈티지 브로치</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-item-placeholder text-caption">펜던트 세트</div>
+          <div class="gallery-item-overlay"></div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="#" class="gallery-link text-body-md">전체 보기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LOCATION
+       ============================================ -->
+  <section class="location section-sm" id="location">
+    <div class="container max-w-3xl">
+      <div class="location-header">
+        <p class="location-label text-caption">Location</p>
+        <h2 class="text-display-md font-display">오시는 길</h2>
+      </div>
+
+      <div class="location-content">
+        <p class="location-address text-body-lg">서울특별시 종로구 종로 XXX</p>
+        <p class="location-detail text-body-sm">종묘귀금속상가 X층 XXX호</p>
+
+        <div class="location-info">
+          <div class="location-info-item">
+            <p class="location-info-label text-caption">전화</p>
+            <p class="location-info-value text-body-md"><a href="tel:02-XXX-XXXX">02-XXX-XXXX</a></p>
+          </div>
+          <div class="location-info-divider"></div>
+          <div class="location-info-item">
+            <p class="location-info-label text-caption">영업시간</p>
+            <p class="location-info-value text-body-md">평일 10:00 - 18:00</p>
+          </div>
+        </div>
+
+        <div class="location-buttons">
+          <a href="https://map.kakao.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">카카오맵</a>
+          <a href="https://map.naver.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">네이버지도</a>
+        </div>
+
+        <p class="location-note text-caption">* 상가 내 유료주차 가능, 인근 공영주차장 이용 권장</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CONTACT
+       ============================================ -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-header">
+        <p class="contact-label text-caption">Contact</p>
+        <h2 class="text-display-md font-display">문의하기</h2>
+        <p class="contact-subtitle text-body-sm">문의를 남겨주시면 영업일 기준 24시간 내 연락드립니다</p>
+      </div>
+
+      <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="name" class="form-label">이름 / 업체명</label>
+          <input type="text" id="name" name="name" required placeholder="홍길동 / (주)OOO" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="form-label">연락처</label>
+          <input type="tel" id="phone" name="phone" required placeholder="010-0000-0000" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">문의 유형</label>
+          <div class="form-radio-group">
+            <label class="form-radio-label">
+              <input type="radio" name="type" value="wholesale" class="form-radio">
+              <span class="form-radio-text">도매 상담</span>
+            </label>
+            <label class="form-radio-label">
+              <input type="radio" name="type" value="custom" class="form-radio">
+              <span class="form-radio-text">주문 제작</span>
+            </label>
+            <label class="form-radio-label">
+              <input type="radio" name="type" value="repair" class="form-radio">
+              <span class="form-radio-text">수리·세공</span>
+            </label>
+            <label class="form-radio-label">
+              <input type="radio" name="type" value="stock" class="form-radio">
+              <span class="form-radio-text">재고 문의</span>
+            </label>
+            <label class="form-radio-label">
+              <input type="radio" name="type" value="other" class="form-radio">
+              <span class="form-radio-text">기타</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message" class="form-label">문의 내용</label>
+          <textarea id="message" name="message" required placeholder="문의하실 내용을 입력해주세요" class="form-input"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-checkbox-group">
+            <input type="checkbox" id="consent" name="consent" required class="form-checkbox">
+            <span class="form-checkbox-text text-body-sm"><a href="#">개인정보처리방침</a>에 따른 개인정보 수집 및 이용에 동의합니다.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit">문의 전송</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Bottom padding for mobile -->
+  <div class="mobile-bottom-padding"></div>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-copyright text-caption">&copy; 2024 귀족. All rights reserved.</p>
+        <a href="#" class="footer-link text-caption">개인정보처리방침</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       FLOATING CTA (Mobile)
+       ============================================ -->
+  <div class="floating-cta" id="floating-cta">
+    <div class="floating-cta-buttons">
+      <a href="tel:02-XXX-XXXX" class="btn btn-primary">
+        <svg class="floating-cta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+        </svg>
+        전화 상담
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        <svg class="floating-cta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+        </svg>
+        문의하기
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <script>
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ============================================
+    // ANIMATIONS
+    // ============================================
+
+    // Hero animations
+    gsap.to('.hero-title', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 0.2,
+      ease: 'power2.out'
+    });
+
+    gsap.to('.hero-tagline', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 0.4,
+      ease: 'power2.out'
+    });
+
+    gsap.to('.hero-info', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 0.6,
+      ease: 'power2.out'
+    });
+
+    gsap.to('.hero-cta', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 0.8,
+      ease: 'power2.out'
+    });
+
+    // Hero parallax
+    gsap.to('.hero-content', {
+      yPercent: 30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1
+      }
+    });
+
+    // Trust steps fade in
+    gsap.utils.toArray('.trust-step').forEach((step, i) => {
+      gsap.to(step, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // Service items fade in
+    gsap.utils.toArray('.service-item').forEach((item, i) => {
+      gsap.to(item, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: i * 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // One Bold Moment - Light Sweep
+    const boldMomentTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.bold-moment',
+        start: 'top 60%',
+        end: 'bottom 40%',
+        scrub: 1
+      }
+    });
+
+    boldMomentTl.fromTo('#light-sweep',
+      { xPercent: -100, rotation: 15 },
+      { xPercent: 100, rotation: 15, ease: 'power2.inOut' }
+    );
+
+    // Bold moment text reveal
+    gsap.to('.bold-moment-text', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.bold-moment',
+        start: 'top 70%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Gallery items fade in
+    gsap.utils.toArray('.gallery-item').forEach((item, i) => {
+      gsap.to(item, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // Form groups fade in
+    gsap.utils.toArray('.form-group').forEach((group, i) => {
+      gsap.to(group, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: i * 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '#contact-form',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // ============================================
+    // FLOATING CTA
+    // ============================================
+    const floatingCta = document.getElementById('floating-cta');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > window.innerHeight * 0.5) {
+        floatingCta.classList.add('visible');
+      } else {
+        floatingCta.classList.remove('visible');
+      }
+    }, { passive: true });
+
+    // ============================================
+    // SERVICE ACCORDION
+    // ============================================
+    function toggleService(button) {
+      const serviceItem = button.parentElement;
+      const desc = serviceItem.querySelector('.service-desc');
+      const icon = button.querySelector('.service-icon');
+      const isActive = desc.classList.contains('active');
+
+      // Close all other items
+      document.querySelectorAll('.service-desc.active').forEach(d => {
+        d.classList.remove('active');
+        d.parentElement.querySelector('.service-icon').classList.remove('active');
+      });
+
+      // Toggle current item
+      if (!isActive) {
+        desc.classList.add('active');
+        icon.classList.add('active');
+      }
+    }
+
+    // ============================================
+    // FORM SUBMISSION
+    // ============================================
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const consent = form.querySelector('#consent');
+
+      if (!consent.checked) {
+        alert('개인정보 수집에 동의해주세요.');
+        return;
+      }
+
+      // Simulate submission
+      const submitBtn = form.querySelector('.form-submit');
+      submitBtn.textContent = '전송 중...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+        form.reset();
+        submitBtn.textContent = '문의 전송';
+        submitBtn.disabled = false;
+      }, 1500);
+    }
+
+    // Reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.globalTimeline.clear();
+      ScrollTrigger.getAll().forEach(st => st.kill());
+
+      // Set final states
+      document.querySelectorAll('.hero-title, .hero-tagline, .hero-info, .hero-cta, .trust-step, .service-item, .gallery-item, .form-group, .bold-moment-text').forEach(el => {
+        el.style.opacity = 1;
+        el.style.transform = 'none';
+      });
+    }
+  </script>
+</body>
+</html>

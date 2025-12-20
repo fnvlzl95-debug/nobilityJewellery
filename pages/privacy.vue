@@ -1,0 +1,101 @@
+<script setup lang="ts">
+useHead({
+  title: '개인정보처리방침 | 귀족',
+})
+</script>
+
+<template>
+  <div class="min-h-screen pt-24 pb-section">
+    <div class="container-luxury">
+      <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="mb-16">
+          <NuxtLink to="/" class="inline-block text-caption text-charcoal-700/60 hover:text-charcoal-900 transition-colors mb-8">
+            &larr; 메인으로
+          </NuxtLink>
+          <h1 class="text-display-md text-display text-charcoal-900">
+            개인정보처리방침
+          </h1>
+          <p class="text-caption text-charcoal-700/60 mt-4">
+            시행일: 2024년 1월 1일
+          </p>
+        </div>
+
+        <!-- Content -->
+        <div class="prose prose-neutral max-w-none space-y-12 text-body-md text-charcoal-800 leading-relaxed-kr">
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">1. 개인정보의 처리 목적</h2>
+            <p>
+              귀족(이하 '회사')은 다음의 목적을 위하여 개인정보를 처리합니다.
+              처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며,
+              이용 목적이 변경되는 경우에는 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+            </p>
+            <ul class="list-disc list-inside mt-4 space-y-2 text-charcoal-700">
+              <li>문의 접수 및 상담 서비스 제공</li>
+              <li>서비스 이용에 관한 연락 및 안내</li>
+              <li>거래 관련 정보 전달</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">2. 개인정보의 처리 및 보유 기간</h2>
+            <p>
+              회사는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에
+              동의받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다.
+            </p>
+            <ul class="list-disc list-inside mt-4 space-y-2 text-charcoal-700">
+              <li>문의 내역: 3년</li>
+              <li>거래 관련 기록: 5년 (전자상거래법)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">3. 수집하는 개인정보 항목</h2>
+            <p>
+              회사는 문의 접수 및 상담을 위해 아래와 같은 개인정보를 수집하고 있습니다.
+            </p>
+            <ul class="list-disc list-inside mt-4 space-y-2 text-charcoal-700">
+              <li>필수항목: 이름(또는 업체명), 연락처, 문의 내용</li>
+              <li>선택항목: 문의 유형</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">4. 개인정보의 파기</h2>
+            <p>
+              회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는
+              지체없이 해당 개인정보를 파기합니다.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">5. 정보주체의 권리·의무 및 행사방법</h2>
+            <p>
+              정보주체는 회사에 대해 언제든지 개인정보 열람·정정·삭제·처리정지 요구 등의 권리를 행사할 수 있습니다.
+              권리 행사는 서면, 전화, 이메일 등을 통하여 하실 수 있으며 회사는 이에 대해 지체없이 조치하겠습니다.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">6. 개인정보 보호책임자</h2>
+            <div class="bg-cream-50 p-6 mt-4">
+              <p class="text-charcoal-700">
+                <strong class="text-charcoal-900">개인정보 보호책임자</strong><br>
+                담당자: 대표<br>
+                연락처: 02-XXX-XXXX
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="text-body-lg font-medium text-charcoal-900 mb-4">7. 개인정보 처리방침 변경</h2>
+            <p>
+              이 개인정보처리방침은 2024년 1월 1일부터 적용됩니다.
+              이전의 개인정보 처리방침은 아래에서 확인하실 수 있습니다.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
