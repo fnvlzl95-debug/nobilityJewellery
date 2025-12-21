@@ -9,10 +9,6 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Playfair+Display': {
-        wght: [400, 500, 600],
-        ital: [400, 500],
-      },
       'Outfit': [300, 400, 500, 600],
       'Cormorant': {
         wght: [300, 400, 500],

@@ -38,7 +38,7 @@
     --gray-darker: #2a2a2a;
 
     /* Typography */
-    --font-display: 'JeonjuCraftMyungjo', 'Playfair Display', Georgia, serif;
+    --font-display: 'JeonjuCraftMyungjo', sans-serif;
     --font-body: 'Outfit', sans-serif;
     --font-accent: 'Cormorant', Georgia, serif;
 

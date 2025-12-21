@@ -590,7 +590,7 @@ onUnmounted(() => {
 }
 
 .logo-text {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 28px;
   font-weight: 500;
   color: #fafafa;
@@ -795,7 +795,7 @@ onUnmounted(() => {
 }
 
 .title-line {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(100px, 20vw, 200px);
   font-weight: 400;
   line-height: 1;
@@ -1110,7 +1110,7 @@ onUnmounted(() => {
 }
 
 .section-title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 400;
   line-height: 1.3;
@@ -1145,7 +1145,7 @@ onUnmounted(() => {
 }
 
 .stat-number {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(36px, 4vw, 48px);
   font-weight: 400;
   color: #fafafa;
@@ -1227,7 +1227,7 @@ onUnmounted(() => {
 }
 
 .section-title-light {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(36px, 6vw, 56px);
   font-weight: 400;
   color: #fafafa;
@@ -1285,7 +1285,7 @@ onUnmounted(() => {
 }
 
 .card-title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 24px;
   font-weight: 400;
   color: #fafafa;
@@ -1463,7 +1463,7 @@ onUnmounted(() => {
 }
 
 .item-title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 20px;
   font-weight: 400;
   color: #fafafa;
@@ -1489,7 +1489,7 @@ onUnmounted(() => {
 }
 
 .location-address {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(24px, 3vw, 32px);
   font-style: normal;
   line-height: 1.6;
@@ -1606,7 +1606,7 @@ onUnmounted(() => {
 }
 
 .cta-title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(48px, 8vw, 80px);
   font-weight: 400;
   color: #fafafa;
@@ -1705,7 +1705,7 @@ onUnmounted(() => {
 }
 
 .brand-name {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 24px;
   font-weight: 500;
   color: #fafafa;
@@ -2029,7 +2029,7 @@ onUnmounted(() => {
 }
 
 .mobile-menu-brand-text {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 32px;
   font-weight: 400;
   color: #fafafa;
@@ -2129,7 +2129,7 @@ onUnmounted(() => {
 }
 
 .mobile-menu-phone {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: rgba(250, 250, 250, 0.5);

@@ -250,7 +250,7 @@ const handleSubmit = async () => {
 }
 
 .logo-text {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 22px;
   font-weight: 500;
   color: #fafafa;
@@ -328,7 +328,7 @@ const handleSubmit = async () => {
 }
 
 .title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: clamp(36px, 6vw, 52px);
   font-weight: 400;
   color: #fafafa;
@@ -388,7 +388,7 @@ const handleSubmit = async () => {
 }
 
 .phone-number {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 22px;
   font-weight: 400;
   color: #fafafa;
@@ -729,7 +729,7 @@ const handleSubmit = async () => {
 }
 
 .success-title {
-  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', sans-serif;
   font-size: 28px;
   font-weight: 400;
   color: #fafafa;
