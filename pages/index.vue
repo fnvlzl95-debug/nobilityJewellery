@@ -782,9 +782,23 @@ onUnmounted(() => {
   width: 100%;
   height: 120%;
   object-fit: cover;
+  object-position: center center;
   opacity: 0;
   transform: scale(1.1);
   transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 모바일 히어로 최적화 */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh; /* safe viewport height - 모바일 주소창 고려 */
+  }
+
+  .hero-image {
+    height: 100%;
+    object-position: center center;
+  }
 }
 
 .hero.loaded .hero-image {
