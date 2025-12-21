@@ -45,12 +45,18 @@ export const galleryItems: GalleryItem[] = [
   {
     id: 3,
     category: 'ring',
-    title: '커스텀 시그넷 링',
+    title: '순금 말띠 아기 반지',
     titleEn: 'Signet Ring',
-    material: '14K 골드',
-    workType: '각인 가능',
-    delivery: '2주',
-    images: ['/Image/ring/pexels-gdtography-277628-6563393.jpg']
+    material: '순금',
+    workType: '주문제작 가능',
+    delivery: '1-2주',
+    images: ['/Image/ring/SB0101.png',
+      '/Image/ring/SB0102.png',
+      '/Image/ring/SB0103.png',
+      '/Image/ring/SB0104.png',
+      '/Image/ring/SB0105.png',
+      '/Image/ring/SB0106.png'
+    ]
   },
   {
     id: 4,
