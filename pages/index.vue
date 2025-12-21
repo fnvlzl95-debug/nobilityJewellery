@@ -14,14 +14,14 @@ useHead({
     { property: 'og:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 도매 상담, 주문 제작, 수리·세공까지.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀족 | 종로 귀금속 도매' },
     { name: 'twitter:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
   ],
   script: [
     {
@@ -55,7 +55,7 @@ useHead({
             closes: '19:00'
           }
         ],
-        image: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg',
+        image: 'https://noblessegold.com/Image/ring/NS0102.png',
         priceRange: '$$',
         currenciesAccepted: 'KRW',
         paymentAccepted: 'Cash, Credit Card',
