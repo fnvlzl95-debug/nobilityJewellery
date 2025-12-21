@@ -365,4 +365,3 @@ const toggle = (id: number) => {
   }
 }
 </style>
-</template>
