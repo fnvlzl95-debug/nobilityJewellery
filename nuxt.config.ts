@@ -58,6 +58,9 @@ export default defineNuxtConfig({
         // Google Analytics 4
         { src: 'https://www.googletagmanager.com/gtag/js?id=G-LRYTQT8C69', async: true },
         { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LRYTQT8C69');" },
+        // Naver Analytics
+        { src: 'https://wcs.pstatic.net/wcslog.js' },
+        { innerHTML: "if(!wcs_add) var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(window.wcs) { wcs_do(); }" },
       ],
     },
   },
