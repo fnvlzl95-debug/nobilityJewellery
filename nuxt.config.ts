@@ -4,7 +4,17 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/sitemap',
   ],
+
+  site: {
+    url: 'https://noblessegold.com',
+    name: '귀족 | 종로 귀금속 도매',
+  },
+
+  sitemap: {
+    strictNuxtContentPaths: true,
+  },
 
   app: {
     head: {
