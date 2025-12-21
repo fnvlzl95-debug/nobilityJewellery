@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
+import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
 
 useHead({
   title: '갤러리 | 귀족',
@@ -14,49 +15,58 @@ let rafId: number | null = null
 
 const isScrolled = ref(false)
 
-interface GalleryItem {
-  id: number
-  category: string
-  title: string
-  titleEn: string
-  material: string
-  workType: string
-  delivery: string
-  src: string
-}
-
-const galleryItems: GalleryItem[] = [
-  { id: 1, category: 'ring', title: '18K 골드 웨딩밴드', titleEn: 'Wedding Band', material: '18K 골드', workType: '주문제작 가능', delivery: '2-3주', src: '/Image/pexels-pixabay-265856.jpg' },
-  { id: 2, category: 'ring', title: '다이아몬드 솔리테어', titleEn: 'Diamond Solitaire', material: '18K 화이트골드 / 다이아', workType: '주문제작 가능', delivery: '3-4주', src: '/Image/pexels-pixabay-266621.jpg' },
-  { id: 3, category: 'ring', title: '커스텀 시그넷 링', titleEn: 'Signet Ring', material: '14K 골드', workType: '각인 가능', delivery: '2주', src: '/Image/pexels-gdtography-277628-6563393.jpg' },
-  { id: 4, category: 'ring', title: '골드 레이어드 링', titleEn: 'Layered Ring', material: '14K / 18K 골드', workType: '사이즈 조절', delivery: '즉시', src: '/Image/pexels-fox-58267-998521.jpg' },
-  { id: 5, category: 'ring', title: '핸드메이드 실버 링', titleEn: 'Handmade Silver', material: '925 실버', workType: '주문제작', delivery: '1-2주', src: '/Image/pexels-leah-newhouse-50725-691046.jpg' },
-  { id: 6, category: 'necklace', title: '14K 체인 네크리스', titleEn: 'Chain Necklace', material: '14K 골드', workType: '길이 조절 가능', delivery: '즉시', src: '/Image/pexels-pixabay-248077.jpg' },
-  { id: 7, category: 'necklace', title: '럭셔리 주얼리 세트', titleEn: 'Luxury Set', material: '18K 골드 / 진주', workType: '세트 구성', delivery: '1주', src: '/Image/pexels-wendelmoretti-1730877.jpg' },
-  { id: 8, category: 'bracelet', title: '순금 뱅글 브레이슬릿', titleEn: 'Gold Bangle', material: '24K 순금', workType: '사이즈 주문', delivery: '2-3주', src: '/Image/pexels-pixabay-265906.jpg' },
-  { id: 9, category: 'earring', title: '진주 드롭 이어링', titleEn: 'Pearl Drop', material: '14K 골드 / 담수진주', workType: '피어싱/클립', delivery: '즉시', src: '/Image/pexels-git-stephen-gitau-302905-1670723.jpg' },
-  { id: 10, category: 'set', title: '웨딩 주얼리 컬렉션', titleEn: 'Wedding Collection', material: '18K 골드', workType: '맞춤 제작', delivery: '상담 후 결정', src: '/Image/pexels-jeremy-wong-382920-1043902.jpg' },
-]
-
-const categories = [
-  { id: 'ring', label: '반지', labelEn: 'Rings' },
-  { id: 'necklace', label: '목걸이', labelEn: 'Necklaces' },
-  { id: 'bracelet', label: '팔찌', labelEn: 'Bracelets' },
-  { id: 'earring', label: '귀걸이', labelEn: 'Earrings' },
-  { id: 'set', label: '세트', labelEn: 'Sets' },
-]
-
-const getItemsByCategory = (categoryId: string) => {
-  return galleryItems.filter(item => item.category === categoryId)
-}
-
 // Preview state
 const activeItem = ref<GalleryItem>(galleryItems[0])
 const expandedCategory = ref<string | null>(null)
+const currentImageIndex = ref(0)
 
 const setActiveItem = (item: GalleryItem) => {
   activeItem.value = item
+  currentImageIndex.value = 0  // 아이템 변경 시 첫 번째 이미지로 리셋
 }
+
+// 이미지 슬라이드 함수
+const nextImage = () => {
+  if (activeItem.value.images.length > 1) {
+    currentImageIndex.value = (currentImageIndex.value + 1) % activeItem.value.images.length
+  }
+}
+
+const prevImage = () => {
+  if (activeItem.value.images.length > 1) {
+    currentImageIndex.value = currentImageIndex.value === 0
+      ? activeItem.value.images.length - 1
+      : currentImageIndex.value - 1
+  }
+}
+
+const goToImage = (index: number) => {
+  currentImageIndex.value = index
+}
+
+// 라이트박스
+const isLightboxOpen = ref(false)
+
+const openLightbox = () => {
+  isLightboxOpen.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeLightbox = () => {
+  isLightboxOpen.value = false
+  document.body.style.overflow = ''
+}
+
+// ESC 키로 닫기
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowRight') nextImage()
+  if (e.key === 'ArrowLeft') prevImage()
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
 
 const toggleCategory = (categoryId: string) => {
   if (expandedCategory.value === categoryId) {
@@ -107,6 +117,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   lenis?.destroy()
+  window.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -198,8 +209,33 @@ onUnmounted(() => {
                   v-if="expandedCategory === category.id"
                   class="mobile-preview"
                 >
-                  <div class="preview-image">
-                    <img :src="activeItem.src" :alt="activeItem.title">
+                  <div class="preview-image" @click="openLightbox">
+                    <Transition name="image-fade" mode="out-in">
+                      <img :src="activeItem.images[currentImageIndex]" :alt="activeItem.title" :key="`mobile-${activeItem.id}-${currentImageIndex}`">
+                    </Transition>
+                    <!-- 이미지 인디케이터 -->
+                    <div v-if="activeItem.images.length > 1" class="image-indicators" @click.stop>
+                      <button
+                        v-for="(img, idx) in activeItem.images"
+                        :key="idx"
+                        class="indicator-dot"
+                        :class="{ active: currentImageIndex === idx }"
+                        @click="goToImage(idx)"
+                      ></button>
+                    </div>
+                    <!-- 좌우 화살표 -->
+                    <template v-if="activeItem.images.length > 1">
+                      <button class="slide-arrow slide-prev" @click.stop="prevImage">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                      </button>
+                      <button class="slide-arrow slide-next" @click.stop="nextImage">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                      </button>
+                    </template>
                   </div>
                   <div class="preview-meta">
                     <h3 class="preview-title">{{ activeItem.title }}</h3>
@@ -241,13 +277,38 @@ onUnmounted(() => {
         <!-- Right: Macro Preview (Desktop) -->
         <section class="preview-column desktop-only">
           <div class="preview-frame reveal">
-              <div class="preview-image-wrap">
-                <img
-                  :src="activeItem.src"
-                  :alt="activeItem.title"
-                  :key="activeItem.id"
-                  class="preview-img"
-                >
+              <div class="preview-image-wrap" @click="openLightbox">
+                <Transition name="image-fade" mode="out-in">
+                  <img
+                    :src="activeItem.images[currentImageIndex]"
+                    :alt="activeItem.title"
+                    :key="`${activeItem.id}-${currentImageIndex}`"
+                    class="preview-img"
+                  >
+                </Transition>
+                <!-- 이미지 인디케이터 -->
+                <div v-if="activeItem.images.length > 1" class="image-indicators" @click.stop>
+                  <button
+                    v-for="(img, idx) in activeItem.images"
+                    :key="idx"
+                    class="indicator-dot"
+                    :class="{ active: currentImageIndex === idx }"
+                    @click="goToImage(idx)"
+                  ></button>
+                </div>
+                <!-- 좌우 화살표 -->
+                <template v-if="activeItem.images.length > 1">
+                  <button class="slide-arrow slide-prev" @click.stop="prevImage">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <button class="slide-arrow slide-next" @click.stop="nextImage">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                  </button>
+                </template>
               </div>
               <div class="preview-caption">
                 <div class="caption-left">
@@ -274,6 +335,63 @@ onUnmounted(() => {
         </section>
       </div>
     </main>
+
+    <!-- Lightbox Modal -->
+    <Teleport to="body">
+      <Transition name="lightbox-fade">
+        <div v-if="isLightboxOpen" class="lightbox" @click.self="closeLightbox">
+          <!-- 닫기 버튼 -->
+          <button class="lightbox-close" @click="closeLightbox">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+
+          <!-- 이미지 컨테이너 -->
+          <div class="lightbox-content">
+            <Transition name="image-fade" mode="out-in">
+              <img
+                :src="activeItem.images[currentImageIndex]"
+                :alt="activeItem.title"
+                :key="`lightbox-${activeItem.id}-${currentImageIndex}`"
+                class="lightbox-img"
+              >
+            </Transition>
+          </div>
+
+          <!-- 좌우 네비게이션 -->
+          <template v-if="activeItem.images.length > 1">
+            <button class="lightbox-arrow lightbox-prev" @click="prevImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button class="lightbox-arrow lightbox-next" @click="nextImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </template>
+
+          <!-- 인디케이터 -->
+          <div v-if="activeItem.images.length > 1" class="lightbox-indicators">
+            <button
+              v-for="(img, idx) in activeItem.images"
+              :key="idx"
+              class="lightbox-dot"
+              :class="{ active: currentImageIndex === idx }"
+              @click="goToImage(idx)"
+            ></button>
+          </div>
+
+          <!-- 이미지 정보 -->
+          <div class="lightbox-info">
+            <span class="lightbox-counter">{{ currentImageIndex + 1 }} / {{ activeItem.images.length }}</span>
+            <h3 class="lightbox-title">{{ activeItem.title }}</h3>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
 
     <!-- Footer -->
     <footer class="footer">
@@ -573,6 +691,7 @@ onUnmounted(() => {
 }
 
 .mobile-preview .preview-image {
+  position: relative;
   aspect-ratio: 4/3;
   overflow: hidden;
   margin-bottom: 20px;
@@ -581,7 +700,7 @@ onUnmounted(() => {
 .mobile-preview .preview-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .mobile-preview .preview-title {
@@ -687,11 +806,113 @@ onUnmounted(() => {
   background: #111;
 }
 
+.preview-image-wrap .slide-arrow {
+  opacity: 0;
+}
+
+.preview-image-wrap:hover .slide-arrow {
+  opacity: 1;
+}
+
 .preview-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== Image Slider ===== */
+.image-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.indicator-dot {
+  width: 20px;
+  height: 1px;
+  background: rgba(250, 250, 250, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.indicator-dot:hover {
+  background: rgba(250, 250, 250, 0.5);
+}
+
+.indicator-dot.active {
+  background: #c9a227;
+  width: 32px;
+}
+
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #fafafa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+  opacity: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+}
+
+.preview-image-wrap:hover .slide-arrow,
+.preview-image:hover .slide-arrow {
+  opacity: 1;
+}
+
+.slide-arrow:hover {
+  color: #c9a227;
+}
+
+.slide-arrow svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1;
+}
+
+.slide-prev {
+  left: 8px;
+}
+
+.slide-next {
+  right: 8px;
+}
+
+/* Image Transition */
+.image-fade-enter-active {
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-fade-leave-active {
+  transition: opacity 0.3s ease-out,
+              transform 0.3s ease-out;
+}
+
+.image-fade-enter-from {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+.image-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.98);
 }
 
 .preview-caption {
@@ -1015,6 +1236,200 @@ onUnmounted(() => {
 
   .meta-grid .meta-item:last-child {
     grid-column: span 2;
+  }
+}
+</style>
+
+<style>
+/* ===== Lightbox (Global styles for Teleport) ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(5, 5, 5, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.15);
+  color: rgba(250, 250, 250, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.lightbox-close:hover {
+  border-color: #c9a227;
+  color: #c9a227;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: none;
+  border: none;
+  color: #fafafa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}
+
+.lightbox-arrow:hover {
+  color: #c9a227;
+}
+
+.lightbox-prev {
+  left: 24px;
+}
+
+.lightbox-next {
+  right: 24px;
+}
+
+.lightbox-indicators {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+}
+
+.lightbox-dot {
+  width: 24px;
+  height: 1px;
+  background: rgba(250, 250, 250, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.lightbox-dot:hover {
+  background: rgba(250, 250, 250, 0.6);
+}
+
+.lightbox-dot.active {
+  background: #c9a227;
+  width: 40px;
+}
+
+.lightbox-info {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.lightbox-counter {
+  display: block;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: rgba(250, 250, 250, 0.4);
+  margin-bottom: 8px;
+}
+
+.lightbox-title {
+  font-family: 'JeonjuCraftMyungjo';
+  font-size: 18px;
+  font-weight: 300;
+  color: #fafafa;
+}
+
+/* Lightbox Transition */
+.lightbox-fade-enter-active {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-fade-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to {
+  opacity: 0;
+}
+
+/* Mobile Lightbox Adjustments */
+@media (max-width: 768px) {
+  .lightbox-close {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lightbox-arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lightbox-prev {
+    left: 8px;
+  }
+
+  .lightbox-next {
+    right: 8px;
+  }
+
+  .lightbox-info {
+    bottom: 24px;
+  }
+
+  .lightbox-indicators {
+    bottom: 70px;
+  }
+}
+
+/* Mobile: 프리뷰 슬라이더 화살표 항상 표시 */
+@media (max-width: 1023px) {
+  .preview-image .slide-arrow,
+  .preview-image-wrap .slide-arrow {
+    opacity: 1 !important;
+  }
+
+  .preview-image .slide-arrow svg,
+  .preview-image-wrap .slide-arrow svg {
+    stroke-width: 2;
   }
 }
 </style>

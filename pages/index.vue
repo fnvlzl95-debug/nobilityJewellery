@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
+import { getPreviewItems, categories } from '~/data/gallery-items'
+
+const previewItems = getPreviewItems(4)
 
 useHead({
   title: '귀족 | 종로 귀금속 도매',
@@ -176,8 +179,8 @@ onUnmounted(() => {
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </NuxtLink>
-              <a href="tel:02-747-0004" class="mobile-menu-phone">
-                02-747-0004
+              <a href="tel:02-766-4789" class="mobile-menu-phone">
+                02-766-4789
               </a>
             </div>
           </div>
@@ -194,7 +197,7 @@ onUnmounted(() => {
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
-        <img src="/Image/pexels-jeremy-wong-382920-1043902.jpg" alt="귀금속" class="hero-image">
+        <img src="/Image/set/pexels-jeremy-wong-382920-1043902.jpg" alt="귀금속" class="hero-image">
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>
       </div>
@@ -214,7 +217,7 @@ onUnmounted(() => {
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
 
         <div class="hero-cta">
-          <a href="tel:02-747-0004" class="btn-magnetic">
+          <a href="tel:02-766-4789" class="btn-magnetic">
             <span class="btn-text">전화 상담</span>
             <span class="btn-glow"></span>
           </a>
@@ -240,7 +243,7 @@ onUnmounted(() => {
         <div class="about-grid">
           <div class="about-visual">
             <div class="visual-frame reveal reveal-left">
-              <img src="/Image/pexels-leah-newhouse-50725-691046.jpg" alt="귀금속 작업">
+              <img src="/Image/ring/pexels-leah-newhouse-50725-691046.jpg" alt="귀금속 작업">
               <div class="frame-border"></div>
             </div>
             <div class="visual-accent"></div>
@@ -381,43 +384,21 @@ onUnmounted(() => {
         </div>
 
         <div class="gallery-showcase">
-          <div class="gallery-item gallery-item-lg reveal">
+          <div
+            v-for="(item, index) in previewItems"
+            :key="item.id"
+            class="gallery-item reveal"
+            :class="[
+              index === 0 ? 'gallery-item-lg' : '',
+              index > 0 ? `reveal-delay-${index}` : ''
+            ]"
+          >
             <div class="item-image">
-              <img src="/Image/pexels-pixabay-265856.jpg" alt="18K 골드 웨딩밴드">
+              <img :src="item.images[0]" :alt="item.title">
             </div>
             <div class="item-overlay">
-              <span class="item-category">Ring</span>
-              <h4 class="item-title">18K 골드 웨딩밴드</h4>
-            </div>
-          </div>
-
-          <div class="gallery-item reveal reveal-delay-1">
-            <div class="item-image">
-              <img src="/Image/pexels-pixabay-266621.jpg" alt="다이아몬드 솔리테어">
-            </div>
-            <div class="item-overlay">
-              <span class="item-category">Ring</span>
-              <h4 class="item-title">다이아몬드 솔리테어</h4>
-            </div>
-          </div>
-
-          <div class="gallery-item reveal reveal-delay-2">
-            <div class="item-image">
-              <img src="/Image/pexels-pixabay-248077.jpg" alt="14K 체인 네크리스">
-            </div>
-            <div class="item-overlay">
-              <span class="item-category">Necklace</span>
-              <h4 class="item-title">14K 체인 네크리스</h4>
-            </div>
-          </div>
-
-          <div class="gallery-item reveal reveal-delay-3">
-            <div class="item-image">
-              <img src="/Image/pexels-pixabay-265906.jpg" alt="순금 뱅글">
-            </div>
-            <div class="item-overlay">
-              <span class="item-category">Bracelet</span>
-              <h4 class="item-title">순금 뱅글</h4>
+              <span class="item-category">{{ item.titleEn.split(' ')[0] }}</span>
+              <h4 class="item-title">{{ item.title }}</h4>
             </div>
           </div>
         </div>
@@ -440,7 +421,7 @@ onUnmounted(() => {
             <ul class="contact-info reveal reveal-delay-3">
               <li>
                 <span class="info-label">Tel</span>
-                <a href="tel:02-747-0004">02-747-0004</a>
+                <a href="tel:02-766-4789">02-766-4789</a>
               </li>
               <li>
                 <span class="info-label">Hours</span>
@@ -492,7 +473,7 @@ onUnmounted(() => {
             무엇이든 편하게 연락주세요.
           </p>
           <div class="cta-buttons reveal reveal-delay-2">
-            <a href="tel:02-747-0004" class="btn-gold btn-lg">
+            <a href="tel:02-766-4789" class="btn-gold btn-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
@@ -531,7 +512,7 @@ onUnmounted(() => {
 
     <!-- Mobile CTA -->
     <div class="mobile-cta" :class="{ visible: showMobileCta }">
-      <a href="tel:02-747-0004" class="mobile-btn mobile-btn-primary">
+      <a href="tel:02-766-4789" class="mobile-btn mobile-btn-primary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
