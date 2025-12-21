@@ -29,6 +29,8 @@ export default defineNuxtConfig({
         { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
         { property: 'og:description', content: '종로 귀금속 도매 · 빠르고 단정한 거래' },
         { property: 'og:type', content: 'website' },
+        // Google Search Console
+        { name: 'google-site-verification', content: 'ZsI2VVbWEPqgSNZ8BntW5Fod0faTHbhJ6SUF3Z470SY' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
