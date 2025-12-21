@@ -13,6 +13,7 @@ export default defineNuxtConfig({
         wght: [400, 500, 600],
         ital: [400, 500],
       },
+      'Noto+Serif+KR': [400, 500, 600],
       'Outfit': [300, 400, 500, 600],
       'Cormorant': {
         wght: [300, 400, 500],
