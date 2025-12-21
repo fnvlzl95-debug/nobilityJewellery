@@ -1,8 +1,9 @@
 import sharp from 'sharp'
-import { readdir, stat, mkdir } from 'fs/promises'
-import { join, extname, basename } from 'path'
+import { readdir, stat, mkdir, rename } from 'fs/promises'
+import { join, extname, basename, dirname, relative } from 'path'
 
 const PUBLIC_DIR = './public/Image'
+const ORIGINAL_DIR = './assets-original'
 const QUALITY = 90  // 고화질 유지
 
 async function getAllImages(dir) {
@@ -37,7 +38,15 @@ async function convertToWebP(imagePath) {
     const originalStats = await stat(imagePath)
     const savings = ((originalStats.size - info.size) / originalStats.size * 100).toFixed(1)
 
-    console.log(`✓ ${basename(imagePath)} → ${basename(webpPath)} (${savings}% 절약)`)
+    // 원본 파일을 assets-original로 이동
+    const relativePath = relative(PUBLIC_DIR, imagePath)
+    const destPath = join(ORIGINAL_DIR, relativePath)
+    const destDir = dirname(destPath)
+
+    await mkdir(destDir, { recursive: true })
+    await rename(imagePath, destPath)
+
+    console.log(`✓ ${basename(imagePath)} → ${basename(webpPath)} (${savings}% 절약) [원본 이동됨]`)
     return { original: originalStats.size, webp: info.size }
   } catch (error) {
     console.error(`✗ ${basename(imagePath)}: ${error.message}`)
