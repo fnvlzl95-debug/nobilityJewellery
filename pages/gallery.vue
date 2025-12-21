@@ -12,14 +12,14 @@ useHead({
     { property: 'og:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/gallery' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
     { name: 'twitter:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ]
 })
 

@@ -10,14 +10,14 @@ useHead({
     { property: 'og:description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공 문의.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/contact' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '문의하기 | 귀족 - 종로 귀금속 도매' },
     { name: 'twitter:description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.png' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [
     {

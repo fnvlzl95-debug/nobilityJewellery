@@ -24,11 +24,11 @@ export const galleryItems: GalleryItem[] = [
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
     delivery: '1-2주',
-    images: [      
-      '/Image/ring/NN0103.png',
-      '/Image/ring/NN0101.png',
-      '/Image/ring/NN0102.png',
-      '/Image/ring/NN0104.png'  ]
+    images: [
+      '/Image/ring/NN0103.webp',
+      '/Image/ring/NN0101.webp',
+      '/Image/ring/NN0102.webp',
+      '/Image/ring/NN0104.webp'  ]
   },
   {
     id: 2,  
@@ -38,9 +38,9 @@ export const galleryItems: GalleryItem[] = [
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
     delivery: '1-2주',
-    images: [      
-      '/Image/ring/NS0102.png',
-      '/Image/ring/NS0101.png']
+    images: [
+      '/Image/ring/NS0102.webp',
+      '/Image/ring/NS0101.webp']
   },
   {
     id: 3,
@@ -50,12 +50,12 @@ export const galleryItems: GalleryItem[] = [
     material: '순금',
     workType: '주문제작 가능',
     delivery: '1-2주',
-    images: ['/Image/ring/SB0101.png',
-      '/Image/ring/SB0102.png',
-      '/Image/ring/SB0103.png',
-      '/Image/ring/SB0104.png',
-      '/Image/ring/SB0105.png',
-      '/Image/ring/SB0106.png'
+    images: ['/Image/ring/SB0101.webp',
+      '/Image/ring/SB0102.webp',
+      '/Image/ring/SB0103.webp',
+      '/Image/ring/SB0104.webp',
+      '/Image/ring/SB0105.webp',
+      '/Image/ring/SB0106.webp'
     ]
   },
   {
