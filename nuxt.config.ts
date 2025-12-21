@@ -53,6 +53,12 @@ export default defineNuxtConfig({
         // Preconnect for font CDN
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
+        // Preconnect for Naver Analytics (LCP 개선)
+        { rel: 'preconnect', href: 'https://nam.veta.naver.com' },
+        { rel: 'preconnect', href: 'https://ssl.pstatic.net' },
+        // Preconnect for Google
+        { rel: 'preconnect', href: 'https://www.googletagmanager.com' },
+        { rel: 'preconnect', href: 'https://maps.googleapis.com' },
       ],
       script: [
         // Google Analytics 4

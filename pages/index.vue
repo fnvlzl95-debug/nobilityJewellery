@@ -76,6 +76,8 @@ const showMobileCta = ref(false)
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 const heroLoaded = ref(false)
+const mapLoaded = ref(false)
+const mapWrapper = ref<HTMLElement | null>(null)
 
 let lenis: Lenis | null = null
 let rafId: number | null = null
@@ -155,6 +157,20 @@ onMounted(() => {
       card.addEventListener('mousemove', (e) => handleTilt(e as MouseEvent, card as HTMLElement))
       card.addEventListener('mouseleave', () => resetTilt(card as HTMLElement))
     })
+  }
+
+  // Lazy load map when visible (성능 최적화)
+  if (mapWrapper.value) {
+    const mapObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !mapLoaded.value) {
+          mapLoaded.value = true
+          mapObserver.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    mapObserver.observe(mapWrapper.value)
   }
 })
 
@@ -266,6 +282,7 @@ onUnmounted(() => {
           src="/Image/ring/NS0102.webp"
           alt="귀족 - 종로 귀금속 도매 전문점"
           class="hero-image"
+          fetchpriority="high"
         />
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>
@@ -528,17 +545,20 @@ onUnmounted(() => {
           </div>
 
           <div class="location-visual reveal reveal-right">
-            <div class="map-wrapper">
+            <div ref="mapWrapper" class="map-wrapper">
               <iframe
+                v-if="mapLoaded"
                 src="https://www.google.com/maps?q=서울+종로구+종로+173+종묘귀금속백화점&output=embed"
                 width="100%"
                 height="100%"
                 style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
+                allowfullscreen
                 referrerpolicy="no-referrer-when-downgrade"
                 title="귀족 귀금속 위치 - 종로구 종로 173 종묘귀금속백화점"
               ></iframe>
+              <div v-else class="map-placeholder">
+                <span>지도 로딩 중...</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1698,6 +1718,17 @@ onUnmounted(() => {
 
 .map-wrapper:hover iframe {
   filter: grayscale(0) brightness(1);
+}
+
+.map-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  color: rgba(250, 250, 250, 0.5);
+  font-size: 14px;
 }
 
 /* ===== CTA Section ===== */
