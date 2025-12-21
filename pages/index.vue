@@ -254,7 +254,7 @@ onUnmounted(() => {
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
-        <img src="/Image/set/pexels-jeremy-wong-382920-1043902.jpg" alt="귀금속" class="hero-image">
+        <img src="/Image/set/pexels-jeremy-wong-382920-1043902.jpg" alt="귀족 - 종로 귀금속 도매 전문점" class="hero-image">
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>
       </div>
@@ -300,7 +300,7 @@ onUnmounted(() => {
         <div class="about-grid">
           <div class="about-visual">
             <div class="visual-frame reveal reveal-left">
-              <img src="/Image/ring/pexels-leah-newhouse-50725-691046.jpg" alt="귀금속 작업">
+              <img src="/Image/ring/pexels-leah-newhouse-50725-691046.jpg" alt="귀금속 반지 세공 작업" loading="lazy">
               <div class="frame-border"></div>
             </div>
             <div class="visual-accent"></div>
@@ -451,7 +451,7 @@ onUnmounted(() => {
             ]"
           >
             <div class="item-image">
-              <img :src="item.images[0]" :alt="item.title">
+              <img :src="item.images[0]" :alt="item.title" loading="lazy">
             </div>
             <div class="item-overlay">
               <span class="item-category">{{ item.titleEn.split(' ')[0] }}</span>

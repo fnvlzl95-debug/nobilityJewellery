@@ -86,6 +86,21 @@
     /* Performance optimizations */
     text-rendering: optimizeSpeed;
     -webkit-tap-highlight-color: transparent;
+    /* Safe area for notched devices */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Minimum touch target size (44x44px recommended) */
+  a, button, [role="button"], input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Allow smaller elements when needed */
+  .indicator-dot, .lightbox-dot {
+    min-height: auto;
+    min-width: auto;
   }
 
   /* Custom cursor only on desktop with pointer */

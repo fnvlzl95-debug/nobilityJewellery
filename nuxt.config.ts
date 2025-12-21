@@ -36,6 +36,9 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Preconnect for font CDN
+        { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
+        { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
       ],
     },
   },
