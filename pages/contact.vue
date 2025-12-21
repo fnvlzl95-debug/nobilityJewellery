@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 useHead({
   title: '문의하기 | 귀족 - 종로 귀금속 도매',
@@ -78,6 +78,20 @@ const inquiryTypes = [
 
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
+const isScrolled = ref(false)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 80
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 
 const handleSubmit = async () => {
   if (!formData.value.consent) {
@@ -105,7 +119,7 @@ const handleSubmit = async () => {
     <CustomCursor />
 
     <!-- Navigation -->
-    <nav class="nav-luxury">
+    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
       <NuxtLink to="/" class="nav-logo">
         <span class="logo-text">귀족</span>
       </NuxtLink>
@@ -292,32 +306,16 @@ const handleSubmit = async () => {
   justify-content: space-between;
   padding: 20px clamp(20px, 5vw, 60px);
   background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-luxury.scrolled {
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(20px);
+  padding: 16px clamp(20px, 5vw, 60px);
   border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-@media (max-width: 1023px) {
-  .nav-luxury {
-    padding: 16px 20px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-links {
-    gap: 12px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-  }
 }
 
 .nav-logo {
@@ -348,6 +346,7 @@ const handleSubmit = async () => {
   letter-spacing: 0.05em;
   color: rgba(250, 250, 250, 0.6);
   text-decoration: none;
+  text-transform: uppercase;
   transition: color 0.3s;
   padding: 8px 4px;
   position: relative;
@@ -866,6 +865,35 @@ const handleSubmit = async () => {
 
   .info-decor {
     display: none;
+  }
+}
+
+/* ===== Mobile Navigation ===== */
+@media (max-width: 1023px) {
+  .nav-luxury {
+    padding: 16px 20px;
+  }
+
+  .nav-luxury.scrolled {
+    padding: 12px 20px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 11px;
   }
 }
 </style>
