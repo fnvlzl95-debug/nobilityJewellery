@@ -493,7 +493,7 @@ const handleSubmit = async () => {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(250, 250, 250, 0.85);
 }
 
 .form-row {
@@ -559,7 +559,7 @@ const handleSubmit = async () => {
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.7);
 }
 
 .type-option.active .type-label {
@@ -588,7 +588,7 @@ const handleSubmit = async () => {
 }
 
 .form-input::placeholder {
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.5);
 }
 
 .form-textarea {
@@ -612,7 +612,7 @@ const handleSubmit = async () => {
 }
 
 .form-textarea::placeholder {
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.5);
 }
 
 .form-footer {
@@ -655,7 +655,7 @@ const handleSubmit = async () => {
 
 .check-label {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(250, 250, 250, 0.85);
 }
 
 .btn-submit {
