@@ -175,6 +175,7 @@ onUnmounted(() => {
         <button @click="scrollTo('about')" class="nav-link">소개</button>
         <button @click="scrollTo('services')" class="nav-link">취급품목</button>
         <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
+        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
         <button @click="scrollTo('location')" class="nav-link">오시는 길</button>
         <NuxtLink to="/contact" class="nav-cta">
           <span>문의하기</span>
@@ -222,8 +223,12 @@ onUnmounted(() => {
                 <span class="mobile-menu-link-num">03</span>
                 <span class="mobile-menu-link-text">갤러리</span>
               </NuxtLink>
-              <button @click="scrollTo('location')" class="mobile-menu-link">
+              <NuxtLink to="/faq" class="mobile-menu-link" @click="isMenuOpen = false">
                 <span class="mobile-menu-link-num">04</span>
+                <span class="mobile-menu-link-text">FAQ</span>
+              </NuxtLink>
+              <button @click="scrollTo('location')" class="mobile-menu-link">
+                <span class="mobile-menu-link-num">05</span>
                 <span class="mobile-menu-link-text">오시는 길</span>
               </button>
             </nav>
@@ -576,6 +581,7 @@ onUnmounted(() => {
           <div class="footer-nav">
             <NuxtLink to="/">홈</NuxtLink>
             <NuxtLink to="/gallery">갤러리</NuxtLink>
+            <NuxtLink to="/faq">FAQ</NuxtLink>
             <NuxtLink to="/contact">문의하기</NuxtLink>
           </div>
         </div>

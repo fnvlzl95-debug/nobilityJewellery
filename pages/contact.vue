@@ -96,6 +96,7 @@ const handleSubmit = async () => {
       <div class="nav-links">
         <NuxtLink to="/" class="nav-link">홈</NuxtLink>
         <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
+        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
         <NuxtLink to="/contact" class="nav-link active">문의하기</NuxtLink>
       </div>
     </nav>

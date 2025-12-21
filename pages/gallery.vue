@@ -147,6 +147,7 @@ onUnmounted(() => {
       <div class="nav-links">
         <NuxtLink to="/" class="nav-link">홈</NuxtLink>
         <NuxtLink to="/gallery" class="nav-link active">갤러리</NuxtLink>
+        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
         <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
       </div>
     </nav>
