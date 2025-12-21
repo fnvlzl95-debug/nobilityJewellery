@@ -338,7 +338,7 @@ onUnmounted(() => {
 }
 
 .logo-text {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 22px;
   font-weight: 500;
   color: #fafafa;
@@ -412,7 +412,7 @@ onUnmounted(() => {
 }
 
 .index-title {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 42px;
   font-weight: 400;
   color: #fafafa;
@@ -459,7 +459,7 @@ onUnmounted(() => {
 }
 
 .category-label {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 20px;
   font-weight: 400;
   color: #fafafa;
@@ -585,7 +585,7 @@ onUnmounted(() => {
 }
 
 .mobile-preview .preview-title {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 22px;
   font-weight: 400;
   color: #fafafa;
@@ -716,7 +716,7 @@ onUnmounted(() => {
 }
 
 .caption-title {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 28px;
   font-weight: 400;
   color: #fafafa;
@@ -798,7 +798,7 @@ onUnmounted(() => {
 }
 
 .brand-name {
-  font-family: 'Noto Serif KR', 'Playfair Display', serif;
+  font-family: 'JeonjuCraftMyungjo', 'Playfair Display', serif;
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.15em;

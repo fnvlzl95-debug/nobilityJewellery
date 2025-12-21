@@ -7,6 +7,21 @@
    Premium Luxury Dark Theme
    ============================================ */
 
+/* Custom Korean Font */
+@font-face {
+  font-family: 'JeonjuCraftMyungjo';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/JeonjuCraftMjL.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JeonjuCraftMyungjo';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/JeonjuCraftMjB.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     /* Colors - Noir Opulence */
@@ -23,7 +38,7 @@
     --gray-darker: #2a2a2a;
 
     /* Typography */
-    --font-display: 'Noto Serif KR', 'Playfair Display', Georgia, serif;
+    --font-display: 'JeonjuCraftMyungjo', 'Playfair Display', Georgia, serif;
     --font-body: 'Outfit', sans-serif;
     --font-accent: 'Cormorant', Georgia, serif;
 
