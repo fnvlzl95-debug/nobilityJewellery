@@ -254,14 +254,10 @@ onUnmounted(() => {
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
-        <NuxtImg
+        <img
           src="/Image/set/pexels-jeremy-wong-382920-1043902.webp"
           alt="귀족 - 종로 귀금속 도매 전문점"
           class="hero-image"
-          format="webp"
-          quality="95"
-          sizes="100vw"
-          preload
         />
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>
