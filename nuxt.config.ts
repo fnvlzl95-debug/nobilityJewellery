@@ -31,6 +31,8 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         // Google Search Console
         { name: 'google-site-verification', content: 'ZsI2VVbWEPqgSNZ8BntW5Fod0faTHbhJ6SUF3Z470SY' },
+        // Naver Search Advisor
+        { name: 'naver-site-verification', content: '982a858996de4d87d4f5cf7376fab0dc528d2f56' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
