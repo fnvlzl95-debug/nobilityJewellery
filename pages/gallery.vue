@@ -553,7 +553,7 @@ onUnmounted(() => {
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 /* ===== Category Groups ===== */
@@ -601,13 +601,13 @@ onUnmounted(() => {
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .category-count {
   font-size: 11px;
   font-weight: 700;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
   min-width: 20px;
   text-align: right;
 }
@@ -616,7 +616,7 @@ onUnmounted(() => {
   font-size: 11px;
   font-weight: 300;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.45);
+  color: rgba(250, 250, 250, 0.65);
   margin: 0 0 12px;
   padding-left: 2px;
 }
@@ -654,7 +654,7 @@ onUnmounted(() => {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.25);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .item-title {
@@ -667,7 +667,7 @@ onUnmounted(() => {
 .item-material {
   font-size: 11px;
   font-weight: 300;
-  color: rgba(250, 250, 250, 0.35);
+  color: rgba(250, 250, 250, 0.6);
   text-align: right;
 }
 
@@ -738,7 +738,7 @@ onUnmounted(() => {
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
   margin-bottom: 12px;
 }
 
@@ -767,7 +767,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.35);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .meta-value {
@@ -787,7 +787,7 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
   margin-bottom: 24px;
 }
 
@@ -979,7 +979,7 @@ onUnmounted(() => {
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .caption-right {
@@ -1002,7 +1002,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .meta-row .meta-value {
@@ -1327,7 +1327,7 @@ onUnmounted(() => {
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.15em;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
   margin-bottom: 8px;
 }
 

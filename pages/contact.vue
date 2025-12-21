@@ -498,7 +498,7 @@ const handleSubmit = async () => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .info-value {

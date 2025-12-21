@@ -279,8 +279,9 @@ onUnmounted(() => {
         </div>
 
         <h1 class="hero-title">
-          <span class="title-line">귀</span>
-          <span class="title-line">족</span>
+          <span class="sr-only">종로 귀금속 도매 전문 귀족</span>
+          <span class="title-line" aria-hidden="true">귀</span>
+          <span class="title-line" aria-hidden="true">족</span>
         </h1>
 
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
@@ -628,6 +629,19 @@ onUnmounted(() => {
   width: 100%;
 }
 
+/* Screen Reader Only (SEO용 숨김 텍스트) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .container-lg {
   max-width: 1400px;
   margin: 0 auto;
@@ -898,13 +912,13 @@ onUnmounted(() => {
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero.loaded .title-line:nth-child(1) {
+.hero.loaded .title-line:nth-child(2) {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.4s;
 }
 
-.hero.loaded .title-line:nth-child(2) {
+.hero.loaded .title-line:nth-child(3) {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.5s;
@@ -1253,7 +1267,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .stat-divider {
@@ -1616,7 +1630,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .contact-info a {
@@ -1847,7 +1861,7 @@ onUnmounted(() => {
 
 .business-info {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .footer-bottom {
@@ -2201,7 +2215,7 @@ onUnmounted(() => {
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
   transition: color 0.3s;
 }
 

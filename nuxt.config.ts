@@ -56,11 +56,11 @@ export default defineNuxtConfig({
       ],
       script: [
         // Google Analytics 4
-        { src: 'https://www.googletagmanager.com/gtag/js?id=G-LRYTQT8C69', async: true },
-        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LRYTQT8C69');" },
-        // Naver Analytics
-        { src: 'https://wcs.pstatic.net/wcslog.js' },
-        { innerHTML: "if(!wcs_add) var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(window.wcs) { wcs_do(); }" },
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-LRYTQT8C69', async: true, defer: true },
+        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LRYTQT8C69');", defer: true },
+        // Naver Analytics (defer for performance)
+        { src: 'https://wcs.pstatic.net/wcslog.js', defer: true },
+        { innerHTML: "if(typeof wcs_add === 'undefined') var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(typeof wcs !== 'undefined' && wcs) { wcs_do(); }", defer: true },
       ],
     },
   },
@@ -71,5 +71,11 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    routeRules: {
+      // 정적 자산 캐시 (1년)
+      '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/favicon.ico': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    },
   },
 })
