@@ -779,12 +779,17 @@ onUnmounted(() => {
 }
 
 .hero-image {
-  width: 100%;
-  height: 120%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.1);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
   object-position: center center;
   opacity: 0;
-  transform: scale(1.1);
   transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -792,18 +797,18 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .hero {
     min-height: 100vh;
-    min-height: 100svh; /* safe viewport height - 모바일 주소창 고려 */
+    min-height: 100svh;
   }
 
   .hero-image {
-    height: 100%;
-    object-position: center center;
+    min-width: 100%;
+    min-height: 100%;
   }
 }
 
 .hero.loaded .hero-image {
   opacity: 1;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .hero-overlay {
