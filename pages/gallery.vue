@@ -4,9 +4,22 @@ import Lenis from 'lenis'
 import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
 
 useHead({
-  title: '갤러리 | 귀족',
+  title: '갤러리 | 귀족 - 종로 귀금속 도매',
   meta: [
-    { name: 'description', content: '귀족 귀금속 갤러리 - 반지, 목걸이, 귀걸이, 팔찌' }
+    { name: 'description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌, 웨딩주얼리 컬렉션. 14K, 18K, 24K 순금 도매.' },
+    // Open Graph
+    { property: 'og:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
+    { property: 'og:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://noblessegold.com/gallery' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NN0103.png' },
+    { property: 'og:locale', content: 'ko_KR' },
+    { property: 'og:site_name', content: '귀족' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
+    { name: 'twitter:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NN0103.png' },
   ]
 })
 

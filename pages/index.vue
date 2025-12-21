@@ -8,7 +8,64 @@ const previewItems = getPreviewItems(4)
 useHead({
   title: '귀족 | 종로 귀금속 도매',
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 · 20년 신뢰의 거래' }
+    { name: 'description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.' },
+    // Open Graph
+    { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
+    { property: 'og:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 도매 상담, 주문 제작, 수리·세공까지.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://noblessegold.com' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg' },
+    { property: 'og:locale', content: 'ko_KR' },
+    { property: 'og:site_name', content: '귀족' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: '귀족 | 종로 귀금속 도매' },
+    { name: 'twitter:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg' },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        '@id': 'https://noblessegold.com',
+        name: '귀족',
+        description: '종로 귀금속 도매 전문. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.',
+        url: 'https://noblessegold.com',
+        telephone: '+82-2-766-4789',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '종로 173 종묘귀금속백화점 101호',
+          addressLocality: '종로구',
+          addressRegion: '서울',
+          postalCode: '03186',
+          addressCountry: 'KR'
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 37.5713,
+          longitude: 126.9961
+        },
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            opens: '10:00',
+            closes: '19:00'
+          }
+        ],
+        image: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.jpg',
+        priceRange: '$$',
+        currenciesAccepted: 'KRW',
+        paymentAccepted: 'Cash, Credit Card',
+        areaServed: {
+          '@type': 'Country',
+          name: 'South Korea'
+        },
+        sameAs: []
+      })
+    }
   ]
 })
 
