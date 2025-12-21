@@ -66,7 +66,7 @@ export const galleryItems: GalleryItem[] = [
     material: '14K / 18K 골드',
     workType: '사이즈 조절',
     delivery: '즉시',
-    images: ['/Image/ring/pexels-fox-58267-998521.jpg']
+    images: ['/Image/ring/pexels-fox-58267-998521.webp']
   },
   {
     id: 5,
@@ -76,7 +76,7 @@ export const galleryItems: GalleryItem[] = [
     material: '925 실버',
     workType: '주문제작',
     delivery: '1-2주',
-    images: ['/Image/ring/pexels-leah-newhouse-50725-691046.jpg']
+    images: ['/Image/ring/pexels-leah-newhouse-50725-691046.webp']
   },
   {
     id: 6,
@@ -86,7 +86,7 @@ export const galleryItems: GalleryItem[] = [
     material: '14K 골드',
     workType: '길이 조절 가능',
     delivery: '즉시',
-    images: ['/Image/necklace/pexels-pixabay-248077.jpg']
+    images: ['/Image/necklace/pexels-pixabay-248077.webp']
   },
   {
     id: 7,
@@ -96,7 +96,7 @@ export const galleryItems: GalleryItem[] = [
     material: '18K 골드 / 진주',
     workType: '세트 구성',
     delivery: '1주',
-    images: ['/Image/necklace/pexels-wendelmoretti-1730877.jpg']
+    images: ['/Image/necklace/pexels-wendelmoretti-1730877.webp']
   },
   {
     id: 8,
@@ -106,7 +106,7 @@ export const galleryItems: GalleryItem[] = [
     material: '24K 순금',
     workType: '사이즈 주문',
     delivery: '2-3주',
-    images: ['/Image/bracelet/pexels-pixabay-265906.jpg']
+    images: ['/Image/bracelet/pexels-pixabay-265906.webp']
   },
   {
     id: 9,
@@ -116,7 +116,7 @@ export const galleryItems: GalleryItem[] = [
     material: '14K 골드 / 담수진주',
     workType: '피어싱/클립',
     delivery: '즉시',
-    images: ['/Image/earring/pexels-git-stephen-gitau-302905-1670723.jpg']
+    images: ['/Image/earring/pexels-git-stephen-gitau-302905-1670723.webp']
   },
   {
     id: 10,
@@ -126,7 +126,7 @@ export const galleryItems: GalleryItem[] = [
     material: '18K 골드',
     workType: '맞춤 제작',
     delivery: '상담 후 결정',
-    images: ['/Image/set/pexels-jeremy-wong-382920-1043902.jpg']
+    images: ['/Image/set/pexels-jeremy-wong-382920-1043902.webp']
   },
 ]
 
