@@ -22,6 +22,9 @@ export default defineNuxtConfig({
     display: 'swap',
     preload: true,
     prefetch: true,
+    download: true,
+    fontsDir: 'fonts',
+    stylePath: 'css/fonts.css',
   },
 
   app: {
