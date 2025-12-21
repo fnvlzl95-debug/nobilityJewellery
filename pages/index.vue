@@ -202,7 +202,7 @@ onUnmounted(() => {
       <div class="hero-content">
         <div class="hero-tag">
           <span class="tag-line"></span>
-          <span class="tag-text">Since 2004 · Jongno Jewelry District</span>
+          <span class="tag-text">Since 2004 · Jongro Jewelry District</span>
           <span class="tag-line"></span>
         </div>
 
