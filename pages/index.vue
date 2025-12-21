@@ -254,7 +254,15 @@ onUnmounted(() => {
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
-        <img src="/Image/set/pexels-jeremy-wong-382920-1043902.jpg" alt="귀족 - 종로 귀금속 도매 전문점" class="hero-image">
+        <NuxtImg
+          src="/Image/set/pexels-jeremy-wong-382920-1043902.jpg"
+          alt="귀족 - 종로 귀금속 도매 전문점"
+          class="hero-image"
+          format="webp"
+          quality="95"
+          sizes="100vw"
+          preload
+        />
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>
       </div>
@@ -300,7 +308,14 @@ onUnmounted(() => {
         <div class="about-grid">
           <div class="about-visual">
             <div class="visual-frame reveal reveal-left">
-              <img src="/Image/ring/pexels-leah-newhouse-50725-691046.jpg" alt="귀금속 반지 세공 작업" loading="lazy">
+              <NuxtImg
+                src="/Image/ring/pexels-leah-newhouse-50725-691046.jpg"
+                alt="귀금속 반지 세공 작업"
+                format="webp"
+                quality="95"
+                sizes="sm:100vw md:50vw lg:600px"
+                loading="lazy"
+              />
               <div class="frame-border"></div>
             </div>
             <div class="visual-accent"></div>
@@ -451,11 +466,18 @@ onUnmounted(() => {
             ]"
           >
             <div class="item-image">
-              <img :src="item.images[0]" :alt="item.title" loading="lazy">
+              <NuxtImg
+                :src="item.images[0]"
+                :alt="item.title"
+                format="webp"
+                quality="95"
+                sizes="sm:50vw md:33vw lg:400px"
+                loading="lazy"
+              />
             </div>
             <div class="item-overlay">
               <span class="item-category">{{ item.titleEn.split(' ')[0] }}</span>
-              <h4 class="item-title">{{ item.title }}</h4>
+              <h3 class="item-title">{{ item.title }}</h3>
             </div>
           </div>
         </div>
@@ -506,6 +528,7 @@ onUnmounted(() => {
                 allowfullscreen=""
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
+                title="귀족 귀금속 위치 - 종로구 종로 173 종묘귀금속백화점"
               ></iframe>
             </div>
           </div>
@@ -1783,12 +1806,12 @@ onUnmounted(() => {
 
 .copyright {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
 }
 
 .privacy-link {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
   text-decoration: none;
   transition: color 0.3s;
 }

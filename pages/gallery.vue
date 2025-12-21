@@ -224,7 +224,14 @@ onUnmounted(() => {
                 >
                   <div class="preview-image" @click="openLightbox">
                     <Transition name="image-fade" mode="out-in">
-                      <img :src="activeItem.images[currentImageIndex]" :alt="activeItem.title" :key="`mobile-${activeItem.id}-${currentImageIndex}`">
+                      <NuxtImg
+                      :src="activeItem.images[currentImageIndex]"
+                      :alt="activeItem.title"
+                      :key="`mobile-${activeItem.id}-${currentImageIndex}`"
+                      format="webp"
+                      quality="95"
+                      sizes="100vw"
+                    />
                     </Transition>
                     <!-- 이미지 인디케이터 -->
                     <div v-if="activeItem.images.length > 1" class="image-indicators" @click.stop>
@@ -292,12 +299,15 @@ onUnmounted(() => {
           <div class="preview-frame reveal">
               <div class="preview-image-wrap" @click="openLightbox">
                 <Transition name="image-fade" mode="out-in">
-                  <img
+                  <NuxtImg
                     :src="activeItem.images[currentImageIndex]"
                     :alt="activeItem.title"
                     :key="`${activeItem.id}-${currentImageIndex}`"
                     class="preview-img"
-                  >
+                    format="webp"
+                    quality="95"
+                    sizes="lg:720px xl:900px"
+                  />
                 </Transition>
                 <!-- 이미지 인디케이터 -->
                 <div v-if="activeItem.images.length > 1" class="image-indicators" @click.stop>
@@ -363,12 +373,15 @@ onUnmounted(() => {
           <!-- 이미지 컨테이너 -->
           <div class="lightbox-content">
             <Transition name="image-fade" mode="out-in">
-              <img
+              <NuxtImg
                 :src="activeItem.images[currentImageIndex]"
                 :alt="activeItem.title"
                 :key="`lightbox-${activeItem.id}-${currentImageIndex}`"
                 class="lightbox-img"
-              >
+                format="webp"
+                quality="95"
+                sizes="90vw"
+              />
             </Transition>
           </div>
 
