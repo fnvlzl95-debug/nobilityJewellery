@@ -1,0 +1,1 @@
+import{e as a,c as s,o as t,a as n,V as o}from"./CxrzypAl.js";const r={class:"min-h-screen"},d=a({__name:"default",setup(c){return(e,l)=>(t(),s("div",r,[n("main",null,[o(e.$slots,"default")])]))}});export{d as default};
