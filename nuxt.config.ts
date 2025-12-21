@@ -4,24 +4,7 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/google-fonts',
   ],
-
-  googleFonts: {
-    families: {
-      'Outfit': [300, 400, 500, 600],
-      'Cormorant': {
-        wght: [300, 400, 500],
-        ital: [300, 400],
-      },
-    },
-    display: 'swap',
-    preload: true,
-    prefetch: true,
-    download: true,
-    fontsDir: 'fonts',
-    stylePath: 'css/fonts.css',
-  },
 
   app: {
     head: {

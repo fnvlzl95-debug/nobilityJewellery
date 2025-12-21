@@ -300,7 +300,7 @@ onUnmounted(() => {
   background: #0a0a0a;
   color: #fafafa;
   min-height: 100vh;
-  font-family: 'Outfit', -apple-system, sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -340,7 +340,7 @@ onUnmounted(() => {
 .logo-text {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 700;
   color: #fafafa;
   letter-spacing: 0.15em;
 }
@@ -354,7 +354,7 @@ onUnmounted(() => {
 
 .nav-link {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: rgba(250, 250, 250, 0.5);
   text-decoration: none;
@@ -404,7 +404,7 @@ onUnmounted(() => {
 .index-label {
   display: block;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #c9a227;
@@ -414,14 +414,14 @@ onUnmounted(() => {
 .index-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 42px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 8px;
 }
 
 .index-count {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   color: rgba(250, 250, 250, 0.4);
 }
@@ -461,14 +461,14 @@ onUnmounted(() => {
 .category-label {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   transition: color 0.3s;
 }
 
 .category-label-en {
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.3);
@@ -476,7 +476,7 @@ onUnmounted(() => {
 
 .category-count {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   color: rgba(250, 250, 250, 0.3);
   min-width: 20px;
   text-align: right;
@@ -513,21 +513,21 @@ onUnmounted(() => {
 
 .item-number {
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.1em;
   color: rgba(250, 250, 250, 0.25);
 }
 
 .item-title {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.8);
   transition: color 0.3s;
 }
 
 .item-material {
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.35);
   text-align: right;
 }
@@ -587,7 +587,7 @@ onUnmounted(() => {
 .mobile-preview .preview-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 4px;
 }
@@ -595,7 +595,7 @@ onUnmounted(() => {
 .mobile-preview .preview-title-en {
   display: block;
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -616,7 +616,7 @@ onUnmounted(() => {
 
 .meta-label {
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.35);
@@ -624,7 +624,7 @@ onUnmounted(() => {
 
 .meta-value {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.8);
 }
 
@@ -648,7 +648,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #c9a227;
@@ -709,7 +709,7 @@ onUnmounted(() => {
 .caption-number {
   display: block;
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.2em;
   color: #c9a227;
   margin-bottom: 8px;
@@ -718,14 +718,14 @@ onUnmounted(() => {
 .caption-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 28px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 4px;
 }
 
 .caption-title-en {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -748,7 +748,7 @@ onUnmounted(() => {
 
 .meta-row .meta-label {
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.3);
@@ -756,7 +756,7 @@ onUnmounted(() => {
 
 .meta-row .meta-value {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.7);
   min-width: 100px;
 }
@@ -800,14 +800,14 @@ onUnmounted(() => {
 .brand-name {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.15em;
   color: #c9a227;
 }
 
 .brand-sub {
   font-size: 10px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   color: rgba(250, 250, 250, 0.4);
 }
@@ -819,7 +819,7 @@ onUnmounted(() => {
 
 .footer-links a {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.5);
   text-decoration: none;
   transition: color 0.3s;

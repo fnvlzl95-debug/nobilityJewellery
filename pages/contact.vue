@@ -220,7 +220,7 @@ const handleSubmit = async () => {
   flex-direction: column;
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'Outfit', -apple-system, sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -252,7 +252,7 @@ const handleSubmit = async () => {
 .logo-text {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 700;
   color: #fafafa;
   letter-spacing: 0.15em;
 }
@@ -266,7 +266,7 @@ const handleSubmit = async () => {
 
 .nav-link {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.05em;
   color: rgba(250, 250, 250, 0.6);
   text-decoration: none;
@@ -320,7 +320,7 @@ const handleSubmit = async () => {
 .label {
   display: inline-block;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #c9a227;
@@ -330,7 +330,7 @@ const handleSubmit = async () => {
 .title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(36px, 6vw, 52px);
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 16px;
   line-height: 1.2;
@@ -381,7 +381,7 @@ const handleSubmit = async () => {
 
 .phone-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.5);
@@ -390,7 +390,7 @@ const handleSubmit = async () => {
 .phone-number {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
 }
 
@@ -417,7 +417,7 @@ const handleSubmit = async () => {
 
 .info-label {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -425,7 +425,7 @@ const handleSubmit = async () => {
 
 .info-value {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.6;
   color: rgba(250, 250, 250, 0.8);
 }
@@ -490,7 +490,7 @@ const handleSubmit = async () => {
 
 .form-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.5);
@@ -550,13 +550,13 @@ const handleSubmit = async () => {
 
 .type-label {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   color: #fafafa;
 }
 
 .type-label-en {
   font-size: 9px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -574,7 +574,7 @@ const handleSubmit = async () => {
   padding: 16px 18px;
   font-size: 15px;
   font-family: inherit;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.1);
@@ -595,7 +595,7 @@ const handleSubmit = async () => {
   padding: 16px 18px;
   font-size: 15px;
   font-family: inherit;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.1);
@@ -665,7 +665,7 @@ const handleSubmit = async () => {
   gap: 10px;
   padding: 18px 32px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
@@ -731,7 +731,7 @@ const handleSubmit = async () => {
 .success-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 28px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 8px;
 }
@@ -746,7 +746,7 @@ const handleSubmit = async () => {
   position: relative;
   padding: 14px 28px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #fafafa;
   background: transparent;

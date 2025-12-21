@@ -549,7 +549,7 @@ onUnmounted(() => {
 .page {
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'Outfit', -apple-system, sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -592,7 +592,7 @@ onUnmounted(() => {
 .logo-text {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 28px;
-  font-weight: 500;
+  font-weight: 700;
   color: #fafafa;
   letter-spacing: 0.15em;
 }
@@ -612,7 +612,7 @@ onUnmounted(() => {
 
 .nav-link {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.05em;
   color: rgba(250, 250, 250, 0.7);
   text-decoration: none;
@@ -650,7 +650,7 @@ onUnmounted(() => {
   gap: 8px;
   padding: 12px 24px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #0a0a0a;
   background: #c9a227;
   text-decoration: none;
@@ -781,7 +781,7 @@ onUnmounted(() => {
 
 .tag-text {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #c9a227;
@@ -797,7 +797,7 @@ onUnmounted(() => {
 .title-line {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(100px, 20vw, 200px);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   color: #fafafa;
   text-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
@@ -857,7 +857,7 @@ onUnmounted(() => {
   gap: 10px;
   padding: 18px 36px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
@@ -915,7 +915,7 @@ onUnmounted(() => {
   gap: 10px;
   padding: 17px 36px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #c9a227;
   background: transparent;
@@ -974,7 +974,7 @@ onUnmounted(() => {
 
 .scroll-text {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.5);
@@ -1102,7 +1102,7 @@ onUnmounted(() => {
 .section-label {
   display: inline-block;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #c9a227;
@@ -1112,7 +1112,7 @@ onUnmounted(() => {
 .section-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(32px, 5vw, 48px);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.3;
   color: #fafafa;
   margin-bottom: 24px;
@@ -1147,7 +1147,7 @@ onUnmounted(() => {
 .stat-number {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(36px, 4vw, 48px);
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
 }
 
@@ -1158,7 +1158,7 @@ onUnmounted(() => {
 
 .stat-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -1229,7 +1229,7 @@ onUnmounted(() => {
 .section-title-light {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(36px, 6vw, 56px);
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 16px;
 }
@@ -1287,7 +1287,7 @@ onUnmounted(() => {
 .card-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 12px;
 }
@@ -1327,7 +1327,7 @@ onUnmounted(() => {
   gap: 12px;
   padding: 18px 36px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
@@ -1385,7 +1385,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   color: #c9a227;
   text-decoration: none;
   transition: gap 0.3s;
@@ -1455,7 +1455,7 @@ onUnmounted(() => {
 
 .item-category {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #c9a227;
@@ -1465,7 +1465,7 @@ onUnmounted(() => {
 .item-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
 }
 
@@ -1500,7 +1500,7 @@ onUnmounted(() => {
 .location-address em {
   font-style: normal;
   color: #c9a227;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .contact-info {
@@ -1521,7 +1521,7 @@ onUnmounted(() => {
 .info-label {
   min-width: 60px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
@@ -1545,7 +1545,7 @@ onUnmounted(() => {
 .btn-map {
   padding: 14px 28px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #fafafa;
   background: transparent;
   border: 1px solid rgba(250, 250, 250, 0.2);
@@ -1608,7 +1608,7 @@ onUnmounted(() => {
 .cta-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: clamp(48px, 8vw, 80px);
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   margin-bottom: 24px;
   line-height: 1.2;
@@ -1646,7 +1646,7 @@ onUnmounted(() => {
   gap: 12px;
   padding: 17px 36px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: #fafafa;
   background: transparent;
@@ -1707,14 +1707,14 @@ onUnmounted(() => {
 .brand-name {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 700;
   color: #fafafa;
   letter-spacing: 0.1em;
 }
 
 .brand-sub {
   font-size: 9px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.25em;
   color: #c9a227;
 }
@@ -1793,7 +1793,7 @@ onUnmounted(() => {
   gap: 8px;
   padding: 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -2031,7 +2031,7 @@ onUnmounted(() => {
 .mobile-menu-brand-text {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 32px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   letter-spacing: 0.2em;
 }
@@ -2082,18 +2082,18 @@ onUnmounted(() => {
 }
 
 .mobile-menu-link-num {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.1em;
   color: rgba(250, 250, 250, 0.3);
   transition: color 0.3s;
 }
 
 .mobile-menu-link-text {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 300;
   color: #fafafa;
   letter-spacing: 0.02em;
   transition: color 0.3s;
@@ -2113,9 +2113,9 @@ onUnmounted(() => {
   align-items: center;
   gap: 12px;
   padding: 16px 32px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'JeonjuCraftMyungjo';
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
@@ -2131,7 +2131,7 @@ onUnmounted(() => {
 .mobile-menu-phone {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 300;
   color: rgba(250, 250, 250, 0.5);
   text-decoration: none;
   letter-spacing: 0.05em;
