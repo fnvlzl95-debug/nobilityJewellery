@@ -54,6 +54,11 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
       ],
+      script: [
+        // Google Analytics 4
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-LRYTQT8C69', async: true },
+        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LRYTQT8C69');" },
+      ],
     },
   },
 
