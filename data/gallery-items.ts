@@ -147,7 +147,7 @@ export const categories: Category[] = [
     id: 'ring',
     label: '반지',
     labelEn: 'Rings',
-    description: '14K, 18K, 24K 순금 반지를 도매가로 제공합니다. 커플링, 결혼반지, 아기반지 등 다양한 디자인을 주문제작 가능합니다.'
+    description: '14K, 18K, 24K 순금 반지를 도매가로 제공합니다. 돌반지, 커플링, 예물, 결혼반지, 아기반지 등 다양한 디자인을 주문제작 가능합니다.'
   },
   {
     id: 'necklace',

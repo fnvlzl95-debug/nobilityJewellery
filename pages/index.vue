@@ -11,10 +11,10 @@ useHead({
     { rel: 'canonical', href: 'https://noblessegold.com/' }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.' },
+    { name: 'description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물, 결혼반지 주문제작. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 수리·세공까지.' },
     // Open Graph
     { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
-    { property: 'og:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 도매 상담, 주문 제작, 수리·세공까지.' },
+    { property: 'og:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작. 도매 상담, 수리·세공까지.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
@@ -23,7 +23,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀족 | 종로 귀금속 도매' },
-    { name: 'twitter:description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래' },
+    { name: 'twitter:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [

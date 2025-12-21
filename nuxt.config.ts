@@ -39,9 +39,9 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '종로 귀금속 도매 · 빠르고 단정한 거래. 도매 상담, 주문 제작, 수리·세공, 납품까지.' },
+        { name: 'description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물, 결혼반지 주문제작. 도매 상담, 수리·세공, 납품까지.' },
         { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
-        { property: 'og:description', content: '종로 귀금속 도매 · 빠르고 단정한 거래' },
+        { property: 'og:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작' },
         { property: 'og:type', content: 'website' },
         // Google Search Console
         { name: 'google-site-verification', content: 'ZsI2VVbWEPqgSNZ8BntW5Fod0faTHbhJ6SUF3Z470SY' },
