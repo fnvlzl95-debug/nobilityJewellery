@@ -9,10 +9,19 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Cormorant+Garamond': [300, 400, 500, 600],
-      'Noto+Sans+KR': [300, 400, 500, 600],
+      'Playfair+Display': {
+        wght: [400, 500, 600],
+        ital: [400, 500],
+      },
+      'Outfit': [300, 400, 500, 600],
+      'Cormorant': {
+        wght: [300, 400, 500],
+        ital: [300, 400],
+      },
     },
     display: 'swap',
+    preload: true,
+    prefetch: true,
   },
 
   app: {
