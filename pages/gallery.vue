@@ -5,6 +5,9 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 
 useHead({
   title: '갤러리 | 귀족 - 종로 귀금속 도매',
+  link: [
+    { rel: 'canonical', href: 'https://noblessegold.com/gallery' }
+  ],
   meta: [
     { name: 'description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌, 웨딩주얼리 컬렉션. 14K, 18K, 24K 순금 도매.' },
     // Open Graph
@@ -181,6 +184,7 @@ onUnmounted(() => {
                 </div>
                 <span class="category-count">{{ getItemsByCategory(category.id).length }}</span>
               </button>
+              <p class="category-description">{{ category.description }}</p>
 
               <!-- Desktop: Always visible items -->
               <ul class="item-list desktop-only">
@@ -225,14 +229,12 @@ onUnmounted(() => {
                 >
                   <div class="preview-image" @click="openLightbox">
                     <Transition name="image-fade" mode="out-in">
-                      <NuxtImg
-                      :src="activeItem.images[currentImageIndex]"
-                      :alt="activeItem.title"
-                      :key="`mobile-${activeItem.id}-${currentImageIndex}`"
-                      format="webp"
-                      quality="95"
-                      sizes="100vw"
-                    />
+                      <img
+                        :src="activeItem.images[currentImageIndex]"
+                        :alt="activeItem.title"
+                        :key="`mobile-${activeItem.id}-${currentImageIndex}`"
+                        loading="lazy"
+                      />
                     </Transition>
                     <!-- 이미지 인디케이터 -->
                     <div v-if="activeItem.images.length > 1" class="image-indicators" @click.stop>
@@ -261,6 +263,7 @@ onUnmounted(() => {
                   <div class="preview-meta">
                     <h3 class="preview-title">{{ activeItem.title }}</h3>
                     <span class="preview-title-en">{{ activeItem.titleEn }}</span>
+                    <p class="preview-description">{{ activeItem.description }}</p>
                     <div class="meta-grid">
                       <div class="meta-item">
                         <span class="meta-label">소재</span>
@@ -355,6 +358,7 @@ onUnmounted(() => {
                   </div>
                 </div>
               </div>
+              <p class="preview-description desktop-description">{{ activeItem.description }}</p>
             </div>
         </section>
       </div>
@@ -374,14 +378,11 @@ onUnmounted(() => {
           <!-- 이미지 컨테이너 -->
           <div class="lightbox-content">
             <Transition name="image-fade" mode="out-in">
-              <NuxtImg
+              <img
                 :src="activeItem.images[currentImageIndex]"
                 :alt="activeItem.title"
                 :key="`lightbox-${activeItem.id}-${currentImageIndex}`"
                 class="lightbox-img"
-                format="webp"
-                quality="95"
-                sizes="90vw"
               />
             </Transition>
           </div>
@@ -420,22 +421,6 @@ onUnmounted(() => {
       </Transition>
     </Teleport>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <span class="brand-name">귀족</span>
-        </div>
-        <div class="footer-links">
-          <NuxtLink to="/">홈</NuxtLink>
-          <NuxtLink to="/gallery">갤러리</NuxtLink>
-          <NuxtLink to="/contact">문의하기</NuxtLink>
-        </div>
-      </div>
-      <div class="footer-copy">
-        © 2024 귀족. All rights reserved.
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -461,8 +446,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 32px;
-  background: rgba(10, 10, 10, 0.6);
+  padding: 20px clamp(20px, 5vw, 60px);
+  background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(250, 250, 250, 0.04);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -471,7 +456,7 @@ onUnmounted(() => {
 .nav-luxury.scrolled {
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(20px);
-  padding: 16px 32px;
+  padding: 16px clamp(20px, 5vw, 60px);
   border-bottom: 1px solid rgba(201, 162, 39, 0.1);
 }
 
@@ -498,10 +483,10 @@ onUnmounted(() => {
 }
 
 .nav-link {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: rgba(250, 250, 250, 0.5);
+  letter-spacing: 0.05em;
+  color: rgba(250, 250, 250, 0.6);
   text-decoration: none;
   text-transform: uppercase;
   transition: color 0.3s;
@@ -627,6 +612,15 @@ onUnmounted(() => {
   text-align: right;
 }
 
+.category-description {
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.45);
+  margin: 0 0 12px;
+  padding-left: 2px;
+}
+
 /* ===== Item List ===== */
 .item-list {
   list-style: none;
@@ -745,7 +739,15 @@ onUnmounted(() => {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(250, 250, 250, 0.4);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+}
+
+.preview-description {
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.5);
+  margin: 0 0 12px;
 }
 
 .meta-grid {
@@ -812,13 +814,14 @@ onUnmounted(() => {
   top: 0;
   left: 37%;
   right: 0;
-  height: 100vh;
+  bottom: 0;
   background: #0a0a0a;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 40px;
   padding-top: 124px;
+  overflow: hidden;
 }
 
 .preview-frame {
@@ -1009,6 +1012,16 @@ onUnmounted(() => {
   min-width: 100px;
 }
 
+.desktop-description {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.5);
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(250, 250, 250, 0.06);
+}
+
 /* ===== Reveal Animation ===== */
 .reveal {
   opacity: 0;
@@ -1022,66 +1035,6 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* ===== Footer ===== */
-.footer {
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
-  padding: 48px 32px 32px;
-}
-
-.footer-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.footer-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.brand-name {
-  font-family: 'JeonjuCraftMyungjo';
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #c9a227;
-}
-
-.brand-sub {
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.4);
-}
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-links a {
-  font-size: 12px;
-  font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.footer-links a:hover {
-  color: #fafafa;
-}
-
-.footer-copy {
-  text-align: center;
-  font-size: 11px;
-  color: rgba(250, 250, 250, 0.25);
-}
 
 /* ===== Mobile Adjustments ===== */
 @media (max-width: 1023px) {
@@ -1098,8 +1051,7 @@ onUnmounted(() => {
   }
 
   .nav-link {
-    font-size: 11px;
-    padding: 6px 2px;
+    font-size: 12px;
   }
 
   .main {
@@ -1142,6 +1094,12 @@ onUnmounted(() => {
     font-size: 10px;
   }
 
+  .category-description {
+    font-size: 10px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
   .item-row {
     grid-template-columns: 24px 1fr;
     gap: 12px;
@@ -1180,7 +1138,13 @@ onUnmounted(() => {
 
   .mobile-preview .preview-title-en {
     font-size: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+  }
+
+  .mobile-preview .preview-description {
+    font-size: 10px;
+    line-height: 1.5;
+    margin-bottom: 12px;
   }
 
   .meta-grid {
@@ -1209,29 +1173,6 @@ onUnmounted(() => {
   .footer-cta {
     font-size: 11px;
   }
-
-  .footer {
-    padding: 32px 20px 24px;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .footer-links {
-    gap: 16px;
-  }
-
-  .footer-links a {
-    font-size: 11px;
-  }
-
-  .footer-copy {
-    text-align: left;
-    font-size: 10px;
-  }
 }
 
 /* ===== Small Mobile ===== */
@@ -1241,7 +1182,7 @@ onUnmounted(() => {
   }
 
   .nav-link {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .index-column {
@@ -1347,7 +1288,7 @@ onUnmounted(() => {
 
 .lightbox-indicators {
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1375,7 +1316,7 @@ onUnmounted(() => {
 
 .lightbox-info {
   position: absolute;
-  bottom: 32px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -1439,11 +1380,11 @@ onUnmounted(() => {
   }
 
   .lightbox-info {
-    bottom: 24px;
+    bottom: 20px;
   }
 
   .lightbox-indicators {
-    bottom: 70px;
+    bottom: 85px;
   }
 }
 

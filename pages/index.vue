@@ -7,6 +7,9 @@ const previewItems = getPreviewItems(4)
 
 useHead({
   title: '귀족 | 종로 귀금속 도매',
+  link: [
+    { rel: 'canonical', href: 'https://noblessegold.com/' }
+  ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 전문 · 20년 신뢰의 거래. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.' },
     // Open Graph
@@ -260,7 +263,7 @@ onUnmounted(() => {
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
         <img
-          src="/Image/set/pexels-jeremy-wong-382920-1043902.webp"
+          src="/Image/ring/NS0102.webp"
           alt="귀족 - 종로 귀금속 도매 전문점"
           class="hero-image"
         />
@@ -507,6 +510,10 @@ onUnmounted(() => {
                 <span class="info-label">Hours</span>
                 <span>평일·토요일 10:00 – 19:00</span>
               </li>
+              <li>
+                <span class="info-label">Parking</span>
+                <NuxtLink to="/faq#parking" class="link-parking">주차 안내 보기</NuxtLink>
+              </li>
             </ul>
 
             <div class="map-buttons reveal reveal-delay-4">
@@ -584,6 +591,9 @@ onUnmounted(() => {
             <NuxtLink to="/faq">FAQ</NuxtLink>
             <NuxtLink to="/contact">문의하기</NuxtLink>
           </div>
+        </div>
+        <div class="footer-info">
+          <span class="business-info">대표: 박승태 | 사업자등록번호: 101-09-26010</span>
         </div>
         <div class="footer-bottom">
           <span class="copyright">© 2024 귀족. All rights reserved.</span>
@@ -818,9 +828,9 @@ onUnmounted(() => {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 10, 10, 0.4) 0%,
-    rgba(10, 10, 10, 0.2) 40%,
-    rgba(10, 10, 10, 0.6) 100%
+    rgba(10, 10, 10, 0.7) 0%,
+    rgba(10, 10, 10, 0.8) 40%,
+    rgba(10, 10, 10, 0.75) 100%
   );
 }
 
@@ -1592,7 +1602,7 @@ onUnmounted(() => {
 
 .contact-info li {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 20px;
   padding: 18px 0;
   border-bottom: 1px solid rgba(250, 250, 250, 0.08);
@@ -1613,9 +1623,21 @@ onUnmounted(() => {
   color: #fafafa;
   text-decoration: none;
   transition: color 0.3s;
+  display: inline-flex;
+  align-items: center;
 }
 
 .contact-info a:hover {
+  color: #c9a227;
+}
+
+.link-parking {
+  color: #fafafa;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.link-parking:hover {
   color: #c9a227;
 }
 
@@ -1815,6 +1837,17 @@ onUnmounted(() => {
 
 .footer-nav a:hover {
   color: #fafafa;
+}
+
+.footer-info {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.05);
+}
+
+.business-info {
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.4);
 }
 
 .footer-bottom {

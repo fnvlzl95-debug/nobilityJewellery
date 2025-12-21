@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { faqItems, generateFAQSchema } from '~/data/faq-items'
 
 useHead({
   title: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매',
+  link: [
+    { rel: 'canonical', href: 'https://noblessegold.com/faq' }
+  ],
   meta: [
     { name: 'description', content: '귀족 귀금속 도매 FAQ. 주문 방법, 배송, A/S, 운영시간, 품질보증서, 주차 안내 등 자주 묻는 질문을 확인하세요.' },
     // Open Graph
@@ -33,6 +36,15 @@ const openId = ref<number | null>(null)
 const toggle = (id: number) => {
   openId.value = openId.value === id ? null : id
 }
+
+onMounted(() => {
+  if (window.location.hash === '#parking') {
+    openId.value = 6
+    setTimeout(() => {
+      document.getElementById('parking')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 100)
+  }
+})
 </script>
 
 <template>
@@ -71,6 +83,7 @@ const toggle = (id: number) => {
           <div
             v-for="item in faqItems"
             :key="item.id"
+            :id="item.id === 6 ? 'parking' : undefined"
             class="faq-item"
             :class="{ open: openId === item.id }"
           >
@@ -133,6 +146,30 @@ const toggle = (id: number) => {
   background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+
+@media (max-width: 1023px) {
+  .nav-luxury {
+    padding: 16px 20px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 11px;
+  }
 }
 
 .nav-logo {
@@ -343,14 +380,6 @@ const toggle = (id: number) => {
 
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-
   .faq-question {
     padding: 20px 16px;
   }

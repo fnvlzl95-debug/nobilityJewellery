@@ -3,6 +3,9 @@ import { ref } from 'vue'
 
 useHead({
   title: '문의하기 | 귀족 - 종로 귀금속 도매',
+  link: [
+    { rel: 'canonical', href: 'https://noblessegold.com/contact' }
+  ],
   meta: [
     { name: 'description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공 문의. 전화 02-766-4789 / 평일·토요일 10:00-19:00' },
     // Open Graph
@@ -38,6 +41,19 @@ useHead({
             addressLocality: '종로구',
             addressRegion: '서울',
             addressCountry: 'KR'
+          },
+          openingHoursSpecification: [
+            {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+              opens: '10:00',
+              closes: '19:00'
+            }
+          ],
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: 37.5714,
+            longitude: 126.9920
           }
         }
       })
@@ -278,6 +294,30 @@ const handleSubmit = async () => {
   background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+
+@media (max-width: 1023px) {
+  .nav-luxury {
+    padding: 16px 20px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 11px;
+  }
 }
 
 .nav-logo {
@@ -693,7 +733,7 @@ const handleSubmit = async () => {
 
 .check-label {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.85);
+  color: #fafafa;
 }
 
 .btn-submit {
