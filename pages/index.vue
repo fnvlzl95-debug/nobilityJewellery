@@ -94,9 +94,13 @@ const scrollTo = (id: string) => {
   }
 }
 
-// Watch menu state for scroll lock
+// Watch menu state for scroll lock and focus management
 watch(isMenuOpen, (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
+  // 메뉴 열릴 때 모든 포커스 해제
+  if (open) {
+    (document.activeElement as HTMLElement)?.blur()
+  }
 })
 
 // 3D Tilt Effect for cards
@@ -2229,6 +2233,7 @@ onUnmounted(() => {
 .mobile-menu-link:hover,
 .mobile-menu-link:focus {
   padding-left: 12px;
+  outline: none;
 }
 
 .mobile-menu-link:hover .mobile-menu-link-num,
