@@ -62,8 +62,8 @@ export default defineNuxtConfig({
       ],
       script: [
         // Google Analytics 4
-        { src: 'https://www.googletagmanager.com/gtag/js?id=G-LRYTQT8C69', async: true, defer: true },
-        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LRYTQT8C69');", defer: true },
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-RKK8E5CB6G', async: true },
+        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-RKK8E5CB6G');" },
         // Naver Analytics (defer for performance)
         { src: 'https://wcs.pstatic.net/wcslog.js', defer: true },
         { innerHTML: "if(typeof wcs_add === 'undefined') var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(typeof wcs !== 'undefined' && wcs) { wcs_do(); }", defer: true },
