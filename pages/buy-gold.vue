@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+definePageMeta({
+  layout: 'landing'
+})
 
 useHead({
   title: '금 매입 | 금·은 귀금속 매입 - 귀족 종로 금은방',
@@ -52,21 +54,6 @@ useHead({
   ]
 })
 
-const isScrolled = ref(false)
-
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 80
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  handleScroll()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
-
 const highlights = [
   {
     title: '정확한 시세 적용',
@@ -89,28 +76,8 @@ const buyItems = [
 </script>
 
 <template>
-  <div class="page">
-    <!-- Custom Cursor -->
-    <CustomCursor />
-
-    <!-- Navigation -->
-    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links">
-        <NuxtLink to="/" class="nav-link">홈</NuxtLink>
-        <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link active">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
-        <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main">
-      <div class="buy-container">
-        <!-- Header -->
+  <div class="container">
+    <!-- Header -->
         <div class="buy-header">
           <span class="label">Gold & Silver</span>
           <h1 class="title">금·은 매입</h1>
@@ -220,59 +187,13 @@ const buyItems = [
         </div>
 
         <!-- CTA -->
-        <div class="buy-cta">
-          <h3>매입 상담 문의</h3>
-          <p>전화 또는 방문해주시면 친절히 안내해드립니다.</p>
-          <div class="cta-buttons">
-            <a href="tel:02-766-4789" class="btn-gold">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              <span>02-766-4789</span>
-            </a>
-            <NuxtLink to="/contact" class="btn-outline">
-              <span>온라인 문의</span>
-            </NuxtLink>
-          </div>
-        </div>
+        <LandingCTA
+          title="매입 상담 문의"
+          description="전화 또는 방문해주시면 친절히 안내해드립니다."
+        />
 
-        <!-- Location Info -->
-        <div class="location-info">
-          <h4>방문 안내</h4>
-          <p class="address">서울 종로구 종로 173 종묘귀금속백화점 101호</p>
-          <p class="hours">영업시간: 평일/토요일 10:30~18:00 (일요일·공휴일 휴무)</p>
-        </div>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-top">
-          <NuxtLink to="/" class="footer-brand">귀족</NuxtLink>
-          <div class="footer-nav">
-            <NuxtLink to="/">홈</NuxtLink>
-            <NuxtLink to="/gallery">갤러리</NuxtLink>
-            <NuxtLink to="/baby-gold">돌반지</NuxtLink>
-            <NuxtLink to="/couple-ring">커플링</NuxtLink>
-            <NuxtLink to="/wedding">결혼예물</NuxtLink>
-            <NuxtLink to="/buy-gold">금 매입</NuxtLink>
-            <NuxtLink to="/wholesale">도매 안내</NuxtLink>
-            <NuxtLink to="/custom">주문제작</NuxtLink>
-            <NuxtLink to="/repair">수리/AS</NuxtLink>
-            <NuxtLink to="/faq">FAQ</NuxtLink>
-            <NuxtLink to="/contact">문의하기</NuxtLink>
-          </div>
-        </div>
-        <div class="footer-info">
-          <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
-        </div>
-        <div class="footer-bottom">
-          <span class="copyright">© 2024 귀족. All rights reserved.</span>
-          <NuxtLink to="/privacy" class="privacy-link">개인정보처리방침</NuxtLink>
-        </div>
-      </div>
-    </footer>
+    <!-- Location Info -->
+    <LandingLocation />
   </div>
 </template>
 

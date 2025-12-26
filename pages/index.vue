@@ -3,6 +3,16 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { getPreviewItems, categories } from '~/data/gallery-items'
 
+const { trackPhoneClick, trackInquiryClick } = useGtag()
+
+const handlePhoneClick = () => {
+  trackPhoneClick('home')
+}
+
+const handleInquiryClick = () => {
+  trackInquiryClick('home')
+}
+
 const previewItems = getPreviewItems(4)
 
 useHead({
@@ -269,7 +279,7 @@ onUnmounted(() => {
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </NuxtLink>
-              <a href="tel:02-766-4789" class="mobile-menu-phone">
+              <a href="tel:02-766-4789" class="mobile-menu-phone" @click="handlePhoneClick">
                 02-766-4789
               </a>
             </div>
@@ -313,7 +323,7 @@ onUnmounted(() => {
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
 
         <div class="hero-cta">
-          <a href="tel:02-766-4789" class="btn-magnetic">
+          <a href="tel:02-766-4789" class="btn-magnetic" @click="handlePhoneClick">
             <span class="btn-text">전화 상담</span>
             <span class="btn-glow"></span>
           </a>
@@ -723,13 +733,13 @@ onUnmounted(() => {
             무엇이든 편하게 연락주세요.
           </p>
           <div class="cta-buttons reveal reveal-delay-2">
-            <a href="tel:02-766-4789" class="btn-gold btn-lg">
+            <a href="tel:02-766-4789" class="btn-gold btn-lg" @click="handlePhoneClick">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               <span>전화 상담</span>
             </a>
-            <NuxtLink to="/contact" class="btn-outline-light btn-lg">
+            <NuxtLink to="/contact" class="btn-outline-light btn-lg" @click="handleInquiryClick">
               <span>온라인 문의</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -773,13 +783,13 @@ onUnmounted(() => {
 
     <!-- Mobile CTA -->
     <div class="mobile-cta" :class="{ visible: showMobileCta }">
-      <a href="tel:02-766-4789" class="mobile-btn mobile-btn-primary">
+      <a href="tel:02-766-4789" class="mobile-btn mobile-btn-primary" @click="handlePhoneClick">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span>전화</span>
       </a>
-      <NuxtLink to="/contact" class="mobile-btn mobile-btn-secondary">
+      <NuxtLink to="/contact" class="mobile-btn mobile-btn-secondary" @click="handleInquiryClick">
         <span>문의</span>
       </NuxtLink>
     </div>

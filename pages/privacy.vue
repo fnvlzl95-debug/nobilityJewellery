@@ -1,6 +1,9 @@
 <script setup lang="ts">
 useHead({
   title: '개인정보처리방침 | 귀족',
+  meta: [
+    { name: 'description', content: '귀족 귀금속 도매 개인정보처리방침. 수집하는 개인정보 항목, 이용 목적, 보유 기간 안내.' },
+  ],
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/privacy' }
   ],
