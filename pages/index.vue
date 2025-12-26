@@ -11,10 +11,10 @@ useHead({
     { rel: 'canonical', href: 'https://noblessegold.com/' }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물, 결혼반지 주문제작. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 수리·세공까지.' },
+    { name: 'description', content: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 순금 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌 도매. 종로3가 금은방, 귀금속 수리·세공.' },
     // Open Graph
     { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
-    { property: 'og:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작. 도매 상담, 수리·세공까지.' },
+    { property: 'og:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방, 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
@@ -23,7 +23,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀족 | 종로 귀금속 도매' },
-    { name: 'twitter:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작' },
+    { name: 'twitter:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [
@@ -350,7 +350,7 @@ onUnmounted(() => {
           <div class="about-content">
             <span class="section-label reveal">About Us</span>
             <h2 class="section-title reveal reveal-delay-1">
-              20년간 한 자리에서<br>
+              30년간 한 자리에서<br>
               <em>신뢰</em>를 쌓아왔습니다
             </h2>
             <p class="section-desc reveal reveal-delay-2">
@@ -360,7 +360,7 @@ onUnmounted(() => {
 
             <div class="stats-row reveal reveal-delay-3">
               <div class="stat-item">
-                <span class="stat-number">20<sup>+</sup></span>
+                <span class="stat-number">30<sup>+</sup></span>
                 <span class="stat-label">Years</span>
               </div>
               <div class="stat-divider"></div>
@@ -394,64 +394,67 @@ onUnmounted(() => {
         </div>
 
         <div class="services-grid">
-          <div class="service-card tilt-card reveal reveal-delay-1">
+          <NuxtLink to="/baby-gold" class="service-card tilt-card reveal reveal-delay-1">
             <div class="card-inner">
               <div class="card-icon">
                 <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <circle cx="30" cy="30" r="20"/>
+                  <circle cx="30" cy="30" r="16"/>
                   <circle cx="30" cy="30" r="8"/>
-                  <path d="M30 10v5M30 45v5M10 30h5M45 30h5"/>
+                  <path d="M30 14v4M30 42v4"/>
                 </svg>
               </div>
-              <h3 class="card-title">반지</h3>
-              <p class="card-desc">웨딩밴드, 약혼반지, 시그넷 링 등<br>모든 종류의 반지 도매</p>
+              <h3 class="card-title">돌반지</h3>
+              <p class="card-desc">24K 순금 돌반지, 백일반지<br>띠별 아기반지 주문제작</p>
+              <span class="card-link">자세히 보기 →</span>
               <div class="card-glow"></div>
             </div>
-          </div>
+          </NuxtLink>
 
-          <div class="service-card tilt-card reveal reveal-delay-2">
+          <NuxtLink to="/couple-ring" class="service-card tilt-card reveal reveal-delay-2">
             <div class="card-inner">
               <div class="card-icon">
                 <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <path d="M30 10v40"/>
-                  <circle cx="30" cy="50" r="6"/>
-                  <path d="M20 20c5-5 15-5 20 0"/>
+                  <circle cx="22" cy="30" r="14"/>
+                  <circle cx="38" cy="30" r="14"/>
                 </svg>
               </div>
-              <h3 class="card-title">목걸이</h3>
-              <p class="card-desc">체인, 펜던트, 초커 등<br>다양한 스타일의 목걸이</p>
+              <h3 class="card-title">커플링</h3>
+              <p class="card-desc">14K 18K 커플링<br>이니셜 각인, 기념일 반지</p>
+              <span class="card-link">자세히 보기 →</span>
               <div class="card-glow"></div>
             </div>
-          </div>
+          </NuxtLink>
 
-          <div class="service-card tilt-card reveal reveal-delay-3">
+          <NuxtLink to="/wedding" class="service-card tilt-card reveal reveal-delay-3">
             <div class="card-inner">
               <div class="card-icon">
                 <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <circle cx="30" cy="25" r="12"/>
-                  <path d="M30 37v15"/>
-                  <circle cx="30" cy="25" r="5"/>
+                  <path d="M30 15l-15 25h30z"/>
+                  <circle cx="30" cy="42" r="6"/>
                 </svg>
               </div>
-              <h3 class="card-title">귀걸이</h3>
-              <p class="card-desc">스터드, 드롭, 후프 등<br>트렌디한 귀걸이 컬렉션</p>
+              <h3 class="card-title">결혼예물</h3>
+              <p class="card-desc">예물 세트, 결혼반지<br>시댁/처가 예물 맞춤 구성</p>
+              <span class="card-link">자세히 보기 →</span>
               <div class="card-glow"></div>
             </div>
-          </div>
+          </NuxtLink>
 
-          <div class="service-card tilt-card reveal reveal-delay-4">
+          <NuxtLink to="/custom" class="service-card tilt-card reveal reveal-delay-4">
             <div class="card-inner">
               <div class="card-icon">
                 <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <ellipse cx="30" cy="30" rx="25" ry="8"/>
-                  <path d="M5 30c0 4 11 8 25 8s25-4 25-8"/>
+                  <path d="M20 45l-8-8 20-20 8 8z"/>
+                  <path d="M32 17l8 8"/>
+                  <circle cx="44" cy="16" r="4"/>
                 </svg>
               </div>
-              <h3 class="card-title">팔찌</h3>
-              <p class="card-desc">뱅글, 체인, 커프 등<br>고급스러운 팔찌 라인업</p>
+              <h3 class="card-title">주문제작</h3>
+              <p class="card-desc">원하는 디자인 맞춤 세공<br>30년 장인이 직접 제작</p>
+              <span class="card-link">자세히 보기 →</span>
               <div class="card-glow"></div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
 
         <div class="services-cta reveal reveal-delay-5">
@@ -510,6 +513,97 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- Repair Section -->
+    <section id="repair" class="section-repair">
+      <div class="container-lg">
+        <div class="repair-grid">
+          <div class="repair-content">
+            <span class="section-label reveal">Repair & Service</span>
+            <h2 class="section-title reveal reveal-delay-1">수리/AS 안내</h2>
+            <p class="section-desc reveal reveal-delay-2">
+              30년 경력의 장인이 직접 수리합니다.<br>
+              반지 사이즈 조절부터 체인 수리까지, 모든 귀금속 수리가 가능합니다.
+            </p>
+
+            <div class="repair-list reveal reveal-delay-3">
+              <div class="repair-item">
+                <div class="repair-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 8v4l2 2"/>
+                  </svg>
+                </div>
+                <div class="repair-info">
+                  <h4>반지 사이즈 조절</h4>
+                  <p>늘리기/줄이기 당일 가능</p>
+                </div>
+              </div>
+
+              <div class="repair-item">
+                <div class="repair-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                  </svg>
+                </div>
+                <div class="repair-info">
+                  <h4>세척 및 광택</h4>
+                  <p>금/은 세척, 광택 복원</p>
+                </div>
+              </div>
+
+              <div class="repair-item">
+                <div class="repair-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                  </svg>
+                </div>
+                <div class="repair-info">
+                  <h4>체인 수리</h4>
+                  <p>목걸이/팔찌 끊어짐 수리</p>
+                </div>
+              </div>
+
+              <div class="repair-item">
+                <div class="repair-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  </svg>
+                </div>
+                <div class="repair-info">
+                  <h4>기타 수리</h4>
+                  <p>귀걸이 침 교체, 보석 재세팅</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="repair-cta reveal reveal-delay-4">
+              <NuxtLink to="/repair" class="btn-outline-gold">
+                <span>수리 안내 자세히 보기</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </NuxtLink>
+            </div>
+          </div>
+
+          <div class="repair-visual reveal reveal-right">
+            <div class="repair-image-wrap">
+              <NuxtImg
+                src="/Image/ring/pexels-leah-newhouse-50725-691046.webp"
+                alt="귀금속 수리 및 세공 작업"
+                format="webp"
+                quality="95"
+                sizes="sm:100vw md:50vw lg:500px"
+                loading="lazy"
+              />
+              <div class="repair-image-border"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Location Section -->
     <section id="location" class="section-location">
       <div class="container-lg">
@@ -552,7 +646,7 @@ onUnmounted(() => {
             <div ref="mapWrapper" class="map-wrapper">
               <iframe
                 v-if="mapLoaded"
-                src="https://www.google.com/maps?q=서울+종로구+종로+173+종묘귀금속백화점&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d790.5!2d126.9969905!3d37.5709401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca39b5483f101%3A0x749ac4f8c54eae40!2z6recKOq0gCkg7ISY7Jq47Yq567OE7Iuc7KKF66Gc6rWs7KKF66GcMTcz7KKF66qo6reI6riI7IaN67Cx7ZmU7KCQMTAx7Zi4!5e0!3m2!1sko!2skr!4v1703123456789!5m2!1sko!2skr"
                 width="100%"
                 height="100%"
                 style="border:0;"
@@ -613,6 +707,12 @@ onUnmounted(() => {
           <div class="footer-nav">
             <NuxtLink to="/">홈</NuxtLink>
             <NuxtLink to="/gallery">갤러리</NuxtLink>
+            <NuxtLink to="/baby-gold">돌반지</NuxtLink>
+            <NuxtLink to="/couple-ring">커플링</NuxtLink>
+            <NuxtLink to="/wedding">결혼예물</NuxtLink>
+            <NuxtLink to="/wholesale">도매 안내</NuxtLink>
+            <NuxtLink to="/custom">주문제작</NuxtLink>
+            <NuxtLink to="/repair">수리/AS</NuxtLink>
             <NuxtLink to="/faq">FAQ</NuxtLink>
             <NuxtLink to="/contact">문의하기</NuxtLink>
           </div>
@@ -730,9 +830,15 @@ onUnmounted(() => {
   background: none;
   border: none;
   cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
   transition: color 0.3s;
   position: relative;
-  padding: 8px 4px;
+  padding: 0 4px;
   z-index: 10;
 }
 
@@ -1249,7 +1355,8 @@ onUnmounted(() => {
 }
 
 .section-title em {
-  font-style: italic;
+  font-style: normal;
+  font-weight: 700;
   color: #c9a227;
 }
 
@@ -1429,6 +1536,29 @@ onUnmounted(() => {
   color: rgba(250, 250, 250, 0.5);
 }
 
+.card-link {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #c9a227;
+  margin-top: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.service-card:hover .card-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1023px) {
+  .card-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .card-glow {
   position: absolute;
   bottom: 0;
@@ -1597,6 +1727,122 @@ onUnmounted(() => {
   font-size: 20px;
   font-weight: 300;
   color: #fafafa;
+}
+
+/* ===== Repair Section ===== */
+.section-repair {
+  padding: 160px 0;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.repair-grid {
+  display: grid;
+  gap: 60px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .repair-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+}
+
+.repair-content {
+  max-width: 560px;
+}
+
+.repair-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+@media (max-width: 640px) {
+  .repair-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.repair-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(250, 250, 250, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.repair-item:hover {
+  background: rgba(250, 250, 250, 0.04);
+  border-color: rgba(201, 162, 39, 0.3);
+}
+
+.repair-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  color: #c9a227;
+}
+
+.repair-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.repair-info h4 {
+  font-family: 'JeonjuCraftMyungjo';
+  font-size: 16px;
+  font-weight: 700;
+  color: #fafafa;
+  margin-bottom: 6px;
+}
+
+.repair-info p {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(250, 250, 250, 0.5);
+}
+
+.repair-cta {
+  margin-top: 40px;
+}
+
+.repair-visual {
+  position: relative;
+}
+
+.repair-image-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+
+.repair-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.repair-image-border {
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  pointer-events: none;
+}
+
+@media (max-width: 899px) {
+  .repair-visual {
+    order: -1;
+  }
+
+  .repair-image-wrap {
+    aspect-ratio: 16/9;
+  }
 }
 
 /* ===== Location Section ===== */
@@ -1768,7 +2014,8 @@ onUnmounted(() => {
 }
 
 .cta-title em {
-  font-style: italic;
+  font-style: normal;
+  font-weight: 700;
   color: #c9a227;
 }
 

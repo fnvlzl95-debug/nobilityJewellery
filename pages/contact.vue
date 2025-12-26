@@ -7,10 +7,10 @@ useHead({
     { rel: 'canonical', href: 'https://noblessegold.com/contact' }
   ],
   meta: [
-    { name: 'description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공 문의. 전화 02-766-4789 / 평일·토요일 10:00-19:00' },
+    { name: 'description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 결혼예물 상담, 귀금속 수리·세공. 반지 사이즈 조절. 전화 02-766-4789 / 종로3가 금은방.' },
     // Open Graph
     { property: 'og:title', content: '문의하기 | 귀족 - 종로 귀금속 도매' },
-    { property: 'og:description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공 문의.' },
+    { property: 'og:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/contact' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
@@ -19,7 +19,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '문의하기 | 귀족 - 종로 귀금속 도매' },
-    { name: 'twitter:description', content: '귀족 귀금속 도매 문의. 도매 상담, 주문 제작, 수리·세공.' },
+    { name: 'twitter:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [

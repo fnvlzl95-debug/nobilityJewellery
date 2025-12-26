@@ -9,10 +9,10 @@ useHead({
     { rel: 'canonical', href: 'https://noblessegold.com/gallery' }
   ],
   meta: [
-    { name: 'description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌, 웨딩주얼리 컬렉션. 14K, 18K, 24K 순금 도매.' },
+    { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 순금 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌. 종로3가 금은방 주얼리 컬렉션.' },
     // Open Graph
     { property: 'og:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
-    { property: 'og:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
+    { property: 'og:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/gallery' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
@@ -21,7 +21,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
-    { name: 'twitter:description', content: '귀족 귀금속 갤러리. 반지, 목걸이, 귀걸이, 팔찌 컬렉션.' },
+    { name: 'twitter:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ]
 })

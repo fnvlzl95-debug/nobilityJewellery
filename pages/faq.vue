@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { faqItems, generateFAQSchema } from '~/data/faq-items'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { faqItems, faqCategories, generateFAQSchema } from '~/data/faq-items'
 
 useHead({
   title: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매',
@@ -8,10 +8,10 @@ useHead({
     { rel: 'canonical', href: 'https://noblessegold.com/faq' }
   ],
   meta: [
-    { name: 'description', content: '귀족 귀금속 도매 FAQ. 주문 방법, 배송, A/S, 운영시간, 품질보증서, 주차 안내 등 자주 묻는 질문을 확인하세요.' },
+    { name: 'description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매 주문방법, 돌반지 주문제작, 커플링, 결혼예물, 반지 사이즈 조절, 귀금속 수리, A/S, 배송, 주차 안내. 종로3가 금은방 자주 묻는 질문.' },
     // Open Graph
     { property: 'og:title', content: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매' },
-    { property: 'og:description', content: '귀족 귀금속 도매 FAQ. 주문 방법, 배송, A/S, 품질보증서 등 자주 묻는 질문.' },
+    { property: 'og:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/faq' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
@@ -20,7 +20,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매' },
-    { name: 'twitter:description', content: '귀족 귀금속 도매 FAQ. 주문 방법, 배송, A/S, 품질보증서 등.' },
+    { name: 'twitter:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [
@@ -33,9 +33,20 @@ useHead({
 
 const openId = ref<number | null>(null)
 const isScrolled = ref(false)
+const selectedCategory = ref('all')
+
+const filteredFaqItems = computed(() => {
+  if (selectedCategory.value === 'all') return faqItems
+  return faqItems.filter(item => item.category === selectedCategory.value)
+})
 
 const toggle = (id: number) => {
   openId.value = openId.value === id ? null : id
+}
+
+const selectCategory = (categoryId: string) => {
+  selectedCategory.value = categoryId
+  openId.value = null
 }
 
 const handleScroll = () => {
@@ -47,7 +58,7 @@ onMounted(() => {
   handleScroll()
 
   if (window.location.hash === '#parking') {
-    openId.value = 6
+    openId.value = 5
     setTimeout(() => {
       document.getElementById('parking')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }, 100)
@@ -90,12 +101,32 @@ onUnmounted(() => {
           </p>
         </div>
 
+        <!-- Category Filter -->
+        <div class="category-filter">
+          <button
+            class="category-btn"
+            :class="{ active: selectedCategory === 'all' }"
+            @click="selectCategory('all')"
+          >
+            전체
+          </button>
+          <button
+            v-for="cat in faqCategories"
+            :key="cat.id"
+            class="category-btn"
+            :class="{ active: selectedCategory === cat.id }"
+            @click="selectCategory(cat.id)"
+          >
+            {{ cat.name }}
+          </button>
+        </div>
+
         <!-- FAQ List -->
         <div class="faq-list">
           <div
-            v-for="item in faqItems"
+            v-for="item in filteredFaqItems"
             :key="item.id"
-            :id="item.id === 6 ? 'parking' : undefined"
+            :id="item.id === 5 ? 'parking' : undefined"
             class="faq-item"
             :class="{ open: openId === item.id }"
           >
@@ -224,7 +255,7 @@ onUnmounted(() => {
 /* ===== Header ===== */
 .faq-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .label {
@@ -261,6 +292,38 @@ onUnmounted(() => {
 }
 
 .link-inline:hover {
+  border-color: #c9a227;
+}
+
+/* ===== Category Filter ===== */
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  font-family: 'JeonjuCraftMyungjo';
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(250, 250, 250, 0.6);
+  background: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.15);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.category-btn:hover {
+  color: #fafafa;
+  border-color: rgba(250, 250, 250, 0.3);
+}
+
+.category-btn.active {
+  color: #0a0a0a;
+  background: #c9a227;
   border-color: #c9a227;
 }
 
@@ -377,6 +440,15 @@ onUnmounted(() => {
 
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
+  .category-filter {
+    gap: 6px;
+  }
+
+  .category-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
   .faq-question {
     padding: 20px 16px;
   }

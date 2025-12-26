@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    // Server-only (환경변수에서 읽어옴)
+    naverMailUser: process.env.NAVER_MAIL_USER || '',
+    naverMailPass: process.env.NAVER_MAIL_PASS || '',
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/sitemap',
@@ -39,9 +45,9 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물, 결혼반지 주문제작. 도매 상담, 수리·세공, 납품까지.' },
+        { name: 'description', content: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 도매, 수리·세공. 종로3가 금은방, 귀금속 도매상.' },
         { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
-        { property: 'og:description', content: '종로 귀금속 도매 전문. 돌반지, 커플링, 예물 주문제작' },
+        { property: 'og:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방' },
         { property: 'og:type', content: 'website' },
         // Google Search Console
         { name: 'google-site-verification', content: 'ZsI2VVbWEPqgSNZ8BntW5Fod0faTHbhJ6SUF3Z470SY' },
