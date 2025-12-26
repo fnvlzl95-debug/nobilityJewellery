@@ -119,6 +119,7 @@ const repairServices = [
       <div class="nav-links">
         <NuxtLink to="/" class="nav-link">홈</NuxtLink>
         <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
+        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
         <NuxtLink to="/repair" class="nav-link active">수리/AS</NuxtLink>
         <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
         <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
