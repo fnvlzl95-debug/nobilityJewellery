@@ -604,6 +604,44 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- Buy Gold Section -->
+    <section id="buy-gold" class="section-buy-gold">
+      <div class="container-lg">
+        <div class="buy-gold-inner">
+          <span class="section-label reveal">Gold & Silver</span>
+          <h2 class="section-title reveal reveal-delay-1">금·은 매입</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            사용하지 않는 귀금속을 정당한 가격으로 매입합니다.<br>
+            당일 시세 적용, 현금 즉시 지급.
+          </p>
+
+          <div class="buy-gold-items reveal reveal-delay-3">
+            <div class="buy-item">
+              <span class="buy-item-title">금 (Gold)</span>
+              <span class="buy-item-desc">순금, 18K, 14K, 골드바</span>
+            </div>
+            <div class="buy-item">
+              <span class="buy-item-title">은 (Silver)</span>
+              <span class="buy-item-desc">순은, 실버바, 은 장신구</span>
+            </div>
+            <div class="buy-item">
+              <span class="buy-item-title">기타</span>
+              <span class="buy-item-desc">백금, 금니, 부서진 귀금속</span>
+            </div>
+          </div>
+
+          <div class="buy-gold-cta reveal reveal-delay-4">
+            <NuxtLink to="/buy-gold" class="btn-outline-gold">
+              <span>매입 안내 자세히 보기</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Location Section -->
     <section id="location" class="section-location">
       <div class="container-lg">
@@ -710,6 +748,7 @@ onUnmounted(() => {
             <NuxtLink to="/baby-gold">돌반지</NuxtLink>
             <NuxtLink to="/couple-ring">커플링</NuxtLink>
             <NuxtLink to="/wedding">결혼예물</NuxtLink>
+            <NuxtLink to="/buy-gold">금 매입</NuxtLink>
             <NuxtLink to="/wholesale">도매 안내</NuxtLink>
             <NuxtLink to="/custom">주문제작</NuxtLink>
             <NuxtLink to="/repair">수리/AS</NuxtLink>
@@ -1842,6 +1881,68 @@ onUnmounted(() => {
 
   .repair-image-wrap {
     aspect-ratio: 16/9;
+  }
+}
+
+/* ===== Buy Gold Section ===== */
+.section-buy-gold {
+  padding: 120px 0;
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+  text-align: center;
+}
+
+.buy-gold-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.buy-gold-items {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 48px 0;
+  flex-wrap: wrap;
+}
+
+.buy-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 32px;
+  background: rgba(201, 162, 39, 0.05);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  min-width: 180px;
+  transition: all 0.3s;
+}
+
+.buy-item:hover {
+  border-color: rgba(201, 162, 39, 0.4);
+  transform: translateY(-4px);
+}
+
+.buy-item-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #c9a227;
+}
+
+.buy-item-desc {
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.6);
+}
+
+.buy-gold-cta {
+  margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  .buy-gold-items {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .buy-item {
+    min-width: auto;
   }
 }
 

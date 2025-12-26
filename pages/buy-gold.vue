@@ -2,24 +2,25 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 useHead({
-  title: '도매 안내 | 귀족 - 종로 귀금속 도매상',
+  title: '금 매입 | 금·은 귀금속 매입 - 귀족 종로 금은방',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/wholesale' }
+    { rel: 'canonical', href: 'https://noblessegold.com/buy-gold' }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 전문 귀족. 금반지 도매, 결혼예물 도매, 14K 18K 24K 순금 도매. 소량 도매 가능, 대량 주문 할인. 소매상, 온라인 셀러, 기업 납품. 종로3가 귀금속 도매상.' },
+    { name: 'description', content: '종로 금 매입 전문 귀족. 금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K 매입. 은 매입, 백금 매입. 당일 현금 지급. 정확한 시세 적용, 투명한 거래. 종로3가 금은방.' },
+    { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
     // Open Graph
-    { property: 'og:title', content: '도매 안내 | 귀족 - 종로 귀금속 도매상' },
-    { property: 'og:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능, 대량 주문 할인. 종로3가 귀금속 도매상.' },
+    { property: 'og:title', content: '금 매입 | 금·은 귀금속 매입 - 귀족 종로 금은방' },
+    { property: 'og:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바, 순금, 18K, 14K 매입. 당일 현금 지급. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/wholesale' },
+    { property: 'og:url', content: 'https://noblessegold.com/buy-gold' },
     { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '도매 안내 | 귀족 - 종로 귀금속 도매상' },
-    { name: 'twitter:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능. 종로3가 귀금속 도매상.' },
+    { name: 'twitter:title', content: '금 매입 | 금·은 귀금속 매입 - 귀족' },
+    { name: 'twitter:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바 매입. 당일 현금 지급.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
   script: [
@@ -27,27 +28,25 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'WholesaleStore',
-        name: '귀족',
-        description: '종로 귀금속 도매 전문점. 금반지, 목걸이, 귀걸이, 팔찌 도매.',
-        telephone: '+82-2-766-4789',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: '종로 173 종묘귀금속백화점 101호',
-          addressLocality: '종로구',
-          addressRegion: '서울',
-          addressCountry: 'KR'
-        },
-        openingHoursSpecification: [
-          {
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            opens: '10:00',
-            closes: '19:00'
+        '@type': 'Service',
+        name: '금·은 귀금속 매입',
+        description: '금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K, 은 귀금속 매입 서비스',
+        provider: {
+          '@type': 'LocalBusiness',
+          name: '귀족',
+          telephone: '+82-2-766-4789',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: '종로 173 종묘귀금속백화점 101호',
+            addressLocality: '종로구',
+            addressRegion: '서울',
+            addressCountry: 'KR'
           }
-        ],
-        priceRange: '$$',
-        paymentAccepted: 'Cash, Credit Card, Bank Transfer'
+        },
+        areaServed: {
+          '@type': 'City',
+          name: '서울'
+        }
       })
     }
   ]
@@ -70,25 +69,23 @@ onUnmounted(() => {
 
 const highlights = [
   {
-    title: '도매가 직거래',
-    description: '종로 귀금속 도매상가에서 30년 이상 직접 운영. 중간 마진 없이 최저가로 공급합니다.',
-    icon: 'price'
+    title: '정확한 시세 적용',
+    description: '당일 국제 금 시세를 기준으로 정확하게 계산합니다. 투명한 거래를 약속드립니다.',
+    icon: 'chart'
   },
   {
-    title: '직접 주문제작',
-    description: '자체 세공 기술로 원하시는 디자인을 직접 제작해드립니다. 외주 없이 빠르고 정확하게.',
-    icon: 'craft'
+    title: '당일 현금 지급',
+    description: '감정 후 바로 현금으로 지급해드립니다.',
+    icon: 'cash'
   }
 ]
 
-const products = [
-  { category: '반지', items: ['커플링', '결혼반지', '약혼반지', '돌반지', '패션링'] },
-  { category: '목걸이', items: ['골드 체인', '펜던트', '진주 목걸이', '초커'] },
-  { category: '귀걸이', items: ['스터드', '드롭 이어링', '후프', '진주 귀걸이'] },
-  { category: '팔찌', items: ['뱅글', '체인 팔찌', '커프', '테니스 팔찌'] },
-  { category: '세트', items: ['웨딩 세트', '예물 세트', '주얼리 세트'] }
+const buyItems = [
+  { category: '금 (Gold)', items: ['순금 (24K)', '18K', '14K', '10K', '골드바', '금괴'] },
+  { category: '은 (Silver)', items: ['순은', '실버바', '은화', '은 장신구'] },
+  { category: '장신구', items: ['반지', '목걸이', '팔찌', '귀걸이', '브로치'] },
+  { category: '기타', items: ['백금', '금니', '금시계', '부서진 귀금속'] },
 ]
-
 </script>
 
 <template>
@@ -104,7 +101,7 @@ const products = [
       <div class="nav-links">
         <NuxtLink to="/" class="nav-link">홈</NuxtLink>
         <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/wholesale" class="nav-link active">도매 안내</NuxtLink>
+        <NuxtLink to="/buy-gold" class="nav-link active">금 매입</NuxtLink>
         <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
         <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
       </div>
@@ -112,18 +109,18 @@ const products = [
 
     <!-- Main Content -->
     <main class="main">
-      <div class="wholesale-container">
+      <div class="buy-container">
         <!-- Header -->
-        <div class="wholesale-header">
-          <span class="label">Wholesale</span>
-          <h1 class="title">도매 안내</h1>
+        <div class="buy-header">
+          <span class="label">Gold & Silver</span>
+          <h1 class="title">금·은 매입</h1>
           <p class="desc">
-            30년 전통 종로 귀금속 도매 전문점 귀족입니다.<br>
-            소매상, 온라인 셀러, 기업 납품 모두 환영합니다.
+            사용하지 않는 귀금속, 정당한 가격으로 매입합니다.<br>
+            30년 경력의 신뢰할 수 있는 거래를 약속드립니다.
           </p>
         </div>
 
-        <!-- Highlights - 가격과 주문제작 강조 -->
+        <!-- Highlights -->
         <div class="highlights-section">
           <div class="highlights-grid">
             <div
@@ -132,12 +129,15 @@ const products = [
               class="highlight-card"
             >
               <div class="highlight-icon">
-                <svg v-if="highlight.icon === 'price'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                <svg v-if="highlight.icon === 'chart'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 3v18h18"/>
+                  <path d="M18 17V9"/>
+                  <path d="M13 17V5"/>
+                  <path d="M8 17v-3"/>
                 </svg>
                 <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
               </div>
               <h3 class="highlight-title">{{ highlight.title }}</h3>
@@ -146,51 +146,35 @@ const products = [
           </div>
         </div>
 
-        <!-- Custom Work CTA -->
-        <div class="custom-cta">
-          <NuxtLink to="/custom" class="custom-link">
-            <span class="custom-label">주문제작 안내</span>
-            <span class="custom-text">원하시는 디자인으로 직접 제작해드립니다</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </NuxtLink>
-        </div>
-
-        <!-- Products -->
-        <div class="products-section">
-          <h2 class="section-title">취급 품목</h2>
-          <p class="section-desc">14K, 18K, 24K 순금 / 화이트골드 / 로즈골드 / 다이아몬드 / 진주</p>
-          <div class="products-grid">
+        <!-- Buy Items -->
+        <div class="items-section">
+          <h2 class="section-title">매입 품목</h2>
+          <p class="section-desc">상태와 관계없이 모든 귀금속 매입 가능</p>
+          <div class="items-grid">
             <div
-              v-for="(product, index) in products"
+              v-for="(item, index) in buyItems"
               :key="index"
-              class="product-card"
+              class="item-card"
             >
-              <h3 class="product-category">{{ product.category }}</h3>
-              <ul class="product-items">
-                <li v-for="(item, i) in product.items" :key="i">{{ item }}</li>
+              <h3 class="item-category">{{ item.category }}</h3>
+              <ul class="item-list">
+                <li v-for="(subItem, i) in item.items" :key="i">{{ subItem }}</li>
               </ul>
             </div>
           </div>
-          <div class="products-cta">
-            <NuxtLink to="/gallery" class="btn-text">
-              <span>갤러리에서 제품 보기</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </NuxtLink>
-          </div>
+          <p class="items-note">
+            * 부서지거나 변형된 귀금속도 매입 가능합니다.
+          </p>
         </div>
 
         <!-- Process -->
         <div class="process-section">
-          <h2 class="section-title">거래 절차</h2>
+          <h2 class="section-title">매입 절차</h2>
           <div class="process-steps">
             <div class="step">
               <span class="step-num">01</span>
-              <h3 class="step-title">전화/방문 상담</h3>
-              <p class="step-desc">필요한 품목과 수량을 말씀해주세요</p>
+              <h3 class="step-title">방문 / 상담</h3>
+              <p class="step-desc">매입 희망 품목을 가지고 방문해주세요</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -199,8 +183,8 @@ const products = [
             </div>
             <div class="step">
               <span class="step-num">02</span>
-              <h3 class="step-title">견적 확인</h3>
-              <p class="step-desc">수량과 품목에 따른 견적 안내</p>
+              <h3 class="step-title">감정 / 계량</h3>
+              <p class="step-desc">순도 확인 및 정밀 계량</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -209,8 +193,8 @@ const products = [
             </div>
             <div class="step">
               <span class="step-num">03</span>
-              <h3 class="step-title">주문/결제</h3>
-              <p class="step-desc">현금, 카드, 계좌이체 가능</p>
+              <h3 class="step-title">시세 적용</h3>
+              <p class="step-desc">당일 시세 기준 가격 산정</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -219,16 +203,26 @@ const products = [
             </div>
             <div class="step">
               <span class="step-num">04</span>
-              <h3 class="step-title">납품</h3>
-              <p class="step-desc">재고: 당일 / 주문제작: 1-2주</p>
+              <h3 class="step-title">즉시 지급</h3>
+              <p class="step-desc">현금 즉시 지급</p>
             </div>
           </div>
         </div>
 
+        <!-- Notice -->
+        <div class="notice-section">
+          <h3 class="notice-title">매입 안내</h3>
+          <ul class="notice-list">
+            <li>매입 시세는 당일 국제 금 시세에 따라 변동됩니다</li>
+            <li>순도에 따라 매입가가 달라집니다 (24K, 18K, 14K 등)</li>
+            <li>방문 전 전화 문의 시 대략적인 시세 안내 가능합니다</li>
+          </ul>
+        </div>
+
         <!-- CTA -->
-        <div class="wholesale-cta">
-          <h3>도매 상담 문의</h3>
-          <p>도매 거래에 관심이 있으시면 전화 또는 방문해주세요.</p>
+        <div class="buy-cta">
+          <h3>매입 상담 문의</h3>
+          <p>전화 또는 방문해주시면 친절히 안내해드립니다.</p>
           <div class="cta-buttons">
             <a href="tel:02-766-4789" class="btn-gold">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -353,14 +347,14 @@ const products = [
   padding-bottom: 80px;
 }
 
-.wholesale-container {
+.buy-container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 60px);
 }
 
 /* Header */
-.wholesale-header {
+.buy-header {
   text-align: center;
   margin-bottom: 80px;
 }
@@ -405,9 +399,9 @@ const products = [
   margin-bottom: 40px;
 }
 
-/* Highlights - 가격/주문제작 강조 */
+/* Highlights */
 .highlights-section {
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 .highlights-grid {
@@ -460,91 +454,36 @@ const products = [
   line-height: 1.7;
 }
 
-/* Custom Work CTA */
-.custom-cta {
+/* Items */
+.items-section {
   margin-bottom: 80px;
 }
 
-.custom-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 32px;
-  background: rgba(250, 250, 250, 0.03);
-  border: 1px solid rgba(250, 250, 250, 0.1);
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.custom-link:hover {
-  background: rgba(250, 250, 250, 0.05);
-  border-color: rgba(201, 162, 39, 0.3);
-}
-
-.custom-link:hover svg {
-  transform: translateX(4px);
-}
-
-.custom-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #c9a227;
-}
-
-.custom-text {
-  font-size: 14px;
-  color: rgba(250, 250, 250, 0.7);
-}
-
-.custom-link svg {
-  color: rgba(250, 250, 250, 0.5);
-  transition: transform 0.3s;
-}
-
-@media (max-width: 600px) {
-  .custom-link {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .custom-link svg {
-    display: none;
-  }
-}
-
-/* Products */
-.products-section {
-  margin-bottom: 80px;
-}
-
-.products-grid {
+.items-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
 @media (max-width: 900px) {
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  .products-grid {
+  .items-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.product-card {
+@media (max-width: 500px) {
+  .items-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.item-card {
   padding: 24px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
 }
 
-.product-category {
+.item-category {
   font-size: 16px;
   font-weight: 700;
   color: #c9a227;
@@ -553,35 +492,22 @@ const products = [
   border-bottom: 1px solid rgba(250, 250, 250, 0.1);
 }
 
-.product-items {
+.item-list {
   list-style: none;
   padding: 0;
 }
 
-.product-items li {
+.item-list li {
   font-size: 13px;
   color: rgba(250, 250, 250, 0.6);
   margin-bottom: 8px;
 }
 
-.products-cta {
+.items-note {
   text-align: center;
-  margin-top: 32px;
-}
-
-.btn-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #c9a227;
-  text-decoration: none;
-  transition: gap 0.3s;
-}
-
-.btn-text:hover {
-  gap: 12px;
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.4);
+  margin-top: 24px;
 }
 
 /* Process */
@@ -657,8 +583,44 @@ const products = [
   }
 }
 
+/* Notice */
+.notice-section {
+  margin-bottom: 80px;
+  padding: 40px;
+  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(250, 250, 250, 0.06);
+}
+
+.notice-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #c9a227;
+  margin-bottom: 20px;
+}
+
+.notice-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notice-list li {
+  position: relative;
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.7);
+  padding-left: 20px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.notice-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #c9a227;
+}
+
 /* CTA */
-.wholesale-cta {
+.buy-cta {
   text-align: center;
   padding: 60px 40px;
   background: rgba(250, 250, 250, 0.02);
@@ -666,14 +628,14 @@ const products = [
   margin-bottom: 40px;
 }
 
-.wholesale-cta h3 {
+.buy-cta h3 {
   font-size: 24px;
   font-weight: 300;
   color: #fafafa;
   margin-bottom: 12px;
 }
 
-.wholesale-cta p {
+.buy-cta p {
   font-size: 14px;
   color: rgba(250, 250, 250, 0.6);
   margin-bottom: 32px;

@@ -10,6 +10,7 @@ export const faqCategories = [
   { id: 'baby-gold', name: '돌반지' },
   { id: 'couple-ring', name: '커플링' },
   { id: 'wedding', name: '결혼예물' },
+  { id: 'buy-gold', name: '매입' },
   { id: 'repair', name: '수리/AS' }
 ]
 
@@ -140,6 +141,26 @@ export const faqItems: FAQItem[] = [
     category: 'wedding',
     question: '시댁/처가 예물은 따로 준비해야 하나요?',
     answer: '양가 어르신께 드리는 예물은 선택사항입니다. 준비하시는 경우 어머니 반지, 목걸이, 아버지 반지 등을 많이 선택하십니다. 함께 구매 시 세트 할인이 적용됩니다.'
+  },
+
+  // 매입
+  {
+    id: 50,
+    category: 'buy-gold',
+    question: '금 매입은 어떻게 진행되나요?',
+    answer: '매입을 원하시는 귀금속을 가지고 매장에 방문해주시면 됩니다. 순도 감정 및 계량 후 당일 시세를 적용하여 즉시 현금으로 지급해드립니다.'
+  },
+  {
+    id: 51,
+    category: 'buy-gold',
+    question: '어떤 귀금속을 매입하나요?',
+    answer: '순금(24K), 18K, 14K, 10K 금, 은, 백금 등 모든 귀금속을 매입합니다. 반지, 목걸이, 팔찌, 귀걸이 등 장신구는 물론 골드바, 금괴, 금니, 부서지거나 변형된 귀금속도 매입 가능합니다.'
+  },
+  {
+    id: 53,
+    category: 'buy-gold',
+    question: '전화로 매입 시세를 알 수 있나요?',
+    answer: '네, 전화 문의 시 당일 기준 대략적인 시세를 안내해드릴 수 있습니다. 단, 정확한 매입가는 실물 감정 후 확정됩니다.'
   },
 
   // 수리/AS

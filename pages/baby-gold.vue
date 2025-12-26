@@ -284,6 +284,7 @@ const processSteps = [
             <NuxtLink to="/baby-gold">돌반지</NuxtLink>
             <NuxtLink to="/couple-ring">커플링</NuxtLink>
             <NuxtLink to="/wedding">결혼예물</NuxtLink>
+            <NuxtLink to="/buy-gold">금 매입</NuxtLink>
             <NuxtLink to="/wholesale">도매 안내</NuxtLink>
             <NuxtLink to="/custom">주문제작</NuxtLink>
             <NuxtLink to="/repair">수리/AS</NuxtLink>
