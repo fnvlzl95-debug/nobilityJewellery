@@ -32,7 +32,7 @@ export const faqItems: FAQItem[] = [
     id: 3,
     category: 'general',
     question: '매장 운영 시간이 어떻게 되나요?',
-    answer: '평일 및 토요일 오전 10시 ~ 오후 7시까지 운영합니다. 일요일 및 공휴일은 휴무입니다.'
+    answer: '평일 및 토요일 오전 10시 30분 ~ 오후 6시까지 운영합니다. 일요일 및 공휴일은 휴무입니다.'
   },
   {
     id: 4,

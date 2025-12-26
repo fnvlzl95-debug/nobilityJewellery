@@ -46,8 +46,8 @@ useHead({
             {
               '@type': 'OpeningHoursSpecification',
               dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-              opens: '10:00',
-              closes: '19:00'
+              opens: '10:30',
+              closes: '18:00'
             }
           ],
           geo: {
@@ -165,7 +165,7 @@ const handleSubmit = async () => {
             <div class="info-grid">
               <div class="info-item">
                 <span class="info-label">Hours</span>
-                <span class="info-value">평일·토요일<br>10:00-19:00</span>
+                <span class="info-value">평일·토요일<br>10:30-18:00</span>
               </div>
               <div class="info-item">
                 <span class="info-label">Location</span>

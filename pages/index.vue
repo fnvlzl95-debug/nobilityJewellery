@@ -54,8 +54,8 @@ useHead({
           {
             '@type': 'OpeningHoursSpecification',
             dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            opens: '10:00',
-            closes: '19:00'
+            opens: '10:30',
+            closes: '18:00'
           }
         ],
         image: 'https://noblessegold.com/Image/ring/NS0102.webp',
@@ -667,7 +667,7 @@ onUnmounted(() => {
               </li>
               <li>
                 <span class="info-label">Hours</span>
-                <span>평일·토요일 10:00 – 19:00</span>
+                <span>평일·토요일 10:30 – 18:00</span>
               </li>
               <li>
                 <span class="info-label">Parking</span>

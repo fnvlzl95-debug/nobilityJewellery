@@ -321,7 +321,7 @@ const processSteps = [
         <div class="location-info">
           <h4>방문 안내</h4>
           <p class="address">서울 종로구 종로 173 종묘귀금속백화점 101호</p>
-          <p class="hours">영업시간: 평일/토요일 10:00~19:00 (일요일·공휴일 휴무)</p>
+          <p class="hours">영업시간: 평일/토요일 10:30~18:00 (일요일·공휴일 휴무)</p>
         </div>
       </div>
     </main>
