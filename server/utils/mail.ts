@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
 interface MailOptions {
   to: string
@@ -7,27 +7,22 @@ interface MailOptions {
 }
 
 export async function sendMail(options: MailOptions) {
-  const user = process.env.NAVER_MAIL_USER || process.env.NUXT_NAVER_MAIL_USER || ''
-  const pass = process.env.NAVER_MAIL_PASS || process.env.NUXT_NAVER_MAIL_PASS || ''
+  const apiKey = process.env.RESEND_API_KEY || ''
 
-  if (!user || !pass) {
-    throw new Error('Email credentials not configured')
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY not configured')
   }
 
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.naver.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user,
-      pass,
-    },
-  })
+  const resend = new Resend(apiKey)
 
-  return transporter.sendMail({
-    from: `"귀족 문의" <${user}>`,
+  const { error } = await resend.emails.send({
+    from: '귀족 문의 <onboarding@resend.dev>',
     to: options.to,
     subject: options.subject,
     html: options.html,
   })
+
+  if (error) {
+    throw new Error(error.message)
+  }
 }

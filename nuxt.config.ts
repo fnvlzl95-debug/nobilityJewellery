@@ -4,8 +4,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     // Server-only (환경변수에서 읽어옴)
-    naverMailUser: process.env.NAVER_MAIL_USER || '',
-    naverMailPass: process.env.NAVER_MAIL_PASS || '',
+    resendApiKey: process.env.RESEND_API_KEY || '',
   },
 
   modules: [
