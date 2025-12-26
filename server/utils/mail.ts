@@ -1,5 +1,3 @@
-import { Resend } from 'resend'
-
 interface MailOptions {
   to: string
   subject: string
@@ -13,16 +11,22 @@ export async function sendMail(options: MailOptions) {
     throw new Error('RESEND_API_KEY not configured')
   }
 
-  const resend = new Resend(apiKey)
-
-  const { error } = await resend.emails.send({
-    from: '귀족 문의 <onboarding@resend.dev>',
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: '귀족 문의 <onboarding@resend.dev>',
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+    }),
   })
 
-  if (error) {
-    throw new Error(error.message)
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Failed to send email')
   }
 }
