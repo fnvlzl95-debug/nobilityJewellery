@@ -111,7 +111,7 @@ export default defineEventHandler(async (event) => {
   // Send email notification
   try {
     await sendMail({
-      to: 'fnvlzl95@naver.com',
+      to: 'fnvlzl95@gmail.com',
       subject: `[귀족] 새 문의 - ${inquiry.typeLabel} / ${inquiry.name}`,
       html: `
         <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
