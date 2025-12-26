@@ -25,3 +25,6 @@ logs
 
 # Original images (before WebP conversion)
 assets-original/
+
+# Documentation (local only)
+docs/
