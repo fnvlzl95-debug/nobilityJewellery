@@ -370,13 +370,13 @@ onUnmounted(() => {
               </div>
               <div class="stat-divider"></div>
               <div class="stat-item">
-                <span class="stat-number">500<sup>+</sup></span>
-                <span class="stat-label">Partners</span>
+                <span class="stat-number">도매</span>
+                <span class="stat-label">Wholesale</span>
               </div>
               <div class="stat-divider"></div>
               <div class="stat-item">
-                <span class="stat-number">10K<sup>+</sup></span>
-                <span class="stat-label">Products</span>
+                <span class="stat-number">주문제작</span>
+                <span class="stat-label">Custom</span>
               </div>
             </div>
           </div>
@@ -614,7 +614,7 @@ onUnmounted(() => {
       <div class="container-lg">
         <div class="buy-gold-inner">
           <span class="section-label reveal">Gold & Silver</span>
-          <h2 class="section-title reveal reveal-delay-1">금·은 매입</h2>
+          <h2 class="section-title reveal reveal-delay-1">금/은 매입</h2>
           <p class="section-desc reveal reveal-delay-2">
             사용하지 않는 귀금속을 정당한 가격으로 매입합니다.<br>
             당일 시세 적용, 현금 즉시 지급.
