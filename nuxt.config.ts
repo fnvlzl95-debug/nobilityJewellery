@@ -83,6 +83,14 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    cloudflare: {
+      pages: {
+        routes: {
+          exclude: ['/Image/*', '/_nuxt/*'],
+        },
+      },
+    },
+    compatibilityFlags: ['nodejs_compat'],
     routeRules: {
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
