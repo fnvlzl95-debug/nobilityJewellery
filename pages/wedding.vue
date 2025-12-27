@@ -202,28 +202,28 @@ const processSteps = [
             <div class="checklist-item">
               <span class="check-icon">1</span>
               <div class="check-text">
-                <h4>예산 설정</h4>
+                <h3>예산 설정</h3>
                 <p>신부/신랑 예물, 시댁/처가 예물 예산 분배</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">2</span>
               <div class="check-text">
-                <h4>스타일 결정</h4>
+                <h3>스타일 결정</h3>
                 <p>클래식, 모던, 심플 등 선호 스타일 파악</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">3</span>
               <div class="check-text">
-                <h4>사이즈 측정</h4>
+                <h3>사이즈 측정</h3>
                 <p>본인과 양가 어르신 사이즈 미리 확인</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">4</span>
               <div class="check-text">
-                <h4>일정 확인</h4>
+                <h3>일정 확인</h3>
                 <p>결혼식 2-3개월 전 주문 권장</p>
               </div>
             </div>
@@ -377,7 +377,7 @@ const processSteps = [
 .checklist-content { max-width: 600px; margin: 0 auto; }
 .checklist-item { display: flex; gap: 20px; padding: 24px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); margin-bottom: 12px; }
 .check-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(201, 162, 39, 0.15); color: #c9a227; font-size: 14px; font-weight: 700; flex-shrink: 0; }
-.check-text h4 { font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 4px; }
+.check-text h3 { font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 4px; }
 .check-text p { font-size: 13px; color: rgba(250, 250, 250, 0.5); }
 
 /* Gallery */
