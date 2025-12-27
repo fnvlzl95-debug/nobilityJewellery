@@ -227,7 +227,9 @@ export const getItemsByCategory = (categoryId: string): GalleryItem[] => {
   return galleryItems.filter(item => item.category === categoryId)
 }
 
-// 메인 페이지 프리뷰용 (처음 4개)
-export const getPreviewItems = (count: number = 4): GalleryItem[] => {
-  return galleryItems.slice(0, count)
+// 메인 페이지 프리뷰용 (반지 3개 + 세트 3개)
+export const getPreviewItems = (count: number = 6): GalleryItem[] => {
+  const rings = galleryItems.filter(item => item.category === 'ring').slice(0, 3)
+  const sets = galleryItems.filter(item => item.category === 'set').slice(0, 3)
+  return [...rings, ...sets]
 }

@@ -17,7 +17,7 @@ const handleKakaoClick = () => {
   trackKakaoClick('home')
 }
 
-const previewItems = getPreviewItems(4)
+const previewItems = getPreviewItems(6)
 
 useHead({
   title: '귀족 | 종로 귀금속 도매',
@@ -508,10 +508,7 @@ onUnmounted(() => {
             v-for="(item, index) in previewItems"
             :key="item.id"
             class="gallery-item reveal"
-            :class="[
-              index === 0 ? 'gallery-item-lg' : '',
-              index > 0 ? `reveal-delay-${index}` : ''
-            ]"
+            :class="`reveal-delay-${index + 1}`"
           >
             <div class="item-image">
               <NuxtImg
@@ -1753,12 +1750,8 @@ onUnmounted(() => {
 
 @media (min-width: 900px) {
   .gallery-showcase {
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 280px);
-  }
-
-  .gallery-item-lg {
-    grid-row: span 2;
   }
 }
 

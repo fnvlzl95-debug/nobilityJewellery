@@ -65,14 +65,14 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://www.googletagmanager.com' },
         { rel: 'preconnect', href: 'https://maps.googleapis.com' },
       ],
-      script: [
+      script: process.env.NODE_ENV === 'production' ? [
         // Google Analytics 4
         { src: 'https://www.googletagmanager.com/gtag/js?id=G-RKK8E5CB6G', async: true },
         { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-RKK8E5CB6G');" },
         // Naver Analytics (defer for performance)
         { src: 'https://wcs.pstatic.net/wcslog.js', defer: true },
         { innerHTML: "if(typeof wcs_add === 'undefined') var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(typeof wcs !== 'undefined' && wcs) { wcs_do(); }", defer: true },
-      ],
+      ] : [],
     },
   },
 
