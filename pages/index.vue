@@ -495,7 +495,7 @@ onUnmounted(() => {
             <span class="section-label reveal">Gallery</span>
             <h2 class="section-title reveal reveal-delay-1">귀금속 컬렉션</h2>
           </div>
-          <NuxtLink to="/gallery" class="btn-text reveal reveal-delay-2">
+          <NuxtLink to="/gallery" class="btn-text reveal reveal-delay-2" aria-label="갤러리 전체 보기">
             <span>전체 보기</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -550,7 +550,7 @@ onUnmounted(() => {
                   </svg>
                 </div>
                 <div class="repair-info">
-                  <h4>반지 사이즈 조절</h4>
+                  <h3>반지 사이즈 조절</h3>
                   <p>늘리기/줄이기 당일 가능</p>
                 </div>
               </div>
@@ -562,7 +562,7 @@ onUnmounted(() => {
                   </svg>
                 </div>
                 <div class="repair-info">
-                  <h4>세척 및 광택</h4>
+                  <h3>세척 및 광택</h3>
                   <p>금/은 세척, 광택 복원</p>
                 </div>
               </div>
@@ -575,7 +575,7 @@ onUnmounted(() => {
                   </svg>
                 </div>
                 <div class="repair-info">
-                  <h4>체인 수리</h4>
+                  <h3>체인 수리</h3>
                   <p>목걸이/팔찌 끊어짐 수리</p>
                 </div>
               </div>
@@ -587,7 +587,7 @@ onUnmounted(() => {
                   </svg>
                 </div>
                 <div class="repair-info">
-                  <h4>기타 수리</h4>
+                  <h3>기타 수리</h3>
                   <p>귀걸이 침 교체, 보석 재세팅</p>
                 </div>
               </div>
@@ -1877,7 +1877,7 @@ onUnmounted(() => {
   height: 100%;
 }
 
-.repair-info h4 {
+.repair-info h3 {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 16px;
   font-weight: 700;
