@@ -16,14 +16,14 @@ useHead({
     { property: 'og:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/wedding' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.webp' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/set/set0101.webp' },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '결혼예물 | 예물 세트 주문제작 - 귀족' },
     { name: 'twitter:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.webp' },
+    { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/set0101.webp' },
   ],
   script: [
     {
@@ -54,7 +54,7 @@ useHead({
             }
           }
         },
-        image: 'https://noblessegold.com/Image/set/pexels-jeremy-wong-382920-1043902.webp'
+        image: 'https://noblessegold.com/Image/set/set0101.webp'
       })
     }
   ]
@@ -117,7 +117,7 @@ const processSteps = [
 
         <!-- Hero Image -->
         <div class="hero-image">
-          <img src="/Image/set/pexels-jeremy-wong-382920-1043902.webp" alt="결혼예물 세트 - 웨딩 주얼리" loading="eager" />
+          <img src="/Image/set/set0101.webp" alt="결혼예물 세트 - 웨딩 주얼리" loading="eager" />
         </div>
 
         <!-- Advantages -->
@@ -234,10 +234,10 @@ const processSteps = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/set/pexels-jeremy-wong-382920-1043902.webp" alt="결혼예물 세트" loading="lazy" />
-            <img src="/Image/ring/NN0103.webp" alt="결혼반지" loading="lazy" />
-            <img src="/Image/ring/NN0101.webp" alt="웨딩 주얼리" loading="lazy" />
-            <img src="/Image/ring/NN0102.webp" alt="예물 반지" loading="lazy" />
+            <img src="/Image/set/set0101.webp" alt="결혼예물 세트" loading="lazy" />
+            <img src="/Image/set/set0102.webp" alt="신부 예물" loading="lazy" />
+            <img src="/Image/set/set0201.webp" alt="웨딩 주얼리" loading="lazy" />
+            <img src="/Image/set/set0202.webp" alt="예물 반지" loading="lazy" />
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">

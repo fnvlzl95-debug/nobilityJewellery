@@ -104,39 +104,58 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     id: 7,
-    category: 'necklace',
-    title: '럭셔리 주얼리 세트',
-    titleEn: 'Luxury Set',
-    description: '18K 골드와 천연 진주로 구성된 럭셔리 주얼리 세트입니다. 목걸이와 귀걸이가 세트로 구성되어 있으며, 결혼식, 파티 등 특별한 날에 착용하기 좋은 고급 주얼리입니다.',
-    material: '18K 골드 / 진주',
-    workType: '세트 구성',
-    delivery: '1주',
-    images: ['/Image/necklace/pexels-wendelmoretti-1730877.webp']
+    category: 'ring',
+    title: 'V 라인 레이어드 콤비 커플링',
+    titleEn: 'V-Line Layered Combi Couple Ring',
+    description: '마치 두 개의 반지를 레이어드한 듯한 유니크한 디자인입니다. 차분한 무광 화이트골드 밴드 위에 얹어진 로즈골드 V자 라인이 손가락을 더 길고 가늘어 보이게 해줍니다. 남성용은 깔끔한 금속 광택으로 세련미를, 여성용은 V 라인에 보석을 촘촘히 세팅하여 티아라를 쓴 듯한 우아함을 강조했습니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작',
+    delivery: '1~2주',
+    images: [
+      '/Image/ring/NN0501.webp',
+      '/Image/ring/NN0502.webp']
   },
   {
     id: 8,
-    category: 'bracelet',
-    title: '순금 뱅글 브레이슬릿',
-    titleEn: 'Gold Bangle',
-    description: '24K 순금으로 제작된 뱅글 스타일 팔찌입니다. 순도 99.9% 순금의 묵직한 무게감과 광택이 특징이며, 사이즈 주문제작이 가능합니다. 종로3가 금은방 귀족 귀금속 도매 전문점에서 합리적인 가격에 제공합니다.',
-    material: '24K 순금',
-    workType: '사이즈 주문',
-    delivery: '2-3주',
-    images: ['/Image/bracelet/pexels-pixabay-265906.webp']
+    category: 'ring',
+    title: '러블리 하트 레이어드 콤비 커플링',
+    titleEn: 'Lovely Heart Layered Combi Couple Ring',
+    description: '사랑을 상징하는 하트 모양(Heart Cut) 메인 스톤이 돋보이는 로맨틱한 커플링입니다. 넓은 화이트골드 밴드 위에 얇은 로즈골드 반지를 하나 더 낀 것처럼 보이는 "레이어드" 디자인이 특징입니다. 남성용은 무광으로 처리해 차분하고 멋스럽게, 여성용은 로즈골드 라인에 보석을 촘촘히 박아 화려하고 여성스럽게 완성했습니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작',
+    delivery: '1~2주',
+    images: [
+      '/Image/ring/NN0602.webp',
+      '/Image/ring/NN0601.webp']
   },
   {
     id: 9,
-    category: 'earring',
-    title: '진주 드롭 이어링',
-    titleEn: 'Pearl Drop',
-    description: '14K 골드에 담수진주를 세팅한 드롭 이어링입니다. 우아하고 여성스러운 디자인으로 데일리 착용부터 특별한 자리까지 다양하게 활용 가능합니다. 피어싱, 클립 타입 모두 제공됩니다.',
-    material: '14K 골드 / 담수진주',
-    workType: '피어싱/클립',
-    delivery: '즉시',
-    images: ['/Image/earring/pexels-git-stephen-gitau-302905-1670723.webp']
+    category: 'ring',
+    title: '옐로우골드 스텝 엣지 포인트 커플링',
+    titleEn: 'Yellow Gold Step Edge Point Couple Ring',
+    description: '고급스러운 황금빛(옐로우골드)이 돋보이는 모던한 커플링입니다. 반지 양쪽 테두리를 계단처럼 살짝 낮게 깎아낸 "스텝(Step)" 디자인이 특징입니다. 중앙 부분은 광택을 없앤 무광으로 차분하게, 테두리는 반짝이는 유광으로 마감하여 심플하면서도 입체적인 느낌을 줍니다. 가운데 콕 박힌 보석 하나가 은은한 포인트를 완성합니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작',
+    delivery: '1~2주',
+    images: [
+      '/Image/ring/NN0701.webp',
+      '/Image/ring/NN0702.webp']
+  },
+    {
+    id: 10,
+    category: 'ring',
+    title: '사선 웨이브 포인트 커플링',
+    titleEn: 'Diagonal Wave Point Couple Ring',
+    description: '반지 중앙에 사선으로 부드럽게 흐르는 웨이브 라인이 매력적인 커플링입니다. 딱딱한 일자 형태가 아니라서 착용했을 때 손가락이 더 가늘고 길어 보입니다. 심플한 유광 밴드 위에 큐빅 하나가 깔끔하게 박혀 있어, 질리지 않는 데일리 반지를 찾는 커플에게 가장 추천하는 디자인입니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작',
+    delivery: '1~2주',
+    images: [
+      '/Image/ring/NN0802.webp',
+      '/Image/ring/NN0801.webp']
   },
   {
-    id: 10,
+    id: 11,
     category: 'set',
     title: '모던 듀얼 체인 패션 세트',
     titleEn: 'Modern Dual Chain Wedding Set',
@@ -145,6 +164,28 @@ export const galleryItems: GalleryItem[] = [
     workType: '맞춤 제작',  
     delivery: '상담 후 결정',
     images: ['/Image/set/set0101.webp', '/Image/set/set0102.webp']
+  },
+    {
+    id: 12,
+    category: 'set',
+    title: 'U-링크 레터링 시그니처 세트',
+    titleEn: 'U-Link Lettering Signature Set',
+    description: '행운을 담은 말발굽(U자) 모양을 자물쇠처럼 디자인하여 유니크한 매력을 살린 주얼리 세트입니다. 펜던트 표면에 영문 레터링을 새겨 브랜드 시그니처 같은 고급스러움을 주었고, 반짝이는 큐빅 라인과 매치하여 화려함을 더했습니다. 목걸이 줄은 트렌디한 "클립 체인"을 사용하여, 캐주얼룩과 정장 어디에나 힙하게 어울리는 포인트 아이템입니다.',
+    material: '14K White / Rose / Gold',
+    workType: '맞춤 제작',  
+    delivery: '상담 후 결정',
+    images: ['/Image/set/set0201.webp', '/Image/set/set0202.webp']
+  },
+      {
+    id: 13,
+    category: 'set',
+    title: '문라이트 서클 드롭 세트',
+    titleEn: 'Moonlight Circle Drop Set',
+    description: '때마다 더욱 반짝입니다. 우아하면서도 존재감 있는 포인트를 원하는 분들께 추천합니다.',
+    material: '14K White / Rose / Gold',
+    workType: '맞춤 제작',  
+    delivery: '상담 후 결정',
+    images: ['/Image/set/set0302.webp', '/Image/set/set0301.webp']
   },
 ]
 
