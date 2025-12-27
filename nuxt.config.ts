@@ -69,9 +69,10 @@ export default defineNuxtConfig({
         // Google Analytics 4
         { src: 'https://www.googletagmanager.com/gtag/js?id=G-RKK8E5CB6G', async: true },
         { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-RKK8E5CB6G');" },
-        // Naver Analytics (defer for performance)
-        { src: 'https://wcs.pstatic.net/wcslog.js', defer: true },
-        { innerHTML: "if(typeof wcs_add === 'undefined') var wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; if(typeof wcs !== 'undefined' && wcs) { wcs_do(); }", defer: true },
+        // Naver Analytics - 설정 먼저, 스크립트 로드 후 실행
+        { innerHTML: "if(!window.wcs_add) window.wcs_add = {}; wcs_add['wa'] = '9582151f2a151';" },
+        { src: 'https://wcs.pstatic.net/wcslog.js', async: true },
+        { innerHTML: "window.addEventListener('load', function() { if(window.wcs) wcs_do(); });" },
       ] : [],
     },
   },
