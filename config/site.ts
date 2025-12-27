@@ -61,6 +61,7 @@ export const siteConfig = {
     facebook: '',
     blog: '',
     naverPlace: '',
+    kakaoOpenChat: 'https://open.kakao.com/o/sc8gQx8h',
   },
 
   // 이메일 설정 (Resend)

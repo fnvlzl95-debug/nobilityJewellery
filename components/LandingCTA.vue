@@ -7,7 +7,7 @@ interface Props {
 defineProps<Props>()
 
 const route = useRoute()
-const { trackPhoneClick, trackInquiryClick } = useGtag()
+const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
 
 // 현재 페이지 이름 추출
 const pageName = computed(() => {
@@ -21,6 +21,10 @@ const handlePhoneClick = () => {
 const handleInquiryClick = () => {
   trackInquiryClick(pageName.value)
 }
+
+const handleKakaoClick = () => {
+  trackKakaoClick(pageName.value)
+}
 </script>
 
 <template>
@@ -33,6 +37,12 @@ const handleInquiryClick = () => {
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span>02-766-4789</span>
+      </a>
+      <a href="https://open.kakao.com/o/sc8gQx8h" target="_blank" rel="noopener" class="btn-kakao" @click="handleKakaoClick">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+        </svg>
+        <span>카카오톡 문의</span>
       </a>
       <NuxtLink to="/contact" class="btn-outline" @click="handleInquiryClick">
         <span>온라인 문의</span>
@@ -87,6 +97,24 @@ const handleInquiryClick = () => {
 .btn-gold:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3);
+}
+
+.btn-kakao {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3C1E1E;
+  background: #FEE500;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-kakao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(254, 229, 0, 0.3);
 }
 
 .btn-outline {

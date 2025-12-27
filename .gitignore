@@ -28,3 +28,4 @@ assets-original/
 
 # Documentation (local only)
 docs/
+.tmp/

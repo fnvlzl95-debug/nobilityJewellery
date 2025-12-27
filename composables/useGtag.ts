@@ -31,10 +31,19 @@ export const useGtag = () => {
     trackCtaClick('online_inquiry', pageName)
   }
 
+  // 카카오톡 클릭
+  const trackKakaoClick = (pageName: string) => {
+    trackEvent('kakao_click', {
+      page_name: pageName,
+    })
+    trackCtaClick('kakao_chat', pageName)
+  }
+
   return {
     trackEvent,
     trackCtaClick,
     trackPhoneClick,
     trackInquiryClick,
+    trackKakaoClick,
   }
 }

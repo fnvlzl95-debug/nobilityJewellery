@@ -3,7 +3,7 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { getPreviewItems, categories } from '~/data/gallery-items'
 
-const { trackPhoneClick, trackInquiryClick } = useGtag()
+const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
 
 const handlePhoneClick = () => {
   trackPhoneClick('home')
@@ -11,6 +11,10 @@ const handlePhoneClick = () => {
 
 const handleInquiryClick = () => {
   trackInquiryClick('home')
+}
+
+const handleKakaoClick = () => {
+  trackKakaoClick('home')
 }
 
 const previewItems = getPreviewItems(4)
@@ -739,6 +743,12 @@ onUnmounted(() => {
               </svg>
               <span>전화 상담</span>
             </a>
+            <a href="https://open.kakao.com/o/sc8gQx8h" target="_blank" rel="noopener" class="btn-kakao btn-lg" @click="handleKakaoClick">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+              </svg>
+              <span>카카오톡</span>
+            </a>
             <NuxtLink to="/contact" class="btn-outline-light btn-lg" @click="handleInquiryClick">
               <span>온라인 문의</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -788,6 +798,12 @@ onUnmounted(() => {
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span>전화</span>
+      </a>
+      <a href="https://open.kakao.com/o/sc8gQx8h" target="_blank" rel="noopener" class="mobile-btn mobile-btn-kakao" @click="handleKakaoClick">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+        </svg>
+        <span>카톡</span>
       </a>
       <NuxtLink to="/contact" class="mobile-btn mobile-btn-secondary" @click="handleInquiryClick">
         <span>문의</span>
@@ -1678,6 +1694,26 @@ onUnmounted(() => {
   z-index: 1;
 }
 
+.btn-kakao {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 36px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3C1E1E;
+  background: #FEE500;
+  text-decoration: none;
+  transition: all 0.4s var(--ease-out-expo);
+  overflow: hidden;
+}
+
+.btn-kakao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(254, 229, 0, 0.35);
+}
+
 /* ===== Gallery Section ===== */
 .section-gallery {
   padding: 160px 0;
@@ -2334,6 +2370,11 @@ onUnmounted(() => {
   background: transparent;
   color: #fafafa;
   border: 1px solid rgba(250, 250, 250, 0.2);
+}
+
+.mobile-btn-kakao {
+  background: #FEE500;
+  color: #3C1E1E;
 }
 
 /* ===== Reveal Animations ===== */
