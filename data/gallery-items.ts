@@ -22,7 +22,7 @@ export const galleryItems: GalleryItem[] = [
     id: 1,
     category: 'ring',
     title: 'PROMISE 커플링',
-    titleEn: 'Wedding Band',
+    titleEn: 'PROMISE Couple Ring',
     description: '14K 화이트골드, 로즈골드, 옐로우골드로 제작되는 프로미스 커플링입니다. 결혼반지, 결혼예물 커플링으로 인기 있으며 사이즈 맞춤 주문제작이 가능합니다. 종로3가 금은방 귀족에서 귀금속 도매가로 제공합니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
@@ -66,35 +66,41 @@ export const galleryItems: GalleryItem[] = [
   {
     id: 4,
     category: 'ring',
-    title: '골드 레이어드 링',
-    titleEn: 'Layered Ring',
-    description: '14K, 18K 골드로 제작된 레이어드 디자인 반지입니다. 여러 겹의 밴드가 세련된 느낌을 주며, 일상에서 착용하기 좋은 모던한 스타일입니다. 사이즈 조절 가능합니다.',
-    material: '14K / 18K 골드',
-    workType: '사이즈 조절',
-    delivery: '즉시',
-    images: ['/Image/ring/pexels-fox-58267-998521.webp']
+    title: '밀그레인 라인 원포인트 커플링',
+    titleEn: 'Milgrain Line One-Point Couple Ring',
+    description: '깔끔한 민무늬 밴드와 엔틱한 밀그레인 라인이 반반씩 조화를 이루는 모던한 웨딩 밴드입니다. 중앙에 세팅된 원 포인트 스톤이 과하지 않은 화려함을 주며, 밴드 안쪽까지 굴림 처리되어 매일 착용해도 편안합니다. 심플함 속에 디테일이 살아있는 디자인을 찾는 예비 부부에게 추천드립니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작 가능',
+    delivery: '1-2주',
+    images: [
+      '/Image/ring/NN0201.webp',
+      '/Image/ring/NN0202.webp']
   },
   {
     id: 5,
     category: 'ring',
-    title: '핸드메이드 실버 링',
-    titleEn: 'Handmade Silver',
-    description: '925 스털링 실버로 장인이 수작업으로 제작한 핸드메이드 반지입니다. 은 특유의 차가운 광택과 유니크한 디자인이 특징이며, 주문제작으로 원하시는 사이즈에 맞춰 드립니다.',
-    material: '925 실버',
+    title: '투톤 콤비 새틴 포인트 커플링',
+    titleEn: 'Two-Tone Combi Satin Point Couple Ring',
+    description: '은은한 무광(Satin) 텍스처의 화이트골드 베이스에 유광 골드 엣지를 더해 세련된 입체감을 살린 콤비 커플링입니다. 서로 다른 두 가지 골드 컬러가 결합되어 유니크한 매력을 주며, 중앙의 메인 스톤이 모던한 밴드 위에서 더욱 영롱하게 빛납니다. 도시적이고 감각적인 스타일을 선호하는 커플에게 완벽한 선택입니다.',
+    material: '14K White / Rose / Gold',
     workType: '주문제작',
     delivery: '1-2주',
-    images: ['/Image/ring/pexels-leah-newhouse-50725-691046.webp']
+    images: [
+      '/Image/ring/NN0301.webp',
+      '/Image/ring/NN0302.webp']
   },
   {
     id: 6,
-    category: 'necklace',
-    title: '14K 체인 네크리스',
-    titleEn: 'Chain Necklace',
-    description: '14K 골드 체인 목걸이입니다. 심플하면서도 고급스러운 디자인으로 어떤 펜던트와도 잘 어울리며, 길이 조절이 가능해 다양한 스타일링이 가능합니다. 종로3가 금은방 귀족에서 귀금속 도매가로 제공합니다.',
-    material: '14K 골드',
-    workType: '길이 조절 가능',
-    delivery: '즉시',
-    images: ['/Image/necklace/pexels-pixabay-248077.webp']
+    category: 'ring',
+    title: '브릿지 솔리테어 커플링',
+    titleEn: 'Bridge Solitaire Couple Rings',
+    description: '모던한 밴드 디자인과 클래식한 솔리테어 세팅이 결합된 웨딩 밴드입니다. 남성 반지는 골드와 무광 화이트골드의 세련된 콤비네이션이, 여성 반지는 밴드 양쪽에 섬세한 스톤을 파베 세팅하여 화사함과 우아함을 극대화했습니다. 중앙의 메인 스톤이 다리(Bridge)처럼 밴드를 연결하는 독특한 구조로, 심플함과 화려함의 완벽한 조화를 원하는 예비 부부에게 추천드립니다.',
+    material: '14K White / Rose / Gold',
+    workType: '주문제작',
+    delivery: '1~2주',
+    images: [
+      '/Image/ring/NN0401.webp',
+      '/Image/ring/NN0402.webp']
   },
   {
     id: 7,
@@ -132,13 +138,13 @@ export const galleryItems: GalleryItem[] = [
   {
     id: 10,
     category: 'set',
-    title: '웨딩 주얼리 컬렉션',
-    titleEn: 'Wedding Collection',
-    description: '18K 골드로 제작된 웨딩 주얼리 컬렉션입니다. 결혼예물, 결혼반지, 목걸이, 귀걸이 등을 맞춤 구성할 수 있으며, 신부 드레스와 스타일에 맞춰 상담 후 주문제작해드립니다. 종로 금은방 귀족 귀금속 도매.',
-    material: '18K 골드',
-    workType: '맞춤 제작',
+    title: '모던 듀얼 체인 패션 세트',
+    titleEn: 'Modern Dual Chain Wedding Set',
+    description: '도회적인 오벌(Oval) 쉐입과 섬세한 체인 텍스처가 조화를 이루는 프리미엄 패션 주얼리입니다. 반지는 레이어드한 듯한 볼륨감 있는 디자인이 특징이며, 목걸이와 귀걸이는 촘촘히 세팅된 스톤이 빛을 받아 신부를 더욱 화사하게 만들어줍니다. 종로 귀족 귀금속에서 예산과 스타일에 맞춰 1:1 상담 후 정성껏 주문 제작해 드립니다.',
+    material: '14K White / Rose / Gold',
+    workType: '맞춤 제작',  
     delivery: '상담 후 결정',
-    images: ['/Image/set/pexels-jeremy-wong-382920-1043902.webp']
+    images: ['/Image/set/set0101.webp', '/Image/set/set0102.webp']
   },
 ]
 
