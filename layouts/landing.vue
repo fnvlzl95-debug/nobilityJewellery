@@ -168,7 +168,46 @@
 
 @media (max-width: 500px) {
   .page-landing .process-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-width: 320px;
+    margin: 40px auto 0;
+  }
+
+  .page-landing .process-step {
+    position: relative;
+    text-align: left;
+    padding: 24px 24px 24px 56px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(201, 162, 39, 0.3);
+  }
+
+  .page-landing .process-step:last-child {
+    border-left-color: transparent;
+  }
+
+  .page-landing .process-step::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    background: #c9a227;
+    border-radius: 50%;
+  }
+
+  .page-landing .process-step .step-num {
+    position: absolute;
+    left: 20px;
+    top: 24px;
+  }
+
+  .page-landing .process-step .step-title {
+    margin-bottom: 6px;
   }
 }
 
@@ -196,9 +235,9 @@
 }
 
 .page-landing .step-desc {
-  font-size: 13px;
+  font-size: clamp(12px, 2.5vw, 14px);
   color: rgba(250, 250, 250, 0.5);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* 갤러리 그리드 */

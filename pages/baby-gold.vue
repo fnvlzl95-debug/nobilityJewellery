@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '돌반지 | 순금 돌반지 주문제작 - 귀족 종로 금은방',
+  title: '24K 순금 돌반지 주문제작 | 종로 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/baby-gold' }
   ],
@@ -12,7 +12,7 @@ useHead({
     { name: 'description', content: '순금 돌반지 주문제작 전문 귀족. 24K 순금 돌반지, 백일반지, 아기반지. 띠별 디자인(말띠, 용띠, 뱀띠) 맞춤제작. 이름 각인 가능. 종로3가 금은방 도매가 제공. 돌잔치 선물 추천.' },
     { name: 'keywords', content: '돌반지, 순금 돌반지, 돌반지 주문제작, 백일반지, 아기반지, 돌잔치 반지, 24K 돌반지, 순금 아기반지, 띠별 돌반지, 말띠 돌반지, 용띠 돌반지, 종로 돌반지, 금은방 돌반지' },
     // Open Graph
-    { property: 'og:title', content: '돌반지 | 순금 돌반지 주문제작 - 귀족 종로 금은방' },
+    { property: 'og:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
     { property: 'og:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작. 종로3가 금은방 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/baby-gold' },
@@ -21,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '돌반지 | 순금 돌반지 주문제작 - 귀족' },
+    { name: 'twitter:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
     { name: 'twitter:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/SB0101.webp' },
   ],
@@ -110,7 +110,7 @@ const processSteps = [
 
         <!-- Hero Image -->
         <div class="hero-image">
-          <img src="/Image/ring/SB0101.webp" alt="순금 돌반지 - 24K 순금 아기반지" loading="eager" />
+          <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 세트 - 돌잔치 선물용 말띠 아기반지" loading="eager" />
         </div>
 
         <!-- Why Choose -->
@@ -199,10 +199,10 @@ const processSteps = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/SB0101.webp" alt="순금 말띠 돌반지" loading="lazy" />
-            <img src="/Image/ring/SB0102.webp" alt="순금 돌반지 디자인" loading="lazy" />
-            <img src="/Image/ring/SB0103.webp" alt="24K 순금 아기반지" loading="lazy" />
-            <img src="/Image/ring/SB0104.webp" alt="백일반지" loading="lazy" />
+            <img src="/Image/ring/SB0101.webp" alt="24K 순금 말띠 돌반지 - 돌잔치용 귀금속 선물" loading="lazy" />
+            <img src="/Image/ring/SB0102.webp" alt="순금 돌반지 띠별 디자인 - 이름 각인 가능" loading="lazy" />
+            <img src="/Image/ring/SB0103.webp" alt="99.9% 순금 아기반지 - 종로 금은방 도매가" loading="lazy" />
+            <img src="/Image/ring/SB0104.webp" alt="백일반지 순금 세트 - 백일 선물용 귀금속" loading="lazy" />
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">

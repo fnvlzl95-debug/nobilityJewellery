@@ -3,14 +3,15 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { faqItems, faqCategories, generateFAQSchema } from '~/data/faq-items'
 
 useHead({
-  title: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매',
+  title: 'FAQ | 도매·주문제작·수리 안내 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/faq' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매 주문방법, 돌반지 주문제작, 커플링, 결혼예물, 반지 사이즈 조절, 귀금속 수리, A/S, 배송, 주차 안내. 종로3가 금은방 자주 묻는 질문.' },
+    { name: 'keywords', content: '귀금속 FAQ, 금반지 AS, 수리 기간, 주문제작 기간, 도매 조건, 금 시세, 반지 사이즈, 종로 금은방' },
     // Open Graph
-    { property: 'og:title', content: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매' },
+    { property: 'og:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/faq' },
@@ -19,7 +20,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '자주 묻는 질문 | 귀족 - 종로 귀금속 도매' },
+    { name: 'twitter:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -74,20 +75,6 @@ onUnmounted(() => {
   <div class="page">
     <!-- Custom Cursor -->
     <CustomCursor />
-
-    <!-- Navigation -->
-    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links">
-        <NuxtLink to="/" class="nav-link">홈</NuxtLink>
-        <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link active">FAQ</NuxtLink>
-        <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
-      </div>
-    </nav>
 
     <!-- Main Content -->
     <main class="main">
@@ -176,69 +163,6 @@ onUnmounted(() => {
   width: 100%;
 }
 
-/* ===== Navigation ===== */
-.nav-luxury {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px clamp(20px, 5vw, 60px);
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.04);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 16px clamp(20px, 5vw, 60px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  gap: 2px;
-}
-
-.logo-text {
-  font-family: 'JeonjuCraftMyungjo';
-  font-size: 22px;
-  font-weight: 700;
-  color: #fafafa;
-  letter-spacing: 0.15em;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.nav-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.6);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.3s;
-  padding: 8px 4px;
-  position: relative;
-  z-index: 10;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: #fafafa;
-}
-
 /* ===== Main Content ===== */
 .main {
   flex: 1;
@@ -306,6 +230,7 @@ onUnmounted(() => {
 }
 
 .category-btn {
+  min-height: 44px;
   padding: 10px 20px;
   font-family: 'JeonjuCraftMyungjo';
   font-size: 13px;
@@ -464,32 +389,4 @@ onUnmounted(() => {
   }
 }
 
-/* ===== Mobile Navigation ===== */
-@media (max-width: 1023px) {
-  .nav-luxury {
-    padding: 16px 20px;
-  }
-
-  .nav-luxury.scrolled {
-    padding: 12px 20px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-links {
-    gap: 12px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-  }
-}
 </style>

@@ -4,14 +4,15 @@ definePageMeta({
 })
 
 useHead({
-  title: '도매 안내 | 귀족 - 종로 귀금속 도매상',
+  title: '귀금속 도매 안내 | 거래·주문 방법 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/wholesale' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 전문 귀족. 금반지 도매, 결혼예물 도매, 14K 18K 24K 순금 도매. 소량 도매 가능, 대량 주문 할인. 소매상, 온라인 셀러, 기업 납품. 종로3가 귀금속 도매상.' },
+    { name: 'keywords', content: '귀금속 도매, 금반지 도매, 종로 도매, B2B 귀금속, 소매점 납품, 도매 거래, 결혼예물 도매' },
     // Open Graph
-    { property: 'og:title', content: '도매 안내 | 귀족 - 종로 귀금속 도매상' },
+    { property: 'og:title', content: '귀금속 도매 안내 | 거래·주문 방법 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능, 대량 주문 할인. 종로3가 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/wholesale' },
@@ -20,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '도매 안내 | 귀족 - 종로 귀금속 도매상' },
+    { name: 'twitter:title', content: '귀금속 도매 안내 | 거래·주문 방법 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능. 종로3가 귀금속 도매상.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -543,9 +544,9 @@ const products = [
 }
 
 .step-desc {
-  font-size: 12px;
+  font-size: clamp(12px, 2.5vw, 14px);
   color: rgba(250, 250, 250, 0.5);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .step-arrow {
@@ -567,14 +568,45 @@ const products = [
 
   .process-steps {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: 0;
+    max-width: 320px;
+    margin: 40px auto 0;
   }
 
   .step {
+    position: relative;
     max-width: 100%;
-    padding: 20px;
-    background: rgba(250, 250, 250, 0.02);
-    border: 1px solid rgba(250, 250, 250, 0.06);
+    padding: 24px 24px 24px 56px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(201, 162, 39, 0.3);
+    text-align: left;
+  }
+
+  .step:last-child {
+    border-left-color: transparent;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    background: #c9a227;
+    border-radius: 50%;
+  }
+
+  .step-num {
+    position: absolute;
+    left: 20px;
+    top: 24px;
+  }
+
+  .step-title {
+    margin-bottom: 6px;
   }
 }
 
@@ -629,7 +661,7 @@ const products = [
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 32px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
   color: #fafafa;
@@ -642,6 +674,7 @@ const products = [
 .btn-outline:hover {
   border-color: #c9a227;
   color: #c9a227;
+  transform: translateY(-2px);
 }
 
 /* Location Info */

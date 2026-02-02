@@ -4,14 +4,15 @@ definePageMeta({
 })
 
 useHead({
-  title: '주문제작 | 귀족 - 종로 귀금속 맞춤제작',
+  title: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/custom' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 주문제작 전문 귀족. 커플링 주문제작, 돌반지 맞춤제작, 결혼반지 맞춤, 금반지 주문제작. 30년 경력 장인이 직접 세공. 디자인 상담부터 제작까지. 종로3가 금은방.' },
+    { name: 'keywords', content: '금반지 주문제작, 맞춤 반지, 이니셜 각인, 14K 주문제작, 18K 주문제작, 종로 주문제작, 커플링 맞춤' },
     // Open Graph
-    { property: 'og:title', content: '주문제작 | 귀족 - 종로 귀금속 맞춤제작' },
+    { property: 'og:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작. 30년 경력 장인 직접 세공.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/custom' },
@@ -20,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '주문제작 | 귀족 - 종로 귀금속 맞춤제작' },
+    { name: 'twitter:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -183,10 +184,10 @@ const advantages = [
         <div class="gallery-section">
           <h2 class="section-title">주문제작 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/NS0102.webp" alt="주문제작 반지" loading="lazy" />
-            <img src="/Image/ring/NN0103.webp" alt="커플링 주문제작" loading="lazy" />
-            <img src="/Image/ring/SB0101.webp" alt="돌반지 주문제작" loading="lazy" />
-            <img src="/Image/ring/NN0101.webp" alt="맞춤 제작 반지" loading="lazy" />
+            <img src="/Image/ring/NS0102.webp" alt="14K 다이아몬드 솔리테어 반지 - 주문제작 가능" loading="lazy" />
+            <img src="/Image/ring/NN0103.webp" alt="14K 골드 커플링 주문제작 - 이니셜 각인 가능" loading="lazy" />
+            <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작 - 띠별 디자인" loading="lazy" />
+            <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 맞춤 반지 - 사이즈 조절 가능" loading="lazy" />
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">
@@ -446,7 +447,46 @@ const advantages = [
 
 @media (max-width: 500px) {
   .process-steps {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .step {
+    position: relative;
+    text-align: left;
+    padding: 24px 24px 24px 56px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(201, 162, 39, 0.3);
+  }
+
+  .step:last-child {
+    border-left-color: transparent;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    background: #c9a227;
+    border-radius: 50%;
+  }
+
+  .step-num {
+    position: absolute;
+    left: 20px;
+    top: 24px;
+  }
+
+  .step-title {
+    margin-bottom: 6px;
   }
 }
 
@@ -474,9 +514,9 @@ const advantages = [
 }
 
 .step-desc {
-  font-size: 13px;
+  font-size: clamp(12px, 2.5vw, 14px);
   color: rgba(250, 250, 250, 0.5);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* Materials */
@@ -619,7 +659,7 @@ const advantages = [
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 32px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
   color: #fafafa;
@@ -632,6 +672,7 @@ const advantages = [
 .btn-outline:hover {
   border-color: #c9a227;
   color: #c9a227;
+  transform: translateY(-2px);
 }
 
 /* Location Info */

@@ -45,6 +45,9 @@ const handleKakaoClick = () => {
         <span>카카오톡 문의</span>
       </a>
       <NuxtLink to="/contact" class="btn-outline" @click="handleInquiryClick">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
         <span>온라인 문의</span>
       </NuxtLink>
     </div>
@@ -76,22 +79,47 @@ const handleKakaoClick = () => {
 
 .cta-buttons {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.btn-gold {
+.btn-gold,
+.btn-kakao,
+.btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
+  justify-content: center;
+  gap: 8px;
+  min-width: 160px;
+  height: 52px;
+  padding: 0 24px;
   font-size: 14px;
   font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+@media (max-width: 600px) {
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .btn-gold,
+  .btn-kakao,
+  .btn-outline {
+    min-width: 100%;
+    width: 100%;
+  }
+}
+
+.btn-gold {
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
-  text-decoration: none;
-  transition: all 0.3s;
 }
 
 .btn-gold:hover {
@@ -100,16 +128,8 @@ const handleKakaoClick = () => {
 }
 
 .btn-kakao {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 700;
   color: #3C1E1E;
   background: #FEE500;
-  text-decoration: none;
-  transition: all 0.3s;
 }
 
 .btn-kakao:hover {
@@ -118,21 +138,14 @@ const handleKakaoClick = () => {
 }
 
 .btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 32px;
-  font-size: 14px;
-  font-weight: 700;
   color: #fafafa;
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.3);
-  text-decoration: none;
-  transition: all 0.3s;
+  border-color: rgba(250, 250, 250, 0.3);
 }
 
 .btn-outline:hover {
   border-color: #c9a227;
   color: #c9a227;
+  transform: translateY(-2px);
 }
 </style>

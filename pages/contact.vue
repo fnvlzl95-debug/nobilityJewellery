@@ -2,14 +2,15 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 useHead({
-  title: '문의하기 | 귀족 - 종로 귀금속 도매',
+  title: '도매·주문제작·수리 상담 | 종로 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/contact' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 결혼예물 상담, 귀금속 수리·세공. 반지 사이즈 조절. 전화 02-766-4789 / 종로3가 금은방.' },
+    { name: 'keywords', content: '종로 금은방 문의, 귀금속 상담, 도매 문의, 주문제작 상담, 수리 문의, 금 매입 문의, 종로3가 금은방' },
     // Open Graph
-    { property: 'og:title', content: '문의하기 | 귀족 - 종로 귀금속 도매' },
+    { property: 'og:title', content: '도매·주문제작·수리 상담 | 종로 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/contact' },
@@ -18,7 +19,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '문의하기 | 귀족 - 종로 귀금속 도매' },
+    { name: 'twitter:title', content: '도매·주문제작·수리 상담 | 종로 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -118,20 +119,6 @@ const handleSubmit = async () => {
     <!-- Custom Cursor -->
     <CustomCursor />
 
-    <!-- Navigation -->
-    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links">
-        <NuxtLink to="/" class="nav-link">홈</NuxtLink>
-        <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
-        <NuxtLink to="/contact" class="nav-link active">문의하기</NuxtLink>
-      </div>
-    </nav>
-
     <!-- Main Content -->
     <main class="main">
       <div class="contact-wrapper">
@@ -145,7 +132,7 @@ const handleSubmit = async () => {
               무엇이든 편하게 연락주세요.
             </p>
 
-            <a href="tel:02-747-0004" class="phone-cta">
+            <a href="tel:02-766-4789" class="phone-cta">
               <div class="phone-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -153,7 +140,7 @@ const handleSubmit = async () => {
               </div>
               <div class="phone-text">
                 <span class="phone-label">전화 상담</span>
-                <span class="phone-number">02-747-0004</span>
+                <span class="phone-number">02-766-4789</span>
               </div>
               <div class="phone-arrow">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -293,70 +280,6 @@ const handleSubmit = async () => {
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
-}
-
-/* ===== Navigation ===== */
-.nav-luxury {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px clamp(20px, 5vw, 60px);
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.04);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 16px clamp(20px, 5vw, 60px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  gap: 2px;
-}
-
-.logo-text {
-  font-family: 'JeonjuCraftMyungjo';
-  font-size: 22px;
-  font-weight: 700;
-  color: #fafafa;
-  letter-spacing: 0.15em;
-}
-
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.nav-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.6);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.3s;
-  padding: 8px 4px;
-  position: relative;
-  z-index: 10;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: #fafafa;
 }
 
 /* ===== Main Content ===== */
@@ -737,46 +660,22 @@ const handleSubmit = async () => {
 }
 
 .btn-submit {
-  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 18px 32px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.08em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
   border: none;
   cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.25);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-submit::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #e5c654 0%, #d4af37 100%);
-  opacity: 0;
-  transition: opacity 0.4s;
-  z-index: 0;
-}
-
-.btn-submit span,
-.btn-submit svg {
-  position: relative;
-  z-index: 1;
+  transition: all 0.3s;
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(201, 162, 39, 0.35);
-}
-
-.btn-submit:hover:not(:disabled)::before {
-  opacity: 1;
+  box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3);
 }
 
 .btn-submit:disabled {
@@ -869,32 +768,4 @@ const handleSubmit = async () => {
   }
 }
 
-/* ===== Mobile Navigation ===== */
-@media (max-width: 1023px) {
-  .nav-luxury {
-    padding: 16px 20px;
-  }
-
-  .nav-luxury.scrolled {
-    padding: 12px 20px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-links {
-    gap: 12px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-  }
-}
 </style>

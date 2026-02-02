@@ -78,7 +78,7 @@ const footerLinks = [
 }
 
 .footer-nav a {
-  font-size: 13px;
+  font-size: clamp(13px, 2vw, 15px);
   color: rgba(250, 250, 250, 0.5);
   text-decoration: none;
   transition: color 0.3s;

@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '결혼예물 | 예물 세트 주문제작 - 귀족 종로 금은방',
+  title: '결혼예물 세트·커플링 | 종로 예물 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/wedding' }
   ],
@@ -12,7 +12,7 @@ useHead({
     { name: 'description', content: '결혼예물 주문제작 전문 귀족. 결혼반지, 예물 세트, 시댁예물, 처가예물. 18K 골드, 다이아몬드 예물. 30년 장인 직접 세공. 종로3가 금은방 도매가. 신부예물, 신랑예물 맞춤 구성.' },
     { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
-    { property: 'og:title', content: '결혼예물 | 예물 세트 주문제작 - 귀족 종로 금은방' },
+    { property: 'og:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
     { property: 'og:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/wedding' },
@@ -21,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '결혼예물 | 예물 세트 주문제작 - 귀족' },
+    { name: 'twitter:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
     { name: 'twitter:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/set0101.webp' },
   ],
@@ -117,7 +117,7 @@ const processSteps = [
 
         <!-- Hero Image -->
         <div class="hero-image">
-          <img src="/Image/set/set0101.webp" alt="결혼예물 세트 - 웨딩 주얼리" loading="eager" />
+          <img src="/Image/set/set0101.webp" alt="14K/18K 결혼예물 세트 - 반지, 목걸이, 귀걸이 컬렉션" loading="eager" />
         </div>
 
         <!-- Advantages -->
@@ -234,10 +234,10 @@ const processSteps = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/set/set0101.webp" alt="결혼예물 세트" loading="lazy" />
-            <img src="/Image/set/set0102.webp" alt="신부 예물" loading="lazy" />
-            <img src="/Image/set/set0201.webp" alt="웨딩 주얼리" loading="lazy" />
-            <img src="/Image/set/set0202.webp" alt="예물 반지" loading="lazy" />
+            <img src="/Image/set/set0101.webp" alt="14K 결혼예물 세트 - 종로 금은방 도매가" loading="lazy" />
+            <img src="/Image/set/set0102.webp" alt="신부 예물 - 다이아몬드 목걸이, 귀걸이 세트" loading="lazy" />
+            <img src="/Image/set/set0201.webp" alt="웨딩 주얼리 컬렉션 - 맞춤 제작 가능" loading="lazy" />
+            <img src="/Image/set/set0202.webp" alt="결혼 예물 반지 - 이니셜 각인 서비스" loading="lazy" />
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">
@@ -366,11 +366,45 @@ const processSteps = [
 .process-section { margin-bottom: 80px; }
 .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 @media (max-width: 800px) { .process-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 500px) { .process-grid { grid-template-columns: 1fr; } }
+@media (max-width: 500px) {
+  .process-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .process-step {
+    position: relative;
+    text-align: left;
+    padding: 24px 24px 24px 56px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(201, 162, 39, 0.3);
+  }
+  .process-step:last-child { border-left-color: transparent; }
+  .process-step::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    background: #c9a227;
+    border-radius: 50%;
+  }
+  .process-step .step-num {
+    position: absolute;
+    left: 20px;
+    top: 24px;
+  }
+  .process-step .step-title { margin-bottom: 6px; }
+}
 .process-step { text-align: center; padding: 24px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); }
 .step-num { display: inline-block; font-size: 12px; font-weight: 700; color: #c9a227; letter-spacing: 0.1em; margin-bottom: 12px; }
 .step-title { font-size: 16px; font-weight: 700; color: #fafafa; margin-bottom: 8px; }
-.step-desc { font-size: 13px; color: rgba(250, 250, 250, 0.5); line-height: 1.5; }
+.step-desc { font-size: clamp(12px, 2.5vw, 14px); color: rgba(250, 250, 250, 0.5); line-height: 1.6; }
 
 /* Checklist */
 .checklist-section { margin-bottom: 80px; }
@@ -407,8 +441,8 @@ const processSteps = [
 .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 .btn-gold { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #0a0a0a; background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%); text-decoration: none; transition: all 0.3s; }
 .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3); }
-.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 15px 32px; font-size: 14px; font-weight: 700; color: #fafafa; background: transparent; border: 1px solid rgba(250, 250, 250, 0.3); text-decoration: none; transition: all 0.3s; }
-.btn-outline:hover { border-color: #c9a227; color: #c9a227; }
+.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #fafafa; background: transparent; border: 1px solid rgba(250, 250, 250, 0.3); text-decoration: none; transition: all 0.3s; }
+.btn-outline:hover { border-color: #c9a227; color: #c9a227; transform: translateY(-2px); }
 
 /* Location */
 .location-info { text-align: center; padding: 32px; border-top: 1px solid rgba(250, 250, 250, 0.06); }

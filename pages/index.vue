@@ -20,14 +20,15 @@ const handleKakaoClick = () => {
 const previewItems = getPreviewItems(6)
 
 useHead({
-  title: '귀족 | 종로 귀금속 도매',
+  title: '종로 귀금속 도매·주문제작 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/' }
   ],
   meta: [
     { name: 'description', content: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 순금 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌 도매. 종로3가 금은방, 귀금속 수리·세공.' },
+    { name: 'keywords', content: '종로 금은방, 귀금속 도매, 금반지 도매, 종로3가 금은방, 귀족 귀금속, 금반지 주문제작, 귀금속 수리, 금 매입, 돌반지, 커플링, 결혼예물' },
     // Open Graph
-    { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
+    { property: 'og:title', content: '종로 귀금속 도매·주문제작 | 귀족' },
     { property: 'og:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방, 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com' },
@@ -36,7 +37,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '귀족 | 종로 귀금속 도매' },
+    { name: 'twitter:title', content: '종로 귀금속 도매·주문제작 | 귀족' },
     { name: 'twitter:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -203,107 +204,12 @@ onUnmounted(() => {
     <!-- Custom Cursor -->
     <CustomCursor />
 
-    <!-- Navigation -->
-    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links desktop-nav">
-        <button @click="scrollTo('about')" class="nav-link">소개</button>
-        <button @click="scrollTo('services')" class="nav-link">취급품목</button>
-        <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
-        <button @click="scrollTo('location')" class="nav-link">오시는 길</button>
-        <NuxtLink to="/contact" class="nav-cta">
-          <span>문의하기</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </NuxtLink>
-      </div>
-      <button class="nav-toggle" @click="isMenuOpen = !isMenuOpen" aria-label="메뉴" :class="{ active: isMenuOpen }">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </nav>
-
-    <!-- Mobile Menu (separate from nav to avoid transform issues) -->
-    <Teleport to="body">
-      <Transition name="menu-fade">
-        <div v-if="isMenuOpen" class="mobile-menu-overlay">
-          <!-- Close Button -->
-          <button class="mobile-menu-close" @click="isMenuOpen = false" aria-label="닫기">
-            <span></span>
-            <span></span>
-          </button>
-
-          <!-- Menu Content -->
-          <div class="mobile-menu">
-            <!-- Brand -->
-            <div class="mobile-menu-brand">
-              <span class="mobile-menu-brand-text">귀족</span>
-              <span class="mobile-menu-brand-line"></span>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="mobile-menu-nav">
-              <button @click="scrollTo('about')" class="mobile-menu-link">
-                <span class="mobile-menu-link-num">01</span>
-                <span class="mobile-menu-link-text">소개</span>
-              </button>
-              <button @click="scrollTo('services')" class="mobile-menu-link">
-                <span class="mobile-menu-link-num">02</span>
-                <span class="mobile-menu-link-text">취급품목</span>
-              </button>
-              <NuxtLink to="/gallery" class="mobile-menu-link" @click="isMenuOpen = false">
-                <span class="mobile-menu-link-num">03</span>
-                <span class="mobile-menu-link-text">갤러리</span>
-              </NuxtLink>
-              <NuxtLink to="/buy-gold" class="mobile-menu-link" @click="isMenuOpen = false">
-                <span class="mobile-menu-link-num">04</span>
-                <span class="mobile-menu-link-text">금 매입</span>
-              </NuxtLink>
-              <NuxtLink to="/faq" class="mobile-menu-link" @click="isMenuOpen = false">
-                <span class="mobile-menu-link-num">05</span>
-                <span class="mobile-menu-link-text">FAQ</span>
-              </NuxtLink>
-              <button @click="scrollTo('location')" class="mobile-menu-link">
-                <span class="mobile-menu-link-num">06</span>
-                <span class="mobile-menu-link-text">오시는 길</span>
-              </button>
-            </nav>
-
-            <!-- CTA -->
-            <div class="mobile-menu-footer">
-              <NuxtLink to="/contact" class="mobile-menu-cta" @click="isMenuOpen = false">
-                <span>문의하기</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </NuxtLink>
-              <a href="tel:02-766-4789" class="mobile-menu-phone" @click="handlePhoneClick">
-                02-766-4789
-              </a>
-            </div>
-          </div>
-
-          <!-- Decorative Elements -->
-          <div class="mobile-menu-decor">
-            <div class="mobile-menu-decor-line"></div>
-            <div class="mobile-menu-decor-glow"></div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
-
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
         <img
           src="/Image/ring/NS0102.webp"
-          alt="귀족 - 종로 귀금속 도매 전문점"
+          alt="14K 다이아몬드 솔리테어 반지 - 귀족 종로 귀금속 대표 상품"
           class="hero-image"
           fetchpriority="high"
         />
@@ -355,7 +261,7 @@ onUnmounted(() => {
             <div class="visual-frame reveal reveal-left">
               <NuxtImg
                 src="/Image/ring/pexels-leah-newhouse-50725-691046.webp"
-                alt="귀금속 반지 세공 작업"
+                alt="장인의 귀금속 세공 작업 - 30년 경력 종로 금은방에서 직접 제작"
                 format="webp"
                 quality="95"
                 sizes="sm:100vw md:50vw lg:600px"
@@ -607,7 +513,7 @@ onUnmounted(() => {
             <div class="repair-image-wrap">
               <NuxtImg
                 src="/Image/ring/pexels-leah-newhouse-50725-691046.webp"
-                alt="귀금속 수리 및 세공 작업"
+                alt="반지 사이즈 조절 및 귀금속 수리 작업 - 당일 수리 가능"
                 format="webp"
                 quality="95"
                 sizes="sm:100vw md:50vw lg:500px"
@@ -733,37 +639,15 @@ onUnmounted(() => {
             도매 상담, 주문 제작, 수리 문의 등<br>
             무엇이든 편하게 연락주세요.
           </p>
-          <div class="cta-buttons reveal reveal-delay-2">
-            <a href="tel:02-766-4789" class="btn-gold btn-lg" @click="handlePhoneClick">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              <span>전화 상담</span>
-            </a>
-            <a href="https://open.kakao.com/o/sc8gQx8h" target="_blank" rel="noopener" class="btn-kakao btn-lg" @click="handleKakaoClick">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
-              </svg>
-              <span>카카오톡</span>
-            </a>
-            <NuxtLink to="/contact" class="btn-outline-light btn-lg" @click="handleInquiryClick">
-              <span>온라인 문의</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </NuxtLink>
-          </div>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container-lg">
+      <div class="footer-inner">
         <div class="footer-top">
-          <div class="footer-brand">
-            <span class="brand-name">귀족</span>
-          </div>
+          <NuxtLink to="/" class="footer-brand">귀족</NuxtLink>
           <div class="footer-nav">
             <NuxtLink to="/">홈</NuxtLink>
             <NuxtLink to="/gallery">갤러리</NuxtLink>
@@ -779,7 +663,7 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="footer-info">
-          <span class="business-info">대표: 박승태 | 사업자등록번호: 101-09-26010</span>
+          <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
         </div>
         <div class="footer-bottom">
           <span class="copyright">© 2024 귀족. All rights reserved.</span>
@@ -803,6 +687,9 @@ onUnmounted(() => {
         <span>카톡</span>
       </a>
       <NuxtLink to="/contact" class="mobile-btn mobile-btn-secondary" @click="handleInquiryClick">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
         <span>문의</span>
       </NuxtLink>
     </div>
@@ -1651,11 +1538,10 @@ onUnmounted(() => {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px 36px;
+  gap: 10px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.08em;
   color: #0a0a0a;
   background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
   border: none;
@@ -1663,7 +1549,7 @@ onUnmounted(() => {
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(201, 162, 39, 0.25);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s;
 }
 
 .btn-gold::before {
@@ -1692,23 +1578,41 @@ onUnmounted(() => {
 }
 
 .btn-kakao {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px 36px;
+  gap: 10px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
   color: #3C1E1E;
   background: #FEE500;
   text-decoration: none;
-  transition: all 0.4s var(--ease-out-expo);
-  overflow: hidden;
+  transition: all 0.3s;
 }
 
 .btn-kakao:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(254, 229, 0, 0.35);
+  box-shadow: 0 8px 24px rgba(254, 229, 0, 0.3);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fafafa;
+  background: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.3);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-outline:hover {
+  border-color: #c9a227;
+  color: #c9a227;
+  transform: translateY(-2px);
 }
 
 /* ===== Gallery Section ===== */
@@ -1930,7 +1834,7 @@ onUnmounted(() => {
 
 /* ===== Buy Gold Section ===== */
 .section-buy-gold {
-  padding: 120px 0;
+  padding: 160px 0;
   background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
   text-align: center;
 }
@@ -2129,7 +2033,7 @@ onUnmounted(() => {
 /* ===== CTA Section ===== */
 .section-cta {
   position: relative;
-  padding: 180px 0;
+  padding: 160px 0;
   overflow: hidden;
 }
 
@@ -2174,62 +2078,22 @@ onUnmounted(() => {
 
 .cta-buttons {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.btn-lg {
-  padding: 20px 44px;
-  font-size: 15px;
-}
-
-.btn-outline-light {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 17px 36px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #fafafa;
-  background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.25);
-  text-decoration: none;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-outline-light::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(250, 250, 250, 0.08);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-outline-light:hover {
-  border-color: rgba(250, 250, 250, 0.6);
-}
-
-.btn-outline-light:hover::before {
-  transform: scaleX(1);
-}
-
-.btn-outline-light span,
-.btn-outline-light svg {
-  position: relative;
-  z-index: 1;
-}
 
 /* ===== Footer ===== */
 .footer {
   background: #050505;
-  padding: 60px 0;
+  padding: 48px clamp(20px, 5vw, 60px);
   border-top: 1px solid rgba(250, 250, 250, 0.05);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-top {
@@ -2237,40 +2101,28 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 32px;
-  margin-bottom: 40px;
-  padding-bottom: 40px;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
   border-bottom: 1px solid rgba(250, 250, 250, 0.05);
 }
 
 .footer-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.brand-name {
-  font-family: 'JeonjuCraftMyungjo';
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #fafafa;
+  text-decoration: none;
   letter-spacing: 0.1em;
-}
-
-.brand-sub {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: #c9a227;
 }
 
 .footer-nav {
   display: flex;
-  gap: 32px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .footer-nav a {
-  font-size: 14px;
+  font-size: clamp(13px, 2vw, 15px);
   color: rgba(250, 250, 250, 0.5);
   text-decoration: none;
   transition: color 0.3s;
@@ -2281,14 +2133,12 @@ onUnmounted(() => {
 }
 
 .footer-info {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.05);
+  margin-bottom: 16px;
 }
 
-.business-info {
+.footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(250, 250, 250, 0.4);
 }
 
 .footer-bottom {
@@ -2300,15 +2150,14 @@ onUnmounted(() => {
 }
 
 .copyright {
-  font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.4);
 }
 
 .privacy-link {
-  font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.4);
   text-decoration: none;
-  transition: color 0.3s;
 }
 
 .privacy-link:hover {
@@ -2323,7 +2172,7 @@ onUnmounted(() => {
   right: 0;
   z-index: 100;
   display: flex;
-  gap: 1px;
+  gap: 8px;
   background: #0a0a0a;
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2347,27 +2196,33 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 16px;
+  height: 52px;
+  padding: 0 16px;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
+  border: none;
   transition: all 0.3s;
 }
 
-.mobile-btn-primary {
-  background: #c9a227;
-  color: #0a0a0a;
+.mobile-btn svg {
+  flex-shrink: 0;
 }
 
-.mobile-btn-secondary {
-  background: transparent;
-  color: #fafafa;
-  border: 1px solid rgba(250, 250, 250, 0.2);
+.mobile-btn-primary {
+  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  color: #0a0a0a;
 }
 
 .mobile-btn-kakao {
   background: #FEE500;
   color: #3C1E1E;
+}
+
+.mobile-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.3);
+  color: #fafafa;
 }
 
 /* ===== Reveal Animations ===== */

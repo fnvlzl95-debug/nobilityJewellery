@@ -4,14 +4,15 @@ definePageMeta({
 })
 
 useHead({
-  title: '수리/AS 안내 | 귀족 - 종로 귀금속 수리 전문',
+  title: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/repair' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 수리 전문 귀족. 반지 사이즈 조절, 목걸이 체인 수리, 귀걸이 침 교체, 금 세척·광택. 30년 경력 장인이 직접 수리. 종로3가 금은방.' },
+    { name: 'keywords', content: '금반지 수리, 귀금속 AS, 사이즈 조절, 광택, 도금, 종로 귀금속 수리, 체인 수리, 금 세척' },
     // Open Graph
-    { property: 'og:title', content: '수리/AS 안내 | 귀족 - 종로 귀금속 수리 전문' },
+    { property: 'og:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/repair' },
@@ -20,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '수리/AS 안내 | 귀족 - 종로 귀금속 수리 전문' },
+    { name: 'twitter:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -456,7 +457,7 @@ const repairServices = [
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 32px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
   color: #fafafa;
@@ -469,6 +470,7 @@ const repairServices = [
 .btn-outline:hover {
   border-color: #c9a227;
   color: #c9a227;
+  transform: translateY(-2px);
 }
 
 /* Location Info */

@@ -33,10 +33,10 @@ export const siteConfig = {
 
   // 영업시간
   hours: {
-    display: '평일/토요일 10:30~18:00 (일요일·공휴일 휴무)',
+    display: '매일 10:30~18:30 (매달 셋째 주 화요일 휴무)',
     open: '10:30',
-    close: '18:00',
-    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    close: '18:30',
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
   },
 
   // 도메인 & URL

@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '금 매입 | 금·은 귀금속 매입 - 귀족 종로 금은방',
+  title: '금·은 매입 | 종로 고가매입 상담 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/buy-gold' }
   ],
@@ -12,7 +12,7 @@ useHead({
     { name: 'description', content: '종로 금 매입 전문 귀족. 금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K 매입. 은 매입, 백금 매입. 당일 현금 지급. 정확한 시세 적용, 투명한 거래. 종로3가 금은방.' },
     { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
     // Open Graph
-    { property: 'og:title', content: '금 매입 | 금·은 귀금속 매입 - 귀족 종로 금은방' },
+    { property: 'og:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
     { property: 'og:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바, 순금, 18K, 14K 매입. 당일 현금 지급. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/buy-gold' },
@@ -21,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '금 매입 | 금·은 귀금속 매입 - 귀족' },
+    { name: 'twitter:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
     { name: 'twitter:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바 매입. 당일 현금 지급.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
   ],
@@ -469,9 +469,9 @@ const buyItems = [
 }
 
 .step-desc {
-  font-size: 12px;
+  font-size: clamp(12px, 2.5vw, 14px);
   color: rgba(250, 250, 250, 0.5);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .step-arrow {
@@ -493,14 +493,45 @@ const buyItems = [
 
   .process-steps {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: 0;
+    max-width: 320px;
+    margin: 40px auto 0;
   }
 
   .step {
+    position: relative;
     max-width: 100%;
-    padding: 20px;
-    background: rgba(250, 250, 250, 0.02);
-    border: 1px solid rgba(250, 250, 250, 0.06);
+    padding: 24px 24px 24px 56px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(201, 162, 39, 0.3);
+    text-align: left;
+  }
+
+  .step:last-child {
+    border-left-color: transparent;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    background: #c9a227;
+    border-radius: 50%;
+  }
+
+  .step-num {
+    position: absolute;
+    left: 20px;
+    top: 24px;
+  }
+
+  .step-title {
+    margin-bottom: 6px;
   }
 }
 
@@ -591,7 +622,7 @@ const buyItems = [
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 32px;
+  padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
   color: #fafafa;
@@ -604,6 +635,7 @@ const buyItems = [
 .btn-outline:hover {
   border-color: #c9a227;
   color: #c9a227;
+  transform: translateY(-2px);
 }
 
 /* Location Info */

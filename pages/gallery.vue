@@ -4,14 +4,15 @@ import Lenis from 'lenis'
 import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
 
 useHead({
-  title: '갤러리 | 귀족 - 종로 귀금속 도매',
+  title: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/gallery' }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 순금 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌. 종로3가 금은방 주얼리 컬렉션.' },
+    { name: 'keywords', content: '금반지 갤러리, 귀금속 작품, 주문제작 반지, 커플링, 돌반지, 결혼예물, 금목걸이, 금팔찌, 종로 금은방' },
     // Open Graph
-    { property: 'og:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
+    { property: 'og:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/gallery' },
@@ -20,9 +21,47 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '갤러리 | 귀족 - 종로 귀금속 도매' },
+    { name: 'twitter:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: '귀족 귀금속 갤러리',
+        description: '종로 귀금속 전문점 귀족의 작품 갤러리. 금반지, 커플링, 돌반지, 결혼예물 컬렉션.',
+        url: 'https://noblessegold.com/gallery',
+        numberOfItems: galleryItems.length,
+        itemListElement: galleryItems.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'Product',
+            name: item.title,
+            description: item.description,
+            image: `https://noblessegold.com${item.images[0]}`,
+            material: item.material,
+            brand: {
+              '@type': 'Brand',
+              name: '귀족'
+            },
+            offers: {
+              '@type': 'Offer',
+              availability: 'https://schema.org/InStock',
+              priceCurrency: 'KRW',
+              seller: {
+                '@type': 'LocalBusiness',
+                name: '귀족',
+                telephone: '+82-2-766-4789'
+              }
+            }
+          }
+        }))
+      })
+    }
   ]
 })
 
@@ -141,20 +180,6 @@ onUnmounted(() => {
   <div class="page">
     <!-- Custom Cursor -->
     <CustomCursor />
-
-    <!-- Navigation -->
-    <nav class="nav-luxury" :class="{ scrolled: isScrolled }">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links">
-        <NuxtLink to="/" class="nav-link">홈</NuxtLink>
-        <NuxtLink to="/gallery" class="nav-link active">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
-        <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
-      </div>
-    </nav>
 
     <!-- Main Content -->
     <main class="main">
@@ -435,70 +460,6 @@ onUnmounted(() => {
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
-}
-
-/* ===== Navigation ===== */
-.nav-luxury {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px clamp(20px, 5vw, 60px);
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.04);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 16px clamp(20px, 5vw, 60px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  gap: 2px;
-}
-
-.logo-text {
-  font-family: 'JeonjuCraftMyungjo';
-  font-size: 22px;
-  font-weight: 700;
-  color: #fafafa;
-  letter-spacing: 0.15em;
-}
-
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.nav-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.6);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.3s;
-  padding: 8px 4px;
-  position: relative;
-  z-index: 10;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: #fafafa;
 }
 
 /* ===== Main Layout ===== */
@@ -1039,22 +1000,6 @@ onUnmounted(() => {
 
 /* ===== Mobile Adjustments ===== */
 @media (max-width: 1023px) {
-  .nav-luxury {
-    padding: 16px 20px;
-  }
-
-  .nav-luxury.scrolled {
-    padding: 12px 20px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-
   .main {
     padding-top: 70px;
   }
@@ -1178,14 +1123,6 @@ onUnmounted(() => {
 
 /* ===== Small Mobile ===== */
 @media (max-width: 480px) {
-  .nav-links {
-    gap: 12px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-  }
-
   .index-column {
     padding: 16px 16px 80px;
   }

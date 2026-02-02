@@ -2,7 +2,7 @@
   <div class="location-info">
     <h4>방문 안내</h4>
     <p class="address">서울 종로구 종로 173 종묘귀금속백화점 101호</p>
-    <p class="hours">영업시간: 평일/토요일 10:30~18:00 (일요일·공휴일 휴무)</p>
+    <p class="hours">영업시간: 매일 10:30~18:30 (매달 셋째 주 화요일 휴무)</p>
   </div>
 </template>
 
@@ -14,7 +14,7 @@
 }
 
 .location-info h4 {
-  font-size: 14px;
+  font-size: clamp(14px, 3vw, 18px);
   font-weight: 700;
   letter-spacing: 0.1em;
   color: #c9a227;

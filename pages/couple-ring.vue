@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '커플링 | 커플링 주문제작 - 귀족 종로 금은방',
+  title: '14K/18K 커플링 맞춤제작 | 종로 | 귀족',
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/couple-ring' }
   ],
@@ -12,7 +12,7 @@ useHead({
     { name: 'description', content: '커플링 주문제작 전문 귀족. 14K 18K 커플링, 이니셜 각인, 기념일 각인. 화이트골드, 로즈골드, 옐로우골드. 30년 장인 직접 세공. 종로3가 금은방 도매가. 약혼반지, 우정반지.' },
     { name: 'keywords', content: '커플링, 커플링 주문제작, 14K 커플링, 18K 커플링, 이니셜 커플링, 각인 커플링, 약혼반지, 우정반지, 기념일 반지, 화이트골드 커플링, 로즈골드 커플링, 종로 커플링' },
     // Open Graph
-    { property: 'og:title', content: '커플링 | 커플링 주문제작 - 귀족 종로 금은방' },
+    { property: 'og:title', content: '14K/18K 커플링 맞춤제작 | 종로 | 귀족' },
     { property: 'og:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://noblessegold.com/couple-ring' },
@@ -21,7 +21,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '커플링 | 커플링 주문제작 - 귀족' },
+    { name: 'twitter:title', content: '14K/18K 커플링 맞춤제작 | 종로 | 귀족' },
     { name: 'twitter:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공.' },
     { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NN0103.webp' },
   ],
@@ -114,10 +114,10 @@ const engravingOptions = [
         <!-- Hero Images -->
         <div class="hero-images">
           <div class="hero-item">
-            <img src="/Image/ring/NN0103.webp" alt="PROMISE 커플링 - 14K 골드" loading="eager" />
+            <img src="/Image/ring/NN0103.webp" alt="PROMISE 커플링 - 14K 옐로우골드 결혼반지" loading="eager" />
           </div>
           <div class="hero-item">
-            <img src="/Image/ring/NN0101.webp" alt="커플링 화이트골드" loading="eager" />
+            <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 커플링 - 이니셜 각인 가능" loading="eager" />
           </div>
         </div>
 
@@ -211,10 +211,10 @@ const engravingOptions = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/NN0103.webp" alt="PROMISE 커플링" loading="lazy" />
-            <img src="/Image/ring/NN0101.webp" alt="커플링 화이트골드" loading="lazy" />
-            <img src="/Image/ring/NN0102.webp" alt="커플링 로즈골드" loading="lazy" />
-            <img src="/Image/ring/NN0104.webp" alt="커플링 옐로우골드" loading="lazy" />
+            <img src="/Image/ring/NN0103.webp" alt="PROMISE 14K 커플링 - 종로 금은방 도매가 주문제작" loading="lazy" />
+            <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 커플링 - 결혼반지 맞춤제작" loading="lazy" />
+            <img src="/Image/ring/NN0102.webp" alt="14K 로즈골드 커플링 - 기념일 선물 추천" loading="lazy" />
+            <img src="/Image/ring/NN0104.webp" alt="14K 옐로우골드 커플링 - 클래식 디자인" loading="lazy" />
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">
@@ -354,8 +354,8 @@ const engravingOptions = [
 .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 .btn-gold { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #0a0a0a; background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%); text-decoration: none; transition: all 0.3s; }
 .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3); }
-.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 15px 32px; font-size: 14px; font-weight: 700; color: #fafafa; background: transparent; border: 1px solid rgba(250, 250, 250, 0.3); text-decoration: none; transition: all 0.3s; }
-.btn-outline:hover { border-color: #c9a227; color: #c9a227; }
+.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #fafafa; background: transparent; border: 1px solid rgba(250, 250, 250, 0.3); text-decoration: none; transition: all 0.3s; }
+.btn-outline:hover { border-color: #c9a227; color: #c9a227; transform: translateY(-2px); }
 
 /* Location */
 .location-info { text-align: center; padding: 32px; border-top: 1px solid rgba(250, 250, 250, 0.06); }

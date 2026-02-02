@@ -3,6 +3,12 @@ useHead({
   title: '개인정보처리방침 | 귀족',
   meta: [
     { name: 'description', content: '귀족 귀금속 도매 개인정보처리방침. 수집하는 개인정보 항목, 이용 목적, 보유 기간 안내.' },
+    { name: 'keywords', content: '개인정보처리방침, 개인정보보호, 귀족 귀금속' },
+    { property: 'og:title', content: '개인정보처리방침 | 귀족' },
+    { property: 'og:description', content: '귀족 귀금속 도매 개인정보처리방침.' },
+    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://noblessegold.com/privacy' },
   ],
   link: [
     { rel: 'canonical', href: 'https://noblessegold.com/privacy' }
@@ -14,20 +20,6 @@ useHead({
   <div class="page">
     <!-- Custom Cursor -->
     <CustomCursor />
-
-    <!-- Navigation -->
-    <nav class="nav-luxury">
-      <NuxtLink to="/" class="nav-logo">
-        <span class="logo-text">귀족</span>
-      </NuxtLink>
-      <div class="nav-links">
-        <NuxtLink to="/" class="nav-link">홈</NuxtLink>
-        <NuxtLink to="/gallery" class="nav-link">갤러리</NuxtLink>
-        <NuxtLink to="/buy-gold" class="nav-link">금 매입</NuxtLink>
-        <NuxtLink to="/faq" class="nav-link">FAQ</NuxtLink>
-        <NuxtLink to="/contact" class="nav-link">문의하기</NuxtLink>
-      </div>
-    </nav>
 
     <!-- Main Content -->
     <main class="main">
@@ -124,53 +116,6 @@ useHead({
   font-family: 'JeonjuCraftMyungjo';
 }
 
-/* Navigation */
-.nav-luxury {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px clamp(20px, 5vw, 60px);
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-.nav-logo {
-  text-decoration: none;
-}
-
-.logo-text {
-  font-size: 22px;
-  font-weight: 700;
-  color: #fafafa;
-  letter-spacing: 0.15em;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.nav-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.6);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: #fafafa;
-}
-
 /* Main */
 .main {
   padding-top: 120px;
@@ -258,29 +203,7 @@ useHead({
 }
 
 /* Mobile */
-@media (max-width: 1023px) {
-  .nav-luxury {
-    padding: 16px 20px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-link {
-    font-size: 12px;
-  }
-}
-
 @media (max-width: 480px) {
-  .nav-links {
-    gap: 12px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-  }
-
   .page-title {
     font-size: 28px;
   }

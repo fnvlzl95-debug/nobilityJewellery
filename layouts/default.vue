@@ -1,9 +1,12 @@
 <script setup lang="ts">
-// Minimal layout - Lenis and animations are handled in page components
+// Default layout with navigation
 </script>
 
 <template>
   <div class="min-h-screen">
+    <!-- Global Navigation -->
+    <TheNavigation />
+
     <!-- Main content -->
     <main>
       <slot />
