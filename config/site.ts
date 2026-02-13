@@ -66,7 +66,7 @@ export const siteConfig = {
 
   // 이메일 설정 (Resend)
   mail: {
-    from: 'onboarding@resend.dev',
+    from: 'noreply@noblessegold.com',
     to: 'fnvlzl95@gmail.com',
   },
 

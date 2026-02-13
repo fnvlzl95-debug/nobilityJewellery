@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 definePageMeta({
   layout: 'landing'
 })
@@ -34,14 +36,14 @@ useHead({
         name: '귀금속 주문제작',
         provider: {
           '@type': 'LocalBusiness',
-          name: '귀족',
-          telephone: '+82-2-766-4789',
+          name: siteConfig.name,
+          telephone: siteConfig.phoneFormatted,
           address: {
             '@type': 'PostalAddress',
-            streetAddress: '종로 173 종묘귀금속백화점 101호',
-            addressLocality: '종로구',
-            addressRegion: '서울',
-            addressCountry: 'KR'
+            streetAddress: siteConfig.address.street,
+            addressLocality: siteConfig.address.city,
+            addressRegion: siteConfig.address.region,
+            addressCountry: siteConfig.address.country
           }
         },
         serviceType: '귀금속 맞춤제작',

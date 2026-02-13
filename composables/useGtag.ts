@@ -1,3 +1,5 @@
+import { siteConfig } from '~/config/site'
+
 // GA4 이벤트 추적 composable
 export const useGtag = () => {
   const trackEvent = (eventName: string, params?: Record<string, string | number>) => {
@@ -7,7 +9,7 @@ export const useGtag = () => {
   }
 
   // CTA 클릭 추적
-  const trackCtaClick = (ctaType: 'phone_call' | 'online_inquiry', pageName: string) => {
+  const trackCtaClick = (ctaType: 'phone_call' | 'online_inquiry' | 'kakao_chat', pageName: string) => {
     trackEvent('cta_click', {
       cta_type: ctaType,
       page_name: pageName,
@@ -18,7 +20,7 @@ export const useGtag = () => {
   const trackPhoneClick = (pageName: string) => {
     trackEvent('phone_click', {
       page_name: pageName,
-      phone_number: '02-766-4789',
+      phone_number: siteConfig.phone,
     })
     trackCtaClick('phone_call', pageName)
   }

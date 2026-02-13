@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 definePageMeta({
   layout: 'landing'
 })
@@ -6,7 +8,7 @@ definePageMeta({
 useHead({
   title: '귀금속 도매 안내 | 거래·주문 방법 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/wholesale' }
+    { rel: 'canonical', href: `${siteConfig.url}/wholesale` }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 전문 귀족. 금반지 도매, 결혼예물 도매, 14K 18K 24K 순금 도매. 소량 도매 가능, 대량 주문 할인. 소매상, 온라인 셀러, 기업 납품. 종로3가 귀금속 도매상.' },
@@ -15,15 +17,15 @@ useHead({
     { property: 'og:title', content: '귀금속 도매 안내 | 거래·주문 방법 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능, 대량 주문 할인. 종로3가 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/wholesale' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/wholesale` },
+    { property: 'og:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 도매 안내 | 거래·주문 방법 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능. 종로3가 귀금속 도매상.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
   ],
   script: [
     {
@@ -31,22 +33,22 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WholesaleStore',
-        name: '귀족',
+        name: siteConfig.name,
         description: '종로 귀금속 도매 전문점. 금반지, 목걸이, 귀걸이, 팔찌 도매.',
-        telephone: '+82-2-766-4789',
+        telephone: siteConfig.phoneFormatted,
         address: {
           '@type': 'PostalAddress',
-          streetAddress: '종로 173 종묘귀금속백화점 101호',
-          addressLocality: '종로구',
-          addressRegion: '서울',
-          addressCountry: 'KR'
+          streetAddress: siteConfig.address.street,
+          addressLocality: siteConfig.address.city,
+          addressRegion: siteConfig.address.region,
+          addressCountry: siteConfig.address.country
         },
         openingHoursSpecification: [
           {
             '@type': 'OpeningHoursSpecification',
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            opens: '10:30',
-            closes: '18:00'
+            dayOfWeek: siteConfig.hours.days,
+            opens: siteConfig.hours.open,
+            closes: siteConfig.hours.close
           }
         ],
         priceRange: '$$',

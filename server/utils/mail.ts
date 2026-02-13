@@ -1,3 +1,6 @@
+import { useRuntimeConfig } from '#imports'
+import { siteConfig } from '~/config/site'
+
 interface MailOptions {
   to: string
   subject: string
@@ -5,7 +8,10 @@ interface MailOptions {
 }
 
 export async function sendMail(options: MailOptions) {
-  const apiKey = process.env.RESEND_API_KEY || ''
+  const runtimeConfig = useRuntimeConfig()
+  const apiKey = runtimeConfig.resendApiKey || process.env.RESEND_API_KEY || ''
+  const fromEmail = runtimeConfig.resendFrom || siteConfig.mail.from
+  const from = fromEmail.includes('<') ? fromEmail : `${siteConfig.name} 문의 <${fromEmail}>`
 
   if (!apiKey) {
     throw new Error('RESEND_API_KEY not configured')
@@ -18,7 +24,7 @@ export async function sendMail(options: MailOptions) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: '귀족 문의 <onboarding@resend.dev>',
+      from,
       to: options.to,
       subject: options.subject,
       html: options.html,

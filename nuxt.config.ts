@@ -1,3 +1,5 @@
+import { siteConfig } from './config/site'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -5,6 +7,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Server-only (환경변수에서 읽어옴)
     resendApiKey: process.env.RESEND_API_KEY || '',
+    resendFrom: process.env.RESEND_FROM || '',
+    inquiryTo: process.env.INQUIRY_TO || siteConfig.mail.to,
   },
 
   modules: [
@@ -27,8 +31,8 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://noblessegold.com',
-    name: '귀족 | 종로 귀금속 도매',
+    url: siteConfig.url,
+    name: `${siteConfig.name} | 종로 귀금속 도매`,
   },
 
   sitemap: {
@@ -37,21 +41,21 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: '귀족 | 종로 귀금속 도매',
+      title: `${siteConfig.name} | 종로 귀금속 도매`,
       htmlAttrs: {
         lang: 'ko',
       },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 도매, 수리·세공. 종로3가 금은방, 귀금속 도매상.' },
-        { property: 'og:title', content: '귀족 | 종로 귀금속 도매' },
+        { name: 'description', content: siteConfig.description },
+        { property: 'og:title', content: `${siteConfig.name} | 종로 귀금속 도매` },
         { property: 'og:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방' },
         { property: 'og:type', content: 'website' },
         // Google Search Console
-        { name: 'google-site-verification', content: 'ZsI2VVbWEPqgSNZ8BntW5Fod0faTHbhJ6SUF3Z470SY' },
+        { name: 'google-site-verification', content: siteConfig.verification.google },
         // Naver Search Advisor
-        { name: 'naver-site-verification', content: '982a858996de4d87d4f5cf7376fab0dc528d2f56' },
+        { name: 'naver-site-verification', content: siteConfig.verification.naver },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -67,12 +71,12 @@ export default defineNuxtConfig({
       ],
       script: process.env.NODE_ENV === 'production' ? [
         // Google Analytics 4
-        { src: 'https://www.googletagmanager.com/gtag/js?id=G-RKK8E5CB6G', async: true },
-        { innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-RKK8E5CB6G');" },
+        { src: `https://www.googletagmanager.com/gtag/js?id=${siteConfig.analytics.ga4}`, async: true },
+        { innerHTML: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${siteConfig.analytics.ga4}');` },
         // Naver Analytics
-        { innerHTML: "if(!window.wcs_add) window.wcs_add = {}; wcs_add['wa'] = '9582151f2a151'; var _nasa={}; if(window.wcs) wcs.inflow('noblessegold.com');" },
+        { innerHTML: `if(!window.wcs_add) window.wcs_add = {}; wcs_add['wa'] = '${siteConfig.analytics.naver}'; var _nasa={}; if(window.wcs) wcs.inflow('${siteConfig.domain}');` },
         { src: 'https://wcs.pstatic.net/wcslog.js', async: true },
-        { innerHTML: "(function check(){if(window.wcs){wcs.inflow('noblessegold.com');wcs_do(_nasa);}else{setTimeout(check,100);}})();" },
+        { innerHTML: `(function check(){if(window.wcs){wcs.inflow('${siteConfig.domain}');wcs_do(_nasa);}else{setTimeout(check,100);}})();` },
       ] : [],
     },
   },

@@ -1,4 +1,5 @@
 import { defineEventHandler, readBody, createError } from 'h3'
+import { useRuntimeConfig } from '#imports'
 import { sendMail } from '../utils/mail'
 
 interface InquiryBody {
@@ -46,6 +47,7 @@ const typeLabels: Record<string, string> = {
 }
 
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig(event)
   const ip = event.node.req.headers['x-forwarded-for'] as string ||
              event.node.req.socket.remoteAddress ||
              'unknown'
@@ -110,8 +112,13 @@ export default defineEventHandler(async (event) => {
 
   // Send email notification
   try {
+    const inquiryTo = runtimeConfig.inquiryTo || ''
+    if (!inquiryTo) {
+      throw new Error('inquiry recipient not configured')
+    }
+
     await sendMail({
-      to: 'fnvlzl95@gmail.com',
+      to: inquiryTo,
       subject: `[귀족] 새 문의 - ${inquiry.typeLabel} / ${inquiry.name}`,
       html: `
         <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -155,7 +162,10 @@ ${inquiry.message}
     })
   } catch (error) {
     console.error('Failed to send email:', error)
-    // Don't throw error to user - inquiry is still logged
+    throw createError({
+      statusCode: 502,
+      message: '문의 전송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해주세요.',
+    })
   }
 
   return { ok: true }

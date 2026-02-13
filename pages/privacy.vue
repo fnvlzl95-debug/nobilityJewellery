@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 useHead({
   title: '개인정보처리방침 | 귀족',
   meta: [
@@ -91,7 +93,7 @@ useHead({
               <p>
                 <strong>개인정보 보호책임자</strong><br>
                 담당자: 박승태 (대표)<br>
-                연락처: 02-766-4789
+                연락처: {{ siteConfig.phone }}
               </p>
             </div>
           </section>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 definePageMeta({
   layout: 'landing'
 })
@@ -35,14 +37,14 @@ useHead({
         description: '반지 사이즈 조절, 목걸이 체인 수리, 귀걸이 침 교체, 금 세척 및 광택 작업',
         provider: {
           '@type': 'LocalBusiness',
-          name: '귀족',
-          telephone: '+82-2-766-4789',
+          name: siteConfig.name,
+          telephone: siteConfig.phoneFormatted,
           address: {
             '@type': 'PostalAddress',
-            streetAddress: '종로 173 종묘귀금속백화점 101호',
-            addressLocality: '종로구',
-            addressRegion: '서울',
-            addressCountry: 'KR'
+            streetAddress: siteConfig.address.street,
+            addressLocality: siteConfig.address.city,
+            addressRegion: siteConfig.address.region,
+            addressCountry: siteConfig.address.country
           }
         },
         areaServed: {
@@ -117,7 +119,7 @@ const repairServices = [
           <div class="notice-content">
             <p><strong>수리 전 안내</strong></p>
             <p>수리 내용에 따라 소요 시간과 비용이 다를 수 있습니다.<br>방문 전 전화 상담을 권장합니다.</p>
-            <a href="tel:02-766-4789" class="notice-phone">02-766-4789</a>
+            <a :href="`tel:${siteConfig.phone}`" class="notice-phone">{{ siteConfig.phone }}</a>
           </div>
         </div>
 

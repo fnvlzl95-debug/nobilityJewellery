@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { siteConfig } from '~/config/site'
 
 const route = useRoute()
 
@@ -103,8 +104,8 @@ const closeMenu = () => {
 
           <!-- CTA -->
           <div class="mobile-menu-footer">
-            <a href="tel:02-766-4789" class="mobile-menu-phone">
-              02-766-4789
+            <a :href="`tel:${siteConfig.phone}`" class="mobile-menu-phone">
+              {{ siteConfig.phone }}
             </a>
           </div>
         </div>

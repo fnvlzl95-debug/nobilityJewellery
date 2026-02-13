@@ -2,6 +2,7 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { getPreviewItems, categories } from '~/data/gallery-items'
+import { siteConfig } from '~/config/site'
 
 const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
 
@@ -47,33 +48,33 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'LocalBusiness',
-        '@id': 'https://noblessegold.com',
-        name: '귀족',
+        '@id': siteConfig.url,
+        name: siteConfig.name,
         description: '종로 귀금속 도매 전문. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.',
-        url: 'https://noblessegold.com',
-        telephone: '+82-2-766-4789',
+        url: siteConfig.url,
+        telephone: siteConfig.phoneFormatted,
         address: {
           '@type': 'PostalAddress',
-          streetAddress: '종로 173 종묘귀금속백화점 101호',
-          addressLocality: '종로구',
-          addressRegion: '서울',
-          postalCode: '03186',
-          addressCountry: 'KR'
+          streetAddress: siteConfig.address.street,
+          addressLocality: siteConfig.address.city,
+          addressRegion: siteConfig.address.region,
+          postalCode: siteConfig.address.postalCode,
+          addressCountry: siteConfig.address.country
         },
         geo: {
           '@type': 'GeoCoordinates',
-          latitude: 37.5713,
-          longitude: 126.9961
+          latitude: siteConfig.geo.latitude,
+          longitude: siteConfig.geo.longitude
         },
         openingHoursSpecification: [
           {
             '@type': 'OpeningHoursSpecification',
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            opens: '10:30',
-            closes: '18:00'
+            dayOfWeek: siteConfig.hours.days,
+            opens: siteConfig.hours.open,
+            closes: siteConfig.hours.close
           }
         ],
-        image: 'https://noblessegold.com/Image/ring/NS0102.webp',
+        image: `${siteConfig.url}${siteConfig.ogImage}`,
         priceRange: '$$',
         currenciesAccepted: 'KRW',
         paymentAccepted: 'Cash, Credit Card',
@@ -233,7 +234,7 @@ onUnmounted(() => {
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
 
         <div class="hero-cta">
-          <a href="tel:02-766-4789" class="btn-magnetic" @click="handlePhoneClick">
+          <a :href="`tel:${siteConfig.phone}`" class="btn-magnetic" @click="handlePhoneClick">
             <span class="btn-text">전화 상담</span>
             <span class="btn-glow"></span>
           </a>
@@ -573,18 +574,17 @@ onUnmounted(() => {
             <h2 class="section-title reveal reveal-delay-1">오시는 길</h2>
 
             <address class="location-address reveal reveal-delay-2">
-              서울 종로구 종로 173<br>
-              종묘귀금속백화점 <em>101호</em>
+              {{ siteConfig.address.full }}
             </address>
 
             <ul class="contact-info reveal reveal-delay-3">
               <li>
                 <span class="info-label">Tel</span>
-                <a href="tel:02-766-4789">02-766-4789</a>
+                <a :href="`tel:${siteConfig.phone}`">{{ siteConfig.phone }}</a>
               </li>
               <li>
                 <span class="info-label">Hours</span>
-                <span>평일·토요일 10:30 – 18:00</span>
+                <span>{{ siteConfig.hours.display }}</span>
               </li>
               <li>
                 <span class="info-label">Parking</span>
@@ -674,13 +674,13 @@ onUnmounted(() => {
 
     <!-- Mobile CTA -->
     <div class="mobile-cta" :class="{ visible: showMobileCta }">
-      <a href="tel:02-766-4789" class="mobile-btn mobile-btn-primary" @click="handlePhoneClick">
+      <a :href="`tel:${siteConfig.phone}`" class="mobile-btn mobile-btn-primary" @click="handlePhoneClick">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span>전화</span>
       </a>
-      <a href="https://open.kakao.com/o/sc8gQx8h" target="_blank" rel="noopener" class="mobile-btn mobile-btn-kakao" @click="handleKakaoClick">
+      <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="mobile-btn mobile-btn-kakao" @click="handleKakaoClick">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
         </svg>

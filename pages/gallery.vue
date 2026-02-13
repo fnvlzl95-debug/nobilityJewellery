@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
+import { siteConfig } from '~/config/site'
 
 useHead({
   title: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족',
@@ -54,8 +55,8 @@ useHead({
               priceCurrency: 'KRW',
               seller: {
                 '@type': 'LocalBusiness',
-                name: '귀족',
-                telephone: '+82-2-766-4789'
+                name: siteConfig.name,
+                telephone: siteConfig.phoneFormatted
               }
             }
           }
@@ -69,6 +70,7 @@ let lenis: Lenis | null = null
 let rafId: number | null = null
 
 const isScrolled = ref(false)
+const availableCategories = computed(() => categories.filter((category) => getItemsByCategory(category.id).length > 0))
 
 // Preview state
 const activeItem = ref<GalleryItem>(galleryItems[0])
@@ -195,7 +197,7 @@ onUnmounted(() => {
 
           <div class="index-list">
             <div
-              v-for="category in categories"
+              v-for="category in availableCategories"
               :key="category.id"
               class="category-group reveal"
             >

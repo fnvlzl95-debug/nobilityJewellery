@@ -1,27 +1,28 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { siteConfig } from '~/config/site'
 
 useHead({
   title: '도매·주문제작·수리 상담 | 종로 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/contact' }
+    { rel: 'canonical', href: `${siteConfig.url}/contact` }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 결혼예물 상담, 귀금속 수리·세공. 반지 사이즈 조절. 전화 02-766-4789 / 종로3가 금은방.' },
+    { name: 'description', content: `종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 결혼예물 상담, 귀금속 수리·세공. 반지 사이즈 조절. 전화 ${siteConfig.phone} / 종로3가 금은방.` },
     { name: 'keywords', content: '종로 금은방 문의, 귀금속 상담, 도매 문의, 주문제작 상담, 수리 문의, 금 매입 문의, 종로3가 금은방' },
     // Open Graph
     { property: 'og:title', content: '도매·주문제작·수리 상담 | 종로 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/contact' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/contact` },
+    { property: 'og:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '도매·주문제작·수리 상담 | 종로 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
   ],
   script: [
     {
@@ -29,32 +30,32 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
-        name: '문의하기 - 귀족',
+        name: `문의하기 - ${siteConfig.name}`,
         description: '귀족 귀금속 도매 문의 페이지',
-        url: 'https://noblessegold.com/contact',
+        url: `${siteConfig.url}/contact`,
         mainEntity: {
           '@type': 'LocalBusiness',
-          name: '귀족',
-          telephone: '+82-2-766-4789',
+          name: siteConfig.name,
+          telephone: siteConfig.phoneFormatted,
           address: {
             '@type': 'PostalAddress',
-            streetAddress: '종로 173 종묘귀금속백화점 101호',
-            addressLocality: '종로구',
-            addressRegion: '서울',
-            addressCountry: 'KR'
+            streetAddress: siteConfig.address.street,
+            addressLocality: siteConfig.address.city,
+            addressRegion: siteConfig.address.region,
+            addressCountry: siteConfig.address.country
           },
           openingHoursSpecification: [
             {
               '@type': 'OpeningHoursSpecification',
-              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-              opens: '10:30',
-              closes: '18:00'
+              dayOfWeek: siteConfig.hours.days,
+              opens: siteConfig.hours.open,
+              closes: siteConfig.hours.close
             }
           ],
           geo: {
             '@type': 'GeoCoordinates',
-            latitude: 37.5714,
-            longitude: 126.9920
+            latitude: siteConfig.geo.latitude,
+            longitude: siteConfig.geo.longitude
           }
         }
       })
@@ -132,7 +133,7 @@ const handleSubmit = async () => {
               무엇이든 편하게 연락주세요.
             </p>
 
-            <a href="tel:02-766-4789" class="phone-cta">
+            <a :href="`tel:${siteConfig.phone}`" class="phone-cta">
               <div class="phone-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -140,7 +141,7 @@ const handleSubmit = async () => {
               </div>
               <div class="phone-text">
                 <span class="phone-label">전화 상담</span>
-                <span class="phone-number">02-766-4789</span>
+                <span class="phone-number">{{ siteConfig.phone }}</span>
               </div>
               <div class="phone-arrow">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -152,11 +153,11 @@ const handleSubmit = async () => {
             <div class="info-grid">
               <div class="info-item">
                 <span class="info-label">Hours</span>
-                <span class="info-value">평일·토요일<br>10:30-18:00</span>
+                <span class="info-value">{{ siteConfig.hours.display }}</span>
               </div>
               <div class="info-item">
                 <span class="info-label">Location</span>
-                <span class="info-value">서울 종로구 종로 173<br>종묘귀금속백화점 101호</span>
+                <span class="info-value">{{ siteConfig.address.full }}</span>
               </div>
             </div>
           </div>

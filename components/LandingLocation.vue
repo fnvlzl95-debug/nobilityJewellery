@@ -1,8 +1,12 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+</script>
+
 <template>
   <div class="location-info">
     <h4>방문 안내</h4>
-    <p class="address">서울 종로구 종로 173 종묘귀금속백화점 101호</p>
-    <p class="hours">영업시간: 매일 10:30~18:30 (매달 셋째 주 화요일 휴무)</p>
+    <p class="address">{{ siteConfig.address.full }}</p>
+    <p class="hours">영업시간: {{ siteConfig.hours.display }}</p>
   </div>
 </template>
 
