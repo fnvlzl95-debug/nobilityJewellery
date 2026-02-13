@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/repair' }
+    { rel: 'canonical', href: `${siteConfig.url}/repair` }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 수리 전문 귀족. 반지 사이즈 조절, 목걸이 체인 수리, 귀걸이 침 교체, 금 세척·광택. 30년 경력 장인이 직접 수리. 종로3가 금은방.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/repair' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/repair` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp` },
   ],
   script: [
     {
@@ -52,6 +53,18 @@ useHead({
           name: '서울'
         }
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '수리/AS', path: '/repair' },
+      ]))
     }
   ]
 })

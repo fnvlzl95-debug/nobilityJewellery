@@ -3,6 +3,7 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { getPreviewItems, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
 
@@ -23,7 +24,7 @@ const previewItems = getPreviewItems(6)
 useHead({
   title: '종로 귀금속 도매·주문제작 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/' }
+    { rel: 'canonical', href: `${siteConfig.url}/` }
   ],
   meta: [
     { name: 'description', content: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 순금 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌 도매. 종로3가 금은방, 귀금속 수리·세공.' },
@@ -32,15 +33,15 @@ useHead({
     { property: 'og:title', content: '종로 귀금속 도매·주문제작 | 귀족' },
     { property: 'og:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방, 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: siteConfig.url },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NS0102.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '종로 귀금속 도매·주문제작 | 귀족' },
     { name: 'twitter:description', content: '서울 종로 귀금속 도매 전문. 금반지, 돌반지, 커플링, 예물 주문제작. 종로3가 금은방' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NS0102.webp` },
   ],
   script: [
     {
@@ -84,6 +85,17 @@ useHead({
         },
         sameAs: []
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+      ]))
     }
   ]
 })
@@ -654,6 +666,7 @@ onUnmounted(() => {
             <NuxtLink to="/baby-gold">돌반지</NuxtLink>
             <NuxtLink to="/couple-ring">커플링</NuxtLink>
             <NuxtLink to="/wedding">결혼예물</NuxtLink>
+            <NuxtLink to="/guide">가이드</NuxtLink>
             <NuxtLink to="/buy-gold">금 매입</NuxtLink>
             <NuxtLink to="/wholesale">도매 안내</NuxtLink>
             <NuxtLink to="/custom">주문제작</NuxtLink>

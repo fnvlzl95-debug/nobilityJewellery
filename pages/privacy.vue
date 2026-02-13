@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 useHead({
   title: '개인정보처리방침 | 귀족',
@@ -8,13 +9,29 @@ useHead({
     { name: 'keywords', content: '개인정보처리방침, 개인정보보호, 귀족 귀금속' },
     { property: 'og:title', content: '개인정보처리방침 | 귀족' },
     { property: 'og:description', content: '귀족 귀금속 도매 개인정보처리방침.' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:image', content: `${siteConfig.url}/Image/set/set0201.webp` },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/privacy' },
+    { property: 'og:url', content: `${siteConfig.url}/privacy` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: '개인정보처리방침 | 귀족' },
+    { name: 'twitter:description', content: '귀족 귀금속 도매 개인정보처리방침.' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0201.webp` },
   ],
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/privacy' }
+    { rel: 'canonical', href: `${siteConfig.url}/privacy` }
   ],
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '개인정보처리방침', path: '/privacy' },
+      ]))
+    }
+  ]
 })
 </script>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/custom' }
+    { rel: 'canonical', href: `${siteConfig.url}/custom` }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 주문제작 전문 귀족. 커플링 주문제작, 돌반지 맞춤제작, 결혼반지 맞춤, 금반지 주문제작. 30년 경력 장인이 직접 세공. 디자인 상담부터 제작까지. 종로3가 금은방.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작. 30년 경력 장인 직접 세공.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/custom' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/custom` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0401.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0401.webp` },
   ],
   script: [
     {
@@ -53,6 +54,18 @@ useHead({
           name: 'South Korea'
         }
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '주문제작', path: '/custom' },
+      ]))
     }
   ]
 })

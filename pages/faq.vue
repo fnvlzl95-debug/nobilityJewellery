@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { faqItems, faqCategories, generateFAQSchema } from '~/data/faq-items'
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 useHead({
   title: 'FAQ | 도매·주문제작·수리 안내 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/faq' }
+    { rel: 'canonical', href: `${siteConfig.url}/faq` }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매 주문방법, 돌반지 주문제작, 커플링, 결혼예물, 반지 사이즈 조절, 귀금속 수리, A/S, 배송, 주차 안내. 종로3가 금은방 자주 묻는 질문.' },
@@ -14,20 +16,32 @@ useHead({
     { property: 'og:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/faq' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/faq` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0701.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0701.webp` },
   ],
   script: [
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(generateFAQSchema())
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: 'FAQ', path: '/faq' },
+      ]))
     }
   ]
 })

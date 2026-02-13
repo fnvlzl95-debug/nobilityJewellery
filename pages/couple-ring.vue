@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '14K/18K 커플링 맞춤제작 | 종로 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/couple-ring' }
+    { rel: 'canonical', href: `${siteConfig.url}/couple-ring` }
   ],
   meta: [
     { name: 'description', content: '커플링 주문제작 전문 귀족. 14K 18K 커플링, 이니셜 각인, 기념일 각인. 화이트골드, 로즈골드, 옐로우골드. 30년 장인 직접 세공. 종로3가 금은방 도매가. 약혼반지, 우정반지.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '14K/18K 커플링 맞춤제작 | 종로 | 귀족' },
     { property: 'og:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/couple-ring' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NN0103.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/couple-ring` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0103.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '14K/18K 커플링 맞춤제작 | 종로 | 귀족' },
     { name: 'twitter:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NN0103.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0103.webp` },
   ],
   script: [
     {
@@ -56,8 +57,20 @@ useHead({
             }
           }
         },
-        image: 'https://noblessegold.com/Image/ring/NN0103.webp'
+        image: `${siteConfig.url}/Image/ring/NN0103.webp`
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '커플링', path: '/couple-ring' },
+      ]))
     }
   ]
 })

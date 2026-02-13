@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '금·은 매입 | 종로 고가매입 상담 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/buy-gold' }
+    { rel: 'canonical', href: `${siteConfig.url}/buy-gold` }
   ],
   meta: [
     { name: 'description', content: '종로 금 매입 전문 귀족. 금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K 매입. 은 매입, 백금 매입. 당일 현금 지급. 정확한 시세 적용, 투명한 거래. 종로3가 금은방.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
     { property: 'og:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바, 순금, 18K, 14K 매입. 당일 현금 지급. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/buy-gold' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/buy-gold` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
     { name: 'twitter:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바 매입. 당일 현금 지급.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
   ],
   script: [
     {
@@ -52,6 +53,18 @@ useHead({
           name: '서울'
         }
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '금·은 매입', path: '/buy-gold' },
+      ]))
     }
   ]
 })

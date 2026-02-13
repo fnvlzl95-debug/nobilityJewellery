@@ -27,8 +27,8 @@ export const siteConfig = {
 
   // 위치 좌표 (Google Maps, Schema.org용)
   geo: {
-    latitude: 37.5713,
-    longitude: 126.9961,
+    latitude: 37.5709401,
+    longitude: 126.9969905,
   },
 
   // 영업시간

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 useHead({
   title: '도매·주문제작·수리 상담 | 종로 | 귀족',
@@ -15,14 +16,14 @@ useHead({
     { property: 'og:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/contact` },
-    { property: 'og:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0201.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '도매·주문제작·수리 상담 | 종로 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 문의. 금반지 도매, 돌반지 주문제작, 귀금속 수리·세공. 종로3가 금은방.' },
-    { name: 'twitter:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0201.webp` },
   ],
   script: [
     {
@@ -59,6 +60,18 @@ useHead({
           }
         }
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '문의하기', path: '/contact' },
+      ]))
     }
   ]
 })

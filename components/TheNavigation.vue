@@ -5,7 +5,7 @@ import { siteConfig } from '~/config/site'
 const route = useRoute()
 
 const currentPage = computed(() => {
-  const path = route.path.replace('/', '') || 'home'
+  const path = route.path.split('/').filter(Boolean)[0] || 'home'
   return path
 })
 
@@ -36,6 +36,7 @@ watch(isMenuOpen, (open) => {
 const navLinks = [
   { to: '/', label: '홈', key: 'home' },
   { to: '/gallery', label: '갤러리', key: 'gallery' },
+  { to: '/guide', label: '가이드', key: 'guide' },
   { to: '/buy-gold', label: '금 매입', key: 'buy-gold' },
   { to: '/faq', label: 'FAQ', key: 'faq' },
   { to: '/contact', label: '문의하기', key: 'contact' }

@@ -3,11 +3,12 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 useHead({
   title: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/gallery' }
+    { rel: 'canonical', href: `${siteConfig.url}/gallery` }
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 순금 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌. 종로3가 금은방 주얼리 컬렉션.' },
@@ -16,15 +17,15 @@ useHead({
     { property: 'og:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/gallery' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/gallery` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0101.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/NS0102.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0101.webp` },
   ],
   script: [
     {
@@ -34,7 +35,7 @@ useHead({
         '@type': 'ItemList',
         name: '귀족 귀금속 갤러리',
         description: '종로 귀금속 전문점 귀족의 작품 갤러리. 금반지, 커플링, 돌반지, 결혼예물 컬렉션.',
-        url: 'https://noblessegold.com/gallery',
+        url: `${siteConfig.url}/gallery`,
         numberOfItems: galleryItems.length,
         itemListElement: galleryItems.map((item, index) => ({
           '@type': 'ListItem',
@@ -43,11 +44,11 @@ useHead({
             '@type': 'Product',
             name: item.title,
             description: item.description,
-            image: `https://noblessegold.com${item.images[0]}`,
+            image: `${siteConfig.url}${item.images[0]}`,
             material: item.material,
             brand: {
               '@type': 'Brand',
-              name: '귀족'
+              name: siteConfig.name
             },
             offers: {
               '@type': 'Offer',
@@ -62,6 +63,18 @@ useHead({
           }
         }))
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '갤러리', path: '/gallery' },
+      ]))
     }
   ]
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '결혼예물 세트·커플링 | 종로 예물 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/wedding' }
+    { rel: 'canonical', href: `${siteConfig.url}/wedding` }
   ],
   meta: [
     { name: 'description', content: '결혼예물 주문제작 전문 귀족. 결혼반지, 예물 세트, 시댁예물, 처가예물. 18K 골드, 다이아몬드 예물. 30년 장인 직접 세공. 종로3가 금은방 도매가. 신부예물, 신랑예물 맞춤 구성.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
     { property: 'og:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/wedding' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/set/set0101.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/wedding` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
     { name: 'twitter:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/set/set0101.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
   ],
   script: [
     {
@@ -56,8 +57,20 @@ useHead({
             }
           }
         },
-        image: 'https://noblessegold.com/Image/set/set0101.webp'
+        image: `${siteConfig.url}/Image/set/set0101.webp`
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '결혼예물', path: '/wedding' },
+      ]))
     }
   ]
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -8,7 +9,7 @@ definePageMeta({
 useHead({
   title: '24K 순금 돌반지 주문제작 | 종로 | 귀족',
   link: [
-    { rel: 'canonical', href: 'https://noblessegold.com/baby-gold' }
+    { rel: 'canonical', href: `${siteConfig.url}/baby-gold` }
   ],
   meta: [
     { name: 'description', content: '순금 돌반지 주문제작 전문 귀족. 24K 순금 돌반지, 백일반지, 아기반지. 띠별 디자인(말띠, 용띠, 뱀띠) 맞춤제작. 이름 각인 가능. 종로3가 금은방 도매가 제공. 돌잔치 선물 추천.' },
@@ -17,15 +18,15 @@ useHead({
     { property: 'og:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
     { property: 'og:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작. 종로3가 금은방 도매가.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://noblessegold.com/baby-gold' },
-    { property: 'og:image', content: 'https://noblessegold.com/Image/ring/SB0101.webp' },
+    { property: 'og:url', content: `${siteConfig.url}/baby-gold` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/ring/SB0101.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
     { name: 'twitter:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작.' },
-    { name: 'twitter:image', content: 'https://noblessegold.com/Image/ring/SB0101.webp' },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/SB0101.webp` },
   ],
   script: [
     {
@@ -56,8 +57,20 @@ useHead({
             }
           }
         },
-        image: 'https://noblessegold.com/Image/ring/SB0101.webp'
+        image: `${siteConfig.url}/Image/ring/SB0101.webp`
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '돌반지', path: '/baby-gold' },
+      ]))
     }
   ]
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 definePageMeta({
   layout: 'landing'
@@ -18,14 +19,14 @@ useHead({
     { property: 'og:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능, 대량 주문 할인. 종로3가 귀금속 도매상.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/wholesale` },
-    { property: 'og:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
+    { property: 'og:image', content: `${siteConfig.url}/Image/necklace/pexels-pixabay-248077.webp` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 도매 안내 | 거래·주문 방법 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 전문. 금반지 도매, 결혼예물 도매. 소량 도매 가능. 종로3가 귀금속 도매상.' },
-    { name: 'twitter:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
+    { name: 'twitter:image', content: `${siteConfig.url}/Image/necklace/pexels-pixabay-248077.webp` },
   ],
   script: [
     {
@@ -51,9 +52,26 @@ useHead({
             closes: siteConfig.hours.close
           }
         ],
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: siteConfig.geo.latitude,
+          longitude: siteConfig.geo.longitude
+        },
         priceRange: '$$',
         paymentAccepted: 'Cash, Credit Card, Bank Transfer'
       })
+    }
+  ]
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '도매 안내', path: '/wholesale' },
+      ]))
     }
   ]
 })
