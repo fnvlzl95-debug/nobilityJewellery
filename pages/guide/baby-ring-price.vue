@@ -7,6 +7,20 @@ const pageTitle = '돌반지 가격 문의 전에 꼭 확인할 3가지 | 귀족
 const pageDescription = '순금 시세, 중량, 각인에 따라 돌반지 가격이 달라져요. 상담 전에 미리 알아두면 좋은 것들을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0101.webp`
 const publishedAt = '2026-02-14'
+const faqItems = [
+  {
+    question: '돌반지 가격은 어떻게 정해지나요?',
+    answer: '상담일 기준 금 시세, 실제 무게, 각인/디자인 작업 난이도를 함께 반영해서 안내드립니다.',
+  },
+  {
+    question: '전화로도 정확한 견적이 가능한가요?',
+    answer: '대략적인 범위 안내는 가능하지만, 정확한 금액은 원하시는 무게와 각인 조건 확인 후 확정됩니다.',
+  },
+  {
+    question: '돌잔치 일정이 가까운데 빠른 제작도 가능한가요?',
+    answer: '가능 여부는 작업 내용에 따라 달라집니다. 수령 희망일을 먼저 알려주시면 가능한 옵션부터 안내드립니다.',
+  },
+]
 
 useHead({
   title: pageTitle,
@@ -45,6 +59,21 @@ useHead({
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       }),
     },
   ],
@@ -86,6 +115,7 @@ useHead({
       '전화로 안내드린 대략적인 견적과 최종 금액은 다를 수 있어요.',
       '무게나 각인 조건이 바뀌면 가격도 함께 달라집니다.'
     ]"
+    :faq-items="faqItems"
     :related-links="[
       { to: '/baby-gold', label: '돌반지 보러가기', description: '제품과 제작 과정을 확인하세요' },
       { to: '/custom', label: '주문제작 안내', description: '맞춤 디자인으로 만들고 싶다면' },

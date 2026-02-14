@@ -49,6 +49,28 @@ useHead({
 const openId = ref<number | null>(null)
 const isScrolled = ref(false)
 const selectedCategory = ref('all')
+const guideLinks = [
+  {
+    to: '/guide/baby-ring-price',
+    title: '돌반지 가격 문의 전 체크',
+    description: '가격이 달라지는 핵심 포인트 정리',
+  },
+  {
+    to: '/guide/baby-ring-production-time',
+    title: '돌반지 제작 기간 안내',
+    description: '돌잔치 일정 맞추는 방법',
+  },
+  {
+    to: '/guide/gold-ring-repair-cost',
+    title: '금반지 수리 비용 기준',
+    description: '작업별 비용 차이 확인',
+  },
+  {
+    to: '/guide/silver-buying',
+    title: '은매입 상담 체크리스트',
+    description: '방문 전에 준비할 내용',
+  },
+]
 
 const filteredFaqItems = computed(() => {
   if (selectedCategory.value === 'all') return faqItems
@@ -146,6 +168,22 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
+
+        <section class="faq-guide-links">
+          <h2>관련 가이드</h2>
+          <p>자주 문의가 많은 주제를 먼저 정리한 글입니다.</p>
+          <div class="faq-guide-grid">
+            <NuxtLink
+              v-for="guide in guideLinks"
+              :key="guide.to"
+              :to="guide.to"
+              class="faq-guide-card"
+            >
+              <strong>{{ guide.title }}</strong>
+              <span>{{ guide.description }}</span>
+            </NuxtLink>
+          </div>
+        </section>
 
         <!-- CTA -->
         <div class="faq-cta">
@@ -339,6 +377,59 @@ onUnmounted(() => {
   color: rgba(250, 250, 250, 0.6);
 }
 
+/* ===== Related Guide ===== */
+.faq-guide-links {
+  margin-top: 40px;
+  padding: 24px;
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: rgba(201, 162, 39, 0.05);
+}
+
+.faq-guide-links h2 {
+  font-size: 20px;
+  font-weight: 400;
+  color: #fafafa;
+  margin: 0 0 10px;
+}
+
+.faq-guide-links p {
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.6);
+  margin: 0 0 16px;
+}
+
+.faq-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faq-guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: rgba(10, 10, 10, 0.6);
+  color: #fafafa;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.faq-guide-card:hover {
+  border-color: #c9a227;
+  transform: translateY(-2px);
+}
+
+.faq-guide-card strong {
+  font-size: 14px;
+}
+
+.faq-guide-card span {
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.7);
+}
+
 /* ===== CTA ===== */
 .faq-cta {
   margin-top: 60px;
@@ -400,6 +491,10 @@ onUnmounted(() => {
   .faq-answer p {
     padding: 0 16px 20px;
     font-size: 14px;
+  }
+
+  .faq-guide-grid {
+    grid-template-columns: 1fr;
   }
 }
 

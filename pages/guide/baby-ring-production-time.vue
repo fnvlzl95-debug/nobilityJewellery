@@ -7,6 +7,20 @@ const pageTitle = '돌반지 주문제작 기간, 일정 맞추는 가장 확실
 const pageDescription = '디자인, 각인 여부에 따라 돌반지 제작 기간이 달라져요. 돌잔치 일정에 맞추는 방법을 알려드립니다.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0102.webp`
 const publishedAt = '2026-02-14'
+const faqItems = [
+  {
+    question: '돌반지 제작 기간은 보통 얼마나 걸리나요?',
+    answer: '기본 디자인과 각인 여부에 따라 달라집니다. 일정은 상담 시 수령 희망일 기준으로 안내드립니다.',
+  },
+  {
+    question: '급하게 필요하면 빠른 제작이 가능한가요?',
+    answer: '일정이 촉박한 경우 가능한 디자인 범위 내에서 우선 제작 가능 여부를 확인해드립니다.',
+  },
+  {
+    question: '제작 중 디자인 변경도 되나요?',
+    answer: '작업 단계에 따라 가능 여부가 다르며, 변경 시 수령일과 비용이 함께 조정될 수 있습니다.',
+  },
+]
 
 useHead({
   title: pageTitle,
@@ -45,6 +59,21 @@ useHead({
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       }),
     },
   ],
@@ -86,6 +115,7 @@ useHead({
       '제작 중에 사양을 변경하시면 수령일이 늦어질 수 있어요.',
       '행사 직전에 주문하시면 선택 가능한 디자인이 제한될 수 있습니다.'
     ]"
+    :faq-items="faqItems"
     :related-links="[
       { to: '/baby-gold', label: '돌반지 보러가기', description: '제품 종류와 제작 과정' },
       { to: '/custom', label: '주문제작 안내', description: '맞춤 제작은 이렇게 진행돼요' },

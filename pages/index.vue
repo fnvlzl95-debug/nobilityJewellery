@@ -20,6 +20,23 @@ const handleKakaoClick = () => {
 }
 
 const previewItems = getPreviewItems(6)
+const featuredGuides = [
+  {
+    to: '/guide/baby-ring-price',
+    title: '돌반지 가격 문의 전 체크',
+    description: '순금 시세, 무게, 각인 기준을 먼저 확인하세요.',
+  },
+  {
+    to: '/guide/gold-ring-repair-cost',
+    title: '금반지 수리 비용 기준',
+    description: '작업별 비용 차이와 상담 포인트 정리',
+  },
+  {
+    to: '/guide/silver-buying',
+    title: '은매입 방문 전 체크리스트',
+    description: '순도·중량·당일 시세 기준을 안내합니다.',
+  },
+]
 
 useHead({
   title: '종로 귀금속 도매·주문제작 | 귀족',
@@ -444,6 +461,31 @@ onUnmounted(() => {
               <h3 class="item-title">{{ item.title }}</h3>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-guide-links">
+      <div class="container-lg">
+        <div class="guide-links-header">
+          <span class="section-label reveal">Guide</span>
+          <h2 class="section-title reveal reveal-delay-1">상담 전에 읽어보세요</h2>
+          <p class="section-desc reveal reveal-delay-2">실제 문의가 많았던 질문을 정리한 가이드입니다.</p>
+        </div>
+        <div class="guide-links-grid">
+          <NuxtLink
+            v-for="(guide, index) in featuredGuides"
+            :key="guide.to"
+            :to="guide.to"
+            class="guide-link-card reveal"
+            :class="`reveal-delay-${index + 1}`"
+          >
+            <strong>{{ guide.title }}</strong>
+            <span>{{ guide.description }}</span>
+          </NuxtLink>
+        </div>
+        <div class="guide-links-footer reveal reveal-delay-4">
+          <NuxtLink to="/guide" class="btn-text">가이드 전체 보기</NuxtLink>
         </div>
       </div>
     </section>
@@ -1729,6 +1771,55 @@ onUnmounted(() => {
   color: #fafafa;
 }
 
+/* ===== Guide Links Section ===== */
+.section-guide-links {
+  padding: 120px 0;
+  background: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%);
+}
+
+.guide-links-header {
+  max-width: 760px;
+  margin-bottom: 36px;
+}
+
+.guide-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.guide-link-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  padding: 20px;
+  border: 1px solid rgba(201, 162, 39, 0.28);
+  background: rgba(201, 162, 39, 0.05);
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.guide-link-card:hover {
+  border-color: #c9a227;
+  transform: translateY(-3px);
+}
+
+.guide-link-card strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fafafa;
+}
+
+.guide-link-card span {
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.7);
+  line-height: 1.7;
+}
+
+.guide-links-footer {
+  margin-top: 24px;
+}
+
 /* ===== Repair Section ===== */
 .section-repair {
   padding: 160px 0;
@@ -2278,6 +2369,7 @@ onUnmounted(() => {
   .section-about,
   .section-services,
   .section-gallery,
+  .section-guide-links,
   .section-location {
     padding: 80px 0;
   }
@@ -2293,6 +2385,10 @@ onUnmounted(() => {
 
   .services-grid {
     gap: 16px;
+  }
+
+  .guide-links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .gallery-header {
@@ -2324,6 +2420,7 @@ onUnmounted(() => {
   .section-about,
   .section-services,
   .section-gallery,
+  .section-guide-links,
   .section-location {
     padding: 60px 0;
   }
@@ -2353,6 +2450,11 @@ onUnmounted(() => {
 
   .gallery-showcase {
     gap: 12px;
+  }
+
+  .guide-links-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .stats-row {

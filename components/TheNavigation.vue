@@ -132,13 +132,12 @@ const closeMenu = () => {
   align-items: center;
   justify-content: space-between;
   padding: 24px clamp(20px, 5vw, 60px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-luxury.scrolled {
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(20px);
-  padding: 16px clamp(20px, 5vw, 60px);
 }
 
 .nav-logo {

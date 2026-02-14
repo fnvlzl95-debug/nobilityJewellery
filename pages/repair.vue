@@ -107,6 +107,24 @@ const repairServices = [
     icon: 'tool'
   }
 ]
+
+const relatedGuides = [
+  {
+    to: '/guide/gold-ring-repair-cost',
+    title: '금반지 수리 비용 기준',
+    description: '작업별 비용과 상담 포인트 정리',
+  },
+  {
+    to: '/guide/mother-necklace-price',
+    title: '목걸이 상담 시 예산 잡는 법',
+    description: '체인/펜던트 구성별 확인 항목',
+  },
+  {
+    to: '/guide',
+    title: '귀금속 가이드 전체 보기',
+    description: '가격·비용·기간 콘텐츠 모음',
+  },
+]
 </script>
 
 <template>
@@ -177,6 +195,22 @@ const repairServices = [
             </ul>
           </div>
         </div>
+
+        <section class="guide-links-section">
+          <h2 class="section-title">관련 가이드</h2>
+          <p class="section-desc">수리 상담 전에 참고하면 도움이 되는 글입니다.</p>
+          <div class="guide-links-grid">
+            <NuxtLink
+              v-for="guide in relatedGuides"
+              :key="guide.to"
+              :to="guide.to"
+              class="guide-link-card"
+            >
+              <strong>{{ guide.title }}</strong>
+              <span>{{ guide.description }}</span>
+            </NuxtLink>
+          </div>
+        </section>
 
         <!-- CTA -->
         <LandingCTA
@@ -294,6 +328,12 @@ const repairServices = [
   font-weight: 300;
   line-height: 1.8;
   color: rgba(250, 250, 250, 0.6);
+}
+
+.section-desc {
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.55);
+  text-align: center;
 }
 
 /* Notice */
@@ -419,6 +459,45 @@ const repairServices = [
   height: 4px;
   background: #c9a227;
   border-radius: 50%;
+}
+
+/* Related Guide */
+.guide-links-section {
+  margin-bottom: 80px;
+}
+
+.guide-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.guide-link-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  text-decoration: none;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(201, 162, 39, 0.05);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.guide-link-card:hover {
+  border-color: #c9a227;
+  transform: translateY(-2px);
+}
+
+.guide-link-card strong {
+  font-size: 15px;
+  color: #fafafa;
+}
+
+.guide-link-card span {
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.7);
+  line-height: 1.6;
 }
 
 /* CTA */
@@ -592,5 +671,11 @@ const repairServices = [
 
 .privacy-link:hover {
   color: #fafafa;
+}
+
+@media (max-width: 900px) {
+  .guide-links-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

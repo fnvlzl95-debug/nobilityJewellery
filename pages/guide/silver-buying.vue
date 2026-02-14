@@ -7,6 +7,20 @@ const pageTitle = '은매입 가격은 어떻게 정해질까? 방문 전 체크
 const pageDescription = '은매입 가격은 순도, 무게, 당일 시세로 정해져요. 방문 전에 챙기면 좋은 것들을 알려드립니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0801.webp`
 const publishedAt = '2026-02-14'
+const faqItems = [
+  {
+    question: '변색된 은제품도 매입이 되나요?',
+    answer: '가능합니다. 외관보다는 순도와 무게가 기준이므로 상태가 좋지 않아도 상담이 가능합니다.',
+  },
+  {
+    question: '은수저나 은화도 매입 가능한가요?',
+    answer: '가능합니다. 품목별 순도와 무게 확인 후 당일 시세 기준으로 안내드립니다.',
+  },
+  {
+    question: '은매입도 신분증이 필요한가요?',
+    answer: '네, 거래 시 본인 확인을 위해 신분증이 필요합니다. 방문 전에 꼭 지참해주세요.',
+  },
+]
 
 useHead({
   title: pageTitle,
@@ -45,6 +59,21 @@ useHead({
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       }),
     },
   ],
@@ -86,6 +115,7 @@ useHead({
       '전화나 온라인으로 안내드린 금액은 참고용이에요. 최종 금액은 실물 확인 후 확정됩니다.',
       '보석이나 장식 부품은 매입 대상에서 제외될 수 있어요.'
     ]"
+    :faq-items="faqItems"
     :related-links="[
       { to: '/buy-gold', label: '금·은 매입 안내', description: '매입 가능한 품목과 절차' },
       { to: '/faq', label: '자주 묻는 질문', description: '거래 전 궁금한 점 모음' },

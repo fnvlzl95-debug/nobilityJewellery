@@ -7,6 +7,20 @@ const pageTitle = '금반지 수리 비용: 작업별로 달라지는 기준 | �
 const pageDescription = '금반지 수리 비용은 사이즈 조절, 땜, 재세팅 등 작업마다 달라져요. 맡기기 전에 확인해두면 좋은 점을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp`
 const publishedAt = '2026-02-14'
+const faqItems = [
+  {
+    question: '금반지 사이즈 수리는 당일 가능한가요?',
+    answer: '작업 난이도와 반지 상태에 따라 당일 가능 여부가 달라집니다. 방문 전 사진 상담을 주시면 빠르게 안내드립니다.',
+  },
+  {
+    question: '보석이 있는 반지도 수리할 수 있나요?',
+    answer: '가능하지만 세팅 상태 확인이 필요합니다. 보석 재세팅이 필요한 경우 추가 작업이 발생할 수 있습니다.',
+  },
+  {
+    question: '수리 비용은 왜 전화로 확정이 어려운가요?',
+    answer: '같은 증상처럼 보여도 실제 손상 범위가 다를 수 있어 실물 확인 후 최종 비용을 정확히 안내드리고 있습니다.',
+  },
+]
 
 useHead({
   title: pageTitle,
@@ -45,6 +59,21 @@ useHead({
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       }),
     },
   ],
@@ -86,6 +115,7 @@ useHead({
       '인터넷에서 보신 평균 금액은 참고용이에요. 실제 비용은 실물 상태에 따라 달라집니다.',
       '보석이 세팅된 반지는 단순 사이즈 수리보다 작업이 더 들어갈 수 있어요.'
     ]"
+    :faq-items="faqItems"
     :related-links="[
       { to: '/repair', label: '수리·AS 안내', description: '어떤 수리가 가능한지 확인하세요' },
       { to: '/faq', label: '자주 묻는 질문', description: '수리 관련 궁금증 모음' },

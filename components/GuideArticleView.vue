@@ -13,6 +13,11 @@ interface RelatedLink {
   description: string
 }
 
+interface FAQItem {
+  question: string
+  answer: string
+}
+
 const props = defineProps<{
   category: string
   title: string
@@ -25,6 +30,7 @@ const props = defineProps<{
   quickAnswers: string[]
   sections: ArticleSection[]
   cautions?: string[]
+  faqItems?: FAQItem[]
   relatedLinks: RelatedLink[]
 }>()
 
@@ -112,6 +118,16 @@ const handleInquiryClick = () => {
         <ul>
           <li v-for="caution in props.cautions" :key="caution">{{ caution }}</li>
         </ul>
+      </section>
+
+      <section v-if="props.faqItems?.length" class="guide-faq">
+        <h2>자주 묻는 질문</h2>
+        <div class="guide-faq-list">
+          <article v-for="item in props.faqItems" :key="item.question" class="guide-faq-item">
+            <h3>Q. {{ item.question }}</h3>
+            <p>A. {{ item.answer }}</p>
+          </article>
+        </div>
       </section>
 
       <section class="guide-related">
@@ -271,6 +287,7 @@ const handleInquiryClick = () => {
 .quick-answer h2,
 .guide-article h2,
 .guide-caution h2,
+.guide-faq h2,
 .guide-related h2 {
   font-size: 22px;
   margin: 0 0 14px;
@@ -305,6 +322,36 @@ const handleInquiryClick = () => {
   padding: 20px;
   border: 1px solid rgba(255, 168, 168, 0.35);
   background: rgba(255, 168, 168, 0.05);
+}
+
+.guide-faq {
+  margin-bottom: 34px;
+  padding: 20px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: rgba(201, 162, 39, 0.04);
+}
+
+.guide-faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.guide-faq-item {
+  padding: 14px;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: rgba(250, 250, 250, 0.02);
+}
+
+.guide-faq-item h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #fafafa;
+}
+
+.guide-faq-item p {
+  margin: 0;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.82);
 }
 
 .related-grid {

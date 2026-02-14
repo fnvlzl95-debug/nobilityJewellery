@@ -60,6 +60,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    scrollbar-gutter: stable;
     width: 100%;
     max-width: 100vw;
   }

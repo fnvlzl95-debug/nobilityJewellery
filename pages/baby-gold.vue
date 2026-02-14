@@ -109,6 +109,24 @@ const processSteps = [
   { num: '03', title: '검수', desc: '순도 검사 및 품질 확인' },
   { num: '04', title: '전달', desc: '보관함과 품질보증서 함께 제공' }
 ]
+
+const relatedGuides = [
+  {
+    to: '/guide/baby-ring-price',
+    title: '돌반지 가격 문의 전 체크',
+    description: '가격이 달라지는 핵심 요소를 먼저 확인하세요.',
+  },
+  {
+    to: '/guide/baby-ring-production-time',
+    title: '돌반지 주문제작 기간',
+    description: '행사 일정에 맞추는 방법을 정리했습니다.',
+  },
+  {
+    to: '/guide',
+    title: '귀금속 가이드 전체 보기',
+    description: '실제 상담 질문 중심 콘텐츠 모음',
+  },
+]
 </script>
 
 <template>
@@ -228,6 +246,22 @@ const processSteps = [
             </NuxtLink>
           </div>
         </div>
+
+        <section class="guide-links-section">
+          <h2 class="section-title">관련 가이드</h2>
+          <p class="section-desc">돌반지 상담 전에 보면 도움이 되는 글입니다.</p>
+          <div class="guide-links-grid">
+            <NuxtLink
+              v-for="guide in relatedGuides"
+              :key="guide.to"
+              :to="guide.to"
+              class="guide-link-card"
+            >
+              <strong>{{ guide.title }}</strong>
+              <span>{{ guide.description }}</span>
+            </NuxtLink>
+          </div>
+        </section>
 
         <!-- CTA -->
         <LandingCTA
@@ -367,6 +401,51 @@ const processSteps = [
   color: rgba(250, 250, 250, 0.5);
   text-align: center;
   margin-top: 24px;
+}
+
+/* Related Guide */
+.guide-links-section {
+  margin-bottom: 80px;
+}
+
+.guide-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .guide-links-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.guide-link-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  text-decoration: none;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(201, 162, 39, 0.05);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.guide-link-card:hover {
+  border-color: #c9a227;
+  transform: translateY(-2px);
+}
+
+.guide-link-card strong {
+  font-size: 15px;
+  color: #fafafa;
+}
+
+.guide-link-card span {
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.7);
+  line-height: 1.6;
 }
 
 </style>

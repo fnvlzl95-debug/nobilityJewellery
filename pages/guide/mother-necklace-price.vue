@@ -7,6 +7,20 @@ const pageTitle = '어머니 금목걸이, 예산별 선택 방법 | 귀족'
 const pageDescription = '어머니 금목걸이는 소재, 무게, 체인·펜던트 구성에 따라 가격이 달라져요. 예산에 맞게 고르는 방법을 알려드립니다.'
 const ogImage = `${siteConfig.url}/Image/necklace/pexels-pixabay-248077.webp`
 const publishedAt = '2026-02-14'
+const faqItems = [
+  {
+    question: '어머니 금목걸이는 14K와 18K 중 어떤 게 좋나요?',
+    answer: '예산과 착용 목적에 따라 선택하시면 됩니다. 일상 착용은 내구성과 예산 균형, 선물 가치는 18K 선호가 많은 편입니다.',
+  },
+  {
+    question: '예산을 먼저 말해도 되나요?',
+    answer: '예산을 먼저 알려주시면 그 범위에서 가능한 무게와 디자인을 빠르게 추천해드릴 수 있습니다.',
+  },
+  {
+    question: '체인과 펜던트를 따로 맞춰도 되나요?',
+    answer: '가능합니다. 체인 단독, 펜던트 추가, 세트 구성 중 원하시는 방식으로 상담해드립니다.',
+  },
+]
 
 useHead({
   title: pageTitle,
@@ -45,6 +59,21 @@ useHead({
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       }),
     },
   ],
@@ -86,6 +115,7 @@ useHead({
       '다른 곳과 비교하실 때는 무게 기준이 같은지 먼저 확인해보세요.',
       '펜던트 포함 여부를 빼놓으면 가격 비교가 정확하지 않아요.'
     ]"
+    :faq-items="faqItems"
     :related-links="[
       { to: '/wedding', label: '예물 안내', description: '선물·예물 구성이 궁금하시면' },
       { to: '/custom', label: '주문제작 안내', description: '원하는 디자인으로 맞추고 싶다면' },
