@@ -224,7 +224,7 @@ onUnmounted(() => {
               <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
             </div>
             <div class="card-info">
-              <h3 class="card-title">{{ item.title }}</h3>
+              <span class="card-title">{{ item.title }}</span>
               <span class="card-material">{{ item.material }}</span>
             </div>
           </article>
@@ -434,24 +434,28 @@ onUnmounted(() => {
 }
 
 .card-info {
-  padding: 10px 2px 0;
+  padding: 4px 2px 0;
 }
 
 .card-title {
   font-family: 'JeonjuCraftMyungjo';
   font-size: 13px;
   font-weight: 300;
+  line-height: 1;
   color: rgba(250, 250, 250, 0.85);
-  margin-bottom: 4px;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .card-material {
+  display: block;
   font-size: 11px;
   font-weight: 300;
+  line-height: 1;
   color: rgba(250, 250, 250, 0.45);
+  margin: 0;
 }
 
 /* ===== Footer ===== */
@@ -531,6 +535,10 @@ onUnmounted(() => {
     gap: 12px;
   }
 
+  .card-info {
+    padding: 2px 2px 0;
+  }
+
   .card-title {
     font-size: 12px;
   }
@@ -556,7 +564,7 @@ onUnmounted(() => {
   }
 
   .card-info {
-    padding: 8px 2px 0;
+    padding: 2px 2px 0;
   }
 
   .card-title {
