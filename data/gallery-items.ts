@@ -187,6 +187,149 @@ export const galleryItems: GalleryItem[] = [
     delivery: '상담 후 결정',
     images: ['/Image/set/set0302.webp', '/Image/set/set0301.webp']
   },
+  {
+    id: 14,
+    category: 'ring',
+    title: '새틴 무광 사선컷 원포인트 커플링',
+    titleEn: 'Satin Matte Diagonal Cut One-Point Couple Ring',
+    description: '부드러운 새틴 무광 마감의 로즈골드·화이트골드 커플링입니다. 사선으로 깎아낸 컷팅 라인 위에 큐빅 하나를 세팅해 심플하면서도 포인트가 살아 있는 디자인입니다. 매일 착용해도 편안한 플랫 밴드 타입으로, 데일리 커플링이나 결혼반지로 추천드립니다.',
+    material: '14K Rose / White Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN0901.webp']
+  },
+  {
+    id: 15,
+    category: 'ring',
+    title: '투라인 솔리테어 파베 커플링',
+    titleEn: 'Two-Line Solitaire Pavé Couple Ring',
+    description: '중앙의 솔리테어 큐빅을 양쪽 파베 세팅이 감싸는 화려한 커플링입니다. 여성용은 로즈골드 바디에 촘촘한 파베 라인이, 남성용은 화이트골드 밴드에 깔끔한 단일 큐빅이 세팅되어 쌍으로 착용했을 때 조화가 돋보입니다.',
+    material: '14K Rose / White Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN1001.webp']
+  },
+  {
+    id: 16,
+    category: 'ring',
+    title: '삼색 골드 트위스트 컷팅 반지',
+    titleEn: 'Tri-Color Gold Twist Cutting Ring',
+    description: '옐로우골드, 로즈골드, 화이트골드 세 가지 색상의 꼬임 패턴 반지입니다. 표면에 다이아몬드 컷팅이 들어가 빛을 받을 때마다 반짝이며, 레이어드하거나 단독 착용 모두 예쁜 데일리 링입니다. 가벼운 무게로 일상 착용에 부담이 없습니다.',
+    material: '14K Yellow / Rose / White Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN1101.webp']
+  },
+  {
+    id: 17,
+    category: 'ring',
+    title: '클래식 밀그레인 솔리테어 콤비 커플링',
+    titleEn: 'Classic Milgrain Solitaire Combi Couple Ring',
+    description: '테두리를 따라 새긴 밀그레인(알갱이) 디테일이 클래식한 분위기를 연출하는 콤비 커플링입니다. 골드와 로즈골드의 투톤 조합에 중앙 솔리테어 큐빅이 포인트를 주며, 빈티지와 모던이 공존하는 격조 있는 예물 커플링입니다.',
+    material: '14K Gold / Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN1201.webp']
+  },
+  {
+    id: 18,
+    category: 'ring',
+    title: '밀그레인 밴드 데일리 커플링',
+    titleEn: 'Milgrain Band Daily Couple Ring',
+    description: '가장자리 밀그레인 라인이 은은한 포인트를 주는 데일리 커플링입니다. 로즈골드와 옐로우골드의 따뜻한 톤에 작은 큐빅 하나가 세팅되어 심플하면서도 질리지 않는 디자인입니다. 편안한 착용감으로 매일 함께하기 좋습니다.',
+    material: '14K Rose / Yellow Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN1301.webp']
+  },
+  {
+    id: 19,
+    category: 'ring',
+    title: '빈티지 패턴 와이드 밴드 커플링',
+    titleEn: 'Vintage Pattern Wide Band Couple Ring',
+    description: '넓은 밴드 전체에 정교한 빈티지 패턴이 새겨진 존재감 있는 커플링입니다. 옐로우골드 버전은 고전적인 레이스 패턴이, 로즈골드 버전은 볼 장식 테두리가 특징입니다. 밀그레인 엣지 마감이 앤티크한 무드를 완성하며, 클래식한 스타일을 선호하는 분들께 추천드립니다.',
+    material: '14K Yellow / Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/ring/NN1401.webp']
+  },
+  {
+    id: 20,
+    category: 'necklace',
+    title: '로즈골드 실버볼 비즈 데일리 목걸이',
+    titleEn: 'Rose Gold Silver Ball Bead Daily Necklace',
+    description: '가는 로즈골드 체인에 실버 비즈가 이어진 미니멀한 데일리 목걸이입니다. 볼 포인트가 빛을 받으면 은은하게 반짝이며, 다른 체인 목걸이와 레이어드하기에도 좋습니다. 가벼운 무게로 하루 종일 편하게 착용할 수 있습니다.',
+    material: '14K Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/necklace/NC0101.webp']
+  },
+  {
+    id: 21,
+    category: 'necklace',
+    title: '행운 호스슈 넘버 펜던트 목걸이',
+    titleEn: 'Lucky Horseshoe Number Pendant Necklace',
+    description: '행운을 상징하는 말굽(호스슈) 모양 안에 기념일 숫자를 넣을 수 있는 로즈골드 펜던트 목걸이입니다. 큐빅이 말굽 라인을 따라 세팅되어 화려하면서도 의미 있는 디자인입니다. 생일, 기념일, 럭키넘버 등 특별한 숫자를 담아 선물하기 좋습니다.',
+    material: '14K Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/necklace/NC0201.webp']
+  },
+  {
+    id: 22,
+    category: 'necklace',
+    title: '로즈골드 버클 큐빅 펜던트 목걸이',
+    titleEn: 'Rose Gold Buckle Cubic Pendant Necklace',
+    description: '버클 모양의 유니크한 펜던트에 큐빅이 촘촘히 세팅된 로즈골드 목걸이입니다. 심플한 코디에 포인트를 주기 좋은 디자인으로, 단독 착용은 물론 레이어드 연출에도 세련된 느낌을 더합니다.',
+    material: '14K Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/necklace/NC0301.webp']
+  },
+  {
+    id: 23,
+    category: 'bracelet',
+    title: '로즈골드 메시체인 슬라이더 팔찌',
+    titleEn: 'Rose Gold Mesh Chain Slider Bracelet',
+    description: '촘촘하게 엮은 메시 체인이 유연하게 손목을 감싸는 로즈골드 팔찌입니다. 블랙 큐빅 포인트가 세련된 악센트를 주며, 슬라이더 잠금장치로 길이 조절이 간편합니다. 가벼운 착용감으로 오피스룩부터 캐주얼까지 어디에나 어울립니다.',
+    material: '14K Rose Gold',
+    workType: '주문제작 가능',
+    delivery: '1~2주',
+    images: ['/Image/bracelet/BR0101.webp']
+  },
+  {
+    id: 24,
+    category: 'set',
+    title: '플라워 모티브 로즈골드 주얼리 세트',
+    titleEn: 'Flower Motif Rose Gold Jewelry Set',
+    description: '꽃잎 디테일에 큐빅이 세팅된 로맨틱한 로즈골드 주얼리 세트입니다. 목걸이, 귀걸이, 반지, 팔찌 4종 구성으로 세트 착용은 물론 단품 활용도 가능합니다. 여성스러운 플라워 디자인이 데일리부터 특별한 날까지 분위기를 높여줍니다.',
+    material: '14K Rose Gold',
+    workType: '맞춤 제작',
+    delivery: '상담 후 결정',
+    images: ['/Image/set/set0401.webp']
+  },
+  {
+    id: 25,
+    category: 'set',
+    title: '서클 링크 파베 로즈골드 주얼리 세트',
+    titleEn: 'Circle Link Pavé Rose Gold Jewelry Set',
+    description: '볼드한 체인 링크에 서클 펜던트를 조합한 트렌디한 로즈골드 주얼리 세트입니다. 서클 안쪽을 파베 큐빅이 채워 고급스러운 빛을 내며, 목걸이·귀걸이·반지·팔찌 4종 구성으로 코디에 통일감을 줍니다.',
+    material: '14K Rose Gold',
+    workType: '맞춤 제작',
+    delivery: '상담 후 결정',
+    images: ['/Image/set/set0501.webp']
+  },
+  {
+    id: 26,
+    category: 'set',
+    title: '자물쇠 체인 골드 주얼리 세트',
+    titleEn: 'Lock & Chain Gold Jewelry Set',
+    description: '자물쇠와 체인 모티브로 힙한 무드를 연출하는 골드 주얼리 세트입니다. 클립 체인 팔찌, 락 펜던트 목걸이, 후프 귀걸이, 볼드 반지 4종으로 구성되어 트렌디한 레이어드 스타일링이 가능합니다. 캐주얼부터 파티룩까지 활용도가 높습니다.',
+    material: '14K Gold',
+    workType: '맞춤 제작',
+    delivery: '상담 후 결정',
+    images: ['/Image/set/set0601.webp']
+  },
 ]
 
 export const categories: Category[] = [
