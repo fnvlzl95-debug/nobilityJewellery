@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const pageTitle = '귀금속 가이드 | 가격·수리·제작기간 | 귀족'
-const pageDescription = '돌반지 가격, 은매입, 금반지 수리 비용, 주문제작 기간 등 궁금하신 내용을 알기 쉽게 정리했습니다.'
+const pageDescription = '돌반지 가격과 각인 비용, 어머니 목걸이 제작 기간, 은매입, 반지 수리 비용 등 궁금하신 내용을 알기 쉽게 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 
 useHead({

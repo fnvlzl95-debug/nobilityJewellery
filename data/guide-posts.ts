@@ -11,6 +11,36 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'baby-ring-engraving-cost',
+    path: '/guide/baby-ring-engraving-cost',
+    title: '돌반지 각인 비용, 추가금이 생기는 경우는?',
+    description: '글자 수, 각인 위치, 주문제작 여부에 따라 비용이 달라져요. 상담 전에 확인할 포인트를 정리했습니다.',
+    keyword: '돌반지 각인 비용',
+    image: '/Image/ring/SB0103.webp',
+    publishedAt: '2026-03-28',
+    category: '비용',
+  },
+  {
+    slug: 'mother-necklace-production-time',
+    path: '/guide/mother-necklace-production-time',
+    title: '어머니 목걸이 제작 기간, 선물 날짜 맞추려면',
+    description: '디자인, 길이, 펜던트 구성, 재고 여부에 따라 기간이 달라져요. 일정 맞추는 방법을 정리했습니다.',
+    keyword: '어머니 목걸이 제작 기간',
+    image: '/Image/necklace/NC0201.webp',
+    publishedAt: '2026-03-28',
+    category: '기간',
+  },
+  {
+    slug: 'silver-ring-repair-cost',
+    path: '/guide/silver-ring-repair-cost',
+    title: '은반지 수리 비용, 변색·찌그러짐·사이즈별 기준',
+    description: '광택, 형태 복원, 사이즈 조절, 땜 여부에 따라 비용이 달라져요. 맡기기 전 확인할 내용을 모았습니다.',
+    keyword: '은반지 수리 비용',
+    image: '/Image/ring/NN0401.webp',
+    publishedAt: '2026-03-28',
+    category: '비용',
+  },
+  {
     slug: 'baby-ring-price',
     path: '/guide/baby-ring-price',
     title: '돌반지 가격 문의 전에 꼭 확인할 3가지',
