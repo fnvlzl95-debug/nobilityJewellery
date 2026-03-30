@@ -33,18 +33,16 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Product',
-        name: '결혼예물',
-        description: '결혼예물 세트, 결혼반지, 시댁예물, 처가예물 주문제작. 18K 골드, 다이아몬드.',
-        brand: {
-          '@type': 'Brand',
-          name: '귀족'
-        },
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'KRW',
-          availability: 'https://schema.org/InStock',
-          seller: {
+        '@type': 'CollectionPage',
+        name: '결혼예물 세트·커플링 | 종로 예물 | 귀족',
+        description: '결혼예물 세트, 결혼반지, 시댁예물, 처가예물 주문제작 안내 페이지입니다.',
+        url: `${siteConfig.url}/wedding`,
+        image: `${siteConfig.url}/Image/set/set0101.webp`,
+        about: {
+          '@type': 'Service',
+          name: '결혼예물 맞춤 상담',
+          serviceType: '결혼예물 주문제작',
+          provider: {
             '@type': 'LocalBusiness',
             name: siteConfig.name,
             telephone: siteConfig.phoneFormatted,
@@ -56,8 +54,7 @@ useHead({
               addressCountry: siteConfig.address.country
             }
           }
-        },
-        image: `${siteConfig.url}/Image/set/set0101.webp`
+        }
       })
     }
   ]

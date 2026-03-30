@@ -5,17 +5,48 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const categoryLinkMap: Record<string, { to: string; label: string }> = {
+  ring: { to: '/couple-ring', label: '커플링/반지 안내' },
+  necklace: { to: '/custom', label: '목걸이 주문제작' },
+  bracelet: { to: '/custom', label: '팔찌 주문제작' },
+  set: { to: '/wedding', label: '예물 세트 안내' },
+}
+
+const availableCategoryData = categories.filter((category) => getItemsByCategory(category.id).length > 0)
+
+const galleryHighlights = [
+  {
+    title: '실물 느낌을 먼저 확인',
+    description: '대표 디자인과 소재 구성을 카테고리별로 정리해두어 상담 전에 취향을 빠르게 좁히실 수 있습니다.',
+  },
+  {
+    title: '주문제작 기준까지 함께 안내',
+    description: '단순 이미지 모음이 아니라 제작 방식, 납기, 상담 포인트를 함께 보여드려 비교가 쉬워집니다.',
+  },
+  {
+    title: '방문 전 체크용 컬렉션',
+    description: '반지, 목걸이, 팔찌, 세트를 한 페이지에서 확인하고 예산과 착용 목적에 맞는 방향을 정하실 수 있습니다.',
+  },
+]
+
+const consultationChecks = [
+  '원하시는 카테고리와 비슷한 디자인 사진',
+  '14K·18K 등 희망 소재와 색상',
+  '선물용인지, 데일리용인지 같은 착용 목적',
+  '희망 수령일과 예산 범위',
+]
+
 useHead({
   title: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/gallery` }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 순금 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금 반지·목걸이·귀걸이·팔찌. 종로3가 금은방 주얼리 컬렉션.' },
+    { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 반지, 목걸이, 팔찌, 예물 세트를 카테고리별로 보고 주문제작·상담 포인트까지 한 번에 확인하실 수 있습니다.' },
     { name: 'keywords', content: '금반지 갤러리, 귀금속 작품, 주문제작 반지, 커플링, 돌반지, 결혼예물, 금목걸이, 금팔찌, 종로 금은방' },
     // Open Graph
     { property: 'og:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
-    { property: 'og:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
+    { property: 'og:description', content: '반지, 목걸이, 팔찌, 세트 컬렉션과 주문제작 상담 포인트를 함께 볼 수 있는 귀족 갤러리입니다.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/gallery` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0101.webp` },
@@ -24,7 +55,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
-    { name: 'twitter:description', content: '종로 귀금속 도매 귀족 갤러리. 금반지, 돌반지, 커플링, 결혼예물 도매. 14K 18K 24K 순금.' },
+    { name: 'twitter:description', content: '반지, 목걸이, 팔찌, 세트 컬렉션과 주문제작 상담 포인트를 함께 볼 수 있는 귀족 갤러리입니다.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0101.webp` },
   ],
   script: [
@@ -32,34 +63,34 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: '귀족 귀금속 갤러리',
+        description: '반지, 목걸이, 팔찌, 예물 세트를 카테고리별로 모아둔 귀족 귀금속 컬렉션 페이지입니다.',
+        url: `${siteConfig.url}/gallery`,
+        hasPart: availableCategoryData.map((category) => ({
+          '@type': 'ItemList',
+          name: `${category.label} 컬렉션`,
+          numberOfItems: getItemsByCategory(category.id).length,
+        })),
+      })
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: '귀족 귀금속 갤러리',
-        description: '종로 귀금속 전문점 귀족의 작품 갤러리. 금반지, 커플링, 돌반지, 결혼예물 컬렉션.',
+        description: '종로 귀금속 전문점 귀족의 작품 갤러리. 반지, 목걸이, 팔찌, 세트 컬렉션.',
         url: `${siteConfig.url}/gallery`,
         numberOfItems: galleryItems.length,
         itemListElement: galleryItems.map((item, index) => ({
           '@type': 'ListItem',
           position: index + 1,
           item: {
-            '@type': 'Product',
+            '@type': 'Thing',
             name: item.title,
             description: item.description,
             image: `${siteConfig.url}${item.images[0]}`,
-            material: item.material,
-            brand: {
-              '@type': 'Brand',
-              name: siteConfig.name
-            },
-            offers: {
-              '@type': 'Offer',
-              availability: 'https://schema.org/InStock',
-              priceCurrency: 'KRW',
-              seller: {
-                '@type': 'LocalBusiness',
-                name: siteConfig.name,
-                telephone: siteConfig.phoneFormatted
-              }
-            }
           }
         }))
       })
@@ -83,10 +114,15 @@ let lenis: Lenis | null = null
 let rafId: number | null = null
 
 const isScrolled = ref(false)
-const availableCategories = computed(() => categories.filter((category) => getItemsByCategory(category.id).length > 0))
+const availableCategories = computed(() => availableCategoryData)
+const categorySections = computed(() => availableCategories.value.map((category) => ({
+  ...category,
+  items: getItemsByCategory(category.id),
+  cta: categoryLinkMap[category.id] ?? { to: '/contact', label: '상담 문의' },
+})))
+const categorySectionId = (categoryId: string) => `category-${categoryId}`
 
 const activeItem = ref<GalleryItem>(galleryItems[0])
-const activeTab = ref<string>(categories.filter(c => getItemsByCategory(c.id).length > 0)[0]?.id || '')
 const currentImageIndex = ref(0)
 
 const setActiveItem = (item: GalleryItem) => {
@@ -188,49 +224,124 @@ onUnmounted(() => {
 
     <main class="main">
       <div class="gallery-container">
-        <!-- Header -->
         <header class="gallery-header reveal">
-          <h1 class="gallery-title">갤러리</h1>
-          <span class="gallery-count">{{ galleryItems.length }} Items</span>
+          <div>
+            <p class="gallery-label">Collection</p>
+            <h1 class="gallery-title">귀금속 갤러리</h1>
+          </div>
+          <div class="gallery-header-meta">
+            <span class="gallery-count">{{ galleryItems.length }} Items</span>
+            <span class="gallery-count-copy">반지 · 목걸이 · 팔찌 · 세트</span>
+          </div>
         </header>
 
-        <!-- Tab Bar -->
-        <div class="tab-bar reveal">
-          <button
+        <section class="gallery-intro reveal">
+          <p class="gallery-intro-lead">
+            대표 디자인만 빠르게 훑어보는 페이지가 아니라, 어떤 카테고리를 먼저 봐야 하는지와 주문제작 상담 전에
+            무엇을 정하면 좋은지까지 함께 확인하실 수 있도록 정리했습니다.
+          </p>
+          <div class="gallery-intro-grid">
+            <article v-for="highlight in galleryHighlights" :key="highlight.title" class="gallery-intro-card">
+              <h2>{{ highlight.title }}</h2>
+              <p>{{ highlight.description }}</p>
+            </article>
+          </div>
+        </section>
+
+        <nav class="tab-bar reveal" aria-label="갤러리 카테고리">
+          <a
             v-for="category in availableCategories"
             :key="category.id"
             class="tab-btn"
-            :class="{ active: activeTab === category.id }"
-            @click="activeTab = category.id"
+            :href="`#${categorySectionId(category.id)}`"
           >
-            {{ category.label }}
-          </button>
-        </div>
+            <span>{{ category.label }}</span>
+            <strong>{{ getItemsByCategory(category.id).length }}</strong>
+          </a>
+        </nav>
 
-        <!-- Product Grid -->
-        <div class="product-grid">
-          <article
-            v-for="item in getItemsByCategory(activeTab)"
-            :key="item.id"
-            class="product-card"
-            @click="handleCardClick(item)"
-          >
-            <div class="card-image">
-              <img
-                :src="item.images[0]"
-                :alt="item.title"
-                loading="lazy"
-              />
-              <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
+        <section
+          v-for="section in categorySections"
+          :id="categorySectionId(section.id)"
+          :key="section.id"
+          class="category-section reveal"
+        >
+          <div class="category-header">
+            <div>
+              <p class="category-label">{{ section.labelEn }}</p>
+              <h2 class="category-title">{{ section.label }}</h2>
             </div>
-            <div class="card-info">
-              <span class="card-title">{{ item.title }}</span>
-              <span class="card-material">{{ item.material }}</span>
-            </div>
-          </article>
-        </div>
+            <NuxtLink :to="section.cta.to" class="category-link">
+              {{ section.cta.label }}
+            </NuxtLink>
+          </div>
 
-        <!-- Footer -->
+          <p class="category-description">{{ section.description }}</p>
+
+          <div class="category-meta">
+            <span>{{ section.items.length }}개 디자인</span>
+            <span>상담 전 비교용 대표 컬렉션</span>
+          </div>
+
+          <div class="product-grid">
+            <article
+              v-for="item in section.items"
+              :key="item.id"
+              class="product-card"
+            >
+              <button
+                type="button"
+                class="product-card-button"
+                @click="handleCardClick(item)"
+              >
+                <div class="card-image">
+                  <img
+                    :src="item.images[0]"
+                    :alt="item.title"
+                    loading="lazy"
+                  />
+                  <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
+                </div>
+                <div class="card-body">
+                  <div class="card-info">
+                    <span class="card-title">{{ item.title }}</span>
+                    <span class="card-material">{{ item.material }}</span>
+                  </div>
+                  <p class="card-description">{{ item.description }}</p>
+                  <dl class="card-meta-list">
+                    <div>
+                      <dt>제작</dt>
+                      <dd>{{ item.workType }}</dd>
+                    </div>
+                    <div>
+                      <dt>기간</dt>
+                      <dd>{{ item.delivery }}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </button>
+            </article>
+          </div>
+        </section>
+
+        <section class="gallery-help reveal">
+          <div class="gallery-help-card">
+            <h2>상담 전에 알려주시면 좋은 내용</h2>
+            <ul>
+              <li v-for="check in consultationChecks" :key="check">{{ check }}</li>
+            </ul>
+          </div>
+          <div class="gallery-help-card">
+            <h2>갤러리 다음 단계</h2>
+            <p>마음에 드는 스타일을 2~3개 정도 고른 뒤 예산과 수령일을 알려주시면 비교 상담이 훨씬 빨라집니다.</p>
+            <div class="gallery-help-links">
+              <NuxtLink to="/custom">주문제작 안내</NuxtLink>
+              <NuxtLink to="/wedding">예물 안내</NuxtLink>
+              <NuxtLink to="/contact">문의하기</NuxtLink>
+            </div>
+          </div>
+        </section>
+
         <div class="gallery-footer reveal">
           <p class="footer-note">
             모든 제품은 도매가로 제공됩니다.<br>
@@ -328,31 +439,97 @@ onUnmounted(() => {
 /* ===== Header ===== */
 .gallery-header {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.gallery-label {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a227;
 }
 
 .gallery-title {
   font-family: 'JeonjuCraftMyungjo';
-  font-size: 28px;
+  font-size: clamp(30px, 4vw, 44px);
   font-weight: 300;
   color: #fafafa;
+  margin: 0;
+}
+
+.gallery-header-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
 }
 
 .gallery-count {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 300;
-  letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.45);
+  letter-spacing: 0.16em;
+  color: rgba(250, 250, 250, 0.7);
+  text-transform: uppercase;
+}
+
+.gallery-count-copy {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.62);
+}
+
+/* ===== Intro ===== */
+.gallery-intro {
+  margin-bottom: 36px;
+  padding: 24px;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: linear-gradient(180deg, rgba(201, 162, 39, 0.08), rgba(201, 162, 39, 0.02));
+}
+
+.gallery-intro-lead {
+  margin: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: rgba(250, 250, 250, 0.88);
+}
+
+.gallery-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.gallery-intro-card {
+  padding: 16px;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(250, 250, 250, 0.02);
+}
+
+.gallery-intro-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #fafafa;
+}
+
+.gallery-intro-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(250, 250, 250, 0.72);
 }
 
 /* ===== Tab Bar ===== */
 .tab-bar {
   display: flex;
-  gap: 0;
+  gap: 10px;
   border-bottom: 1px solid rgba(250, 250, 250, 0.1);
   margin-bottom: 32px;
+  padding-bottom: 18px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -363,27 +540,97 @@ onUnmounted(() => {
 }
 
 .tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
-  padding: 14px 24px;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
+  padding: 12px 18px;
+  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(250, 250, 250, 0.08);
   font-family: 'JeonjuCraftMyungjo';
   font-size: 15px;
   font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
-  cursor: pointer;
+  color: rgba(250, 250, 250, 0.8);
+  text-decoration: none;
   transition: all 0.3s;
   white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: rgba(250, 250, 250, 0.8);
+  color: #fafafa;
+  border-color: rgba(201, 162, 39, 0.45);
+  background: rgba(201, 162, 39, 0.08);
 }
 
-.tab-btn.active {
+.tab-btn strong {
   color: #c9a227;
-  border-bottom-color: #c9a227;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ===== Category Section ===== */
+.category-section {
+  margin-bottom: 42px;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.category-label {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a227;
+}
+
+.category-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.category-link {
+  color: #fafafa;
+  text-decoration: none;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  padding: 10px 14px;
+  font-size: 13px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.category-link:hover {
+  border-color: #c9a227;
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.category-description {
+  margin: 0 0 12px;
+  max-width: 900px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: rgba(250, 250, 250, 0.78);
+}
+
+.category-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.category-meta span {
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(250, 250, 250, 0.02);
+  padding: 6px 10px;
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.64);
 }
 
 /* ===== Product Grid ===== */
@@ -394,12 +641,25 @@ onUnmounted(() => {
 }
 
 .product-card {
-  cursor: pointer;
-  transition: transform 0.3s;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(250, 250, 250, 0.02);
+  transition: transform 0.3s, border-color 0.3s;
 }
 
 .product-card:hover {
   transform: translateY(-4px);
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.product-card-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
 }
 
 .card-image {
@@ -407,7 +667,7 @@ onUnmounted(() => {
   aspect-ratio: 1;
   overflow: hidden;
   background: #111;
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
 }
 
 .card-image img {
@@ -419,6 +679,10 @@ onUnmounted(() => {
 
 .product-card:hover .card-image img {
   transform: scale(1.05);
+}
+
+.card-body {
+  padding: 14px;
 }
 
 .card-badge {
@@ -434,28 +698,116 @@ onUnmounted(() => {
 }
 
 .card-info {
-  padding: 4px 2px 0;
+  padding: 0;
 }
 
 .card-title {
+  display: block;
   font-family: 'JeonjuCraftMyungjo';
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 300;
-  line-height: 1;
+  line-height: 1.4;
   color: rgba(250, 250, 250, 0.85);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 6px;
 }
 
 .card-material {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 300;
-  line-height: 1;
-  color: rgba(250, 250, 250, 0.45);
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.56);
+  margin: 0 0 12px;
+}
+
+.card-description {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.72);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   margin: 0;
+}
+
+.card-meta-list div {
+  padding-top: 10px;
+  border-top: 1px solid rgba(250, 250, 250, 0.06);
+}
+
+.card-meta-list dt {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(250, 250, 250, 0.42);
+}
+
+.card-meta-list dd {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.82);
+}
+
+/* ===== Help ===== */
+.gallery-help {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+  margin-bottom: 32px;
+}
+
+.gallery-help-card {
+  padding: 20px;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: rgba(201, 162, 39, 0.05);
+}
+
+.gallery-help-card h2 {
+  margin: 0 0 12px;
+  font-size: 21px;
+}
+
+.gallery-help-card p,
+.gallery-help-card li {
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(250, 250, 250, 0.8);
+}
+
+.gallery-help-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.gallery-help-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.gallery-help-links a {
+  text-decoration: none;
+  color: #fafafa;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.gallery-help-links a:hover {
+  border-color: #c9a227;
+  background: rgba(201, 162, 39, 0.08);
 }
 
 /* ===== Footer ===== */
@@ -513,8 +865,9 @@ onUnmounted(() => {
     padding: 24px 20px 100px;
   }
 
-  .gallery-title {
-    font-size: 22px;
+  .gallery-intro-grid,
+  .gallery-help {
+    grid-template-columns: 1fr;
   }
 
   .gallery-header {
@@ -522,7 +875,7 @@ onUnmounted(() => {
   }
 
   .tab-btn {
-    padding: 12px 16px;
+    padding: 12px 14px;
     font-size: 14px;
   }
 
@@ -536,15 +889,20 @@ onUnmounted(() => {
   }
 
   .card-info {
-    padding: 2px 2px 0;
+    padding: 0;
   }
 
   .card-title {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .card-material {
-    font-size: 10px;
+    font-size: 11px;
+  }
+
+  .card-description {
+    font-size: 12px;
+    -webkit-line-clamp: 3;
   }
 }
 
@@ -558,21 +916,37 @@ onUnmounted(() => {
     font-size: 20px;
   }
 
+  .gallery-header-meta {
+    align-items: flex-start;
+  }
+
+  .category-title {
+    font-size: 24px;
+  }
+
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
-  .card-info {
-    padding: 2px 2px 0;
+  .card-body {
+    padding: 12px;
   }
 
   .card-title {
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .card-material {
-    font-size: 9px;
+    font-size: 10px;
+  }
+
+  .card-description {
+    font-size: 11px;
+  }
+
+  .card-meta-list {
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -33,18 +33,16 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Product',
-        name: '커플링',
-        description: '14K, 18K 커플링 주문제작. 이니셜 각인, 기념일 각인 가능.',
-        brand: {
-          '@type': 'Brand',
-          name: '귀족'
-        },
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'KRW',
-          availability: 'https://schema.org/InStock',
-          seller: {
+        '@type': 'CollectionPage',
+        name: '14K/18K 커플링 맞춤제작 | 종로 | 귀족',
+        description: '14K, 18K 커플링 맞춤제작과 이니셜·기념일 각인 상담 안내 페이지입니다.',
+        url: `${siteConfig.url}/couple-ring`,
+        image: `${siteConfig.url}/Image/ring/NN0103.webp`,
+        about: {
+          '@type': 'Service',
+          name: '커플링 맞춤 상담',
+          serviceType: '커플링 주문제작',
+          provider: {
             '@type': 'LocalBusiness',
             name: siteConfig.name,
             telephone: siteConfig.phoneFormatted,
@@ -56,8 +54,7 @@ useHead({
               addressCountry: siteConfig.address.country
             }
           }
-        },
-        image: `${siteConfig.url}/Image/ring/NN0103.webp`
+        }
       })
     }
   ]

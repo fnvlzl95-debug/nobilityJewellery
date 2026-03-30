@@ -33,18 +33,16 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Product',
-        name: '순금 돌반지',
-        description: '24K 순금으로 제작하는 돌반지, 백일반지, 아기반지. 띠별 디자인 주문제작 가능.',
-        brand: {
-          '@type': 'Brand',
-          name: '귀족'
-        },
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'KRW',
-          availability: 'https://schema.org/InStock',
-          seller: {
+        '@type': 'CollectionPage',
+        name: '24K 순금 돌반지 주문제작 | 종로 | 귀족',
+        description: '24K 순금 돌반지, 백일반지, 아기반지 주문제작 안내 페이지입니다.',
+        url: `${siteConfig.url}/baby-gold`,
+        image: `${siteConfig.url}/Image/ring/SB0101.webp`,
+        about: {
+          '@type': 'Service',
+          name: '순금 돌반지 주문제작 상담',
+          serviceType: '돌반지 맞춤 제작',
+          provider: {
             '@type': 'LocalBusiness',
             name: siteConfig.name,
             telephone: siteConfig.phoneFormatted,
@@ -56,8 +54,7 @@ useHead({
               addressCountry: siteConfig.address.country
             }
           }
-        },
-        image: `${siteConfig.url}/Image/ring/SB0101.webp`
+        }
       })
     }
   ]
