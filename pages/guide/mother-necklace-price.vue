@@ -93,6 +93,8 @@ useHead({
   <GuideArticleView
     category="가격"
     keyword="어머니 금목걸이 가격"
+    inquiry-type="custom"
+    inquiry-topic="어머니 금목걸이 가격"
     title="어머니 금목걸이 가격, 예산별 선택 방법"
     lead="어머니께 드릴 금목걸이 가격은 고정 금액 하나로 보시기보다, 당일 금 시세와 14K·18K 여부, 체인 중량, 길이, 펜던트 포함 여부를 함께 보시는 게 정확합니다. 상담 전에 기준만 정리해도 비교가 훨씬 쉬워집니다."
     :published-at="publishedAt"

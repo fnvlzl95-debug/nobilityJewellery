@@ -8,6 +8,8 @@ interface InquiryBody {
   type: string
   message: string
   consent: boolean
+  source?: string
+  topic?: string
   honeypot?: string // Spam prevention
 }
 
@@ -104,6 +106,8 @@ export default defineEventHandler(async (event) => {
     type: body.type || 'other',
     typeLabel: typeLabels[body.type] || '기타',
     message: body.message.trim(),
+    source: typeof body.source === 'string' ? body.source.trim().slice(0, 40) : '',
+    topic: typeof body.topic === 'string' ? body.topic.trim().slice(0, 120) : '',
     submittedAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
     ip: ip.split(',')[0].trim(),
   }
@@ -145,6 +149,18 @@ export default defineEventHandler(async (event) => {
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">접수시간</td>
               <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.submittedAt}</td>
             </tr>
+            ${inquiry.source ? `
+            <tr>
+              <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">유입 출처</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.source}</td>
+            </tr>
+            ` : ''}
+            ${inquiry.topic ? `
+            <tr>
+              <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">상담 주제</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.topic}</td>
+            </tr>
+            ` : ''}
           </table>
 
           <div style="margin: 20px 0;">

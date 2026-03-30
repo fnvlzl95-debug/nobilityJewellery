@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="기간"
     keyword="어머니 목걸이 제작 기간"
+    inquiry-type="custom"
+    inquiry-topic="어머니 목걸이 제작 기간"
     title="어머니 목걸이 제작 기간, 선물 날짜 맞추려면"
     lead="어머니께 드릴 목걸이는 바로 구매 가능한 제품도 있지만, 체인 길이와 굵기, 펜던트 조합, 잠금장치 선택이 들어가면 제작 기간이 달라져요. 선물 날짜가 정해져 있다면 상담 초반에 일정부터 공유하시는 것이 가장 정확합니다."
     :published-at="publishedAt"

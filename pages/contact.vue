@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+type InquiryType = 'wholesale' | 'custom' | 'repair' | 'other'
+type InquirySource = 'home' | 'gallery' | 'guide_article'
 
 useHead({
   title: '도매·주문제작·수리 상담 | 종로 | 귀족',
@@ -76,13 +79,8 @@ useHead({
   ]
 })
 
-const formData = ref({
-  name: '',
-  phone: '',
-  type: '',
-  message: '',
-  consent: false,
-})
+const route = useRoute()
+const { trackPhoneClick, trackLeadSubmitted, trackFormError } = useGtag()
 
 const inquiryTypes = [
   { value: 'wholesale', label: '도매 상담', labelEn: 'Wholesale' },
@@ -91,13 +89,73 @@ const inquiryTypes = [
   { value: 'other', label: '기타', labelEn: 'Other' },
 ]
 
+const inquirySourceLabels: Record<InquirySource, string> = {
+  home: '홈',
+  gallery: '갤러리',
+  guide_article: '가이드',
+}
+
+const getQueryValue = (value: string | null | Array<string | null> | undefined) => {
+  if (Array.isArray(value)) return value[0] || ''
+  return value || ''
+}
+
+const parseQueryType = (): InquiryType | '' => {
+  const type = getQueryValue(route.query.type)
+  return inquiryTypes.some((item) => item.value === type) ? (type as InquiryType) : ''
+}
+
+const parseQuerySource = (): InquirySource | '' => {
+  const source = getQueryValue(route.query.source)
+  return source === 'home' || source === 'gallery' || source === 'guide_article'
+    ? source
+    : ''
+}
+
+const buildInitialFormData = () => ({
+  name: '',
+  phone: '',
+  type: parseQueryType(),
+  message: '',
+  consent: false,
+  source: parseQuerySource(),
+  topic: getQueryValue(route.query.topic).trim().slice(0, 120),
+  honeypot: '',
+})
+
+const formData = ref(buildInitialFormData())
+
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
 const isScrolled = ref(false)
+const inquiryContext = computed(() => {
+  const sourceLabel = formData.value.source ? inquirySourceLabels[formData.value.source as InquirySource] : ''
+  if (!sourceLabel && !formData.value.topic) return null
+
+  return {
+    sourceLabel,
+    topic: formData.value.topic,
+    description: formData.value.topic
+      ? `${sourceLabel ? `${sourceLabel}에서 보신 ` : ''}${formData.value.topic} 관련 문의를 이어가고 있습니다.`
+      : `${sourceLabel}에서 문의를 시작하셨습니다.`,
+  }
+})
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 80
 }
+
+const handlePhoneClick = () => {
+  trackPhoneClick('contact')
+}
+
+watch(
+  () => route.fullPath,
+  () => {
+    formData.value = buildInitialFormData()
+    isSubmitted.value = false
+  }
+)
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -110,18 +168,27 @@ onUnmounted(() => {
 
 const handleSubmit = async () => {
   if (!formData.value.consent) {
+    trackFormError('contact', 'missing_consent', 'validation')
     alert('개인정보 수집에 동의해주세요.')
     return
   }
 
   isSubmitting.value = true
+  const submissionSnapshot = { ...formData.value }
 
   try {
     await $fetch('/api/inquiry', { method: 'POST', body: formData.value })
+    trackLeadSubmitted(
+      submissionSnapshot.type || 'other',
+      submissionSnapshot.source || 'contact',
+      submissionSnapshot.topic || undefined
+    )
     isSubmitted.value = true
-    formData.value = { name: '', phone: '', type: '', message: '', consent: false }
+    formData.value = buildInitialFormData()
   } catch (e: any) {
-    alert(e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.')
+    const errorMessage = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
+    trackFormError('contact', errorMessage, e.statusCode ? 'api_error' : 'submission')
+    alert(errorMessage)
   } finally {
     isSubmitting.value = false
   }
@@ -146,7 +213,7 @@ const handleSubmit = async () => {
               무엇이든 편하게 연락주세요.
             </p>
 
-            <a :href="`tel:${siteConfig.phone}`" class="phone-cta">
+            <a :href="`tel:${siteConfig.phone}`" class="phone-cta" @click="handlePhoneClick">
               <div class="phone-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -200,6 +267,21 @@ const handleSubmit = async () => {
 
           <!-- Form -->
           <form v-else class="contact-form" @submit.prevent="handleSubmit">
+            <div v-if="inquiryContext" class="inquiry-context">
+              <span class="inquiry-context-label">현재 상담 흐름</span>
+              <strong>{{ inquiryContext.topic || inquiryContext.sourceLabel }}</strong>
+              <p>{{ inquiryContext.description }}</p>
+            </div>
+
+            <input v-model="formData.source" type="hidden">
+            <input v-model="formData.topic" type="hidden">
+            <div class="honeypot-field" aria-hidden="true">
+              <label>
+                Leave this field empty
+                <input v-model="formData.honeypot" type="text" tabindex="-1" autocomplete="off">
+              </label>
+            </div>
+
             <!-- Type Selection -->
             <div class="form-group">
               <label class="form-label">문의 유형</label>
@@ -495,6 +577,45 @@ const handleSubmit = async () => {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.inquiry-context {
+  padding: 18px 20px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: linear-gradient(180deg, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.03));
+}
+
+.inquiry-context-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9a227;
+}
+
+.inquiry-context strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 300;
+  color: #fafafa;
+}
+
+.inquiry-context p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.8);
+}
+
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .form-group {

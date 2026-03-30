@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="가격"
     keyword="돌반지 가격 문의"
+    inquiry-type="custom"
+    inquiry-topic="돌반지 가격 문의"
     title="돌반지 가격 문의 전에 꼭 확인할 3가지"
     lead="돌반지 가격은 '한 개에 얼마'로 딱 정해져 있지 않아요. 금 시세, 무게, 각인 디자인에 따라 달라지기 때문에 이 세 가지를 먼저 알아두시면 상담이 훨씬 수월합니다."
     :published-at="publishedAt"

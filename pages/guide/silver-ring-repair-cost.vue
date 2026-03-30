@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="비용"
     keyword="은반지 수리 비용"
+    inquiry-type="repair"
+    inquiry-topic="은반지 수리 비용"
     title="은반지 수리 비용, 변색·찌그러짐·사이즈별 기준"
     lead="은반지는 금반지보다 변색이나 미세한 변형 문의가 많은 편이에요. 다만 수리 비용은 단순 세척인지, 형태 복원인지, 사이즈 조절인지에 따라 완전히 달라지기 때문에 먼저 어떤 작업이 필요한지 구분해보시는 것이 좋습니다."
     :published-at="publishedAt"

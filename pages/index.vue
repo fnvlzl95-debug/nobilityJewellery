@@ -20,6 +20,32 @@ const handleKakaoClick = () => {
 }
 
 const previewItems = getPreviewItems(6)
+const homeContactLink = {
+  path: '/contact',
+  query: {
+    source: 'home',
+  },
+}
+const intentRoutes = [
+  {
+    to: '/gallery',
+    eyebrow: 'Design',
+    title: '디자인부터 보고 싶어요',
+    description: '반지, 목걸이, 팔찌, 세트 스타일을 먼저 고르고 상담으로 넘어가세요.',
+  },
+  {
+    to: '/repair',
+    eyebrow: 'Repair',
+    title: '수리부터 맡기고 싶어요',
+    description: '반지 사이즈, 체인 끊어짐, 도금과 광택까지 바로 확인할 수 있습니다.',
+  },
+  {
+    to: '/guide',
+    eyebrow: 'Guide',
+    title: '가격·제작기간이 먼저 궁금해요',
+    description: '실제 문의가 많았던 비용, 기간, 주문 흐름 가이드를 먼저 보실 수 있습니다.',
+  },
+]
 const featuredGuides = [
   {
     to: '/guide/baby-ring-price',
@@ -270,6 +296,9 @@ onUnmounted(() => {
           <NuxtLink to="/gallery" class="btn-outline-gold">
             <span>갤러리 보기</span>
           </NuxtLink>
+          <NuxtLink :to="homeContactLink" class="btn-outline-gold" @click="handleInquiryClick">
+            <span>온라인 문의</span>
+          </NuxtLink>
         </div>
       </div>
 
@@ -281,6 +310,31 @@ onUnmounted(() => {
       <!-- Floating elements -->
       <div class="hero-float hero-float-1"></div>
       <div class="hero-float hero-float-2"></div>
+    </section>
+
+    <section class="section-intent-router">
+      <div class="container-lg">
+        <div class="intent-router-shell reveal">
+          <div class="intent-router-header">
+            <span class="section-label">Quick Start</span>
+            <h2 class="section-title">무엇을 먼저 찾고 계신가요?</h2>
+            <p class="section-desc">가장 가까운 목적지로 바로 이동해서 상담 준비 시간을 줄이실 수 있습니다.</p>
+          </div>
+
+          <div class="intent-router-grid">
+            <NuxtLink
+              v-for="route in intentRoutes"
+              :key="route.to"
+              :to="route.to"
+              class="intent-router-card"
+            >
+              <span class="intent-router-eyebrow">{{ route.eyebrow }}</span>
+              <strong>{{ route.title }}</strong>
+              <p>{{ route.description }}</p>
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- About Section -->
@@ -1278,6 +1332,73 @@ onUnmounted(() => {
 @keyframes float {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(20px, -20px); }
+}
+
+/* ===== Intent Router ===== */
+.section-intent-router {
+  padding: 48px 0 0;
+  background: #0a0a0a;
+}
+
+.intent-router-shell {
+  padding: 28px;
+  border: 1px solid rgba(201, 162, 39, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(201, 162, 39, 0.1), transparent 36%),
+    linear-gradient(180deg, rgba(250, 250, 250, 0.02), rgba(250, 250, 250, 0.01));
+}
+
+.intent-router-header {
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+
+.intent-router-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.intent-router-card {
+  display: block;
+  min-height: 220px;
+  padding: 24px;
+  text-decoration: none;
+  color: #fafafa;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(250, 250, 250, 0.02);
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.intent-router-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201, 162, 39, 0.45);
+  background: rgba(201, 162, 39, 0.06);
+}
+
+.intent-router-eyebrow {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c9a227;
+}
+
+.intent-router-card strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.45;
+}
+
+.intent-router-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(250, 250, 250, 0.72);
 }
 
 /* ===== About Section ===== */
@@ -2366,6 +2487,7 @@ onUnmounted(() => {
 
 /* ===== Mobile Responsive ===== */
 @media (max-width: 1023px) {
+  .section-intent-router,
   .section-about,
   .section-services,
   .section-gallery,
@@ -2385,6 +2507,10 @@ onUnmounted(() => {
 
   .services-grid {
     gap: 16px;
+  }
+
+  .intent-router-grid {
+    grid-template-columns: 1fr;
   }
 
   .guide-links-grid {
@@ -2417,6 +2543,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 640px) {
+  .section-intent-router,
   .section-about,
   .section-services,
   .section-gallery,
@@ -2442,6 +2569,15 @@ onUnmounted(() => {
   .btn-outline-gold {
     width: 100%;
     justify-content: center;
+  }
+
+  .intent-router-shell {
+    padding: 20px;
+  }
+
+  .intent-router-card {
+    min-height: auto;
+    padding: 20px;
   }
 
   .services-grid {

@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="비용"
     keyword="금반지 수리 비용"
+    inquiry-type="repair"
+    inquiry-topic="금반지 수리 비용"
     title="금반지 수리 비용: 작업별로 달라지는 기준"
     lead="금반지 수리라고 해서 비용이 다 같지는 않아요. 어떤 작업이 필요한지, 손상이 어느 정도인지에 따라 비용과 기간이 달라집니다."
     :published-at="publishedAt"

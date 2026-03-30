@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="비용"
     keyword="돌반지 각인 비용"
+    inquiry-type="custom"
+    inquiry-topic="돌반지 각인 비용"
     title="돌반지 각인 비용, 추가금이 생기는 경우는?"
     lead="돌반지 가격과 별도로 각인 비용이 얼마나 드는지 많이 물어보세요. 실제로는 문구 길이, 각인 위치, 제작 방식에 따라 가능 여부와 비용이 달라지기 때문에 처음 상담 때 함께 정해두시는 것이 가장 정확합니다."
     :published-at="publishedAt"

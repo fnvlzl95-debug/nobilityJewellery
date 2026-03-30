@@ -8,6 +8,12 @@ export const useGtag = () => {
     }
   }
 
+  const withOptionalParams = (params: Record<string, string | number | undefined>) => {
+    return Object.fromEntries(
+      Object.entries(params).filter(([, value]) => value !== undefined && value !== '')
+    ) as Record<string, string | number>
+  }
+
   // CTA 클릭 추적
   const trackCtaClick = (ctaType: 'phone_call' | 'online_inquiry' | 'kakao_chat', pageName: string) => {
     trackEvent('cta_click', {
@@ -41,11 +47,29 @@ export const useGtag = () => {
     trackCtaClick('kakao_chat', pageName)
   }
 
+  const trackLeadSubmitted = (leadType: string, leadSource?: string, leadTopic?: string) => {
+    trackEvent('generate_lead', withOptionalParams({
+      lead_type: leadType,
+      lead_source: leadSource,
+      lead_topic: leadTopic,
+    }))
+  }
+
+  const trackFormError = (pageName: string, errorMessage: string, errorType = 'submission') => {
+    trackEvent('contact_form_error', {
+      page_name: pageName,
+      error_message: errorMessage,
+      error_type: errorType,
+    })
+  }
+
   return {
     trackEvent,
     trackCtaClick,
     trackPhoneClick,
     trackInquiryClick,
     trackKakaoClick,
+    trackLeadSubmitted,
+    trackFormError,
   }
 }

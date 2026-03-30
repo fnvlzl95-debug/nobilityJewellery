@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="비용"
     keyword="은매입"
+    inquiry-type="other"
+    inquiry-topic="은매입"
     title="은매입 가격은 어떻게 정해질까? 방문 전 체크리스트"
     lead="은매입은 겉모습보다 순도와 실제 무게, 그날 시세가 핵심이에요. 오시기 전에 품목을 간단히 정리해 오시면 감정도 상담도 훨씬 빨라집니다."
     :published-at="publishedAt"

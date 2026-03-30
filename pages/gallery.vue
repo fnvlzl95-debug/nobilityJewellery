@@ -5,6 +5,8 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const { trackInquiryClick } = useGtag()
+
 const categoryLinkMap: Record<string, { to: string; label: string }> = {
   ring: { to: '/couple-ring', label: '커플링/반지 안내' },
   necklace: { to: '/custom', label: '목걸이 주문제작' },
@@ -35,6 +37,19 @@ const consultationChecks = [
   '선물용인지, 데일리용인지 같은 착용 목적',
   '희망 수령일과 예산 범위',
 ]
+
+const buildGalleryInquiryLink = (topic?: string) => ({
+  path: '/contact',
+  query: {
+    type: 'custom',
+    source: 'gallery',
+    ...(topic ? { topic } : {}),
+  },
+})
+
+const handleInquiryAction = () => {
+  trackInquiryClick('gallery')
+}
 
 useHead({
   title: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족',
@@ -322,6 +337,16 @@ onUnmounted(() => {
               </button>
             </article>
           </div>
+
+          <div class="category-actions">
+            <NuxtLink
+              :to="buildGalleryInquiryLink(section.label)"
+              class="category-inquiry"
+              @click="handleInquiryAction"
+            >
+              이 카테고리로 문의하기
+            </NuxtLink>
+          </div>
         </section>
 
         <section class="gallery-help reveal">
@@ -337,7 +362,7 @@ onUnmounted(() => {
             <div class="gallery-help-links">
               <NuxtLink to="/custom">주문제작 안내</NuxtLink>
               <NuxtLink to="/wedding">예물 안내</NuxtLink>
-              <NuxtLink to="/contact">문의하기</NuxtLink>
+              <NuxtLink :to="buildGalleryInquiryLink()" @click="handleInquiryAction">문의하기</NuxtLink>
             </div>
           </div>
         </section>
@@ -347,7 +372,7 @@ onUnmounted(() => {
             모든 제품은 도매가로 제공됩니다.<br>
             상세 문의는 전화 또는 방문 상담을 이용해주세요.
           </p>
-          <NuxtLink to="/contact" class="footer-cta">
+          <NuxtLink :to="buildGalleryInquiryLink()" class="footer-cta" @click="handleInquiryAction">
             <span>문의하기</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -405,6 +430,15 @@ onUnmounted(() => {
             <span class="lightbox-counter">{{ currentImageIndex + 1 }} / {{ activeItem.images.length }}</span>
             <h3 class="lightbox-title">{{ activeItem.title }}</h3>
             <span class="lightbox-material">{{ activeItem.material }}</span>
+            <div class="lightbox-actions">
+              <NuxtLink
+                :to="buildGalleryInquiryLink(activeItem.title)"
+                class="lightbox-contact"
+                @click="handleInquiryAction"
+              >
+                이 스타일로 문의하기
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </Transition>
@@ -616,6 +650,32 @@ onUnmounted(() => {
   font-size: 15px;
   line-height: 1.9;
   color: rgba(250, 250, 250, 0.78);
+}
+
+.category-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.category-inquiry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  color: #0a0a0a;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  background: #c9a227;
+  border: 1px solid #c9a227;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-inquiry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(201, 162, 39, 0.22);
 }
 
 .category-meta {
@@ -1086,6 +1146,24 @@ onUnmounted(() => {
   font-size: 12px;
   font-weight: 300;
   color: rgba(250, 250, 250, 0.5);
+}
+
+.lightbox-actions {
+  margin-top: 18px;
+}
+
+.lightbox-contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  color: #0a0a0a;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  background: #c9a227;
+  border: 1px solid #c9a227;
 }
 
 /* Image Transition */

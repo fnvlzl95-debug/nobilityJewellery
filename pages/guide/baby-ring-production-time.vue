@@ -84,6 +84,8 @@ useHead({
   <GuideArticleView
     category="기간"
     keyword="돌반지 주문제작 기간"
+    inquiry-type="custom"
+    inquiry-topic="돌반지 주문제작 기간"
     title="돌반지 주문제작 기간, 일정 맞추는 가장 확실한 방법"
     lead="돌반지 제작은 디자인과 각인에 따라 걸리는 시간이 달라요. 받으실 날짜를 먼저 알려주시면 거기에 맞춰서 안내드릴 수 있습니다."
     :published-at="publishedAt"
