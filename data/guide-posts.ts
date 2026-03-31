@@ -96,7 +96,7 @@ export const guidePosts: GuidePostSummary[] = [
     title: '금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리',
     description: '금 1돈은 3.75g입니다. 하지만 가격은 순도, 공임, 구성까지 함께 봐야 정확해요. 상담 전에 꼭 알아둘 기준을 정리했습니다.',
     keyword: '금 1돈 몇 g',
-    image: '/Image/ring/SB0101.webp',
+    image: '/Image/ring/SB0105.webp',
     publishedAt: '2026-03-31',
     category: '가격',
   },

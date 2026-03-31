@@ -5,7 +5,7 @@ import { buildBreadcrumbJsonLd } from '~/utils/seo'
 const pagePath = '/guide/gold-one-don-gram'
 const pageTitle = '금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리 | 귀족'
 const pageDescription = '금 1돈은 3.75g입니다. 하지만 돌반지와 금목걸이 가격은 1돈 숫자만으로 정해지지 않아요. 순도, 공임, 구성까지 함께 보는 기준을 정리했습니다.'
-const ogImage = `${siteConfig.url}/Image/ring/SB0101.webp`
+const ogImage = `${siteConfig.url}/Image/ring/SB0105.webp`
 const publishedAt = '2026-03-31'
 const faqItems = [
   {
@@ -97,7 +97,7 @@ useHead({
     title="금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리"
     lead="금 상담을 하다 보면 “1돈이면 몇 그램이에요?”, “돌반지 1돈이면 어느 정도예요?” 같은 질문이 정말 많습니다. 결론부터 말하면 금 1돈은 3.75g이고, 실제 제품 가격은 무게에 순도와 공임, 구성까지 함께 봐야 정확합니다."
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/ring/SB0101.webp`"
+    :hero-image="`${siteConfig.url}/Image/ring/SB0105.webp`"
     hero-alt="금반지와 돌반지 무게 상담"
     :quick-answers="[
       '금 1돈은 3.75g입니다.',
