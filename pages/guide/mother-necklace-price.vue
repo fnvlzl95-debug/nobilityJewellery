@@ -5,7 +5,7 @@ import { buildBreadcrumbJsonLd } from '~/utils/seo'
 const pagePath = '/guide/mother-necklace-price'
 const pageTitle = '어머니 금목걸이 가격, 예산별 선택 방법 | 귀족'
 const pageDescription = '어머니 금목걸이 가격은 당일 금 시세, 14K·18K, 체인 길이, 펜던트 포함 여부에 따라 달라집니다. 상담 전에 확인할 기준을 정리했습니다.'
-const ogImage = `${siteConfig.url}/Image/necklace/pexels-pixabay-248077.webp`
+const ogImage = `${siteConfig.url}/Image/necklace/NC0101.webp`
 const publishedAt = '2026-02-14'
 const updatedAt = '2026-03-31'
 const faqItems = [
@@ -99,7 +99,7 @@ useHead({
     lead="어머니께 드릴 금목걸이 가격은 고정 금액 하나로 보시기보다, 당일 금 시세와 14K·18K 여부, 체인 중량, 길이, 펜던트 포함 여부를 함께 보시는 게 정확합니다. 상담 전에 기준만 정리해도 비교가 훨씬 쉬워집니다."
     :published-at="publishedAt"
     :updated-at="updatedAt"
-    :hero-image="`${siteConfig.url}/Image/necklace/pexels-pixabay-248077.webp`"
+    :hero-image="`${siteConfig.url}/Image/necklace/NC0101.webp`"
     hero-alt="어머니 금목걸이 상담"
     :quick-answers="[
       '가격은 금 시세, 14K·18K, 중량이 함께 결정합니다.',

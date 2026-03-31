@@ -5,7 +5,7 @@ import { buildBreadcrumbJsonLd } from '~/utils/seo'
 const pagePath = '/guide/gold-ring-repair-cost'
 const pageTitle = '금반지 수리 비용: 작업별로 달라지는 기준 | 귀족'
 const pageDescription = '금반지 수리 비용은 사이즈 조절, 땜, 재세팅 등 작업마다 달라져요. 맡기기 전에 확인해두면 좋은 점을 정리했습니다.'
-const ogImage = `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp`
+const ogImage = `${siteConfig.url}/Image/ring/NN1301.webp`
 const publishedAt = '2026-02-14'
 const faqItems = [
   {
@@ -89,7 +89,7 @@ useHead({
     title="금반지 수리 비용: 작업별로 달라지는 기준"
     lead="금반지 수리라고 해서 비용이 다 같지는 않아요. 어떤 작업이 필요한지, 손상이 어느 정도인지에 따라 비용과 기간이 달라집니다."
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp`"
+    :hero-image="`${siteConfig.url}/Image/ring/NN1301.webp`"
     hero-alt="금반지 수리 작업"
     :quick-answers="[
       '비용은 작업 종류(사이즈 조절, 땜, 재세팅)에 따라 달라져요.',
