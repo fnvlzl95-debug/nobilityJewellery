@@ -6,10 +6,50 @@ export interface GuidePostSummary {
   keyword: string
   image: string
   publishedAt: string
-  category: '가격' | '비용' | '기간'
+  category: '가격' | '비용' | '기간' | '방법'
 }
 
 export const guidePosts: GuidePostSummary[] = [
+  {
+    slug: 'mother-necklace-design-consulting',
+    path: '/guide/mother-necklace-design-consulting',
+    title: '어머니 목걸이 디자인 상담, 선물용으로 많이 고르는 기준',
+    description: '체인 굵기, 길이, 펜던트 유무, 평소 착용 여부에 따라 어울리는 디자인이 달라져요. 상담 전에 볼 기준을 정리했습니다.',
+    keyword: '어머니 목걸이 디자인 상담',
+    image: '/Image/necklace/pexels-mlkbnl-12194265.webp',
+    publishedAt: '2026-04-08',
+    category: '방법',
+  },
+  {
+    slug: 'silver-necklace-repair-possible',
+    path: '/guide/silver-necklace-repair-possible',
+    title: '은목걸이 수리 가능 여부, 끊어짐·잠금장치·변색별로 정리',
+    description: '은목걸이는 끊어짐, 잠금장치 문제, 변색 정도에 따라 수리 가능 범위가 달라져요. 맡기기 전 확인할 점을 정리했습니다.',
+    keyword: '은목걸이 수리 가능 여부',
+    image: '/Image/necklace/pexels-coppertist-wu-16124724.webp',
+    publishedAt: '2026-04-08',
+    category: '방법',
+  },
+  {
+    slug: 'baby-ring-order-method',
+    path: '/guide/baby-ring-order-method',
+    title: '돌반지 주문 방법, 처음 문의할 때 이렇게 준비하세요',
+    description: '예산, 무게, 각인, 수령일만 미리 정리해도 상담과 주문이 훨씬 빨라져요. 실제 주문 흐름을 정리했습니다.',
+    keyword: '돌반지 주문 방법',
+    image: '/Image/ring/SB0104.webp',
+    publishedAt: '2026-03-30',
+    category: '방법',
+  },
+  {
+    slug: 'gold-necklace-repair-time',
+    path: '/guide/gold-necklace-repair-time',
+    title: '금목걸이 수리 기간, 맡기기 전에 꼭 확인할 것',
+    description: '끊어짐, 잠금장치 교체, 체인 연장, 광택 포함 여부에 따라 기간이 달라져요. 일정 잡는 법을 정리했습니다.',
+    keyword: '금목걸이 수리 기간',
+    image: '/Image/necklace/NC0301.webp',
+    publishedAt: '2026-03-30',
+    category: '기간',
+  },
   {
     slug: 'baby-ring-engraving-cost',
     path: '/guide/baby-ring-engraving-cost',
