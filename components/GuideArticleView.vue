@@ -47,6 +47,7 @@ const props = withDefaults(defineProps<{
 const { trackPhoneClick, trackKakaoClick, trackInquiryClick } = useGtag()
 
 const sectionAnchor = (index: number) => `sec-${index + 1}`
+const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
 const inquiryActionLabel = computed(() => {
   if (props.inquiryType === 'repair') return '수리 문의'
   if (props.inquiryType === 'other') return '매입 문의'
@@ -128,7 +129,10 @@ const handleInquiryClick = () => {
           :key="section.title"
           class="article-section"
         >
-          <h2>{{ section.title }}</h2>
+          <div class="article-section-heading">
+            <span class="article-section-index">{{ formatSectionIndex(index) }}</span>
+            <h2>{{ section.title }}</h2>
+          </div>
           <p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p>
           <ul v-if="section.bullets?.length">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
@@ -312,7 +316,6 @@ const handleInquiryClick = () => {
 }
 
 .quick-answer h2,
-.guide-article h2,
 .guide-caution h2,
 .guide-faq h2,
 .guide-related h2 {
@@ -335,7 +338,53 @@ const handleInquiryClick = () => {
 }
 
 .article-section {
-  margin-bottom: 30px;
+  margin-bottom: 44px;
+  padding-top: 34px;
+  border-top: 1px solid rgba(201, 162, 39, 0.28);
+}
+
+.article-section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.article-section-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.article-section-index {
+  min-width: 44px;
+  padding: 7px 9px;
+  border: 1px solid rgba(201, 162, 39, 0.55);
+  background: rgba(201, 162, 39, 0.1);
+  color: #c9a227;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.article-section-heading h2 {
+  position: relative;
+  margin: 0;
+  padding-bottom: 12px;
+  color: #fafafa;
+  font-size: clamp(23px, 3vw, 30px);
+  line-height: 1.35;
+}
+
+.article-section-heading h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 72px;
+  height: 2px;
+  background: #c9a227;
 }
 
 .guide-article p {
