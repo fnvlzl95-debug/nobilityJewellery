@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const pageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '커플링 14K·18K 가격 차이, 결혼예물 세트 구성, 돌반지 가격과 각인 비용, 어머니 목걸이, 금·은 수리와 매입 기준 등 궁금하신 내용을 알기 쉽게 정리했습니다.'
+const pageDescription = '반지 사이즈 재는 법, 금 리폼 비용, 커플링 14K·18K 가격 차이, 결혼예물 세트 구성, 돌반지 가격과 각인 비용, 금·은 수리와 매입 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 
 useHead({

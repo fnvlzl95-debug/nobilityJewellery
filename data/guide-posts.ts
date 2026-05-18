@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'gold-jewelry-remodeling-cost',
+    path: '/guide/gold-jewelry-remodeling-cost',
+    title: '금 리폼 비용, 오래된 금제품을 새 반지·목걸이로 바꾸는 기준',
+    description: '기존 금 중량, 순도, 새 디자인, 세공 공임, 추가 금 사용 여부에 따라 달라지는 리폼 비용 기준을 정리했습니다.',
+    keyword: '금 리폼 비용',
+    image: '/Image/guide/gold-jewelry-remodeling-cost.webp',
+    publishedAt: '2026-05-18',
+    category: '비용',
+  },
+  {
+    slug: 'ring-size-measuring-method',
+    path: '/guide/ring-size-measuring-method',
+    title: '반지 사이즈 재는 법, 커플링·결혼반지 주문 전 실수 줄이는 기준',
+    description: '손가락 붓기, 측정 시간, 반지 폭, 마디 통과감까지 커플링·결혼반지 주문 전 확인할 사이즈 기준을 정리했습니다.',
+    keyword: '반지 사이즈 재는 법',
+    image: '/Image/guide/ring-size-measuring-method.webp',
+    publishedAt: '2026-05-18',
+    category: '방법',
+  },
+  {
     slug: 'wedding-jewelry-set-composition',
     path: '/guide/wedding-jewelry-set-composition',
     title: '결혼예물 세트 구성, 신부·신랑·혼주 예물 준비 기준',
