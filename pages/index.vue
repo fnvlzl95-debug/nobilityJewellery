@@ -344,8 +344,8 @@ onUnmounted(() => {
           <div class="about-visual">
             <div class="visual-frame reveal reveal-left">
               <NuxtImg
-                src="/Image/ring/pexels-leah-newhouse-50725-691046.webp"
-                alt="장인의 귀금속 세공 작업 - 30년 경력 종로 금은방에서 직접 제작"
+                src="/Image/main/home-trust-jewelry-still-life.webp"
+                alt="정밀 검수된 금반지와 주얼리 도구 - 30년 경력 종로 금은방 신뢰 상담"
                 format="webp"
                 quality="95"
                 sizes="sm:100vw md:50vw lg:600px"
@@ -621,8 +621,8 @@ onUnmounted(() => {
           <div class="repair-visual reveal reveal-right">
             <div class="repair-image-wrap">
               <NuxtImg
-                src="/Image/ring/pexels-leah-newhouse-50725-691046.webp"
-                alt="반지 사이즈 조절 및 귀금속 수리 작업 - 당일 수리 가능"
+                src="/Image/main/home-repair-tools-still-life.webp"
+                alt="반지 사이즈 조절과 귀금속 수리를 위한 전문 도구와 금반지"
                 format="webp"
                 quality="95"
                 sizes="sm:100vw md:50vw lg:500px"
