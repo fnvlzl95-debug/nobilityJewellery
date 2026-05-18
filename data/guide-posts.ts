@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'wedding-jewelry-set-composition',
+    path: '/guide/wedding-jewelry-set-composition',
+    title: '결혼예물 세트 구성, 신부·신랑·혼주 예물 준비 기준',
+    description: '웨딩밴드, 다이아 3부·5부, 신랑 예물, 혼주 예물까지 예산에 맞춰 어디까지 준비할지 상담 전 기준을 정리했습니다.',
+    keyword: '결혼예물 세트 구성',
+    image: '/Image/guide/wedding-jewelry-set-box.webp',
+    publishedAt: '2026-05-18',
+    category: '방법',
+  },
+  {
+    slug: 'couple-ring-14k-18k-price-difference',
+    path: '/guide/couple-ring-14k-18k-price-difference',
+    title: '14K 18K 커플링 가격 차이 총정리, 구매 전 비교 기준',
+    description: '14K와 18K 커플링은 금 함량, 중량, 금시세, 공임에 따라 가격이 달라집니다. 주문 전 선택 기준을 정리했습니다.',
+    keyword: '14K 18K 커플링 가격 차이',
+    image: '/Image/guide/couple-ring-14k-18k-comparison.webp',
+    publishedAt: '2026-05-18',
+    category: '가격',
+  },
+  {
     slug: 'mother-necklace-design-consulting',
     path: '/guide/mother-necklace-design-consulting',
     title: '어머니 목걸이 디자인 상담, 선물용으로 많이 고르는 기준',

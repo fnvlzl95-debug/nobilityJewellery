@@ -5,6 +5,11 @@ interface ArticleSection {
   title: string
   paragraphs: string[]
   bullets?: string[]
+  image?: {
+    src: string
+    alt: string
+    caption: string
+  }
 }
 
 interface RelatedLink {
@@ -128,6 +133,10 @@ const handleInquiryClick = () => {
           <ul v-if="section.bullets?.length">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
+          <figure v-if="section.image" class="article-image">
+            <img :src="section.image.src" :alt="section.image.alt" loading="lazy">
+            <figcaption>{{ section.image.caption }}</figcaption>
+          </figure>
         </section>
       </article>
 
@@ -333,6 +342,24 @@ const handleInquiryClick = () => {
   line-height: 1.85;
   margin: 0 0 12px;
   color: rgba(250, 250, 250, 0.9);
+}
+
+.article-image {
+  margin: 22px 0 0;
+}
+
+.article-image img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+}
+
+.article-image figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.68);
 }
 
 .guide-caution {
