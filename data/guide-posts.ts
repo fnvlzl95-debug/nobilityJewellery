@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'white-gold-discoloration-care',
+    path: '/guide/white-gold-discoloration-care',
+    title: '화이트골드 변색 원인과 도금 관리, 반지·목걸이 맡기기 전 기준',
+    description: '화이트골드가 누렇게 보이는 이유와 세척·광택·재도금이 필요한 상황, 맡기기 전 확인할 기준을 정리했습니다.',
+    keyword: '화이트골드 변색',
+    image: '/Image/guide/white-gold-discoloration-comparison.webp',
+    publishedAt: '2026-05-19',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-3bu-5bu-difference',
+    path: '/guide/diamond-3bu-5bu-difference',
+    title: '다이아 3부 5부 차이, 예물 반지 고를 때 가격·크기 기준',
+    description: '다이아 3부와 5부는 캐럿뿐 아니라 지름, 세팅 높이, 4C 등급, 감정서에 따라 체감과 가격이 달라집니다.',
+    keyword: '다이아 3부 5부 차이',
+    image: '/Image/guide/diamond-3bu-5bu-comparison.webp',
+    publishedAt: '2026-05-19',
+    category: '가격',
+  },
+  {
     slug: 'gold-jewelry-remodeling-cost',
     path: '/guide/gold-jewelry-remodeling-cost',
     title: '금 리폼 비용, 오래된 금제품을 새 반지·목걸이로 바꾸는 기준',
