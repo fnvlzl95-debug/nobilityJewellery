@@ -5,18 +5,30 @@ import { getPreviewItems, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
+const { trackPhoneClick, trackInquiryClick, trackMapClick } = useGtag()
 
 const handlePhoneClick = () => {
-  trackPhoneClick('home')
+  trackPhoneClick('home', {
+    placement: 'hero',
+    intent: 'general',
+    topic: '종로 귀금속 상담',
+  })
 }
 
 const handleInquiryClick = () => {
-  trackInquiryClick('home')
+  trackInquiryClick('home', {
+    placement: 'hero',
+    intent: 'general',
+    topic: '종로 귀금속 상담',
+  })
 }
 
-const handleKakaoClick = () => {
-  trackKakaoClick('home')
+const handleLocationPhoneClick = () => {
+  trackPhoneClick('home', {
+    placement: 'section_cta',
+    intent: 'general',
+    topic: '오시는 길',
+  })
 }
 
 const previewItems = getPreviewItems(6)
@@ -143,7 +155,6 @@ useHead({
   ]
 })
 
-const showMobileCta = ref(false)
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 const heroLoaded = ref(false)
@@ -209,7 +220,6 @@ onMounted(() => {
   rafId = requestAnimationFrame(raf)
 
   lenis.on('scroll', ({ scroll }: { scroll: number }) => {
-    showMobileCta.value = scroll > window.innerHeight * 0.5
     isScrolled.value = scroll > 80
   })
 
@@ -253,6 +263,24 @@ onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   lenis?.destroy()
 })
+
+const handleKakaoMapClick = () => {
+  trackMapClick('home', 'kakao', {
+    placement: 'section_cta',
+    intent: 'directions',
+    topic: '오시는 길',
+    destination: 'https://map.kakao.com/link/search/서울 종로구 종로 173 귀족',
+  })
+}
+
+const handleNaverMapClick = () => {
+  trackMapClick('home', 'naver', {
+    placement: 'section_cta',
+    intent: 'directions',
+    topic: '오시는 길',
+    destination: 'https://naver.me/xen7hRCZ',
+  })
+}
 </script>
 
 <template>
@@ -688,7 +716,7 @@ onUnmounted(() => {
             <ul class="contact-info reveal reveal-delay-3">
               <li>
                 <span class="info-label">Tel</span>
-                <a :href="`tel:${siteConfig.phone}`">{{ siteConfig.phone }}</a>
+                <a :href="`tel:${siteConfig.phone}`" @click="handleLocationPhoneClick">{{ siteConfig.phone }}</a>
               </li>
               <li>
                 <span class="info-label">Hours</span>
@@ -701,10 +729,10 @@ onUnmounted(() => {
             </ul>
 
             <div class="map-buttons reveal reveal-delay-4">
-              <a href="https://map.kakao.com/link/search/서울 종로구 종로 173 귀족" target="_blank" rel="noopener" class="btn-map">
+              <a href="https://map.kakao.com/link/search/서울 종로구 종로 173 귀족" target="_blank" rel="noopener" class="btn-map" @click="handleKakaoMapClick">
                 <span>카카오맵</span>
               </a>
-              <a href="https://naver.me/xen7hRCZ" target="_blank" rel="noopener" class="btn-map">
+              <a href="https://naver.me/xen7hRCZ" target="_blank" rel="noopener" class="btn-map" @click="handleNaverMapClick">
                 <span>네이버지도</span>
               </a>
             </div>
@@ -781,27 +809,6 @@ onUnmounted(() => {
       </div>
     </footer>
 
-    <!-- Mobile CTA -->
-    <div class="mobile-cta" :class="{ visible: showMobileCta }">
-      <a :href="`tel:${siteConfig.phone}`" class="mobile-btn mobile-btn-primary" @click="handlePhoneClick">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-        <span>전화</span>
-      </a>
-      <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="mobile-btn mobile-btn-kakao" @click="handleKakaoClick">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
-        </svg>
-        <span>카톡</span>
-      </a>
-      <NuxtLink to="/contact" class="mobile-btn mobile-btn-secondary" @click="handleInquiryClick">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
-        <span>문의</span>
-      </NuxtLink>
-    </div>
   </div>
 </template>
 
@@ -2386,67 +2393,6 @@ onUnmounted(() => {
 }
 
 .privacy-link:hover {
-  color: #fafafa;
-}
-
-/* ===== Mobile CTA ===== */
-.mobile-cta {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  gap: 8px;
-  background: #0a0a0a;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 12px;
-  border-top: 1px solid rgba(201, 162, 39, 0.2);
-}
-
-.mobile-cta.visible {
-  transform: translateY(0);
-}
-
-@media (min-width: 900px) {
-  .mobile-cta {
-    display: none;
-  }
-}
-
-.mobile-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 52px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  border: none;
-  transition: all 0.3s;
-}
-
-.mobile-btn svg {
-  flex-shrink: 0;
-}
-
-.mobile-btn-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
-  color: #0a0a0a;
-}
-
-.mobile-btn-kakao {
-  background: #FEE500;
-  color: #3C1E1E;
-}
-
-.mobile-btn-secondary {
-  background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.3);
   color: #fafafa;
 }
 

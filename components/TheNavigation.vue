@@ -3,6 +3,7 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 
 const route = useRoute()
+const { trackPhoneClick } = useGtag()
 
 const currentPage = computed(() => {
   const path = route.path.split('/').filter(Boolean)[0] || 'home'
@@ -44,6 +45,14 @@ const navLinks = [
 
 const closeMenu = () => {
   isMenuOpen.value = false
+}
+
+const handleMobileMenuPhoneClick = () => {
+  trackPhoneClick(currentPage.value, {
+    placement: 'mobile_menu',
+    intent: 'general',
+    topic: '모바일 메뉴 전화',
+  })
 }
 </script>
 
@@ -105,7 +114,7 @@ const closeMenu = () => {
 
           <!-- CTA -->
           <div class="mobile-menu-footer">
-            <a :href="`tel:${siteConfig.phone}`" class="mobile-menu-phone">
+            <a :href="`tel:${siteConfig.phone}`" class="mobile-menu-phone" @click="handleMobileMenuPhoneClick">
               {{ siteConfig.phone }}
             </a>
           </div>

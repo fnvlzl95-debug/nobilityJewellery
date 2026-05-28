@@ -9,23 +9,42 @@ interface Props {
 defineProps<Props>()
 
 const route = useRoute()
-const { trackPhoneClick, trackInquiryClick, trackKakaoClick } = useGtag()
+const { trackPhoneClick, trackPageInquiryClick, trackKakaoClick } = useGtag()
 
 // 현재 페이지 이름 추출
 const pageName = computed(() => {
   return route.path.replace('/', '') || 'home'
 })
 
+const intent = computed(() => {
+  if (pageName.value === 'repair') return 'repair'
+  if (pageName.value === 'wholesale') return 'wholesale'
+  if (['custom', 'couple-ring', 'baby-gold', 'wedding', 'gallery'].includes(pageName.value)) return 'custom'
+  return 'general'
+})
+
 const handlePhoneClick = () => {
-  trackPhoneClick(pageName.value)
+  trackPhoneClick(pageName.value, {
+    placement: 'section_cta',
+    intent: intent.value,
+    topic: pageName.value,
+  })
 }
 
 const handleInquiryClick = () => {
-  trackInquiryClick(pageName.value)
+  trackPageInquiryClick(pageName.value, {
+    placement: 'section_cta',
+    intent: intent.value,
+    topic: pageName.value,
+  })
 }
 
 const handleKakaoClick = () => {
-  trackKakaoClick(pageName.value)
+  trackKakaoClick(pageName.value, {
+    placement: 'section_cta',
+    intent: intent.value,
+    topic: pageName.value,
+  })
 }
 </script>
 

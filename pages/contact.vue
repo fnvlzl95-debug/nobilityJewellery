@@ -146,7 +146,11 @@ const handleScroll = () => {
 }
 
 const handlePhoneClick = () => {
-  trackPhoneClick('contact')
+  trackPhoneClick('contact', {
+    placement: 'section_cta',
+    intent: 'general',
+    topic: '문의하기',
+  })
 }
 
 watch(

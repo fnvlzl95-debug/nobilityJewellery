@@ -5,7 +5,7 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackInquiryClick } = useGtag()
+const { trackPageInquiryClick } = useGtag()
 
 const categoryLinkMap: Record<string, { to: string; label: string }> = {
   ring: { to: '/couple-ring', label: '커플링/반지 안내' },
@@ -47,8 +47,12 @@ const buildGalleryInquiryLink = (topic?: string) => ({
   },
 })
 
-const handleInquiryAction = () => {
-  trackInquiryClick('gallery')
+const handleInquiryAction = (placement = 'section_cta', topic?: string) => {
+  trackPageInquiryClick('gallery', {
+    placement,
+    intent: 'custom',
+    topic,
+  })
 }
 
 useHead({
@@ -342,7 +346,7 @@ onUnmounted(() => {
             <NuxtLink
               :to="buildGalleryInquiryLink(section.label)"
               class="category-inquiry"
-              @click="handleInquiryAction"
+              @click="handleInquiryAction('section_cta', section.label)"
             >
               이 카테고리로 문의하기
             </NuxtLink>
@@ -362,7 +366,7 @@ onUnmounted(() => {
             <div class="gallery-help-links">
               <NuxtLink to="/custom">주문제작 안내</NuxtLink>
               <NuxtLink to="/wedding">예물 안내</NuxtLink>
-              <NuxtLink :to="buildGalleryInquiryLink()" @click="handleInquiryAction">문의하기</NuxtLink>
+              <NuxtLink :to="buildGalleryInquiryLink()" @click="handleInquiryAction('section_cta', '갤러리 상담')">문의하기</NuxtLink>
             </div>
           </div>
         </section>
@@ -372,7 +376,7 @@ onUnmounted(() => {
             모든 제품은 도매가로 제공됩니다.<br>
             상세 문의는 전화 또는 방문 상담을 이용해주세요.
           </p>
-          <NuxtLink :to="buildGalleryInquiryLink()" class="footer-cta" @click="handleInquiryAction">
+          <NuxtLink :to="buildGalleryInquiryLink()" class="footer-cta" @click="handleInquiryAction('footer_cta', '갤러리 상담')">
             <span>문의하기</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -434,7 +438,7 @@ onUnmounted(() => {
               <NuxtLink
                 :to="buildGalleryInquiryLink(activeItem.title)"
                 class="lightbox-contact"
-                @click="handleInquiryAction"
+                @click="handleInquiryAction('lightbox', activeItem.title)"
               >
                 이 스타일로 문의하기
               </NuxtLink>

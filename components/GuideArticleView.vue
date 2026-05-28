@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<{
   title: string
   lead: string
   keyword: string
-  inquiryType?: 'custom' | 'repair' | 'other'
+  inquiryType?: 'custom' | 'repair' | 'wholesale' | 'other'
   inquiryTopic?: string
   publishedAt: string
   updatedAt?: string
@@ -50,6 +50,7 @@ const sectionAnchor = (index: number) => `sec-${index + 1}`
 const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
 const inquiryActionLabel = computed(() => {
   if (props.inquiryType === 'repair') return '수리 문의'
+  if (props.inquiryType === 'wholesale') return '도매 상담'
   if (props.inquiryType === 'other') return '매입 문의'
   return '주문 상담'
 })
@@ -63,15 +64,27 @@ const contactLink = computed(() => ({
 }))
 
 const handlePhoneClick = () => {
-  trackPhoneClick('guide_article')
+  trackPhoneClick('guide_article', {
+    placement: 'section_cta',
+    intent: props.inquiryType,
+    topic: props.inquiryTopic || props.keyword,
+  })
 }
 
 const handleKakaoClick = () => {
-  trackKakaoClick('guide_article')
+  trackKakaoClick('guide_article', {
+    placement: 'section_cta',
+    intent: props.inquiryType,
+    topic: props.inquiryTopic || props.keyword,
+  })
 }
 
 const handleInquiryClick = () => {
-  trackInquiryClick('guide_article')
+  trackInquiryClick('guide_article', {
+    placement: 'section_cta',
+    intent: props.inquiryType,
+    topic: props.inquiryTopic || props.keyword,
+  })
 }
 </script>
 
@@ -101,15 +114,15 @@ const handleInquiryClick = () => {
       <section class="guide-actions">
         <p class="guide-actions-title">{{ props.inquiryTopic || props.keyword }} 관련 {{ inquiryActionLabel }}을 바로 이어가실 수 있습니다</p>
         <div class="guide-actions-grid">
-          <a :href="`tel:${siteConfig.phone}`" class="guide-action guide-action-primary" @click="handlePhoneClick">
+          <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="guide-action guide-action-primary" @click="handleKakaoClick">
+            카톡으로 {{ inquiryActionLabel }}
+          </a>
+          <a :href="`tel:${siteConfig.phone}`" class="guide-action" @click="handlePhoneClick">
             전화 {{ siteConfig.phone }}
           </a>
           <NuxtLink :to="contactLink" class="guide-action" @click="handleInquiryClick">
-            {{ inquiryActionLabel }}
+            문의 남기기
           </NuxtLink>
-          <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="guide-action" @click="handleKakaoClick">
-            카카오톡 {{ inquiryActionLabel }}
-          </a>
         </div>
       </section>
 
@@ -180,8 +193,9 @@ const handleInquiryClick = () => {
         <h2>이것만 알려주시면 상담이 빨라져요</h2>
         <p>예산 범위, 희망 수령일, 원하는 스타일(사진도 좋아요) — 이 세 가지만 미리 정해두시면 훨씬 수월합니다.</p>
         <div class="guide-bottom-links">
-          <NuxtLink :to="contactLink" @click="handleInquiryClick">{{ inquiryActionLabel }} 바로가기</NuxtLink>
+          <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" @click="handleKakaoClick">카톡으로 {{ inquiryActionLabel }}</a>
           <a :href="`tel:${siteConfig.phone}`" @click="handlePhoneClick">전화로 문의하기</a>
+          <NuxtLink :to="contactLink" @click="handleInquiryClick">문의 남기기</NuxtLink>
         </div>
       </section>
     </div>
