@@ -93,6 +93,10 @@ const handleInquiryClick = () => {
     <CustomCursor />
 
     <div class="guide-wrap">
+      <NuxtLink to="/guide" class="guide-back">
+        <span aria-hidden="true">←</span> 귀금속 가이드 전체보기
+      </NuxtLink>
+
       <header class="guide-hero">
         <p class="guide-category">{{ props.category }}</p>
         <h1 class="guide-title">{{ props.title }}</h1>
@@ -111,28 +115,28 @@ const handleInquiryClick = () => {
         </ul>
       </section>
 
-      <section class="guide-actions">
-        <p class="guide-actions-title">{{ props.inquiryTopic || props.keyword }} 관련 {{ inquiryActionLabel }}을 바로 이어가실 수 있습니다</p>
-        <div class="guide-actions-grid">
-          <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="guide-action guide-action-primary" @click="handleKakaoClick">
-            카톡으로 {{ inquiryActionLabel }}
+      <div class="guide-cta-inline">
+        <span class="guide-cta-inline-label">{{ props.inquiryTopic || props.keyword }} {{ inquiryActionLabel }}</span>
+        <div class="guide-cta-inline-links">
+          <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="cta-pill cta-pill-primary" @click="handleKakaoClick">
+            카톡 상담
           </a>
-          <a :href="`tel:${siteConfig.phone}`" class="guide-action" @click="handlePhoneClick">
-            전화 {{ siteConfig.phone }}
+          <a :href="`tel:${siteConfig.phone}`" class="cta-pill" @click="handlePhoneClick">
+            전화
           </a>
-          <NuxtLink :to="contactLink" class="guide-action" @click="handleInquiryClick">
+          <NuxtLink :to="contactLink" class="cta-pill" @click="handleInquiryClick">
             문의 남기기
           </NuxtLink>
         </div>
-      </section>
+      </div>
 
       <nav class="guide-toc" aria-label="문서 목차">
-        <h2>목차</h2>
-        <ul>
+        <p class="guide-toc-label">목차</p>
+        <ol>
           <li v-for="(section, index) in props.sections" :key="section.title">
-            <a :href="`#${sectionAnchor(index)}`">{{ index + 1 }}. {{ section.title }}</a>
+            <a :href="`#${sectionAnchor(index)}`">{{ section.title }}</a>
           </li>
-        </ul>
+        </ol>
       </nav>
 
       <article class="guide-article">
@@ -142,12 +146,12 @@ const handleInquiryClick = () => {
           :key="section.title"
           class="article-section"
         >
-          <div class="article-section-heading">
+          <h2 class="article-section-title">
             <span class="article-section-index">{{ formatSectionIndex(index) }}</span>
-            <h2>{{ section.title }}</h2>
-          </div>
+            {{ section.title }}
+          </h2>
           <p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p>
-          <ul v-if="section.bullets?.length">
+          <ul v-if="section.bullets?.length" class="article-bullets">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
           <figure v-if="section.image" class="article-image">
@@ -198,6 +202,10 @@ const handleInquiryClick = () => {
           <NuxtLink :to="contactLink" @click="handleInquiryClick">문의 남기기</NuxtLink>
         </div>
       </section>
+
+      <NuxtLink to="/guide" class="guide-back-bottom">
+        <span aria-hidden="true">←</span> 가이드 목록으로 돌아가기
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -208,16 +216,61 @@ const handleInquiryClick = () => {
   background: #0a0a0a;
   color: #fafafa;
   padding: 120px 20px 80px;
-  font-family: 'JeonjuCraftMyungjo';
+  /* 본문은 고딕(Pretendard)으로 — 장문 가독성, 제목은 아래에서 명조로 환원 */
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  /* 장문 가독성: 글자 다듬기 켜고, 한글은 어절 단위로 줄바꿈 */
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
+/* 읽기 좋은 단일 컬럼(한 줄 ~40자) */
 .guide-wrap {
-  max-width: 980px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
+/* 목록으로 돌아가기 (상단 빵부스러기) */
+.guide-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.65);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.guide-back:hover {
+  color: #c9a227;
+}
+
+/* 목록으로 돌아가기 (하단 버튼) */
+.guide-back-bottom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 36px;
+  padding: 12px 20px;
+  border: 1px solid rgba(201, 162, 39, 0.45);
+  color: #fafafa;
+  text-decoration: none;
+  font-size: 14px;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.guide-back-bottom:hover {
+  border-color: #c9a227;
+  background: rgba(201, 162, 39, 0.12);
+  color: #c9a227;
+}
+
 .guide-hero {
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .guide-category {
@@ -228,187 +281,182 @@ const handleInquiryClick = () => {
 }
 
 .guide-title {
-  font-size: clamp(30px, 4vw, 44px);
-  line-height: 1.25;
-  margin: 0 0 14px;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.32;
+  margin: 0 0 16px;
 }
 
 .guide-lead {
-  color: rgba(250, 250, 250, 0.85);
-  line-height: 1.8;
-  margin-bottom: 16px;
+  color: rgba(250, 250, 250, 0.88);
+  font-size: clamp(16px, 1.06rem, 18px);
+  line-height: 1.85;
+  margin-bottom: 18px;
 }
 
 .guide-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(250, 250, 250, 0.7);
 }
 
 .guide-hero-image {
   width: 100%;
   aspect-ratio: 16 / 8;
   object-fit: cover;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid rgba(201, 162, 39, 0.3);
 }
 
+/* ── 위젯 공통: 좌측 골드 액센트(테두리 박스 대신) ── */
 .quick-answer {
-  margin-bottom: 34px;
-  padding: 20px;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  background: linear-gradient(180deg, rgba(201, 162, 39, 0.08), rgba(201, 162, 39, 0));
+  margin-bottom: 28px;
+  padding: 20px 22px;
+  border-left: 3px solid #c9a227;
+  background: rgba(201, 162, 39, 0.06);
 }
 
-.guide-actions {
-  margin-bottom: 24px;
-  padding: 18px;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+.quick-answer h2 {
+  font-size: 19px;
+  margin: 0 0 12px;
+}
+
+.quick-answer ul {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.quick-answer li {
+  margin-bottom: 8px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.92);
+}
+
+/* ── 슬림 인라인 CTA(상단 큰 박스 대체) ── */
+.guide-cta-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding: 12px 16px;
+  border: 1px solid rgba(201, 162, 39, 0.28);
   background: rgba(201, 162, 39, 0.04);
 }
 
-.guide-actions-title {
-  margin: 0 0 12px;
-  font-size: 15px;
-  color: rgba(250, 250, 250, 0.9);
+.guide-cta-inline-label {
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.85);
 }
 
-.guide-actions-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+.guide-cta-inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.guide-action {
+.cta-pill {
   text-decoration: none;
   color: #fafafa;
   border: 1px solid rgba(201, 162, 39, 0.45);
-  text-align: center;
-  font-size: 14px;
-  padding: 10px 12px;
+  padding: 8px 16px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.guide-action:hover {
+.cta-pill:hover {
   border-color: #c9a227;
   background: rgba(201, 162, 39, 0.12);
 }
 
-.guide-action-primary {
+.cta-pill-primary {
   background: #c9a227;
   border-color: #c9a227;
   color: #0a0a0a;
   font-weight: 700;
 }
 
+/* ── 목차: 박스 대신 가는 구분선 ── */
 .guide-toc {
-  margin-bottom: 28px;
-  padding: 18px;
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  margin-bottom: 44px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.guide-toc h2 {
-  margin: 0 0 10px;
-  font-size: 19px;
+.guide-toc-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(250, 250, 250, 0.55);
 }
 
-.guide-toc ul {
+.guide-toc ol {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 6px;
 }
 
 .guide-toc a {
-  color: rgba(250, 250, 250, 0.86);
+  color: rgba(250, 250, 250, 0.82);
   text-decoration: none;
-  line-height: 1.9;
+  line-height: 1.7;
 }
 
 .guide-toc a:hover {
   color: #c9a227;
 }
 
-.quick-answer h2,
-.guide-caution h2,
-.guide-faq h2,
-.guide-related h2 {
-  font-size: 22px;
-  margin: 0 0 14px;
-}
-
-.quick-answer ul,
-.guide-article ul,
-.guide-caution ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.quick-answer li,
-.guide-article li,
-.guide-caution li {
-  margin-bottom: 8px;
-  line-height: 1.75;
-}
-
+/* ── 본문: 테두리 없는 한 글줄, 제목 앞 인라인 번호 ── */
 .article-section {
-  margin-bottom: 44px;
-  padding-top: 34px;
-  border-top: 1px solid rgba(201, 162, 39, 0.28);
+  margin-bottom: 48px;
 }
 
-.article-section:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.article-section-heading {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: 14px;
-  margin-bottom: 18px;
+.article-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.28);
+  color: #fafafa;
+  font-size: clamp(21px, 3.5vw, 27px);
+  line-height: 1.4;
 }
 
 .article-section-index {
-  min-width: 44px;
-  padding: 7px 9px;
-  border: 1px solid rgba(201, 162, 39, 0.55);
-  background: rgba(201, 162, 39, 0.1);
+  flex: none;
   color: #c9a227;
-  font-size: 13px;
-  line-height: 1;
-  text-align: center;
-  letter-spacing: 0.08em;
-}
-
-.article-section-heading h2 {
-  position: relative;
-  margin: 0;
-  padding-bottom: 12px;
-  color: #fafafa;
-  font-size: clamp(23px, 3vw, 30px);
-  line-height: 1.35;
-}
-
-.article-section-heading h2::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 72px;
-  height: 2px;
-  background: #c9a227;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }
 
 .guide-article p {
-  line-height: 1.85;
-  margin: 0 0 12px;
+  font-size: clamp(16px, 1.06rem, 18px);
+  line-height: 1.9;
+  margin: 0 0 16px;
+  color: rgba(250, 250, 250, 0.92);
+}
+
+.article-bullets {
+  margin: 6px 0 16px;
+  padding-left: 1.15em;
+}
+
+.article-bullets li {
+  margin-bottom: 10px;
+  line-height: 1.8;
   color: rgba(250, 250, 250, 0.9);
 }
 
 .article-image {
-  margin: 22px 0 0;
+  margin: 24px 0 0;
 }
 
 .article-image img {
@@ -422,44 +470,75 @@ const handleInquiryClick = () => {
   margin-top: 8px;
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.68);
+  color: rgba(250, 250, 250, 0.72);
 }
 
+/* ── 주의: 좌측 경고색 액센트 ── */
 .guide-caution {
-  margin-bottom: 34px;
-  padding: 20px;
-  border: 1px solid rgba(255, 168, 168, 0.35);
+  margin-bottom: 40px;
+  padding: 18px 22px;
+  border-left: 3px solid rgba(255, 168, 168, 0.6);
   background: rgba(255, 168, 168, 0.05);
 }
 
+.guide-caution h2 {
+  font-size: 19px;
+  margin: 0 0 12px;
+}
+
+.guide-caution ul {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.guide-caution li {
+  margin-bottom: 8px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.9);
+}
+
+/* ── FAQ: 이중 박스 제거, 구분선으로 ── */
 .guide-faq {
-  margin-bottom: 34px;
-  padding: 20px;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  background: rgba(201, 162, 39, 0.04);
+  margin-bottom: 44px;
+}
+
+.guide-faq h2,
+.guide-related h2 {
+  font-size: 22px;
+  margin: 0 0 14px;
 }
 
 .guide-faq-list {
   display: grid;
-  gap: 12px;
+  gap: 0;
 }
 
 .guide-faq-item {
-  padding: 14px;
-  border: 1px solid rgba(201, 162, 39, 0.25);
-  background: rgba(250, 250, 250, 0.02);
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.guide-faq-item:first-child {
+  border-top: 0;
+  padding-top: 4px;
 }
 
 .guide-faq-item h3 {
   margin: 0 0 8px;
   font-size: 16px;
+  line-height: 1.6;
   color: #fafafa;
 }
 
 .guide-faq-item p {
   margin: 0;
-  line-height: 1.7;
-  color: rgba(250, 250, 250, 0.82);
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.86);
+}
+
+/* ── 관련 페이지 ── */
+.guide-related {
+  margin-bottom: 8px;
 }
 
 .related-grid {
@@ -472,11 +551,11 @@ const handleInquiryClick = () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 14px;
+  padding: 16px;
   text-decoration: none;
   color: #fafafa;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  background: rgba(201, 162, 39, 0.06);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(201, 162, 39, 0.05);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
@@ -491,15 +570,16 @@ const handleInquiryClick = () => {
 
 .related-card span {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.75);
-  line-height: 1.5;
+  color: rgba(250, 250, 250, 0.8);
+  line-height: 1.55;
 }
 
+/* ── 하단 CTA: 페이지에서 유일하게 강조되는 행동 영역 ── */
 .guide-bottom-cta {
-  margin-top: 36px;
-  padding: 22px;
+  margin-top: 44px;
+  padding: 24px;
   border: 1px solid rgba(201, 162, 39, 0.35);
-  background: linear-gradient(180deg, rgba(201, 162, 39, 0.08), rgba(201, 162, 39, 0.02));
+  background: linear-gradient(180deg, rgba(201, 162, 39, 0.1), rgba(201, 162, 39, 0.02));
 }
 
 .guide-bottom-cta h2 {
@@ -508,9 +588,9 @@ const handleInquiryClick = () => {
 }
 
 .guide-bottom-cta p {
-  margin: 0 0 14px;
-  line-height: 1.8;
-  color: rgba(250, 250, 250, 0.86);
+  margin: 0 0 16px;
+  line-height: 1.85;
+  color: rgba(250, 250, 250, 0.88);
 }
 
 .guide-bottom-links {
@@ -526,7 +606,7 @@ const handleInquiryClick = () => {
   border: 1px solid #c9a227;
   font-weight: 700;
   font-size: 14px;
-  padding: 10px 14px;
+  padding: 12px 18px;
 }
 
 .guide-bottom-links a:last-child {
@@ -534,9 +614,23 @@ const handleInquiryClick = () => {
   color: #fafafa;
 }
 
-@media (max-width: 900px) {
-  .guide-actions-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 720px) {
+  .guide-page {
+    padding: 96px 18px 72px;
+  }
+
+  .guide-cta-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .guide-cta-inline-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .cta-pill {
+    justify-content: center;
   }
 
   .related-grid {

@@ -817,7 +817,7 @@ const handleNaverMapClick = () => {
 .page {
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -871,7 +871,7 @@ const handleNaverMapClick = () => {
 }
 
 .logo-text {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 28px;
   font-weight: 700;
   color: #fafafa;
@@ -1101,7 +1101,7 @@ const handleNaverMapClick = () => {
 }
 
 .title-line {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(100px, 20vw, 200px);
   font-weight: 300;
   line-height: 1;
@@ -1483,7 +1483,7 @@ const handleNaverMapClick = () => {
 }
 
 .section-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 300;
   line-height: 1.3;
@@ -1519,7 +1519,7 @@ const handleNaverMapClick = () => {
 }
 
 .stat-number {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(36px, 4vw, 48px);
   font-weight: 300;
   color: #fafafa;
@@ -1601,7 +1601,7 @@ const handleNaverMapClick = () => {
 }
 
 .section-title-light {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(36px, 6vw, 56px);
   font-weight: 300;
   color: #fafafa;
@@ -1659,7 +1659,7 @@ const handleNaverMapClick = () => {
 }
 
 .card-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 300;
   color: #fafafa;
@@ -1893,7 +1893,7 @@ const handleNaverMapClick = () => {
 }
 
 .item-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 20px;
   font-weight: 300;
   color: #fafafa;
@@ -2014,7 +2014,7 @@ const handleNaverMapClick = () => {
 }
 
 .repair-info h3 {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 700;
   color: #fafafa;
@@ -2146,7 +2146,7 @@ const handleNaverMapClick = () => {
 }
 
 .location-address {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(24px, 3vw, 32px);
   font-style: normal;
   line-height: 1.6;
@@ -2286,7 +2286,7 @@ const handleNaverMapClick = () => {
 }
 
 .cta-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(48px, 8vw, 80px);
   font-weight: 300;
   color: #fafafa;
@@ -2642,7 +2642,7 @@ const handleNaverMapClick = () => {
 }
 
 .mobile-menu-brand-text {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 32px;
   font-weight: 300;
   color: #fafafa;
@@ -2696,7 +2696,7 @@ const handleNaverMapClick = () => {
 }
 
 .mobile-menu-link-num {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
@@ -2705,7 +2705,7 @@ const handleNaverMapClick = () => {
 }
 
 .mobile-menu-link-text {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 300;
   color: #fafafa;
@@ -2727,7 +2727,7 @@ const handleNaverMapClick = () => {
   align-items: center;
   gap: 12px;
   padding: 16px 32px;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -2743,7 +2743,7 @@ const handleNaverMapClick = () => {
 }
 
 .mobile-menu-phone {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 300;
   color: rgba(250, 250, 250, 0.5);

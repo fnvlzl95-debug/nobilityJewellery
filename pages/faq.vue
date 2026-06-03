@@ -209,7 +209,7 @@ onUnmounted(() => {
   flex-direction: column;
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -246,7 +246,7 @@ onUnmounted(() => {
 }
 
 .title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(32px, 5vw, 44px);
   font-weight: 300;
   color: #fafafa;
@@ -284,7 +284,7 @@ onUnmounted(() => {
 .category-btn {
   min-height: 44px;
   padding: 10px 20px;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
   color: rgba(250, 250, 250, 0.6);
@@ -337,7 +337,7 @@ onUnmounted(() => {
 }
 
 .question-text {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
   color: #fafafa;

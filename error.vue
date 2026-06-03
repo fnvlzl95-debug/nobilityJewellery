@@ -44,7 +44,7 @@ const handleError = () => {
   justify-content: center;
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo', serif;
+  font-family: var(--font-body);
   position: relative;
   overflow: hidden;
 }
@@ -58,6 +58,7 @@ const handleError = () => {
 
 .error-code {
   display: block;
+  font-family: var(--font-display);
   font-size: clamp(120px, 25vw, 200px);
   font-weight: 300;
   line-height: 1;
@@ -70,6 +71,7 @@ const handleError = () => {
 }
 
 .error-title {
+  font-family: var(--font-display);
   font-size: clamp(24px, 5vw, 36px);
   font-weight: 300;
   margin-bottom: 16px;

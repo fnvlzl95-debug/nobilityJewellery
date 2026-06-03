@@ -132,7 +132,7 @@ useHead({
   min-height: 100vh;
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
 }
 
 /* Main */
@@ -163,6 +163,7 @@ useHead({
 }
 
 .page-title {
+  font-family: var(--font-display);
   font-size: 36px;
   font-weight: 300;
   margin-bottom: 12px;

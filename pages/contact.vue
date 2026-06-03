@@ -376,7 +376,7 @@ const handleSubmit = async () => {
   flex-direction: column;
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -429,7 +429,7 @@ const handleSubmit = async () => {
 }
 
 .title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(36px, 6vw, 52px);
   font-weight: 300;
   color: #fafafa;
@@ -489,7 +489,7 @@ const handleSubmit = async () => {
 }
 
 .phone-number {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 22px;
   font-weight: 300;
   color: #fafafa;
@@ -845,7 +845,7 @@ const handleSubmit = async () => {
 }
 
 .success-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 28px;
   font-weight: 300;
   color: #fafafa;

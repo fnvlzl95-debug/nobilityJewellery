@@ -229,7 +229,7 @@ const advantages = [
 .page {
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   min-height: 100vh;
 }
 

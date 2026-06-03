@@ -167,6 +167,9 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .nav-link {
+  /* 전역 a,button 44px 터치영역 해제 — 데스크톱 네비는 글자 크기에 맞춰 호버 */
+  min-width: auto;
+  min-height: auto;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -304,7 +307,7 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .mobile-menu-brand-text {
-  font-family: 'JeonjuCraftMyungjo', serif;
+  font-family: var(--font-body);
   font-size: 32px;
   font-weight: 300;
   color: #fafafa;
@@ -358,7 +361,7 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .mobile-menu-link-num {
-  font-family: 'JeonjuCraftMyungjo', serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
@@ -367,7 +370,7 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .mobile-menu-link-text {
-  font-family: 'JeonjuCraftMyungjo', serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 300;
   color: #fafafa;
@@ -385,7 +388,7 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .mobile-menu-phone {
-  font-family: 'JeonjuCraftMyungjo', serif;
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 300;
   color: rgba(250, 250, 250, 0.5);

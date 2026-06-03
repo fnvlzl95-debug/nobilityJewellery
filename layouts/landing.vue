@@ -20,7 +20,7 @@
 .page-landing {
   background: #0a0a0a;
   color: #fafafa;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   min-height: 100vh;
 }
 
@@ -52,6 +52,7 @@
 }
 
 .page-landing .title {
+  font-family: var(--font-display);
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 300;
   color: #fafafa;

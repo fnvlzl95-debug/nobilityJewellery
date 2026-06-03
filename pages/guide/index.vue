@@ -87,7 +87,7 @@ useHead({
   background: #0a0a0a;
   color: #fafafa;
   padding: 120px 20px 80px;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
 }
 
 .guide-list-wrap {
@@ -107,6 +107,7 @@ useHead({
 }
 
 .guide-header h1 {
+  font-family: var(--font-display);
   font-size: clamp(30px, 4vw, 44px);
   margin-bottom: 12px;
 }
@@ -145,6 +146,8 @@ useHead({
 }
 
 .guide-card {
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: #fafafa;
   border: 1px solid rgba(201, 162, 39, 0.35);
@@ -164,10 +167,14 @@ useHead({
 }
 
 .guide-card-body {
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 18px;
 }
 
 .guide-badge {
+  align-self: flex-start;       /* flex 컬럼에서 배지가 가로로 늘어나지 않게 */
   display: inline-block;
   font-size: 11px;
   color: #0a0a0a;
@@ -177,19 +184,33 @@ useHead({
 }
 
 .guide-card h2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.35em * 2); /* 제목 1~2줄 모두 같은 높이 */
   font-size: 22px;
-  margin: 0 0 10px;
-  line-height: 1.4;
+  font-weight: 700;             /* 제목을 굵게 — 설명과 위계 분리 */
+  line-height: 1.35;
+  color: #fafafa;
+  margin: 0 0 8px;
 }
 
 .guide-card p {
-  color: rgba(250, 250, 250, 0.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.7em * 2);  /* 설명도 항상 2줄 높이 */
+  color: rgba(250, 250, 250, 0.72);
   line-height: 1.7;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 
 .guide-card small {
-  color: rgba(250, 250, 250, 0.65);
+  margin-top: auto;             /* 날짜를 카드 하단에 고정 */
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.5);
 }
 
 @media (max-width: 900px) {

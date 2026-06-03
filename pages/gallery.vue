@@ -16,21 +16,6 @@ const categoryLinkMap: Record<string, { to: string; label: string }> = {
 
 const availableCategoryData = categories.filter((category) => getItemsByCategory(category.id).length > 0)
 
-const galleryHighlights = [
-  {
-    title: '실물 느낌을 먼저 확인',
-    description: '대표 디자인과 소재 구성을 카테고리별로 정리해두어 상담 전에 취향을 빠르게 좁히실 수 있습니다.',
-  },
-  {
-    title: '주문제작 기준까지 함께 안내',
-    description: '단순 이미지 모음이 아니라 제작 방식, 납기, 상담 포인트를 함께 보여드려 비교가 쉬워집니다.',
-  },
-  {
-    title: '방문 전 체크용 컬렉션',
-    description: '반지, 목걸이, 팔찌, 세트를 한 페이지에서 확인하고 예산과 착용 목적에 맞는 방향을 정하실 수 있습니다.',
-  },
-]
-
 const consultationChecks = [
   '원하시는 카테고리와 비슷한 디자인 사진',
   '14K·18K 등 희망 소재와 색상',
@@ -254,19 +239,6 @@ onUnmounted(() => {
           </div>
         </header>
 
-        <section class="gallery-intro reveal">
-          <p class="gallery-intro-lead">
-            대표 디자인만 빠르게 훑어보는 페이지가 아니라, 어떤 카테고리를 먼저 봐야 하는지와 주문제작 상담 전에
-            무엇을 정하면 좋은지까지 함께 확인하실 수 있도록 정리했습니다.
-          </p>
-          <div class="gallery-intro-grid">
-            <article v-for="highlight in galleryHighlights" :key="highlight.title" class="gallery-intro-card">
-              <h2>{{ highlight.title }}</h2>
-              <p>{{ highlight.description }}</p>
-            </article>
-          </div>
-        </section>
-
         <nav class="tab-bar reveal" aria-label="갤러리 카테고리">
           <a
             v-for="category in availableCategories"
@@ -456,7 +428,7 @@ onUnmounted(() => {
   background: #0a0a0a;
   color: #fafafa;
   min-height: 100vh;
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -493,7 +465,7 @@ onUnmounted(() => {
 }
 
 .gallery-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: clamp(30px, 4vw, 44px);
   font-weight: 300;
   color: #fafafa;
@@ -521,46 +493,6 @@ onUnmounted(() => {
   color: rgba(250, 250, 250, 0.62);
 }
 
-/* ===== Intro ===== */
-.gallery-intro {
-  margin-bottom: 36px;
-  padding: 24px;
-  border: 1px solid rgba(201, 162, 39, 0.25);
-  background: linear-gradient(180deg, rgba(201, 162, 39, 0.08), rgba(201, 162, 39, 0.02));
-}
-
-.gallery-intro-lead {
-  margin: 0 0 18px;
-  font-size: 16px;
-  line-height: 1.9;
-  color: rgba(250, 250, 250, 0.88);
-}
-
-.gallery-intro-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.gallery-intro-card {
-  padding: 16px;
-  border: 1px solid rgba(250, 250, 250, 0.08);
-  background: rgba(250, 250, 250, 0.02);
-}
-
-.gallery-intro-card h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
-  color: #fafafa;
-}
-
-.gallery-intro-card p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.75;
-  color: rgba(250, 250, 250, 0.72);
-}
-
 /* ===== Tab Bar ===== */
 .tab-bar {
   display: flex;
@@ -585,7 +517,7 @@ onUnmounted(() => {
   padding: 12px 18px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.08);
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 300;
   color: rgba(250, 250, 250, 0.8);
@@ -705,6 +637,7 @@ onUnmounted(() => {
 }
 
 .product-card {
+  display: flex;
   border: 1px solid rgba(250, 250, 250, 0.08);
   background: rgba(250, 250, 250, 0.02);
   transition: transform 0.3s, border-color 0.3s;
@@ -716,7 +649,8 @@ onUnmounted(() => {
 }
 
 .product-card-button {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -746,7 +680,10 @@ onUnmounted(() => {
 }
 
 .card-body {
-  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px;
 }
 
 .card-badge {
@@ -766,33 +703,38 @@ onUnmounted(() => {
 }
 
 .card-title {
-  display: block;
-  font-family: 'JeonjuCraftMyungjo';
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.35em * 2); /* 1~2줄 제목 모두 같은 높이 확보 */
+  font-family: var(--font-body);
   font-size: 17px;
-  font-weight: 300;
-  line-height: 1.4;
-  color: rgba(250, 250, 250, 0.85);
-  margin: 0 0 6px;
+  font-weight: 600;             /* 제목을 굵게 — 아래 텍스트와 위계 분리 */
+  line-height: 1.35;
+  color: #fafafa;               /* 가장 밝게 */
+  margin: 0 0 4px;
 }
 
 .card-material {
   display: block;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.56);
+  color: rgba(250, 250, 250, 0.5);
   margin: 0 0 12px;
 }
 
 .card-description {
   margin: 0 0 14px;
   font-size: 13px;
-  line-height: 1.8;
-  color: rgba(250, 250, 250, 0.72);
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.7);
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: calc(1.7em * 2);  /* 설명도 항상 2줄 높이 */
 }
 
 .card-meta-list {
@@ -800,6 +742,7 @@ onUnmounted(() => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin: 0;
+  margin-top: auto;             /* 제작/기간을 카드 하단에 고정 정렬 */
 }
 
 .card-meta-list div {
@@ -929,7 +872,6 @@ onUnmounted(() => {
     padding: 24px 20px 100px;
   }
 
-  .gallery-intro-grid,
   .gallery-help {
     grid-template-columns: 1fr;
   }
@@ -966,7 +908,7 @@ onUnmounted(() => {
 
   .card-description {
     font-size: 12px;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 }
 
@@ -1139,7 +1081,7 @@ onUnmounted(() => {
 }
 
 .lightbox-title {
-  font-family: 'JeonjuCraftMyungjo';
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 300;
   color: #fafafa;

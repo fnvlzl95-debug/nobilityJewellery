@@ -62,6 +62,8 @@ export default defineNuxtConfig({
         // Preconnect for font CDN
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
+        // Pretendard (본문 가독성용 고딕 — 동적 서브셋)
+        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css' },
         // Preconnect for Naver Analytics (LCP 개선)
         { rel: 'preconnect', href: 'https://nam.veta.naver.com' },
         { rel: 'preconnect', href: 'https://ssl.pstatic.net' },
