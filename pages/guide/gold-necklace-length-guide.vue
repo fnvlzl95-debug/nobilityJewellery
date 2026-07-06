@@ -1,0 +1,197 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/gold-necklace-length-guide'
+const pageTitle = '금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준 | 귀족'
+const pageDescription = '금목걸이 길이 추천 기준을 42cm, 45cm, 50cm 중심으로 정리했습니다. 체형, 펜던트 크기, 체인 굵기, 선물용 상담 전 확인할 내용을 안내합니다.'
+const ogImage = `${siteConfig.url}/Image/guide/necklace-length-guide-hero.webp`
+const publishedAt = '2026-07-07'
+
+const faqItems = [
+  {
+    question: '여자 금목걸이 기본 길이는 몇 cm가 무난한가요?',
+    answer: '체형과 펜던트에 따라 달라지지만 42cm와 45cm 상담이 많습니다. 목이 답답한 착용감을 싫어하거나 펜던트가 크다면 45cm 이상을 먼저 비교하는 편이 좋습니다.',
+  },
+  {
+    question: '남자 금목걸이 길이는 보통 몇 cm를 보나요?',
+    answer: '남성용은 체격과 목둘레에 따라 50cm 전후 상담이 많고, 여유 있는 착용감이나 큰 펜던트를 원하면 55cm 이상도 비교합니다. 기존에 착용하던 목걸이 길이를 재오면 가장 정확합니다.',
+  },
+  {
+    question: '금목걸이 길이 줄이기나 늘리기도 가능한가요?',
+    answer: '체인 구조와 잠금장식 상태에 따라 가능 여부가 달라집니다. 줄이기는 비교적 상담이 쉬운 편이지만, 늘리기는 같은 체인 확보나 연장줄 방식까지 함께 확인해야 합니다.',
+  },
+  {
+    question: '선물용 금목걸이는 길이를 어떻게 정하면 좋나요?',
+    answer: '받는 분의 기존 목걸이 길이, 평소 옷 스타일, 펜던트 유무를 확인하는 것이 좋습니다. 정보가 부족하면 너무 짧은 길이보다 45cm처럼 약간 여유 있는 기준을 많이 봅니다.',
+  },
+]
+
+const quickAnswers = [
+  '금목걸이 길이 추천은 42cm, 45cm, 50cm를 기준으로 체형과 펜던트 크기를 함께 봐야 합니다.',
+  '여성 데일리 목걸이는 42~45cm, 남성 목걸이는 50cm 전후 상담이 많지만 목둘레와 착용 취향에 따라 달라집니다.',
+  '선물용이라면 기존 목걸이 길이, 평소 입는 옷, 펜던트 크기를 알려주시면 실패 확률을 줄일 수 있습니다.',
+]
+
+const sections = [
+  {
+    title: '금목걸이 길이 추천, 먼저 42cm·45cm·50cm를 비교하세요',
+    paragraphs: [
+      '금목걸이 길이를 고를 때 가장 많이 비교하는 기준은 42cm, 45cm, 50cm입니다. 42cm는 목선에 비교적 가깝게 올라오는 데일리 길이이고, 45cm는 답답함이 덜한 기본 길이로 많이 상담합니다. 50cm는 셔츠나 니트 위로 자연스럽게 내려오는 여유 있는 착용감을 원할 때 후보가 됩니다.',
+      '같은 45cm라도 목둘레, 어깨선, 체형, 펜던트 무게에 따라 보이는 위치가 다릅니다. 그래서 금목걸이 길이 추천은 숫자 하나로 끝내기보다 착용 목적과 기존 목걸이 길이를 함께 확인해야 정확합니다.',
+    ],
+    bullets: [
+      '38~40cm: 목에 가깝게 올라오는 짧은 길이, 답답함을 느낄 수 있음',
+      '42cm: 여성 데일리 목걸이에서 자주 보는 기본 길이',
+      '45cm: 여유 있는 착용감과 선물용 상담에서 많이 비교하는 길이',
+      '50cm 이상: 남성용, 큰 펜던트, 니트·셔츠 위 착용에 어울리는 길이',
+    ],
+    image: {
+      src: '/Image/guide/necklace-length-guide-comparison.webp',
+      alt: '금목걸이 길이 추천을 위해 여러 체인 길이를 비교하는 이미지',
+      caption: '금목걸이는 길이 숫자만 보지 말고 목둘레, 펜던트 크기, 평소 옷차림까지 함께 비교해야 합니다.',
+    },
+  },
+  {
+    title: '펜던트가 있으면 목걸이 길이가 달라집니다',
+    paragraphs: [
+      '펜던트가 없는 체인 목걸이는 길이 자체가 착용감을 결정하지만, 펜던트가 있으면 무게와 크기 때문에 중심이 아래로 내려갑니다. 작은 원형 펜던트는 42cm도 깔끔하지만, 바 형태나 메달형 펜던트처럼 세로 길이가 있는 디자인은 45cm 이상이 더 자연스럽게 보일 수 있습니다.',
+      '목걸이를 선물로 준비한다면 펜던트 사진이나 원하는 디자인을 함께 보여주는 것이 좋습니다. 같은 체인 길이도 펜던트가 있느냐 없느냐에 따라 쇄골 위, 쇄골 아래, 가슴선 위로 보이는 위치가 달라집니다.',
+    ],
+    bullets: [
+      '작은 펜던트: 42~45cm에서 깔끔하게 착용되는 경우가 많음',
+      '긴 펜던트: 45cm 이상으로 내려야 균형이 맞는 경우가 많음',
+      '무거운 펜던트: 얇은 체인보다 안정적인 굵기의 체인 추천',
+      '레이어드 착용: 짧은 체인과 긴 체인의 간격을 3~5cm 이상 두면 정리가 쉬움',
+    ],
+  },
+  {
+    title: '체인 굵기와 중량도 길이 선택에 영향을 줍니다',
+    paragraphs: [
+      '금목걸이 길이가 길어질수록 같은 굵기라도 금 중량이 늘어납니다. 14K와 18K 소재 차이, 체인 굵기, 잠금장식 종류까지 더해지면 최종 가격도 달라집니다. 그래서 예산이 정해져 있다면 길이를 먼저 늘리기보다 체인 굵기와 펜던트 구성을 함께 조정하는 편이 좋습니다.',
+      '너무 얇은 체인을 길게 제작하면 착용감은 가볍지만 끊어짐이나 꼬임에 민감할 수 있습니다. 반대로 굵은 체인을 짧게 착용하면 존재감은 좋지만 목선이 답답하게 느껴질 수 있어 실제 착용 목적을 기준으로 맞춰야 합니다.',
+    ],
+    bullets: [
+      '길이가 길어질수록 중량과 가격이 함께 올라갈 수 있음',
+      '얇은 체인은 가볍지만 꼬임과 끊어짐을 주의해야 함',
+      '굵은 체인은 존재감이 크고 펜던트 지지력이 좋음',
+      '14K·18K 선택은 색감, 예산, 착용 빈도를 함께 고려',
+    ],
+  },
+  {
+    title: '선물용 금목걸이 주문 전 확인하면 좋은 정보',
+    paragraphs: [
+      '선물용 금목걸이는 받는 분의 목둘레를 직접 재기 어려운 경우가 많습니다. 이럴 때는 기존에 편하게 착용하는 목걸이를 펼쳐서 잠금장식 끝부터 끝까지 길이를 재는 방법이 가장 현실적입니다. 사진 한 장만 있어도 체형과 착용 위치를 상담할 때 도움이 됩니다.',
+      '어머니 목걸이, 기념일 선물, 커플 선물처럼 목적이 다르면 추천 길이도 달라집니다. 평소 블라우스나 셔츠를 많이 입는지, 니트 위에 착용하는지, 펜던트를 함께 할지까지 알려주시면 더 정확한 안내가 가능합니다.',
+    ],
+    bullets: [
+      '기존 목걸이 전체 길이',
+      '받는 분의 평소 옷 스타일',
+      '펜던트 유무와 크기',
+      '14K·18K·순금 중 원하는 소재',
+      '희망 예산과 수령 날짜',
+    ],
+  },
+  {
+    title: '이미 가진 목걸이 길이 조절을 맡길 때',
+    paragraphs: [
+      '이미 가진 금목걸이가 짧거나 길다면 새로 구매하기 전에 길이 조절 가능 여부를 확인할 수 있습니다. 줄이기는 체인 일부를 정리하고 잠금장식을 다시 맞추는 방식이 많지만, 체인 모양이 특수하거나 장식이 연결된 디자인은 작업 방식이 달라집니다.',
+      '늘리기는 같은 체인을 이어야 가장 자연스럽지만, 같은 체인을 구하기 어렵다면 연장줄이나 잠금장식 교체를 함께 상담할 수 있습니다. 종로금은방 방문 전에는 목걸이 전체 사진, 잠금장식 부분, 늘리고 싶은 길이를 준비하면 상담이 빨라집니다.',
+    ],
+    bullets: [
+      '줄이기: 남는 체인 처리와 잠금장식 재연결 여부 확인',
+      '늘리기: 같은 체인 확보 가능 여부와 색상 차이 확인',
+      '연장줄: 선물용이나 체형 변화에 대응하기 좋은 방식',
+      '수리 상담: 끊어짐, 변색, 잠금장식 헐거움도 함께 점검',
+    ],
+  },
+]
+
+const cautions = [
+  '목걸이 길이는 체형과 착용 습관에 따라 체감이 달라지므로 숫자만으로 확정하기보다 기존 착용 사진을 함께 보는 것이 좋습니다.',
+  '금시세와 중량에 따라 같은 길이의 목걸이도 상담 시점마다 견적이 달라질 수 있습니다.',
+  '길이 늘리기는 동일 체인 수급 여부에 따라 결과가 달라질 수 있어 실물 확인이 필요합니다.',
+]
+
+const relatedLinks = [
+  { to: '/custom', label: '주문제작 안내', description: '원하는 길이와 디자인으로 제작 상담' },
+  { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '선물용 예산 기준 함께 보기' },
+  { to: '/guide/necklace-bracelet-chain-repair', label: '목걸이 체인 수리', description: '길이 조절과 체인 수리 기준' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '금목걸이 길이 추천', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="금목걸이 길이 추천"
+    inquiry-type="custom"
+    inquiry-topic="금목걸이 길이 상담"
+    title="금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준"
+    lead="금목걸이 길이 추천은 42cm, 45cm, 50cm 숫자만 보고 정하면 실패하기 쉽습니다. 목둘레, 체형, 펜던트 크기, 체인 굵기, 선물 목적까지 함께 봐야 실제 착용했을 때 어울리는 길이를 고를 수 있습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="금목걸이 길이 추천을 위한 여러 길이의 골드 목걸이"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

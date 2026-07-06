@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'gold-necklace-length-guide',
+    path: '/guide/gold-necklace-length-guide',
+    title: '금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준',
+    description: '금목걸이 길이는 체형, 펜던트 크기, 체인 굵기, 선물 목적에 따라 달라져요. 42cm·45cm·50cm 기준과 상담 전 확인할 내용을 정리했습니다.',
+    keyword: '금목걸이 길이 추천',
+    image: '/Image/guide/necklace-length-guide-hero.webp',
+    publishedAt: '2026-07-07',
+    category: '방법',
+  },
+  {
+    slug: 'lab-grown-diamond-natural-difference',
+    path: '/guide/lab-grown-diamond-natural-difference',
+    title: '랩그로운 다이아몬드 천연 다이아 차이, 예물 반지 선택 기준',
+    description: '랩그로운 다이아몬드와 천연 다이아는 생성 방식, 감정서, 4C, 가격, 예물 의미가 달라요. 구매 전 확인할 체크리스트를 정리했습니다.',
+    keyword: '랩그로운 다이아몬드 천연 다이아 차이',
+    image: '/Image/guide/lab-grown-diamond-ring-guide.webp',
+    publishedAt: '2026-07-07',
+    category: '방법',
+  },
+  {
     slug: 'gold-price-how-to-check',
     path: '/guide/gold-price-how-to-check',
     title: '금 시세 보는 법, 살 때·팔 때 확인할 것',
