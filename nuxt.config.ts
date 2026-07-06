@@ -1,4 +1,31 @@
 import { siteConfig } from './config/site'
+import { readdirSync, statSync } from 'node:fs'
+import { join, relative } from 'node:path'
+
+const pagesDir = join(process.cwd(), 'pages')
+
+const getPrerenderRoutes = (dir = pagesDir): string[] => {
+  return readdirSync(dir).flatMap((entry) => {
+    const fullPath = join(dir, entry)
+    const stats = statSync(fullPath)
+
+    if (stats.isDirectory()) {
+      return getPrerenderRoutes(fullPath)
+    }
+
+    if (!entry.endsWith('.vue')) {
+      return []
+    }
+
+    const route = `/${relative(pagesDir, fullPath)
+      .replace(/\\/g, '/')
+      .replace(/\.vue$/, '')
+      .replace(/\/index$/, '')
+      .replace(/^index$/, '')}`
+
+    return route === '/' ? '/' : route
+  })
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -89,6 +116,10 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    prerender: {
+      crawlLinks: true,
+      routes: getPrerenderRoutes(),
+    },
     routeRules: {
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
