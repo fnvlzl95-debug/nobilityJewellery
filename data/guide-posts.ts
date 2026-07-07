@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'jongno-jewelry-store-visit-guide',
+    path: '/guide/jongno-jewelry-store-visit-guide',
+    title: '종로 금은방 방문 예약, 상담 전 준비하면 좋은 것',
+    description: '종로 금은방 방문 전 예약이 필요한 경우와 사진, 예산, 희망 수령일, 수리·주문제작·예물 상담 준비물을 정리했습니다.',
+    keyword: '종로 금은방 방문 예약',
+    image: '/Image/guide/jongno-jewelry-visit-consultation.webp',
+    publishedAt: '2026-07-08',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-ring-setting-types',
+    path: '/guide/diamond-ring-setting-types',
+    title: '다이아 반지 세팅 종류, 프롱·베젤·파베·채널 차이',
+    description: '다이아 반지 세팅은 반짝임, 걸림, 내구성, 착용감에 영향을 줘요. 프롱·베젤·파베·채널 세팅 차이와 예물 선택 기준을 정리했습니다.',
+    keyword: '다이아 반지 세팅 종류',
+    image: '/Image/guide/diamond-ring-setting-types-comparison.webp',
+    publishedAt: '2026-07-08',
+    category: '방법',
+  },
+  {
     slug: 'gold-necklace-length-guide',
     path: '/guide/gold-necklace-length-guide',
     title: '금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준',
