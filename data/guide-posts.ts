@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'earring-back-lost-types',
+    path: '/guide/earring-back-lost-types',
+    title: '귀걸이 뒷마개 분실, 종류별 교체 기준',
+    description: '귀걸이 뒷마개를 잃어버렸을 때 나비형, 실리콘, 나사형, 원터치 잠금 차이와 침 굵기·소재 확인 기준을 정리했습니다.',
+    keyword: '귀걸이 뒷마개 분실',
+    image: '/Image/guide/earring-back-types-hero.webp',
+    publishedAt: '2026-07-09',
+    category: '방법',
+  },
+  {
+    slug: 'birthstone-necklace-gift-guide',
+    path: '/guide/birthstone-necklace-gift-guide',
+    title: '탄생석 종류와 의미, 목걸이 선물 고르는 기준',
+    description: '월별 탄생석 종류와 의미, 탄생석 목걸이 선물 상담 전 확인할 색상·소재·천연석 표기·예산 기준을 정리했습니다.',
+    keyword: '탄생석 종류',
+    image: '/Image/guide/birthstone-necklace-gift-hero.webp',
+    publishedAt: '2026-07-09',
+    category: '방법',
+  },
+  {
     slug: 'jongno-jewelry-store-visit-guide',
     path: '/guide/jongno-jewelry-store-visit-guide',
     title: '종로 금은방 방문 예약, 상담 전 준비하면 좋은 것',
