@@ -121,7 +121,7 @@ useHead({
     :related-links="[
       { to: '/repair', label: '수리·AS 안내', description: '전문 세척·재도금' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금이 필요할 때' },
-      { to: '/contact', label: '문의하기', description: '세척·관리 상담' }
+      { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도', description: '긁힘과 분리 보관 기준' }
     ]"
   />
 </template>

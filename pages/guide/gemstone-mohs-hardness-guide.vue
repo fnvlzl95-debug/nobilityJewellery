@@ -1,0 +1,221 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/gemstone-mohs-hardness-guide'
+const pageTitle = '보석 모스 경도 순위, 다이아·루비·오팔·진주 비교 | 귀족'
+const pageDescription = '보석 모스 경도 순위를 다이아몬드, 루비·사파이어, 토파즈, 수정, 오팔, 진주로 비교하고 긁힘·충격·보관 기준을 안내합니다.'
+const ogImage = `${siteConfig.url}/Image/guide/gemstone-mohs-hardness-hero.webp`
+const publishedAt = '2026-07-11'
+
+const faqItems = [
+  {
+    question: '모스 경도가 가장 높은 보석은 무엇인가요?',
+    answer: '다이아몬드가 모스 경도 10으로 가장 높습니다. 다만 경도는 긁힘에 대한 저항을 뜻하므로 강한 충격에도 절대 깨지지 않는다는 의미는 아닙니다.',
+  },
+  {
+    question: '루비와 사파이어의 모스 경도는 다른가요?',
+    answer: '루비와 사파이어는 모두 커런덤 계열로 모스 경도 9입니다. 색과 이름은 다르지만 긁힘에 대한 저항은 같은 계열로 봅니다.',
+  },
+  {
+    question: '모스 경도 7 이상이면 매일 착용해도 되나요?',
+    answer: '일상 착용에 유리한 기준이 될 수 있지만 경도만으로 결정할 수는 없습니다. 보석의 내포물, 깨짐에 대한 인성, 열과 화학물질에 대한 안정성, 세팅 보호 정도를 함께 봐야 합니다.',
+  },
+  {
+    question: '오팔과 진주는 왜 따로 보관해야 하나요?',
+    answer: '오팔은 대체로 모스 경도 5~6.5, 진주는 약 2.5~3으로 상대적으로 부드러워 단단한 보석이나 금속에 닿으면 표면이 긁힐 수 있습니다. 부드러운 파우치나 칸막이에 분리 보관하는 것이 좋습니다.',
+  },
+  {
+    question: '집에서 보석을 긁어 경도를 확인해도 되나요?',
+    answer: '권장하지 않습니다. 모스 경도는 상대적인 긁힘 기준이고 실제 주얼리에 시험하면 보석이나 금속 표면이 영구적으로 손상될 수 있습니다. 보석 종류가 불확실하면 전문 감별 상담을 받아야 합니다.',
+  },
+]
+
+const quickAnswers = [
+  '모스 경도는 보석이 긁힘과 마모에 얼마나 버티는지를 1부터 10까지 상대적으로 나타낸 기준입니다.',
+  '다이아몬드 10, 루비·사파이어 9, 토파즈 8, 수정 계열 7이며 오팔과 진주는 더 부드러워 분리 보관이 중요합니다.',
+  '경도가 높아도 충격에 깨질 수 있으므로 반지 선택과 관리에서는 경도, 인성, 안정성을 함께 봐야 합니다.',
+]
+
+const sections = [
+  {
+    title: '보석 모스 경도는 긁힘 저항을 뜻합니다',
+    paragraphs: [
+      '보석 모스 경도는 한 광물이 다른 광물에 의해 긁히는 상대적인 정도를 1부터 10까지 나눈 기준입니다. 숫자가 높을수록 일상적인 마찰과 표면 긁힘에 버티기 쉽고, 숫자가 낮을수록 다른 주얼리와 닿을 때 관리가 더 필요합니다.',
+      '중요한 점은 모스 경도 숫자의 간격이 동일하지 않다는 것입니다. 다이아몬드 10과 루비·사파이어 9는 숫자로 한 단계 차이지만 실제 긁힘 경도 차이는 훨씬 큽니다. 순위를 단순한 산술 점수처럼 해석하면 안 됩니다.',
+    ],
+    bullets: [
+      '경도: 긁힘과 마모에 대한 저항',
+      '인성: 충격으로 깨지거나 이가 빠지는 것에 대한 저항',
+      '안정성: 열, 빛, 습도, 화학물질 변화에 대한 저항',
+      '내구성 판단: 경도와 인성, 안정성을 함께 확인',
+    ],
+  },
+  {
+    title: '자주 쓰는 보석 모스 경도 순위',
+    paragraphs: [
+      '주얼리에 자주 사용하는 보석을 높은 경도부터 정리하면 아래와 같습니다. 같은 광물군 안에서도 조성에 따라 범위가 달라질 수 있고, 처리 여부와 내포물 상태는 실제 관리에 영향을 줍니다.',
+      '경도 7인 수정 계열은 공기 중 먼지에 흔한 석영과 같은 수준이므로 비교적 일상 착용이 가능하지만 시간이 지나면 마모가 생길 수 있습니다. 오팔과 진주는 경도가 낮아 반지보다 목걸이와 귀걸이처럼 충격이 적은 품목에서 관리가 수월합니다.',
+    ],
+    bullets: [
+      '10: 다이아몬드',
+      '9: 루비, 사파이어',
+      '8: 토파즈',
+      '7.5~8: 에메랄드, 아쿠아마린 등 베릴 계열',
+      '7: 자수정, 시트린 등 수정 계열',
+      '6.5~7.5: 가넷 계열',
+      '6.5~7: 페리도트',
+      '5~6.5: 오팔',
+      '약 2.5~3: 진주',
+    ],
+  },
+  {
+    title: '다이아몬드도 충격에는 깨질 수 있습니다',
+    paragraphs: [
+      '다이아몬드는 표면이 잘 긁히지 않는 매우 단단한 보석이지만 모든 방향의 충격에 무적인 것은 아닙니다. 결정 구조상 특정 방향으로 강한 힘을 받으면 깨지거나 모서리에 이가 빠질 수 있습니다.',
+      '반대로 비취처럼 경도가 다이아몬드보다 낮아도 충격을 견디는 인성이 좋은 보석이 있습니다. 따라서 운동이나 무거운 작업 중에 보석 반지를 계속 착용해도 되는지를 모스 경도 숫자 하나로 판단해서는 안 됩니다.',
+    ],
+    bullets: [
+      '높은 경도는 표면 긁힘을 줄이는 데 유리함',
+      '강한 측면 충격은 높은 경도의 보석도 손상시킬 수 있음',
+      '뾰족한 모서리가 있는 컷은 둥근 컷보다 충격 지점을 더 주의',
+      '보석이 흔들리거나 발이 벌어졌다면 착용을 멈추고 점검',
+    ],
+  },
+  {
+    title: '반지·목걸이·귀걸이는 선택 기준이 다릅니다',
+    paragraphs: [
+      '반지는 책상, 문손잡이, 가방처럼 단단한 물체와 자주 부딪혀 같은 보석이라도 마모와 충격을 더 많이 받습니다. 매일 착용할 반지라면 보석 경도뿐 아니라 베젤처럼 가장자리를 감싸는 세팅이나 모서리를 보호하는 디자인을 함께 비교하는 것이 좋습니다.',
+      '목걸이와 귀걸이는 손에 착용하는 반지보다 직접 충격이 적어 상대적으로 부드러운 오팔이나 진주를 활용하기 좋습니다. 그래도 향수, 화장품, 열에 민감할 수 있으므로 품목만 보고 관리가 필요 없다고 생각해서는 안 됩니다.',
+    ],
+    bullets: [
+      '매일 착용하는 반지: 경도와 인성, 세팅 보호 범위를 함께 확인',
+      '기념일 반지: 부드러운 보석도 착용 빈도와 활동을 조절해 선택 가능',
+      '목걸이·귀걸이: 충격은 적지만 화장품과 향수 접촉 주의',
+      '팔찌: 책상과 물체에 자주 닿아 표면 마모와 잠금 상태 확인',
+    ],
+    image: {
+      src: '/Image/guide/gemstone-durability-inspection.webp',
+      alt: '보석 모스 경도와 내구성을 확인하기 위해 사파이어 반지를 확대 검사하는 모습',
+      caption: '보석 반지는 경도 숫자뿐 아니라 모서리 손상, 세팅 흔들림, 충격 노출까지 함께 점검해야 합니다.',
+    },
+  },
+  {
+    title: '보관할 때는 단단한 보석부터 분리하세요',
+    paragraphs: [
+      '보석함 안에서 여러 제품을 한데 섞으면 단단한 보석이 부드러운 보석과 금속 표면을 긁을 수 있습니다. 특히 다이아몬드 반지는 다른 반지나 진주 목걸이와 직접 닿지 않게 한 칸씩 분리하는 것이 좋습니다.',
+      '세척법도 경도 순서로 정할 수는 없습니다. 오팔은 급격한 온도 변화와 건조를, 진주는 산과 화학 성분을 조심해야 하고 처리된 보석은 초음파 세척이 맞지 않을 수 있습니다. 보석 종류와 처리 여부가 불확실하면 미지근한 물에 바로 담그기 전에 확인이 필요합니다.',
+    ],
+    bullets: [
+      '다이아몬드 주얼리는 다른 제품과 닿지 않게 개별 보관',
+      '진주와 오팔은 부드러운 파우치나 칸막이에 보관',
+      '보석 반지를 겹쳐 끼운 채 보관하지 않기',
+      '보석 종류와 처리 여부를 모르면 초음파·스팀 세척 피하기',
+      '금이 가거나 흔들리는 보석은 세척보다 점검을 먼저 받기',
+    ],
+  },
+  {
+    title: '유색 보석 상담 전 체크리스트',
+    paragraphs: [
+      '보석 주얼리를 고를 때는 원하는 색만 말하기보다 어느 품목에 얼마나 자주 착용할지를 알려주는 것이 중요합니다. 같은 보석도 매일 끼는 반지와 가끔 착용하는 펜던트에서 적합한 세팅과 관리 부담이 달라집니다.',
+      '이미 가진 보석의 종류를 확인하려는 경우 사진만으로 천연석, 합성석, 유사석을 확정하기 어렵습니다. 구매 보증서와 감정서가 있다면 함께 준비하고, 표면 손상이나 흔들림은 밝은 곳에서 여러 방향으로 촬영해 상담하세요.',
+    ],
+    bullets: [
+      '반지, 목걸이, 귀걸이 중 원하는 품목',
+      '매일 착용인지 기념일 착용인지',
+      '운동, 육아, 손을 쓰는 작업 등 생활 습관',
+      '선호하는 색과 보석 종류, 원하는 세팅',
+      '기존 제품이라면 보증서와 감정서, 손상 부위 사진',
+    ],
+  },
+]
+
+const cautions = [
+  '모스 경도는 상대적인 긁힘 척도이며 숫자 간 차이가 동일한 선형 척도가 아닙니다.',
+  '같은 종류의 보석도 내포물, 처리, 컷, 세팅 상태에 따라 충격과 세척에 대한 반응이 달라질 수 있습니다.',
+  '보석 종류를 확인하기 위해 완성된 주얼리를 직접 긁는 시험은 제품을 영구적으로 손상시킬 수 있습니다.',
+]
+
+const relatedLinks = [
+  { to: '/guide/diamond-ring-setting-types', label: '다이아 반지 세팅 종류', description: '프롱·베젤·파베 보호 차이' },
+  { to: '/guide/birthstone-necklace-gift-guide', label: '탄생석 종류와 의미', description: '월별 보석과 선물 선택 기준' },
+  { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 세척·보관법', description: '보석별 관리 주의점' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '보석 모스 경도 순위', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="보석 모스 경도"
+    inquiry-type="custom"
+    inquiry-topic="유색 보석 주얼리 상담"
+    title="보석 모스 경도 순위, 다이아·루비·오팔·진주 비교"
+    lead="보석 모스 경도는 다이아몬드가 10, 루비와 사파이어가 9처럼 긁힘 저항을 비교하는 기준입니다. 하지만 숫자가 높다고 충격에도 절대 깨지지 않는 것은 아니므로, 반지와 목걸이를 고를 때는 경도와 인성, 안정성, 세팅을 함께 봐야 합니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="다이아몬드부터 진주까지 보석 모스 경도 순서로 비교한 이미지"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

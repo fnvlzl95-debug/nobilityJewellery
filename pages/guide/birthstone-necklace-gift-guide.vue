@@ -147,7 +147,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/custom', label: '주문제작 안내', description: '원하는 탄생석 목걸이 제작 상담' },
-  { to: '/contact', label: '선물 상담 문의', description: '예산과 날짜를 정리해 문의하기' },
+  { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도 순위', description: '착용 빈도와 내구성 기준 확인' },
   { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 관리법', description: '보석별 세척과 보관 주의점' },
 ]
 

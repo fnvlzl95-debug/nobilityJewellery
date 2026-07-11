@@ -115,9 +115,9 @@ const relatedGuides = [
     description: '작업별 비용과 상담 포인트 정리',
   },
   {
-    to: '/guide/mother-necklace-price',
-    title: '목걸이 상담 시 예산 잡는 법',
-    description: '체인/펜던트 구성별 확인 항목',
+    to: '/guide/pearl-necklace-restringing',
+    title: '진주 목걸이 줄 교체 기준',
+    description: '늘어난 실·매듭·잠금장식 점검 항목',
   },
   {
     to: '/guide',

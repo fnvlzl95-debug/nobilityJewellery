@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const pageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '귀걸이 뒷마개 분실, 탄생석 종류, 종로 금은방 방문 예약, 다이아 반지 세팅 종류, 금목걸이 길이 추천, 랩그로운 다이아몬드 차이, 금·은 수리와 매입 기준을 정리했습니다.'
+const pageDescription = '진주 목걸이 줄 교체, 보석 모스 경도, 귀걸이 뒷마개 분실, 탄생석 종류, 다이아 반지 세팅, 금목걸이 길이와 금·은 수리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 
 useHead({

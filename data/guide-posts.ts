@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'pearl-necklace-restringing',
+    path: '/guide/pearl-necklace-restringing',
+    title: '진주 목걸이 줄 교체, 종로 수리 전 확인할 것',
+    description: '진주 목걸이 줄이 늘어졌을 때 교체 시기, 개별 매듭, 실 굵기, 잠금장식과 종로 수리 상담 전 준비할 사진을 정리했습니다.',
+    keyword: '진주 목걸이 줄 교체',
+    image: '/Image/guide/pearl-necklace-restringing-hero.webp',
+    publishedAt: '2026-07-11',
+    category: '방법',
+  },
+  {
+    slug: 'gemstone-mohs-hardness-guide',
+    path: '/guide/gemstone-mohs-hardness-guide',
+    title: '보석 모스 경도 순위, 다이아·루비·오팔·진주 비교',
+    description: '보석 모스 경도를 다이아몬드, 루비·사파이어, 토파즈, 수정, 오팔, 진주 순으로 비교하고 착용·보관 기준을 정리했습니다.',
+    keyword: '보석 모스 경도',
+    image: '/Image/guide/gemstone-mohs-hardness-hero.webp',
+    publishedAt: '2026-07-11',
+    category: '방법',
+  },
+  {
     slug: 'earring-back-lost-types',
     path: '/guide/earring-back-lost-types',
     title: '귀걸이 뒷마개 분실, 종류별 교체 기준',
