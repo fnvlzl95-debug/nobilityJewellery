@@ -126,7 +126,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/wedding', label: '결혼예물 안내', description: '예물 세트와 웨딩 주얼리 상담' },
   { to: '/couple-ring', label: '커플링 상담', description: '웨딩밴드와 커플링 디자인 보기' },
-  { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '혼주 예물 예산 기준 확인' },
+  { to: '/guide/wedding-band-guard-ring-guide', label: '결혼반지 가드링', description: '웨딩밴드 레이어드와 맞춤 기준' },
 ]
 
 useHead({

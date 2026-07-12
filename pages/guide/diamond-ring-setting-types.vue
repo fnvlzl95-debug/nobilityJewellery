@@ -134,8 +134,8 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/wedding', label: '결혼예물 안내', description: '예물 반지와 웨딩밴드 상담' },
+  { to: '/guide/diamond-cut-shapes-guide', label: '다이아몬드 컷 종류', description: '라운드·오벌·쿠션 모양 비교' },
   { to: '/guide/diamond-3bu-5bu-difference', label: '다이아 3부 5부 차이', description: '캐럿과 착용감 비교' },
-  { to: '/guide/lab-grown-diamond-natural-difference', label: '랩그로운 다이아 차이', description: '스톤 선택 기준 함께 보기' },
 ]
 
 useHead({

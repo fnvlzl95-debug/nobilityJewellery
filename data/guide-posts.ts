@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'wedding-band-guard-ring-guide',
+    path: '/guide/wedding-band-guard-ring-guide',
+    title: '결혼반지 가드링, 종로 맞춤제작 전 확인할 기준',
+    description: '결혼반지 가드링을 직선형·곡선형으로 고르는 법과 메인 반지 높이, 간격, 소재, 호수, 맞춤제작 상담 기준을 정리했습니다.',
+    keyword: '결혼반지 가드링',
+    image: '/Image/guide/wedding-band-guard-ring-hero.webp',
+    publishedAt: '2026-07-12',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-cut-shapes-guide',
+    path: '/guide/diamond-cut-shapes-guide',
+    title: '다이아몬드 컷 종류, 라운드·오벌·쿠션·페어·에메랄드 비교',
+    description: '다이아몬드 컷 종류를 7가지 모양으로 비교하고 실측 크기, 길이 대비 폭, 보타이, 컷 등급과 세팅 기준을 정리했습니다.',
+    keyword: '다이아몬드 컷 종류',
+    image: '/Image/guide/diamond-cut-shapes-hero.webp',
+    publishedAt: '2026-07-12',
+    category: '방법',
+  },
+  {
     slug: 'pearl-necklace-restringing',
     path: '/guide/pearl-necklace-restringing',
     title: '진주 목걸이 줄 교체, 종로 수리 전 확인할 것',
