@@ -1,1 +1,0 @@
-import{_ as t}from"./FGPxNAH9.js";import{d as n,b as a,e as s,f as r,g as _,C as c}from"./BSjsgKWP.js";import"./xvZ2Rac6.js";const m={class:"min-h-screen"},u=n({__name:"default",setup(i){return(e,l)=>{const o=t;return s(),a("div",m,[r(o),_("main",null,[c(e.$slots,"default")])])}}});export{u as default};
