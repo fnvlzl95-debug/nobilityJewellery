@@ -55,6 +55,7 @@
     "/guide/gold-price-how-to-check",
     "/guide/gold-ring-repair-cost",
     "/guide/jewelry-cleaning-care-at-home",
+    "/guide/jewelry-hallmark-numbers-meaning",
     "/guide/jongno-jewelry-store-visit-guide",
     "/guide/jongno-jewelry-wholesale-method",
     "/guide/jongno-ring-size-repair",
@@ -71,6 +72,7 @@
     "/guide/silver-necklace-repair-possible",
     "/guide/silver-ring-repair-cost",
     "/guide/wedding-band-guard-ring-guide",
+    "/guide/wedding-band-matte-gloss",
     "/guide/wedding-jewelry-set-composition",
     "/guide/white-gold-discoloration-care",
     "/privacy/_payload.json",
@@ -98,10 +100,8 @@
     "/guide/gold-price-how-to-check/_payload.json",
     "/guide/gold-ring-repair-cost/_payload.json",
     "/guide/jewelry-cleaning-care-at-home/_payload.json",
+    "/guide/jewelry-hallmark-numbers-meaning/_payload.json",
     "/guide/jongno-jewelry-store-visit-guide/_payload.json",
-    "/guide/jongno-jewelry-wholesale-method/_payload.json",
-    "/guide/jongno-ring-size-repair/_payload.json",
-    "/guide/lab-grown-diamond-natural-difference/_payload.json",
-    "/guide/mother-necklace-design-consulting/_payload.json"
+    "/guide/jongno-jewelry-wholesale-method/_payload.json"
   ]
 }
