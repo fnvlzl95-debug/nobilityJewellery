@@ -125,7 +125,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/wedding', label: '결혼예물 안내', description: '예물 세트와 웨딩 주얼리 상담' },
-  { to: '/couple-ring', label: '커플링 상담', description: '웨딩밴드와 커플링 디자인 보기' },
+  { to: '/guide/wedding-band-matte-gloss', label: '웨딩밴드 무광 유광', description: '결혼반지 표면 마감 선택 기준' },
   { to: '/guide/wedding-band-guard-ring-guide', label: '결혼반지 가드링', description: '웨딩밴드 레이어드와 맞춤 기준' },
 ]
 

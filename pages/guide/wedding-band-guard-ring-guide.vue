@@ -133,7 +133,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/wedding', label: '결혼예물 안내', description: '웨딩밴드와 예물 반지 상담' },
   { to: '/guide/ring-size-measuring-method', label: '반지 사이즈 재는 법', description: '겹쳐 끼는 반지 호수 확인' },
-  { to: '/guide/diamond-ring-setting-types', label: '다이아 반지 세팅 종류', description: '메인 반지 높이와 구조 비교' },
+  { to: '/guide/wedding-band-matte-gloss', label: '웨딩밴드 무광 유광', description: '표면 마감과 관리 차이 비교' },
 ]
 
 useHead({

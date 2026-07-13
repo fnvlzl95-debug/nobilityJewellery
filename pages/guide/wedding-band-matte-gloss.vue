@@ -1,0 +1,215 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/wedding-band-matte-gloss'
+const pageTitle = '웨딩밴드 무광 유광 차이, 종로 결혼반지 선택 기준 | 귀족'
+const pageDescription = '웨딩밴드 무광 유광 차이를 반사, 스크래치, 손 모양, 사진, 재마감 기준으로 비교하고 종로 결혼반지 상담 전 확인할 내용을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/wedding-band-matte-gloss-hero.webp`
+const publishedAt = '2026-07-13'
+
+const faqItems = [
+  {
+    question: '웨딩밴드는 무광과 유광 중 어느 쪽이 스크래치가 덜 보이나요?',
+    answer: '두 마감 모두 착용하면 생활 스크래치가 생깁니다. 유광은 매끈한 반사면 위의 선이 눈에 띄기 쉽고, 무광은 잔흠집이 질감에 섞여 덜 도드라질 수 있습니다. 다만 무광도 자주 닿는 부분이 눌리면 부분적으로 번들거려 보일 수 있습니다.',
+  },
+  {
+    question: '유광 웨딩밴드를 나중에 무광으로 바꿀 수 있나요?',
+    answer: '장식이 적은 민자 밴드는 표면을 다시 다듬어 마감을 바꿀 수 있는 경우가 많습니다. 깊은 각인, 보석 세팅, 도금, 서로 다른 높이의 패턴이 있으면 작업 범위가 제한될 수 있으므로 반지 상태를 먼저 확인해야 합니다.',
+  },
+  {
+    question: '새틴 무광과 헤어라인 무광은 같은 마감인가요?',
+    answer: '둘 다 빛을 부드럽게 분산하지만 질감은 다릅니다. 새틴은 고운 결이 균일하게 보이고, 헤어라인은 한 방향의 가는 선이 더 분명합니다. 업체마다 명칭과 입자감이 달라 이름만 고르지 말고 실제 샘플을 확인하는 것이 좋습니다.',
+  },
+  {
+    question: '커플 웨딩밴드는 두 사람 모두 같은 광택으로 맞춰야 하나요?',
+    answer: '반드시 같을 필요는 없습니다. 반지의 폭, 단면, 골드 색상 같은 공통 요소를 유지하고 각자의 생활 습관과 취향에 맞춰 한쪽은 유광, 다른 쪽은 무광으로 제작할 수 있습니다.',
+  },
+  {
+    question: '웨딩 촬영에는 무광과 유광 중 무엇이 더 잘 나오나요?',
+    answer: '유광은 조명을 선명하게 반사해 반짝임이 강조되고, 무광은 반사 번짐이 적어 반지 윤곽과 표면색이 차분하게 보이는 편입니다. 촬영 조명과 반지 폭에 따라 결과가 달라지므로 휴대전화 플래시와 자연광 아래에서 모두 비교해보세요.',
+  },
+]
+
+const quickAnswers = [
+  '무광과 유광의 핵심 차이는 금 함량이나 강도가 아니라 표면의 결, 빛 반사, 사용 흔적이 보이는 방식입니다.',
+  '무광은 새틴·헤어라인·샌드처럼 질감이 나뉘므로 마감 이름보다 실제 샘플의 결 방향과 거칠기를 확인하세요.',
+  '매일 착용할 웨딩밴드는 손 모양, 반지 폭, 직업, 촬영 일정과 추후 재마감 가능 범위까지 함께 비교해야 합니다.',
+]
+
+const sections = [
+  {
+    title: '웨딩밴드 무광 유광 차이는 빛에서 시작됩니다',
+    paragraphs: [
+      '유광 웨딩밴드는 표면을 매끄럽게 연마해 주변 빛과 사물을 비교적 또렷하게 반사합니다. 같은 옐로우골드라도 밝고 선명해 보이며, 둥근 밴드의 볼륨과 가장자리 하이라이트가 강조됩니다.',
+      '무광 웨딩밴드는 표면에 미세한 결을 만들어 빛을 여러 방향으로 분산합니다. 반짝임은 낮아지지만 금속색이 넓고 차분하게 보여 반지 형태와 폭이 안정적으로 드러납니다. 마감은 표면 표현의 차이이며 무광이라고 금속 자체가 더 단단해지는 것은 아닙니다.',
+    ],
+    bullets: [
+      '유광: 반사가 선명하고 색 대비와 볼륨이 또렷함',
+      '무광: 빛이 부드럽게 퍼지고 표면색이 차분하게 보임',
+      '공통점: 같은 소재와 구조라면 기본적인 금속 특성은 동일함',
+      '확인법: 매장 조명뿐 아니라 창가 자연광에서도 비교',
+    ],
+  },
+  {
+    title: '새틴·헤어라인·샌드 무광을 구분하세요',
+    paragraphs: [
+      '상담할 때 무광이라는 말만 전달하면 예상과 다른 결과가 나올 수 있습니다. 새틴은 고운 결이 균일하게 이어지는 부드러운 무광, 헤어라인은 한 방향으로 뻗은 가는 선이 보이는 마감, 샌드 계열은 입자가 더 또렷하고 반사가 낮은 마감으로 이해하면 비교하기 쉽습니다.',
+      '같은 이름도 작업 도구와 입자 크기, 결 방향에 따라 인상이 달라집니다. 온라인 사진은 조명과 보정 때문에 실제 거칠기를 정확히 보여주지 못하므로 완성 샘플을 손에 올리고 옆으로 돌려가며 빛의 이동을 확인하세요.',
+    ],
+    bullets: [
+      '새틴: 고운 결이 촘촘하고 부드러운 인상',
+      '헤어라인: 일정한 방향성이 있어 선적인 인상',
+      '샌드 계열: 입자감이 분명하고 반사가 낮은 인상',
+      '혼합 마감: 중앙은 무광, 가장자리는 유광처럼 영역을 나눈 방식',
+    ],
+  },
+  {
+    title: '반지 폭과 손 모양에 따라 인상이 달라집니다',
+    paragraphs: [
+      '폭이 넓은 웨딩밴드는 표면 면적이 커 마감 차이가 더 분명합니다. 넓은 유광 반지는 빛의 띠가 크게 움직여 존재감이 강하고, 넓은 무광 반지는 금속색이 한 덩어리로 보여 묵직한 느낌이 납니다. 얇은 밴드는 차이가 상대적으로 작아 단면과 가장자리 마감이 더 중요해집니다.',
+      '손가락이 길거나 짧다는 이유만으로 한 마감을 정할 필요는 없습니다. 손등에서 보이는 반지 폭, 피부와 골드 색상의 대비, 손을 움직였을 때 반사가 부담스럽지 않은지를 함께 보세요. 평소 시계나 액세서리를 거의 착용하지 않았다면 차분한 무광이 편할 수 있고, 선명한 주얼리 포인트를 원한다면 유광이 잘 맞을 수 있습니다.',
+    ],
+    bullets: [
+      '3mm 안팎의 얇은 밴드: 단면과 엣지의 광택 차이를 함께 확인',
+      '4~6mm 넓은 밴드: 표면 결이 넓게 보여 무광 종류 비교가 중요',
+      '화이트 계열 금속: 차가운 반사와 피부톤의 대비 확인',
+      '옐로우·로즈골드: 무광 처리 후 색이 한층 부드럽게 보일 수 있음',
+    ],
+  },
+  {
+    title: '스크래치와 사용감은 서로 다르게 보입니다',
+    paragraphs: [
+      '유광 표면은 거울처럼 고른 면에 새로운 선이 생기기 때문에 초반 생활 스크래치가 쉽게 눈에 들어옵니다. 시간이 지나 잔흠집이 고르게 쌓이면 자연스러운 사용감으로 보이지만, 처음의 완전한 광택을 유지하려면 주기적인 점검과 재연마가 필요할 수 있습니다.',
+      '무광 표면은 가는 흠집이 기존 결에 섞일 수 있지만 손바닥 쪽처럼 마찰이 잦은 곳은 결이 눌려 반들반들해지기도 합니다. 한쪽만 다시 문지르면 결 방향과 농도가 달라질 수 있으므로 거친 수세미나 사포로 집에서 보정하지 말고 전체 마감 상태를 확인받는 편이 좋습니다.',
+    ],
+    bullets: [
+      '책상, 손잡이, 운동기구와 자주 닿는 손바닥 쪽부터 변화 확인',
+      '유광은 선 형태의 흠집, 무광은 눌린 광택과 결 끊김을 관찰',
+      '재마감은 금속 표면을 다듬는 작업이므로 횟수보다 상태가 기준',
+      '도금 제품과 보석 세팅 반지는 일반 민자 반지와 작업 방식이 다름',
+    ],
+  },
+  {
+    title: '커플링은 같은 디자인보다 연결점을 정하세요',
+    paragraphs: [
+      '두 사람이 같은 마감을 불편해한다면 억지로 통일할 필요가 없습니다. 폭, 단면 모양, 골드 색상, 안쪽 각인 중 두세 가지를 공통으로 두고 표면만 각자 선택하면 커플 느낌과 착용 취향을 함께 살릴 수 있습니다.',
+      '한 반지 안에서 무광과 유광을 나누는 방법도 있습니다. 중앙 무광에 양쪽 유광 엣지를 두거나, 사선 홈을 경계로 마감을 바꾸면 빛의 대비가 생깁니다. 다만 홈과 모서리가 깊고 복잡할수록 재마감할 때 처음 경계를 그대로 살리는 작업이 어려울 수 있습니다.',
+    ],
+    bullets: [
+      '동일 폭·다른 마감: 형태는 맞추고 표면 취향은 분리',
+      '다른 폭·동일 단면: 손 크기에 맞추면서 측면 실루엣 연결',
+      '무광 중앙·유광 엣지: 정면은 차분하고 움직일 때 테두리 강조',
+      '각인 통일: 겉모습이 달라도 안쪽 문구와 날짜로 의미 연결',
+    ],
+    image: {
+      src: '/Image/guide/wedding-band-surface-finish.webp',
+      alt: '주얼리 작업대에서 새틴 무광과 유광 웨딩밴드 표면을 비교하는 모습',
+      caption: '같은 골드 소재도 표면 결에 따라 빛과 사용 흔적이 보이는 방식이 달라집니다.',
+    },
+  },
+  {
+    title: '종로 결혼반지 상담 전 준비할 체크리스트',
+    paragraphs: [
+      '종로에서 웨딩밴드를 상담할 때는 저장한 디자인 사진만 보여주기보다 사진에서 마음에 든 부분이 색상인지, 폭인지, 무광 결인지 구체적으로 구분해 전달하세요. 원하는 마감 샘플을 실제 손에 올려보고 정면, 측면, 손바닥 쪽을 각각 확인하면 완성 후 차이를 줄일 수 있습니다.',
+      '견적은 14K·18K 같은 소재와 완성 중량, 폭과 두께, 보석 세팅, 혼합 마감 난이도에 따라 달라집니다. 웨딩 촬영이나 예식 전에 수령해야 한다면 희망 날짜를 먼저 알리고, 제작 후 사이즈 조정이나 재마감 시 무늬가 어떻게 달라질 수 있는지도 함께 물어보세요.',
+    ],
+    bullets: [
+      '각자 평소 하는 일과 반지가 자주 닿는 물건',
+      '원하는 골드 색상, 반지 폭, 무광 결의 방향',
+      '두 사람의 마감을 같게 할지 다르게 할지',
+      '혼합 마감·각인·보석 세팅 여부',
+      '촬영·예식 날짜와 희망 수령일, 예산 범위',
+    ],
+  },
+]
+
+const cautions = [
+  '무광과 유광 중 어느 한쪽이 생활 스크래치에 절대적으로 강하다고 단정할 수 없습니다. 금속 소재, 반지 구조, 착용 환경을 함께 봐야 합니다.',
+  '표면을 다시 연마하거나 무광 처리하면 아주 적은 양이라도 금속 표면이 다듬어지므로 필요 이상으로 자주 작업하지 않는 것이 좋습니다.',
+  '도금, 깊은 패턴, 밀그레인, 보석 세팅이 있는 반지는 마감 변경과 사이즈 수리 가능 범위가 제한될 수 있습니다.',
+]
+
+const relatedLinks = [
+  { to: '/wedding', label: '결혼예물 안내', description: '웨딩밴드 디자인과 제작 상담' },
+  { to: '/guide/wedding-band-guard-ring-guide', label: '결혼반지 가드링', description: '레이어드 간격과 맞춤 기준' },
+  { to: '/guide/wedding-jewelry-set-composition', label: '결혼예물 세트 구성', description: '신랑·신부·혼주 예물 준비 기준' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '웨딩밴드 무광 유광 차이', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="웨딩밴드 무광 유광 차이"
+    inquiry-type="custom"
+    inquiry-topic="웨딩밴드 무광 유광 맞춤제작"
+    title="웨딩밴드 무광 유광 차이, 종로 결혼반지 선택 기준"
+    lead="웨딩밴드 무광 유광 차이는 단순히 반짝임의 취향만으로 정하기 어렵습니다. 반지 폭과 골드 색상, 생활 스크래치가 보이는 방식, 웨딩 촬영, 추후 재마감까지 비교해야 매일 착용할 결혼반지를 편하게 고를 수 있습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="무광 옐로우골드와 유광 화이트골드 웨딩밴드를 나란히 비교한 모습"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

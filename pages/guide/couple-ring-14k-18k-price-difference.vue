@@ -122,7 +122,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/couple-ring', label: '커플링 맞춤제작', description: '14K·18K 커플링 디자인과 각인 상담' },
-  { to: '/custom', label: '주문제작 안내', description: '원하는 디자인으로 반지를 제작하고 싶다면' },
+  { to: '/guide/jewelry-hallmark-numbers-meaning', label: '귀금속 각인 숫자', description: '585·750·925 순도 표기 읽는 법' },
   { to: '/guide/gold-one-don-gram', label: '금 1돈 기준', description: '중량과 가격 기준을 함께 확인하세요' },
 ]
 

@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'wedding-band-matte-gloss',
+    path: '/guide/wedding-band-matte-gloss',
+    title: '웨딩밴드 무광 유광 차이, 종로 결혼반지 선택 기준',
+    description: '웨딩밴드 무광 유광 차이를 반사, 스크래치, 손 모양, 사진, 재마감 기준으로 비교하고 종로 상담 전 체크리스트를 정리했습니다.',
+    keyword: '웨딩밴드 무광 유광 차이',
+    image: '/Image/guide/wedding-band-matte-gloss-hero.webp',
+    publishedAt: '2026-07-13',
+    category: '방법',
+  },
+  {
+    slug: 'jewelry-hallmark-numbers-meaning',
+    path: '/guide/jewelry-hallmark-numbers-meaning',
+    title: '귀금속 각인 585·750·925 뜻, 금·은·백금 숫자 읽는 법',
+    description: '귀금속 각인 585, 750, 925, Pt950을 천분율과 K 단위로 비교하고 도금 약어, 각인이 흐릴 때 확인 순서를 정리했습니다.',
+    keyword: '귀금속 각인 숫자 뜻',
+    image: '/Image/guide/jewelry-hallmark-numbers-hero.webp',
+    publishedAt: '2026-07-13',
+    category: '방법',
+  },
+  {
     slug: 'wedding-band-guard-ring-guide',
     path: '/guide/wedding-band-guard-ring-guide',
     title: '결혼반지 가드링, 종로 맞춤제작 전 확인할 기준',

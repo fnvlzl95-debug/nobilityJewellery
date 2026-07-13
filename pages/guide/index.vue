@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const pageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '결혼반지 가드링, 다이아몬드 컷 종류, 진주 목걸이 줄 교체, 보석 모스 경도, 귀걸이 뒷마개, 탄생석과 금·은 수리 기준을 정리했습니다.'
+const pageDescription = '웨딩밴드 무광 유광 차이, 귀금속 각인 585·750·925 뜻, 결혼반지 가드링, 다이아몬드 컷과 금·은 수리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 
 useHead({
