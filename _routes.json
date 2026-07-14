@@ -44,6 +44,7 @@
     "/guide/cubic-moissanite-diamond-difference",
     "/guide/diamond-3bu-5bu-difference",
     "/guide/diamond-cut-shapes-guide",
+    "/guide/diamond-fluorescence-grades",
     "/guide/diamond-ring-setting-types",
     "/guide/earring-back-lost-types",
     "/guide/gemstone-mohs-hardness-guide",
@@ -66,6 +67,7 @@
     "/guide/necklace-bracelet-chain-repair",
     "/guide/pearl-necklace-restringing",
     "/guide/platinum-vs-white-gold-difference",
+    "/guide/ring-cubic-stone-repair",
     "/guide/ring-metal-allergy-guide",
     "/guide/ring-size-measuring-method",
     "/guide/silver-buying",
@@ -89,6 +91,7 @@
     "/guide/cubic-moissanite-diamond-difference/_payload.json",
     "/guide/diamond-3bu-5bu-difference/_payload.json",
     "/guide/diamond-cut-shapes-guide/_payload.json",
+    "/guide/diamond-fluorescence-grades/_payload.json",
     "/guide/diamond-ring-setting-types/_payload.json",
     "/guide/earring-back-lost-types/_payload.json",
     "/guide/gemstone-mohs-hardness-guide/_payload.json",
@@ -99,9 +102,6 @@
     "/guide/gold-plating-repair/_payload.json",
     "/guide/gold-price-how-to-check/_payload.json",
     "/guide/gold-ring-repair-cost/_payload.json",
-    "/guide/jewelry-cleaning-care-at-home/_payload.json",
-    "/guide/jewelry-hallmark-numbers-meaning/_payload.json",
-    "/guide/jongno-jewelry-store-visit-guide/_payload.json",
-    "/guide/jongno-jewelry-wholesale-method/_payload.json"
+    "/guide/jewelry-cleaning-care-at-home/_payload.json"
   ]
 }
