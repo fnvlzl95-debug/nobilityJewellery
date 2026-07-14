@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const basePageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '웨딩밴드 무광 유광 차이, 귀금속 각인 585·750·925 뜻, 결혼반지 가드링, 다이아몬드 컷과 금·은 수리 기준을 정리했습니다.'
+const pageDescription = '반지 큐빅 빠짐 수리, 다이아몬드 형광 등급, 웨딩밴드 무광 유광 차이, 귀금속 각인 숫자와 금·은 수리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 const postsPerPage = 10
 const categoryOptions = ['전체', '가격', '비용', '기간', '방법'] as const

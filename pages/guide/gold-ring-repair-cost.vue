@@ -120,7 +120,7 @@ useHead({
     :faq-items="faqItems"
     :related-links="[
       { to: '/repair', label: '수리·AS 안내', description: '어떤 수리가 가능한지 확인하세요' },
-      { to: '/faq', label: '자주 묻는 질문', description: '수리 관련 궁금증 모음' },
+      { to: '/guide/ring-cubic-stone-repair', label: '반지 큐빅 빠짐 수리', description: '스톤과 세팅 발 점검 기준' },
       { to: '/contact', label: '문의하기', description: '수리 상담을 원하시면' }
     ]"
   />

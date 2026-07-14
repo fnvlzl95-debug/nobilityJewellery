@@ -1,0 +1,216 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/ring-cubic-stone-repair'
+const pageTitle = '반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것 | 귀족'
+const pageDescription = '반지 큐빅 빠짐 수리 전 착용을 멈춰야 하는 이유와 빠진 스톤 보관, 재사용·교체 판단, 세팅 발 점검, 종로 수리 상담 준비물을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/ring-cubic-stone-repair-hero.webp`
+const publishedAt = '2026-07-14'
+
+const faqItems = [
+  {
+    question: '반지에서 빠진 큐빅을 찾았으면 다시 사용할 수 있나요?',
+    answer: '크기와 모양이 원래 자리에 맞고 모서리 깨짐이나 표면 손상이 없다면 재사용할 수 있는 경우가 있습니다. 다만 스톤만 보지 말고 이를 잡던 발과 세팅 자리까지 함께 검사해야 같은 문제가 반복되는 것을 줄일 수 있습니다.',
+  },
+  {
+    question: '큐빅 하나만 빠졌는데 반지를 계속 껴도 되나요?',
+    answer: '수리 전에는 착용을 멈추는 편이 좋습니다. 충격이나 변형으로 한 알이 빠졌다면 주변 세팅 발도 느슨해졌을 수 있고, 계속 착용하는 동안 다른 스톤까지 잃어버릴 가능성이 있습니다.',
+  },
+  {
+    question: '빠진 큐빅을 순간접착제로 붙여도 되나요?',
+    answer: '권하지 않습니다. 접착제가 세팅 틈과 스톤 뒷면에 번지면 광택이 탁해지고 이후 정확한 재세팅 작업을 방해할 수 있습니다. 접착 방식으로 제작된 제품도 재료와 구조에 맞는 전문 처리가 필요합니다.',
+  },
+  {
+    question: '원래 큐빅을 잃어버렸어도 수리가 가능한가요?',
+    answer: '대체 스톤의 지름, 높이, 컷 모양과 색감을 맞출 수 있다면 가능한 경우가 많습니다. 같은 지름 표기라도 실제 세팅 자리에 맞지 않을 수 있어 반지 실물과 주변 스톤을 기준으로 비교해야 합니다.',
+  },
+  {
+    question: '반지 큐빅 빠짐 수리 비용과 기간은 어떻게 정해지나요?',
+    answer: '스톤 보유 여부, 크기와 개수, 세팅 방식, 발 보강이나 금속 복원이 필요한지, 도금·광택 마감 범위에 따라 달라집니다. 사진으로 1차 상담은 가능하지만 최종 작업과 견적은 실물 검사 후 정하는 것이 정확합니다.',
+  },
+]
+
+const quickAnswers = [
+  '큐빅이 빠진 즉시 반지 착용을 멈추고, 찾은 스톤은 작은 지퍼백이나 뚜껑 있는 용기에 따로 보관하세요.',
+  '한 알만 새로 넣는 것으로 끝내지 말고 빈 자리의 발, 주변 스톤의 흔들림, 반지 변형을 함께 점검해야 합니다.',
+  '종로 수리 상담에는 반지 전체와 빠진 부위의 정면·측면 사진, 소재 각인, 수령 희망일을 준비하면 확인이 빨라집니다.',
+]
+
+const sections = [
+  {
+    title: '큐빅이 빠졌다면 가장 먼저 할 일',
+    paragraphs: [
+      '반지에서 작은 스톤이 빠진 것을 발견했다면 우선 착용을 멈추세요. 빈 자리가 옷감이나 머리카락에 걸릴 수 있고, 원인이 충격이나 세팅 변형이라면 옆의 스톤도 느슨해졌을 가능성이 있습니다. 반지를 씻거나 흔들어 확인하기보다 현재 상태 그대로 보관하는 편이 좋습니다.',
+      '빠진 큐빅을 찾았다면 테이프에 직접 붙이거나 반지 홈에 억지로 눌러 넣지 말고 작은 지퍼백이나 단단한 용기에 보관하세요. 반지와 스톤을 함께 가져가면 재사용 가능 여부와 원래 크기를 비교하기 수월합니다.',
+    ],
+    bullets: [
+      '반지를 바로 빼고 추가 착용 중단',
+      '빠진 스톤은 밀폐되는 작은 용기에 별도 보관',
+      '빈 세팅을 칫솔이나 바늘로 건드리지 않기',
+      '순간접착제, 네일용 접착제, 투명 매니큐어 사용하지 않기',
+    ],
+  },
+  {
+    title: '왜 빠졌는지 세팅 전체를 확인해야 합니다',
+    paragraphs: [
+      '큐빅 빠짐은 스톤 자체 문제보다 이를 잡는 금속 구조에서 시작되는 경우가 많습니다. 발이 마모되거나 옆으로 벌어졌을 수 있고, 반지 몸체가 눌리면서 원형이 틀어지면 여러 세팅 자리에 동시에 힘이 전달될 수 있습니다. 강한 충격이 없어도 오랜 착용과 반복 마찰로 발 끝이 얇아질 수 있습니다.',
+      '따라서 빈 자리에 새 스톤만 넣기 전에 주변 발의 높이와 두께, 다른 스톤의 움직임, 밴드 찌그러짐을 함께 봐야 합니다. 옷에 자주 걸리거나 손톱으로 스톤을 눌렀을 때 움직이는 느낌이 있었다면 그 증상도 상담할 때 알려주세요.',
+    ],
+    bullets: [
+      '세팅 발 마모: 발 끝이 얇아져 스톤을 충분히 덮지 못하는 상태',
+      '충격 변형: 한쪽 발이 벌어지거나 세팅 자리가 찌그러진 상태',
+      '밴드 변형: 반지 원형이 눌리면서 여러 스톤 자리가 비틀린 상태',
+      '이전 수리 흔적: 납땜, 도금, 접착 잔여물이 새 작업에 영향을 주는 상태',
+    ],
+  },
+  {
+    title: '찾은 스톤 재사용과 새 큐빅 교체 기준',
+    paragraphs: [
+      '찾은 스톤은 눈으로 멀쩡해 보여도 거들 가장자리나 뒷면이 깨졌는지 확대해서 확인해야 합니다. 손상되지 않았고 원래 세팅 자리에 정확히 맞으면 다시 세팅할 수 있지만, 모서리가 깨진 스톤은 고정력이 떨어지거나 반짝임이 달라질 수 있어 교체를 검토합니다.',
+      '스톤을 잃어버렸다면 주변 큐빅과 어울리는 대체품을 찾아야 합니다. 지름만 같은 것이 아니라 높이, 컷의 면 배열, 투명도와 색감까지 비교해야 한 알만 어둡거나 튀어 보이는 것을 줄일 수 있습니다. 고객이 큐빅으로 알고 있던 스톤이 다이아몬드나 다른 소재일 수도 있으므로 종류를 단정하지 말고 먼저 확인하세요.',
+    ],
+    bullets: [
+      '재사용 확인: 지름, 높이, 컷 모양, 깨짐과 긁힘',
+      '교체 확인: 양옆 스톤과 밝기·색감·정면 크기가 어울리는지',
+      '스톤 종류: 큐빅, 다이아몬드, 모이사나이트 등 실제 소재 확인',
+      '세팅 자리: 새 스톤이 기존 홈에 무리 없이 안정적으로 앉는지',
+    ],
+  },
+  {
+    title: '재세팅만 할지 발 보강까지 할지 구분합니다',
+    paragraphs: [
+      '세팅 자리가 건전하고 발이 충분히 남아 있다면 스톤을 제자리에 앉히고 발을 다시 조정하는 작업으로 진행할 수 있습니다. 반대로 발이 닳거나 부러졌다면 금속을 보강하거나 해당 부분의 세팅 구조를 복원한 뒤 스톤을 고정해야 합니다.',
+      '파베처럼 작은 스톤이 촘촘한 반지는 한 자리의 발이 옆 스톤과 연결되어 있을 수 있습니다. 한 알만 보고 힘을 주면 주변 세팅에 영향을 줄 수 있어 확대 검사와 균형 있는 조정이 중요합니다. 수리 후에는 표면 높이와 걸림, 주변 스톤의 안정성을 다시 확인합니다.',
+    ],
+    bullets: [
+      '단순 재세팅: 스톤과 세팅 자리가 모두 양호한 경우',
+      '발 조정·보강: 발이 벌어지거나 얇아진 경우',
+      '세팅 자리 복원: 금속이 찌그러지거나 일부 손실된 경우',
+      '주변 스톤 점검: 같은 충격을 받은 인접 세팅까지 확인',
+    ],
+    image: {
+      src: '/Image/guide/ring-cubic-stone-resetting.webp',
+      alt: '주얼리 작업자가 현미경 아래에서 금반지의 작은 큐빅 세팅 발을 점검하는 모습',
+      caption: '빠진 한 알뿐 아니라 주변 발과 반지 변형까지 확인해야 수리 범위를 정확히 정할 수 있습니다.',
+    },
+  },
+  {
+    title: '수리 비용과 기간을 바꾸는 항목',
+    paragraphs: [
+      '반지 큐빅 빠짐 수리는 동일한 개수라도 작업 범위가 다릅니다. 원래 스톤을 보유했는지, 새 스톤을 구해야 하는지, 단순 고정인지 발 보강인지에 따라 공정이 달라집니다. 14K·18K·백금·은처럼 소재가 다르면 보강과 마감 방법도 달라질 수 있습니다.',
+      '화이트골드 도금이나 전체 광택을 함께 요청하면 마감 공정이 추가되고, 여러 알을 맞춰야 하거나 특수 모양 스톤이 필요하면 준비 시간이 길어질 수 있습니다. 촬영이나 행사 전에 받아야 한다면 견적보다 먼저 희망 수령일을 알려 작업 가능 일정을 확인하세요.',
+    ],
+    bullets: [
+      '빠진 스톤 보유 여부와 대체 스톤 수급',
+      '스톤 크기·모양·개수와 세팅 방식',
+      '발 보강, 밴드 변형 복원, 이전 접착 제거 여부',
+      '세척·광택·도금 등 최종 마감 범위',
+      '희망 수령일과 추가 점검이 필요한 주변 스톤 수',
+    ],
+  },
+  {
+    title: '종로 수리 상담 전 사진과 정보를 준비하세요',
+    paragraphs: [
+      '사진 상담을 받을 때는 빈 자리만 크게 찍은 사진 한 장보다 반지 전체 정면, 빠진 부위 확대, 옆면 높이, 안쪽 소재 각인을 각각 촬영하세요. 빠진 스톤을 보관하고 있다면 자 옆에 두어 대략적인 크기가 보이게 찍되, 사진만으로 최종 규격을 확정하기는 어렵다는 점을 고려해야 합니다.',
+      '구입 시기와 착용 기간, 빠지기 전 옷에 걸리거나 반지가 찌그러진 적이 있었는지, 이전에 같은 부위를 수리했는지도 함께 전달하세요. 실물 검사에서는 스톤 종류와 크기, 세팅 발, 주변 스톤, 반지 변형을 순서대로 확인한 뒤 작업 범위를 정하는 것이 안전합니다.',
+    ],
+    bullets: [
+      '반지 전체 정면과 손바닥 쪽 사진',
+      '빈 세팅의 정면·측면 확대 사진',
+      '14K·18K·925 등 안쪽 각인 사진',
+      '찾은 스톤 사진과 보관 여부',
+      '이전 수리 이력, 희망 수령일, 도금·광택 요청 여부',
+    ],
+  },
+]
+
+const cautions = [
+  '빠진 자리에 접착제를 사용하면 스톤과 세팅 틈이 오염되어 이후 작업 범위가 커질 수 있습니다.',
+  '한 알이 빠진 원인이 반지 변형이나 발 마모라면 주변 스톤도 느슨할 수 있으므로 수리 전 착용을 중단하세요.',
+  '사진으로는 스톤 종류와 미세한 깨짐, 세팅 발 두께를 확정하기 어려워 최종 견적과 기간에는 실물 확인이 필요합니다.',
+]
+
+const relatedLinks = [
+  { to: '/repair', label: '주얼리 수리 안내', description: '종로 수리·AS 상담 항목 확인' },
+  { to: '/guide/diamond-ring-setting-types', label: '반지 세팅 종류', description: '스톤 고정 방식별 특징 확인' },
+  { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 비용', description: '작업별 견적 기준 확인' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '반지 큐빅 빠짐 수리', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="반지 큐빅 빠짐 수리"
+    inquiry-type="repair"
+    inquiry-topic="반지 큐빅 빠짐 수리"
+    title="반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것"
+    lead="반지 큐빅 빠짐 수리는 빈 자리에 새 스톤 하나를 넣는 것만으로 끝나지 않습니다. 빠진 큐빅의 재사용 가능 여부, 세팅 발 마모, 주변 스톤 흔들림과 반지 변형까지 확인해야 같은 문제가 반복될 가능성을 줄일 수 있습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="작은 큐빅 한 알이 빠진 금반지와 보관한 스톤을 수리 전에 확인하는 모습"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

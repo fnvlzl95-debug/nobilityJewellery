@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'ring-cubic-stone-repair',
+    path: '/guide/ring-cubic-stone-repair',
+    title: '반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것',
+    description: '반지 큐빅 빠짐 수리 전 착용 중단, 빠진 스톤 보관, 재사용·교체 판단, 세팅 발 점검과 종로 상담 준비물을 정리했습니다.',
+    keyword: '반지 큐빅 빠짐 수리',
+    image: '/Image/guide/ring-cubic-stone-repair-hero.webp',
+    publishedAt: '2026-07-14',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-fluorescence-grades',
+    path: '/guide/diamond-fluorescence-grades',
+    title: '다이아몬드 형광 등급, None·Faint·Medium·Strong 뜻',
+    description: '다이아몬드 형광 등급 5단계와 GIA 감정서 위치, 푸른 형광의 외관·색상 영향, 여러 조명에서 확인하는 순서를 정리했습니다.',
+    keyword: '다이아몬드 형광 등급',
+    image: '/Image/guide/diamond-fluorescence-grades-hero.webp',
+    publishedAt: '2026-07-14',
+    category: '방법',
+  },
+  {
     slug: 'wedding-band-matte-gloss',
     path: '/guide/wedding-band-matte-gloss',
     title: '웨딩밴드 무광 유광 차이, 종로 결혼반지 선택 기준',

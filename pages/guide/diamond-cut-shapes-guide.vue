@@ -131,7 +131,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/diamond-ring-setting-types', label: '다이아 반지 세팅 종류', description: '프롱·베젤·파베 구조 비교' },
   { to: '/guide/diamond-3bu-5bu-difference', label: '다이아 3부 5부 차이', description: '캐럿과 정면 크기 기준' },
-  { to: '/guide/lab-grown-diamond-natural-difference', label: '랩그로운 다이아 차이', description: '생성 방식과 감정서 확인' },
+  { to: '/guide/diamond-fluorescence-grades', label: '다이아몬드 형광 등급', description: '감정서 형광 표기와 외관 영향' },
 ]
 
 useHead({

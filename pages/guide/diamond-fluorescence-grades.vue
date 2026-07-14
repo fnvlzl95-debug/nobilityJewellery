@@ -1,0 +1,216 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/diamond-fluorescence-grades'
+const pageTitle = '다이아몬드 형광 등급, None·Faint·Medium·Strong 뜻 | 귀족'
+const pageDescription = '다이아몬드 형광 등급 None, Faint, Medium, Strong, Very Strong의 뜻과 GIA 감정서 위치, 푸른 형광의 외관·색상·가격 확인법을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/diamond-fluorescence-grades-hero.webp`
+const publishedAt = '2026-07-14'
+
+const faqItems = [
+  {
+    question: '다이아몬드 형광이 있으면 품질이 낮은 건가요?',
+    answer: '형광의 유무만으로 품질이 높거나 낮다고 판단할 수 없습니다. GIA는 형광을 4C 품질 등급이 아닌 다이아몬드의 식별 특성으로 설명합니다. 실제 선택에서는 일반 조명 아래의 투명감과 외관을 함께 비교해야 합니다.',
+  },
+  {
+    question: '다이아몬드 형광 등급은 몇 단계인가요?',
+    answer: 'GIA 감정서에서는 장파 자외선에 대한 반응 강도를 None, Faint, Medium, Strong, Very Strong의 다섯 단계로 기록합니다. 이는 좋은 순서나 나쁜 순서가 아니라 관찰된 형광 강도의 표현입니다.',
+  },
+  {
+    question: 'Strong이나 Very Strong 형광은 모두 뿌옇게 보이나요?',
+    answer: '그렇지 않습니다. GIA 연구 설명에 따르면 압도적인 다수의 다이아몬드는 형광이 일상 외관에 널리 눈에 띄는 영향을 주지 않았습니다. 드물게 매우 강한 형광을 가진 일부 스톤이 흐리거나 기름진 듯 보일 수 있어 실물을 확인해야 합니다.',
+  },
+  {
+    question: '푸른 형광이 있으면 다이아몬드가 더 하얗게 보이나요?',
+    answer: '자외선이 포함된 조명에서는 푸른 반응이 옅은 노란 기를 덜 느끼게 하는 경우가 있지만 모든 다이아몬드에 같은 효과가 나타나는 것은 아닙니다. 색상 등급과 형광 수치만 조합해 결과를 단정하지 말고 여러 조명에서 비교하세요.',
+  },
+  {
+    question: '형광이 다이아몬드의 내구성을 약하게 하나요?',
+    answer: 'GIA 설명에 따르면 형광 반응 자체가 다이아몬드의 구조적 완전성을 떨어뜨리지는 않습니다. 형광은 자외선 아래에서 보이는 광학 반응이며 깨짐이나 세팅 안정성은 별도의 문제입니다.',
+  },
+]
+
+const quickAnswers = [
+  '다이아몬드 형광은 장파 자외선을 받을 때 일부 스톤이 가시광선을 내는 반응이며, 자외선 광원이 사라지면 반응도 멈춥니다.',
+  'GIA 감정서의 표기는 None·Faint·Medium·Strong·Very Strong 다섯 단계이고, 4C와 같은 품질 순위가 아닙니다.',
+  '구매할 때는 형광 수치만 보지 말고 확산광, 창가 자연광, 자외선 환경에서 실제 투명감과 색감을 비교하세요.',
+]
+
+const sections = [
+  {
+    title: '다이아몬드 형광이란 무엇인가요',
+    paragraphs: [
+      '다이아몬드 형광은 일부 다이아몬드가 장파 자외선에 노출될 때 눈에 보이는 빛을 내는 현상입니다. 햇빛에는 자외선 성분이 포함되어 있고 감정 기관에서는 통제된 자외선 장비로 반응을 관찰합니다. 광원이 사라진 뒤에도 계속 보이는 잔광과는 구분해야 합니다.',
+      '형광은 일반 조명에서 나타나는 반짝임이나 컷의 광학 성능과 같은 개념이 아닙니다. 컷은 들어온 빛이 다이아몬드 안에서 반사되고 되돌아오는 방식과 관련되고, 형광은 자외선에 대한 반응입니다. 따라서 반짝임이 강하다고 형광도 강한 것은 아닙니다.',
+    ],
+    bullets: [
+      '관찰 조건: 장파 자외선이 있는 환경',
+      '주요 반응색: 파란색이 가장 흔함',
+      '감정서 역할: 스톤 식별에 도움이 되는 추가 특성',
+      '구분할 것: 컷에 따른 반짝임, 색상 등급, 투명감과는 별도 항목',
+    ],
+  },
+  {
+    title: 'None부터 Very Strong까지 5단계',
+    paragraphs: [
+      'GIA 다이아몬드 감정서에는 장파 자외선에 대한 형광 강도가 None, Faint, Medium, Strong, Very Strong으로 표시됩니다. 이 순서는 관찰된 반응이 약한 쪽에서 강한 쪽으로 이어지지만 다이아몬드 품질의 우열을 매기는 등급표는 아닙니다.',
+      'Medium 이상에서는 감정서에 형광 색상이 함께 기록될 수 있습니다. 다른 감정 기관은 용어, 관찰 조건, 보고서 위치가 다를 수 있으므로 형광 수치만 옮겨 적기보다 발행 기관과 보고서 원본을 함께 확인하는 것이 좋습니다.',
+    ],
+    bullets: [
+      'None: 관찰되는 형광 반응이 없는 것으로 기록',
+      'Faint: 희미한 반응',
+      'Medium: 중간 강도의 반응',
+      'Strong: 강한 반응',
+      'Very Strong: 매우 강한 반응',
+    ],
+  },
+  {
+    title: '형광은 얼마나 흔하고 어떤 색인가요',
+    paragraphs: [
+      'GIA가 공개한 설명에 따르면 제출된 다이아몬드 가운데 약 25~35%가 어느 정도의 형광 반응을 보였습니다. 형광을 보인 다이아몬드의 95% 이상은 파란색 반응이었고, 드물게 노란색, 주황색, 흰색이나 다른 색이 관찰될 수 있습니다.',
+      '이 비율은 모든 시장과 재고에 똑같이 적용되는 구매 확률이 아니라 GIA에 제출된 표본을 설명하는 자료입니다. 감정서에서 형광을 발견했다고 해서 특별히 희귀하거나 결함이 있다는 뜻으로 해석하지 마세요.',
+    ],
+    bullets: [
+      'GIA 제출 스톤 중 형광 관찰 비율: 약 25~35%',
+      '형광 반응 스톤의 95% 이상: 파란색 반응',
+      '드문 반응색: 노랑, 주황, 흰색, 초록 등',
+      '의미: 빈도 정보일 뿐 품질이나 진위를 단독으로 판단하는 기준은 아님',
+    ],
+  },
+  {
+    title: '일반 조명에서 외관에 미치는 영향',
+    paragraphs: [
+      'GIA 연구 안내는 압도적인 다수의 다이아몬드에서 형광 강도가 외관에 널리 알아볼 만한 영향을 주지 않았다고 설명합니다. None과 Faint는 대부분의 생활 조명에서 차이를 느끼기 어렵고, Medium 이상도 스톤마다 보이는 결과가 다를 수 있습니다.',
+      '드물게 Very Strong 형광을 가진 일부 다이아몬드가 흐리거나 기름진 듯한 인상을 보일 수 있습니다. GIA 공개 자료에서는 이런 외관이 형광 반응을 보인 제출 스톤의 0.2% 미만에서 관찰됐다고 설명합니다. 숫자만으로 제외하기보다 깨끗한 스톤을 여러 조명에서 직접 비교하는 이유입니다.',
+    ],
+    bullets: [
+      '확산된 흰 조명: 기본 투명감과 반짝임 확인',
+      '창가 자연광: 자외선이 포함된 환경에서 색감 확인',
+      '통제된 UV 장비: 형광 강도와 반응색 확인',
+      '주의: 표면 오염으로 생긴 뿌연 느낌과 형광 영향을 구분',
+    ],
+  },
+  {
+    title: '색상 등급과 가격을 같은 공식으로 보지 마세요',
+    paragraphs: [
+      '푸른 형광은 자외선이 있는 환경에서 옅은 노란 기를 덜 느끼게 하는 경우가 있습니다. 특히 약간의 색을 띠는 다이아몬드에서 이런 효과를 이야기하지만, 컷과 투명도, 형광의 분포에 따라 외관이 달라 모든 스톤에 같은 공식을 적용할 수는 없습니다.',
+      'GIA의 색상 등급은 형광 영향을 배제하도록 통제한 관찰 조건에서 결정되므로 형광이 있다고 감정서의 색상 등급 자체가 바뀌는 것은 아닙니다. 거래 가격은 시장 선호와 색상·투명도 조합에 따라 달라질 수 있지만, 할인 여부만 보고 품질이 낮다고 단정해서도 안 됩니다.',
+    ],
+    bullets: [
+      '색상 등급: 통제된 감정 조건에서 별도로 결정',
+      '형광 표기: 자외선 반응 강도를 설명하는 추가 정보',
+      '가격: 시장 선호와 4C, 감정서, 실제 외관이 함께 작용',
+      '선택 기준: 같은 조건의 스톤을 나란히 놓고 얼굴 방향으로 비교',
+    ],
+  },
+  {
+    title: '감정서와 실물을 함께 확인하는 순서',
+    paragraphs: [
+      '먼저 감정서의 Fluorescence 항목에서 강도와 색상 표기를 확인하세요. 그다음 스톤을 깨끗이 한 상태에서 확산된 흰 조명 아래 투명감과 컷의 반짝임을 봅니다. 창가 자연광에서도 색이 어떻게 보이는지 비교하고, 가능하다면 전문 UV 장비에서 감정서 표기와 반응을 대조합니다.',
+      '형광 수치가 다른 다이아몬드를 비교할 때는 캐럿, 색상, 투명도, 컷이 비슷한 후보끼리 놓아야 차이를 판단하기 쉽습니다. 감정서 사진이나 자외선 사진만으로 결정하지 말고 실제 착용 거리와 정면 방향에서 마음에 드는 외관인지 확인하세요.',
+    ],
+    bullets: [
+      '1단계: 감정 기관과 보고서 번호, Fluorescence 항목 확인',
+      '2단계: 세척된 스톤을 확산광에서 정면 비교',
+      '3단계: 창가 자연광에서 색감과 투명감 확인',
+      '4단계: 전문 UV 장비에서 반응 강도와 색상 대조',
+      '5단계: 4C와 가격, 실제 외관을 함께 놓고 최종 판단',
+    ],
+    image: {
+      src: '/Image/guide/diamond-fluorescence-inspection.webp',
+      alt: '보석 감정 전문가가 장파 자외선 장비와 일반 조명에서 다이아몬드 형광을 비교하는 모습',
+      caption: '감정서와 자외선 반응을 기록한 뒤 확산광과 자연광에서 투명감과 색감을 차례로 비교하세요.',
+    },
+  },
+]
+
+const cautions = [
+  'None·Faint·Medium·Strong·Very Strong은 GIA의 형광 강도 표현이며, 다른 감정 기관은 표기 방식이 다를 수 있습니다.',
+  '형광 수치만으로 다이아몬드의 품질, 가격 적정성, 뿌연 외관 여부를 확정할 수 없습니다.',
+  '다이아몬드 비교는 표면 오염을 제거하고 4C 조건이 비슷한 후보를 여러 조명에서 관찰해야 의미가 있습니다.',
+]
+
+const relatedLinks = [
+  { to: '/guide/diamond-cut-shapes-guide', label: '다이아몬드 컷 종류', description: '모양별 실측과 외관 비교' },
+  { to: '/guide/diamond-3bu-5bu-difference', label: '다이아 3부 5부', description: '캐럿과 정면 크기 비교' },
+  { to: '/guide/lab-grown-diamond-natural-difference', label: '랩그로운·천연 차이', description: '생성 방식과 감정서 확인' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '다이아몬드 형광 등급', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="다이아몬드 형광 등급"
+    inquiry-type="custom"
+    inquiry-topic="다이아몬드 감정서와 형광 비교"
+    title="다이아몬드 형광 등급, None·Faint·Medium·Strong 뜻"
+    lead="다이아몬드 형광 등급은 자외선 아래에서 나타나는 반응 강도를 기록한 항목입니다. None부터 Very Strong까지의 표기, 푸른 형광이 일반 조명과 색상에 미칠 수 있는 영향, 감정서와 실물을 함께 비교하는 순서를 정리했습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="일반 조명과 장파 자외선 아래에서 푸른 형광 반응을 비교한 다이아몬드"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>
