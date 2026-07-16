@@ -43,6 +43,7 @@
     "/guide/couple-ring-engraving-guide",
     "/guide/cubic-moissanite-diamond-difference",
     "/guide/diamond-3bu-5bu-difference",
+    "/guide/diamond-clarity-grades",
     "/guide/diamond-cut-shapes-guide",
     "/guide/diamond-fluorescence-grades",
     "/guide/diamond-ring-setting-types",
@@ -68,6 +69,7 @@
     "/guide/pearl-necklace-restringing",
     "/guide/platinum-vs-white-gold-difference",
     "/guide/ring-cubic-stone-repair",
+    "/guide/ring-finger-meaning-guide",
     "/guide/ring-metal-allergy-guide",
     "/guide/ring-size-measuring-method",
     "/guide/silver-buying",
@@ -90,6 +92,7 @@
     "/guide/couple-ring-engraving-guide/_payload.json",
     "/guide/cubic-moissanite-diamond-difference/_payload.json",
     "/guide/diamond-3bu-5bu-difference/_payload.json",
+    "/guide/diamond-clarity-grades/_payload.json",
     "/guide/diamond-cut-shapes-guide/_payload.json",
     "/guide/diamond-fluorescence-grades/_payload.json",
     "/guide/diamond-ring-setting-types/_payload.json",
@@ -99,9 +102,6 @@
     "/guide/gold-necklace-length-guide/_payload.json",
     "/guide/gold-necklace-repair-time/_payload.json",
     "/guide/gold-one-don-gram/_payload.json",
-    "/guide/gold-plating-repair/_payload.json",
-    "/guide/gold-price-how-to-check/_payload.json",
-    "/guide/gold-ring-repair-cost/_payload.json",
-    "/guide/jewelry-cleaning-care-at-home/_payload.json"
+    "/guide/gold-plating-repair/_payload.json"
   ]
 }
