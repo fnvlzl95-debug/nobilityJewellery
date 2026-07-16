@@ -128,7 +128,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/wedding', label: '결혼예물 안내', description: '웨딩밴드와 다이아 반지 상담' },
   { to: '/guide/wedding-jewelry-set-composition', label: '결혼예물 세트 구성', description: '예물 전체 구성을 먼저 보고 싶다면' },
-  { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K 18K 커플링 가격 차이', description: '소재별 가격 기준 함께 보기' },
+  { to: '/guide/diamond-clarity-grades', label: '다이아몬드 투명도 등급', description: 'FL부터 I3까지 감정 기준' },
 ]
 
 useHead({

@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'ring-finger-meaning-guide',
+    path: '/guide/ring-finger-meaning-guide',
+    title: '반지 끼는 손가락 의미, 왼손·오른손 위치별 정리',
+    description: '왼손·오른손과 엄지·검지·중지·약지·새끼손가락별 반지 의미, 디자인 인상과 손가락별 호수 선택 기준을 정리했습니다.',
+    keyword: '반지 끼는 손가락 의미',
+    image: '/Image/guide/ring-finger-meaning-hero.webp',
+    publishedAt: '2026-07-16',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-clarity-grades',
+    path: '/guide/diamond-clarity-grades',
+    title: '다이아몬드 투명도 등급, FL·IF·VVS·VS·SI·I 뜻',
+    description: 'GIA 다이아몬드 투명도 11단계와 10배 확대 기준, 내포물 위치·가시성, 감정서와 실물을 확인하는 순서를 정리했습니다.',
+    keyword: '다이아몬드 투명도 등급',
+    image: '/Image/guide/diamond-clarity-grades-hero.webp',
+    publishedAt: '2026-07-16',
+    category: '방법',
+  },
+  {
     slug: 'ring-cubic-stone-repair',
     path: '/guide/ring-cubic-stone-repair',
     title: '반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것',
