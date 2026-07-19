@@ -1,0 +1,216 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/diamond-color-grades'
+const pageTitle = '다이아몬드 컬러 등급, D·E·F부터 Z까지 뜻 | 귀족'
+const pageDescription = '다이아몬드 컬러 등급 D–Z의 23단계와 D–F·G–J·K–M·N–R·S–Z 범주, GIA 감정 조건과 실물 비교법을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/diamond-color-grades-hero.webp`
+const publishedAt = '2026-07-19'
+
+const faqItems = [
+  {
+    question: '다이아몬드 컬러 등급은 왜 A가 아니라 D부터 시작하나요?',
+    answer: 'GIA가 기존에 혼용되던 A·B·C나 숫자, 상업적 표현과 구분되는 새 기준을 만들기 위해 D를 시작점으로 선택했습니다. D가 무색에 해당하는 가장 높은 등급이고 Z로 갈수록 옅은 노랑·갈색·회색의 색감이 증가합니다.',
+  },
+  {
+    question: 'GIA D–Z 컬러 척도는 모두 몇 등급인가요?',
+    answer: 'D부터 Z까지 알파벳 23개 등급입니다. GIA는 이를 무색 D–F, 거의 무색 G–J, 희미한 색 K–M, 매우 옅은 색 N–R, 옅은 색 S–Z의 다섯 범주로 나눕니다.',
+  },
+  {
+    question: 'D–F와 G–J는 육안으로 쉽게 구분되나요?',
+    answer: '인접 등급 차이는 매우 미세해 훈련되지 않은 눈으로 구분하기 어려울 수 있습니다. 스톤을 나란히 두지 않거나 세팅된 상태에서는 금속 색, 조명과 주변 반사 때문에 차이가 더 다르게 느껴질 수 있습니다.',
+  },
+  {
+    question: '반지 금속 색이 다이아몬드 컬러 등급을 바꾸나요?',
+    answer: '감정서의 컬러 등급 자체는 바뀌지 않지만 보이는 인상은 달라질 수 있습니다. 화이트골드와 백금은 무색감을 강조할 수 있고, 옐로골드나 로즈골드는 주변의 따뜻한 색이 다이아몬드에 반사될 수 있습니다.',
+  },
+  {
+    question: '노란색 다이아몬드는 모두 Z 등급인가요?',
+    answer: '아닙니다. D–Z는 일반 색 범위이며 Z 마스터스톤보다 색이 진한 노랑·갈색이나 다른 색조를 가진 다이아몬드는 별도의 팬시 컬러 체계로 평가될 수 있습니다. 팬시 컬러는 D–Z 알파벳 등급과 직접 비교하지 않습니다.',
+  },
+]
+
+const quickAnswers = [
+  'GIA 다이아몬드 컬러 등급은 D부터 Z까지 23단계이며 D에 가까울수록 무색에 가깝습니다.',
+  'D–F는 무색, G–J는 거의 무색, K–M은 희미한 색, N–R은 매우 옅은 색, S–Z는 옅은 색 범주입니다.',
+  '등급은 통제된 조명에서 마스터스톤과 비교해 정하며 구매할 때는 세팅 금속과 실제 착용 조명도 함께 확인해야 합니다.',
+]
+
+const sections = [
+  {
+    title: '컬러 등급은 색이 얼마나 적은지를 봅니다',
+    paragraphs: [
+      '일반적인 D–Z 다이아몬드에서 컬러 평가는 눈에 보이는 색이 얼마나 적은지를 판단하는 4C 항목입니다. D는 무색에 해당하는 시작점이고 알파벳이 Z에 가까워질수록 옅은 노랑, 갈색 또는 회색 기운이 증가합니다.',
+      '색 차이는 인접한 두 등급 사이에서 매우 미세할 수 있지만 희소성과 가격에는 영향을 줄 수 있습니다. 컬러만으로 다이아몬드 전체 품질을 결정하지 말고 컷, 투명도, 캐럿과 실제 외관을 함께 비교해야 합니다.',
+    ],
+    bullets: [
+      '평가 대상: D–Z 일반 색 범위의 색 깊이',
+      'D 방향: 무색에 가까운 범위',
+      'Z 방향: 옅은 노랑·갈색·회색 기운이 보이는 범위',
+      '별도 항목: 컷, 투명도, 캐럿과 형광 반응',
+    ],
+  },
+  {
+    title: 'D부터 Z까지 23개 등급과 다섯 범주',
+    paragraphs: [
+      'GIA D–Z 척도에는 알파벳 23개 등급이 있고, 비슷한 색 인상을 다섯 범주로 묶어 설명합니다. D–F는 Colorless, G–J는 Near Colorless, K–M은 Faint, N–R은 Very Light, S–Z는 Light 범주입니다.',
+      '범주 안에서도 각 알파벳은 서로 다른 등급입니다. 예를 들어 G와 J가 모두 거의 무색 범주에 속해도 같은 등급은 아니므로 감정서에는 범주명이 아니라 개별 알파벳이 기록됩니다.',
+    ],
+    bullets: [
+      'D–F: Colorless, 무색',
+      'G–J: Near Colorless, 거의 무색',
+      'K–M: Faint, 희미한 색',
+      'N–R: Very Light, 매우 옅은 색',
+      'S–Z: Light, 옅은 색',
+    ],
+  },
+  {
+    title: '감정은 통제 조명과 마스터스톤으로 진행합니다',
+    paragraphs: [
+      'GIA는 컬러가 알려진 마스터스톤과 검사할 다이아몬드를 통제된 조명과 정해진 관찰 조건에서 비교합니다. 일반 매장 조명이나 스마트폰 사진처럼 색온도와 주변 반사가 달라지는 환경만으로는 인접 등급을 정확히 구분하기 어렵습니다.',
+      '색을 평가할 때는 다이아몬드를 테이블 면이 아래로 향하도록 놓아 컷에서 생기는 반짝임과 주변색 반사를 줄이고 몸체의 색을 비교합니다. 실제 착용 외관은 정면에서 보지만 감정 등급과 구매자의 정면 인상은 관찰 목적이 다르다는 점을 구분해야 합니다.',
+    ],
+    bullets: [
+      '색 등급이 확인된 마스터스톤과 나란히 비교',
+      '중성 배경과 일정한 조명 조건 유지',
+      '테이블 다운 방향에서 몸체 색 관찰',
+      '인접 등급은 단독 사진보다 같은 조건의 실물 비교가 정확함',
+    ],
+  },
+  {
+    title: '같은 등급도 정면 인상이 달라질 수 있습니다',
+    paragraphs: [
+      '다이아몬드를 정면에서 볼 때는 컷 모양과 비율, 크기, 패싯 반사 때문에 색이 느껴지는 정도가 달라질 수 있습니다. 몸체가 길거나 테이블 면이 넓은 모양, 캐럿이 큰 스톤에서는 따뜻한 색감이 더 쉽게 느껴지는 경우가 있어 같은 등급 후보를 실제 크기와 컷 조건에 맞춰 비교해야 합니다.',
+      '세팅 금속도 주변색을 반사합니다. 화이트골드와 백금은 무색 계열을 또렷하게 보이게 할 수 있고 옐로골드와 로즈골드는 다이아몬드 주변에 따뜻한 색을 더할 수 있습니다. 이는 감정서 등급이 변하는 것이 아니라 착용할 때의 시각적 인상이 달라지는 것입니다.',
+    ],
+    bullets: [
+      '스톤 크기와 컷 모양을 비슷하게 맞춰 비교',
+      '정면·측면에서 색이 모이는 위치 확인',
+      '화이트·옐로·로즈 계열 세팅 위에서 각각 확인',
+      '매장 조명과 창가 자연광의 인상 비교',
+    ],
+  },
+  {
+    title: '컬러 등급과 형광은 같은 항목이 아닙니다',
+    paragraphs: [
+      '컬러 등급은 통제된 조건에서 다이아몬드 몸체의 색을 평가한 결과이고, 형광은 장파 자외선에 대한 반응을 기록한 별도 특성입니다. 감정서에서 Color와 Fluorescence는 서로 다른 항목으로 확인해야 합니다.',
+      '푸른 형광이 있는 일부 다이아몬드는 자외선이 포함된 환경에서 따뜻한 색이 덜 느껴질 수 있지만 모든 스톤에 같은 효과가 나타나는 것은 아닙니다. 감정서의 두 항목으로 착용 모습을 예측하기보다 후보 스톤을 실제 사용할 조명에서 확인하세요.',
+    ],
+    bullets: [
+      'Color: D–Z 알파벳으로 몸체 색 깊이를 기록',
+      'Fluorescence: 자외선 반응 강도와 색을 별도로 기록',
+      '비교 조건: 확산된 흰 조명, 자연광, 통제된 UV 환경',
+      '판단 기준: 감정서 수치와 실제 투명감·색감을 함께 확인',
+    ],
+  },
+  {
+    title: '감정서와 실물을 비교하는 순서',
+    paragraphs: [
+      '먼저 감정 기관과 보고서 번호, Color 항목의 알파벳을 확인하세요. 후보를 비교할 때는 캐럿, 컷 모양과 투명도가 비슷한 스톤끼리 놓아야 컬러 차이를 보기 쉽습니다. 서로 다른 조건의 확대 사진만 놓고 등급을 판단하지 않습니다.',
+      '가능하면 중성 조명에서 나란히 비교한 뒤 실제 반지와 같은 금속 위에 올려 정면 외관을 보세요. 마지막으로 평소 착용할 실내와 창가에서도 확인하면 감정 조건의 색 등급과 생활 환경의 인상을 함께 판단할 수 있습니다.',
+    ],
+    bullets: [
+      '보고서 번호와 Color 알파벳 확인',
+      '크기·컷·투명도가 비슷한 후보끼리 정렬',
+      '중성 조명에서 측면과 테이블 다운 색 비교',
+      '선택할 세팅 금속 위에서 정면 외관 확인',
+      '형광, 가격과 나머지 4C를 함께 놓고 최종 결정',
+    ],
+    image: {
+      src: '/Image/guide/diamond-color-masterstone-grading.webp',
+      alt: '보석 감정 전문가가 통제된 조명 아래 마스터스톤과 다이아몬드 색을 비교하는 모습',
+      caption: '인접 컬러 등급은 통제된 조명에서 마스터스톤과 비교하며, 구매할 때는 세팅 금속 위의 정면 인상도 확인하세요.',
+    },
+  },
+]
+
+const cautions = [
+  'D–Z 범주는 일반 색 범위이며 색이 더 진하거나 다른 색조를 가진 팬시 컬러 다이아몬드는 별도 체계로 평가됩니다.',
+  '스마트폰 화면과 매장 조명은 색을 다르게 보이게 할 수 있으므로 사진만으로 인접 컬러 등급을 판단하지 마세요.',
+  '컬러 등급이 같아도 컷, 크기, 형광과 세팅 금속에 따라 정면에서 느껴지는 색감이 달라질 수 있습니다.',
+]
+
+const relatedLinks = [
+  { to: '/guide/diamond-clarity-grades', label: '다이아몬드 투명도 등급', description: 'FL부터 I3까지 내포물 기준' },
+  { to: '/guide/diamond-fluorescence-grades', label: '다이아몬드 형광 등급', description: '자외선 반응과 외관 영향' },
+  { to: '/guide/diamond-cut-shapes-guide', label: '다이아몬드 컷 종류', description: '컷 모양별 정면 인상 비교' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '다이아몬드 컬러 등급', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="방법"
+    keyword="다이아몬드 컬러 등급"
+    inquiry-type="custom"
+    inquiry-topic="다이아몬드 컬러와 감정서 비교"
+    title="다이아몬드 컬러 등급, D·E·F부터 Z까지 뜻"
+    lead="다이아몬드 컬러 등급은 일반 색 범위의 색 깊이를 D부터 Z까지 기록한 4C 항목입니다. 23개 알파벳 등급과 다섯 범주, GIA 감정 조건, 세팅 금속과 형광을 함께 비교하는 방법을 정리했습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="무색에서 옅은 노란색으로 색감이 조금씩 달라지는 일곱 개의 다이아몬드"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

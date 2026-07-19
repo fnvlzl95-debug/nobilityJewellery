@@ -137,7 +137,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/diamond-cut-shapes-guide', label: '다이아몬드 컷 종류', description: '컷 모양별 내포물 가시성 비교' },
   { to: '/guide/diamond-fluorescence-grades', label: '다이아몬드 형광 등급', description: '감정서 형광 표기 읽는 법' },
-  { to: '/guide/diamond-3bu-5bu-difference', label: '다이아 3부 5부', description: '캐럿과 정면 크기 선택 기준' },
+  { to: '/guide/diamond-color-grades', label: '다이아몬드 컬러 등급', description: 'D부터 Z까지 색 깊이 기준' },
 ]
 
 useHead({

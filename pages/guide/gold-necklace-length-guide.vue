@@ -115,7 +115,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/custom', label: '주문제작 안내', description: '원하는 길이와 디자인으로 제작 상담' },
-  { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '선물용 예산 기준 함께 보기' },
+  { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '링크 구조와 펜던트 조합 비교' },
   { to: '/guide/necklace-bracelet-chain-repair', label: '목걸이 체인 수리', description: '길이 조절과 체인 수리 기준' },
 ]
 

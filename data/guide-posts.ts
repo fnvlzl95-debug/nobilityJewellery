@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'necklace-chain-types-guide',
+    path: '/guide/necklace-chain-types-guide',
+    title: '목걸이 체인 종류, 베네치아·커브·로프·스네이크 차이',
+    description: '케이블·커브·베네치아·로프·스네이크·볼체인의 구조와 착용감, 펜던트 고리 치수, 수리·관리 기준을 비교했습니다.',
+    keyword: '목걸이 체인 종류',
+    image: '/Image/guide/necklace-chain-types-hero.webp',
+    publishedAt: '2026-07-19',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-color-grades',
+    path: '/guide/diamond-color-grades',
+    title: '다이아몬드 컬러 등급, D·E·F부터 Z까지 뜻',
+    description: 'GIA D–Z 컬러 23단계와 다섯 범주, 통제 조명과 마스터스톤 감정 방식, 세팅 금속 위 실물 비교법을 정리했습니다.',
+    keyword: '다이아몬드 컬러 등급',
+    image: '/Image/guide/diamond-color-grades-hero.webp',
+    publishedAt: '2026-07-19',
+    category: '방법',
+  },
+  {
     slug: 'ring-finger-meaning-guide',
     path: '/guide/ring-finger-meaning-guide',
     title: '반지 끼는 손가락 의미, 왼손·오른손 위치별 정리',
