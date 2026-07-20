@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'necklace-clasp-types',
+    path: '/guide/necklace-clasp-types',
+    title: '목걸이 잠금장치 종류, 스프링링·랍스터·토글 차이',
+    description: '스프링링·랍스터·토글·박스·배럴형의 결합 구조와 조작성, 목걸이 중량, 연결부 점검과 교체 기준을 비교했습니다.',
+    keyword: '목걸이 잠금장치 종류',
+    image: '/Image/guide/necklace-clasp-types-hero.webp',
+    publishedAt: '2026-07-20',
+    category: '방법',
+  },
+  {
+    slug: 'diamond-cut-grades',
+    path: '/guide/diamond-cut-grades',
+    title: '다이아몬드 컷 등급, Excellent·Very Good·Good 차이',
+    description: 'GIA 라운드 브릴리언트 컷 5단계와 밝기·파이어·신틸레이션, 중량비·내구성·폴리시·대칭 평가를 정리했습니다.',
+    keyword: '다이아몬드 컷 등급',
+    image: '/Image/guide/diamond-cut-grades-hero.webp',
+    publishedAt: '2026-07-20',
+    category: '방법',
+  },
+  {
     slug: 'necklace-chain-types-guide',
     path: '/guide/necklace-chain-types-guide',
     title: '목걸이 체인 종류, 베네치아·커브·로프·스네이크 차이',

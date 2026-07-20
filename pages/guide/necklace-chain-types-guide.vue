@@ -132,7 +132,7 @@ const cautions = [
 ]
 
 const relatedLinks = [
-  { to: '/guide/gold-necklace-length-guide', label: '금목걸이 길이 추천', description: '42cm·45cm·50cm 착용 위치 비교' },
+  { to: '/guide/necklace-clasp-types', label: '목걸이 잠금장치 종류', description: '스프링링·랍스터·토글 구조 비교' },
   { to: '/guide/necklace-bracelet-chain-repair', label: '목걸이 체인 수리', description: '끊어짐과 잠금장치 수리 기준' },
   { to: '/custom', label: '목걸이 주문제작', description: '체인·펜던트 맞춤 상담 안내' },
 ]
