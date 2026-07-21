@@ -200,11 +200,20 @@ const handleNaverMapClick = () => {
 
 @media (min-width: 900px) {
   .mobile-conversion-bar {
-    right: clamp(24px, 3vw, 44px);
-    bottom: clamp(24px, 3vw, 40px);
+    /* 화면이 좁아지면 버튼도 같이 줄어들도록 — 전 구간 vw 기반 */
+    --cta-width: clamp(178px, 15.2vw, 238px);
+    --cta-height: clamp(54px, 4.9vw, 74px);
+    --cta-pad-x: clamp(13px, 1.15vw, 18px);
+    --cta-gap: clamp(9px, 0.85vw, 13px);
+    --cta-icon: clamp(19px, 1.7vw, 25px);
+    --cta-title: clamp(14px, 1.12vw, 17px);
+    --cta-sub: clamp(10px, 0.76vw, 12px);
+
+    right: clamp(18px, 2.2vw, 44px);
+    bottom: clamp(18px, 2.2vw, 40px);
     left: auto;
     display: block;
-    width: min(224px, calc(100vw - 48px));
+    width: min(var(--cta-width), calc(100vw - 48px));
     padding: 0;
     background: transparent;
     border: 0;
@@ -213,23 +222,73 @@ const handleNaverMapClick = () => {
     animation: kakao-cta-enter 0.55s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
+  /* 시선을 끄는 골드 헤일로 — 버튼 뒤에서 천천히 퍼진다 */
+  .mobile-conversion-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    animation: kakao-halo 4s cubic-bezier(0.16, 1, 0.3, 1) 1.2s infinite;
+  }
+
   .conversion-action-kakao {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* inline-flex면 라인박스 여백이 생겨 헤일로 링이 버튼보다 커진다 */
+    display: flex;
     justify-content: flex-start;
+    gap: var(--cta-gap);
     width: 100%;
-    min-height: 72px;
-    padding: 0 16px;
-    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.34);
+    min-height: var(--cta-height);
+    padding: 0 var(--cta-pad-x);
+    color: #120e06;
+    /* 샴페인 하이라이트 → 골드 → 딥골드: 광택 있는 금 느낌 */
+    background: linear-gradient(135deg, var(--champagne) 0%, var(--gold-light) 24%, var(--gold) 58%, var(--gold-dark) 100%);
+    border: 1px solid rgba(255, 243, 210, 0.5);
+    box-shadow:
+      0 0 0 1px rgba(10, 10, 10, 0.55),  /* 밝은 배경에서도 윤곽이 서게 */
+      0 16px 36px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 250, 235, 0.42);
+  }
+
+  /* 금속 광택이 훑고 지나가는 효과 */
+  .conversion-action-kakao::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 0;
+    width: 40%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: translateX(-160%) skewX(-18deg);
+    pointer-events: none;
+    animation: kakao-sheen 5.6s ease-in-out 1.8s infinite;
+  }
+
+  .conversion-action-kakao > * {
+    position: relative;
+    z-index: 1;
   }
 
   .conversion-action-kakao:hover,
   .conversion-action-kakao:focus-visible {
     transform: translateY(-3px);
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+    border-color: rgba(255, 249, 232, 0.85);
+    box-shadow:
+      0 0 0 1px rgba(10, 10, 10, 0.55),
+      0 22px 46px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 250, 235, 0.55);
+  }
+
+  .conversion-action-kakao:active {
+    transform: translateY(-1px);
   }
 
   .conversion-action-kakao svg {
-    width: 24px;
-    height: 24px;
+    width: var(--cta-icon);
+    height: var(--cta-icon);
+    filter: drop-shadow(0 1px 0 rgba(255, 252, 240, 0.35));
   }
 
   .kakao-mobile-label {
@@ -241,24 +300,31 @@ const handleNaverMapClick = () => {
     flex: 1;
     flex-direction: column;
     align-items: flex-start;
-    gap: 5px;
+    gap: clamp(3px, 0.3vw, 5px);
+  }
+
+  /* 좁은 PC 화면에서 두 줄로 깨지지 않게 (body에 word-break: keep-all이 걸려 있음) */
+  .kakao-desktop-copy small,
+  .kakao-desktop-copy strong {
+    white-space: nowrap;
   }
 
   .kakao-desktop-copy small {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    opacity: 0.66;
+    font-size: var(--cta-sub);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: rgba(18, 14, 6, 0.62);
   }
 
   .kakao-desktop-copy strong {
-    font-size: 17px;
-    letter-spacing: 0.02em;
+    font-family: var(--font-display);
+    font-size: var(--cta-title);
+    letter-spacing: 0.01em;
   }
 
   .kakao-arrow {
     display: inline;
-    font-size: 18px;
+    font-size: clamp(15px, 1.2vw, 18px);
     transition: transform 0.24s ease;
   }
 
@@ -270,6 +336,18 @@ const handleNaverMapClick = () => {
   .conversion-action-phone,
   .conversion-action-map {
     display: none;
+  }
+}
+
+/* 노트북처럼 세로가 짧은 화면에서는 더 낮게 */
+@media (min-width: 900px) and (max-height: 720px) {
+  .mobile-conversion-bar {
+    --cta-width: clamp(160px, 13.5vw, 206px);
+    --cta-height: clamp(50px, 4.2vw, 60px);
+    --cta-icon: clamp(18px, 1.5vw, 22px);
+    --cta-title: clamp(13px, 1vw, 15px);
+
+    bottom: clamp(14px, 1.8vw, 24px);
   }
 }
 
@@ -291,8 +369,32 @@ const handleNaverMapClick = () => {
   }
 }
 
+@keyframes kakao-halo {
+  0% {
+    box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.5);
+  }
+
+  60%,
+  100% {
+    box-shadow: 0 0 0 16px rgba(201, 162, 39, 0);
+  }
+}
+
+@keyframes kakao-sheen {
+  0%,
+  70% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+
+  100% {
+    transform: translateX(420%) skewX(-18deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .mobile-conversion-bar {
+  .mobile-conversion-bar,
+  .mobile-conversion-bar::before,
+  .conversion-action-kakao::after {
     animation: none;
   }
 
