@@ -49,6 +49,16 @@ useHead({
 const openId = ref<number | null>(null)
 const isScrolled = ref(false)
 const selectedCategory = ref('all')
+const { trackKakaoClick } = useGtag()
+
+const handleKakaoClick = (placement: string) => {
+  trackKakaoClick('faq', {
+    placement,
+    intent: 'general',
+    topic: '자주 묻는 질문',
+  })
+}
+
 const guideLinks = [
   {
     to: '/guide/baby-ring-price',
@@ -121,7 +131,14 @@ onUnmounted(() => {
           <h1 class="title">자주 묻는 질문</h1>
           <p class="desc">
             궁금하신 점이 있으시면 아래 내용을 확인해주세요.<br>
-            추가 문의는 <NuxtLink to="/contact" class="link-inline">문의하기</NuxtLink>를 이용해주세요.
+            추가 문의는
+            <a
+              :href="siteConfig.social.kakaoOpenChat"
+              target="_blank"
+              rel="noopener"
+              class="link-inline"
+              @click="handleKakaoClick('faq_header')"
+            >카톡 문의</a>를 이용해주세요.
           </p>
         </div>
 
@@ -188,12 +205,18 @@ onUnmounted(() => {
         <!-- CTA -->
         <div class="faq-cta">
           <p class="cta-text">원하시는 답변을 찾지 못하셨나요?</p>
-          <NuxtLink to="/contact" class="cta-button">
-            <span>문의하기</span>
+          <a
+            :href="siteConfig.social.kakaoOpenChat"
+            target="_blank"
+            rel="noopener"
+            class="cta-button"
+            @click="handleKakaoClick('faq_bottom')"
+          >
+            <span>카톡으로 문의하기</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-          </NuxtLink>
+          </a>
         </div>
       </div>
     </main>

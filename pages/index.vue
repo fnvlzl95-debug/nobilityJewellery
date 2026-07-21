@@ -5,7 +5,7 @@ import { getPreviewItems, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackPhoneClick, trackInquiryClick, trackMapClick } = useGtag()
+const { trackPhoneClick, trackKakaoClick, trackMapClick } = useGtag()
 
 const handlePhoneClick = () => {
   trackPhoneClick('home', {
@@ -15,8 +15,8 @@ const handlePhoneClick = () => {
   })
 }
 
-const handleInquiryClick = () => {
-  trackInquiryClick('home', {
+const handleKakaoClick = () => {
+  trackKakaoClick('home', {
     placement: 'hero',
     intent: 'general',
     topic: '종로 귀금속 상담',
@@ -32,12 +32,6 @@ const handleLocationPhoneClick = () => {
 }
 
 const previewItems = getPreviewItems(6)
-const homeContactLink = {
-  path: '/contact',
-  query: {
-    source: 'home',
-  },
-}
 const intentRoutes = [
   {
     to: '/gallery',
@@ -317,15 +311,21 @@ const handleNaverMapClick = () => {
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
 
         <div class="hero-cta">
-          <a :href="`tel:${siteConfig.phone}`" class="btn-magnetic" @click="handlePhoneClick">
-            <span class="btn-text">전화 상담</span>
+          <a
+            :href="siteConfig.social.kakaoOpenChat"
+            target="_blank"
+            rel="noopener"
+            class="btn-magnetic"
+            @click="handleKakaoClick"
+          >
+            <span class="btn-text">카톡 문의</span>
             <span class="btn-glow"></span>
+          </a>
+          <a :href="`tel:${siteConfig.phone}`" class="btn-outline-gold" @click="handlePhoneClick">
+            <span>전화 상담</span>
           </a>
           <NuxtLink to="/gallery" class="btn-outline-gold">
             <span>갤러리 보기</span>
-          </NuxtLink>
-          <NuxtLink :to="homeContactLink" class="btn-outline-gold" @click="handleInquiryClick">
-            <span>온라인 문의</span>
           </NuxtLink>
         </div>
       </div>

@@ -14,7 +14,16 @@ type CategoryFilter = typeof categoryOptions[number]
 
 const route = useRoute()
 const router = useRouter()
+const { trackKakaoClick } = useGtag()
 const listTop = ref<HTMLElement | null>(null)
+
+const handleKakaoClick = () => {
+  trackKakaoClick('guide', {
+    placement: 'guide_header',
+    intent: 'general',
+    topic: activeCategory.value === '전체' ? '귀금속 가이드' : `${activeCategory.value} 가이드`,
+  })
+}
 
 const rawPage = computed(() => {
   const value = route.query.page
@@ -187,7 +196,13 @@ useHead(() => ({
         <h1>귀금속 가이드</h1>
         <p>가격, 수리, 관리, 선택, 제작 기간 등 자주 물어보시는 내용을 주제별로 모았습니다. 읽어보시고 궁금한 점이 있으면 편하게 문의해주세요.</p>
         <div class="guide-header-cta">
-          <NuxtLink to="/contact" class="guide-header-btn guide-header-btn-primary">문의하기</NuxtLink>
+          <a
+            :href="siteConfig.social.kakaoOpenChat"
+            target="_blank"
+            rel="noopener"
+            class="guide-header-btn guide-header-btn-primary"
+            @click="handleKakaoClick"
+          >카톡 문의</a>
           <NuxtLink to="/buy-gold" class="guide-header-btn">금·은 매입 안내</NuxtLink>
           <NuxtLink to="/repair" class="guide-header-btn">수리·AS 안내</NuxtLink>
         </div>

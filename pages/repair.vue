@@ -69,6 +69,16 @@ useHead({
   ]
 })
 
+const { trackKakaoClick } = useGtag()
+
+const handleKakaoClick = () => {
+  trackKakaoClick('repair', {
+    placement: 'repair_notice',
+    intent: 'repair',
+    topic: '수리 사진 상담',
+  })
+}
+
 const repairServices = [
   {
     title: '반지 사이즈 조절',
@@ -149,8 +159,14 @@ const relatedGuides = [
           </div>
           <div class="notice-content">
             <p><strong>수리 전 안내</strong></p>
-            <p>수리 내용에 따라 소요 시간과 비용이 다를 수 있습니다.<br>방문 전 전화 상담을 권장합니다.</p>
-            <a :href="`tel:${siteConfig.phone}`" class="notice-phone">{{ siteConfig.phone }}</a>
+            <p>수리 내용에 따라 소요 시간과 비용이 다를 수 있습니다.<br>방문 전 제품 사진을 카톡으로 보내주세요.</p>
+            <a
+              :href="siteConfig.social.kakaoOpenChat"
+              target="_blank"
+              rel="noopener"
+              class="notice-phone"
+              @click="handleKakaoClick"
+            >카톡으로 사진 상담</a>
           </div>
         </div>
 
@@ -215,7 +231,7 @@ const relatedGuides = [
         <!-- CTA -->
         <LandingCTA
           title="수리 문의하기"
-          description="수리가 필요하신 제품이 있으시면 전화 또는 방문해주세요."
+          description="수리가 필요한 부분을 찍어 카톡으로 보내주시면 더 빠르게 안내해드립니다."
         />
 
     <!-- Location Info -->

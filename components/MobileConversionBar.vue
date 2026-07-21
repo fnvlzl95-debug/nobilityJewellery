@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 
 const route = useRoute()
 const { trackKakaoClick, trackPhoneClick, trackMapClick } = useGtag()
 
 const naverMapUrl = 'https://naver.me/xen7hRCZ'
-const staticPaths = new Set([
-  '/',
-  '/gallery',
-  '/repair',
-  '/custom',
-  '/wholesale',
-  '/couple-ring',
-  '/baby-gold',
-  '/wedding',
-])
 
 const normalizedPath = computed(() => {
   if (route.path === '/') return '/'
@@ -24,7 +14,6 @@ const normalizedPath = computed(() => {
 
 const pathSegments = computed(() => normalizedPath.value.split('/').filter(Boolean))
 const isGuideDetail = computed(() => pathSegments.value[0] === 'guide' && pathSegments.value.length === 2)
-const shouldShow = computed(() => staticPaths.has(normalizedPath.value) || isGuideDetail.value)
 const hasKakaoLink = computed(() => Boolean(siteConfig.social.kakaoOpenChat))
 
 const pageName = computed(() => {
@@ -48,10 +37,8 @@ const topic = computed(() => {
 
 const applyBodyOffset = () => {
   if (!import.meta.client) return
-  document.body.classList.toggle('has-mobile-conversion-bar', shouldShow.value)
+  document.body.classList.add('has-mobile-conversion-bar')
 }
-
-watch(shouldShow, applyBodyOffset, { immediate: true })
 
 onMounted(applyBodyOffset)
 
@@ -60,9 +47,13 @@ onUnmounted(() => {
   document.body.classList.remove('has-mobile-conversion-bar')
 })
 
+const getPlacement = () => import.meta.client && window.matchMedia('(min-width: 900px)').matches
+  ? 'desktop_floating'
+  : 'mobile_bar'
+
 const handleKakaoClick = () => {
   trackKakaoClick(pageName.value, {
-    placement: 'mobile_bar',
+    placement: getPlacement(),
     intent: intent.value,
     topic: topic.value,
   })
@@ -70,7 +61,7 @@ const handleKakaoClick = () => {
 
 const handlePhoneClick = () => {
   trackPhoneClick(pageName.value, {
-    placement: 'mobile_bar',
+    placement: getPlacement(),
     intent: intent.value,
     topic: topic.value,
   })
@@ -78,7 +69,7 @@ const handlePhoneClick = () => {
 
 const handleNaverMapClick = () => {
   trackMapClick(pageName.value, 'naver', {
-    placement: 'mobile_bar',
+    placement: getPlacement(),
     intent: 'directions',
     topic: topic.value,
     destination: naverMapUrl,
@@ -87,7 +78,7 @@ const handleNaverMapClick = () => {
 </script>
 
 <template>
-  <div v-if="shouldShow" class="mobile-conversion-bar" role="navigation" aria-label="빠른 상담">
+  <div class="mobile-conversion-bar" role="navigation" aria-label="빠른 상담">
     <a
       v-if="hasKakaoLink"
       :href="siteConfig.social.kakaoOpenChat"
@@ -99,7 +90,12 @@ const handleNaverMapClick = () => {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
       </svg>
-      <span>카톡상담</span>
+      <span class="kakao-mobile-label">카톡상담</span>
+      <span class="kakao-desktop-copy">
+        <small>사진으로 빠른 상담</small>
+        <strong>카톡 문의</strong>
+      </span>
+      <span class="kakao-arrow" aria-hidden="true">→</span>
     </a>
 
     <a
@@ -183,6 +179,11 @@ const handleNaverMapClick = () => {
   fill: currentColor;
 }
 
+.kakao-desktop-copy,
+.kakao-arrow {
+  display: none;
+}
+
 .conversion-action-phone,
 .conversion-action-map {
   background: rgba(250, 250, 250, 0.035);
@@ -199,6 +200,75 @@ const handleNaverMapClick = () => {
 
 @media (min-width: 900px) {
   .mobile-conversion-bar {
+    right: clamp(24px, 3vw, 44px);
+    bottom: clamp(24px, 3vw, 40px);
+    left: auto;
+    display: block;
+    width: min(260px, calc(100vw - 48px));
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    animation: kakao-cta-enter 0.55s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .conversion-action-kakao {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 72px;
+    padding: 0 18px;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.34);
+  }
+
+  .conversion-action-kakao:hover,
+  .conversion-action-kakao:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  }
+
+  .conversion-action-kakao svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .kakao-mobile-label {
+    display: none;
+  }
+
+  .kakao-desktop-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .kakao-desktop-copy small {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    opacity: 0.66;
+  }
+
+  .kakao-desktop-copy strong {
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+
+  .kakao-arrow {
+    display: inline;
+    font-size: 18px;
+    transition: transform 0.24s ease;
+  }
+
+  .conversion-action-kakao:hover .kakao-arrow,
+  .conversion-action-kakao:focus-visible .kakao-arrow {
+    transform: translateX(3px);
+  }
+
+  .conversion-action-phone,
+  .conversion-action-map {
     display: none;
   }
 }
@@ -206,6 +276,29 @@ const handleNaverMapClick = () => {
 @media (max-width: 899px) {
   :global(body.has-mobile-conversion-bar) {
     padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+
+@keyframes kakao-cta-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-conversion-bar {
+    animation: none;
+  }
+
+  .conversion-action,
+  .kakao-arrow {
+    transition: none;
   }
 }
 </style>

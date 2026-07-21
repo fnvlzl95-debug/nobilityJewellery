@@ -80,7 +80,7 @@ useHead({
 })
 
 const route = useRoute()
-const { trackPhoneClick, trackLeadSubmitted, trackFormError } = useGtag()
+const { trackPhoneClick, trackKakaoClick, trackLeadSubmitted, trackFormError } = useGtag()
 
 const inquiryTypes = [
   { value: 'wholesale', label: '도매 상담', labelEn: 'Wholesale' },
@@ -153,6 +153,14 @@ const handlePhoneClick = () => {
   })
 }
 
+const handleKakaoClick = () => {
+  trackKakaoClick('contact', {
+    placement: 'contact_primary',
+    intent: 'general',
+    topic: inquiryContext.value?.topic || '문의하기',
+  })
+}
+
 watch(
   () => route.fullPath,
   () => {
@@ -214,24 +222,35 @@ const handleSubmit = async () => {
             <h1 class="title">문의하기</h1>
             <p class="desc">
               도매 상담, 주문 제작, 수리 문의 등<br>
-              무엇이든 편하게 연락주세요.
+              사진과 함께 카톡으로 편하게 문의해주세요.
             </p>
 
-            <a :href="`tel:${siteConfig.phone}`" class="phone-cta" @click="handlePhoneClick">
-              <div class="phone-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            <a
+              :href="siteConfig.social.kakaoOpenChat"
+              target="_blank"
+              rel="noopener"
+              class="kakao-cta"
+              @click="handleKakaoClick"
+            >
+              <div class="kakao-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
                 </svg>
               </div>
-              <div class="phone-text">
-                <span class="phone-label">전화 상담</span>
-                <span class="phone-number">{{ siteConfig.phone }}</span>
+              <div class="kakao-text">
+                <span class="kakao-label">카카오톡 문의</span>
+                <span class="kakao-copy">사진과 문의 내용을 보내주세요</span>
               </div>
-              <div class="phone-arrow">
+              <div class="kakao-arrow">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </div>
+            </a>
+
+            <a :href="`tel:${siteConfig.phone}`" class="phone-link" @click="handlePhoneClick">
+              <span>전화 상담</span>
+              <strong>{{ siteConfig.phone }}</strong>
             </a>
 
             <div class="info-grid">
@@ -445,63 +464,79 @@ const handleSubmit = async () => {
   margin-bottom: 32px;
 }
 
-.phone-cta {
+.kakao-cta {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 20px 24px;
-  background: rgba(201, 162, 39, 0.1);
-  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: #fee500;
+  border: 1px solid #fee500;
+  color: #2f1b12;
   text-decoration: none;
-  margin-bottom: 32px;
+  margin-bottom: 14px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.phone-cta:hover {
-  background: rgba(201, 162, 39, 0.15);
-  border-color: rgba(201, 162, 39, 0.4);
+.kakao-cta:hover {
   transform: translateX(4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 
-.phone-icon {
+.kakao-icon {
   width: 48px;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #c9a227;
-  color: #0a0a0a;
+  background: rgba(47, 27, 18, 0.1);
 }
 
-.phone-text {
+.kakao-text {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.phone-label {
+.kakao-label {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.5);
 }
 
-.phone-number {
+.kakao-copy {
   font-family: var(--font-body);
-  font-size: 22px;
-  font-weight: 300;
-  color: #fafafa;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.phone-arrow {
-  color: #c9a227;
+.kakao-arrow {
   transition: transform 0.3s;
 }
 
-.phone-cta:hover .phone-arrow {
+.kakao-cta:hover .kakao-arrow {
   transform: translateX(4px);
+}
+
+.phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  color: rgba(250, 250, 250, 0.58);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.phone-link strong {
+  color: #fafafa;
+  font-weight: 600;
+}
+
+.phone-link:hover,
+.phone-link:focus-visible {
+  color: #c9a227;
 }
 
 .info-grid {

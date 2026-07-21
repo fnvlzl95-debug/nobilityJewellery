@@ -5,7 +5,7 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackPageInquiryClick } = useGtag()
+const { trackPageInquiryClick, trackKakaoClick, trackEvent, trackMetaEvent } = useGtag()
 
 const categoryLinkMap: Record<string, { to: string; label: string }> = {
   ring: { to: '/couple-ring', label: '커플링/반지 안내' },
@@ -34,6 +34,14 @@ const buildGalleryInquiryLink = (topic?: string) => ({
 
 const handleInquiryAction = (placement = 'section_cta', topic?: string) => {
   trackPageInquiryClick('gallery', {
+    placement,
+    intent: 'custom',
+    topic,
+  })
+}
+
+const handleKakaoInquiryAction = (placement: string, topic: string) => {
+  trackKakaoClick('gallery', {
     placement,
     intent: 'custom',
     topic,
@@ -136,6 +144,16 @@ const setActiveItem = (item: GalleryItem) => {
 
 const handleCardClick = (item: GalleryItem) => {
   setActiveItem(item)
+  trackEvent('gallery_item_view', {
+    item_id: String(item.id),
+    item_name: item.title,
+    item_category: item.category,
+  })
+  trackMetaEvent('ViewContent', {
+    content_name: item.title,
+    content_category: `gallery_${item.category}`,
+    content_id: String(item.id),
+  })
   openLightbox()
 }
 
@@ -407,13 +425,15 @@ onUnmounted(() => {
             <h3 class="lightbox-title">{{ activeItem.title }}</h3>
             <span class="lightbox-material">{{ activeItem.material }}</span>
             <div class="lightbox-actions">
-              <NuxtLink
-                :to="buildGalleryInquiryLink(activeItem.title)"
+              <a
+                :href="siteConfig.social.kakaoOpenChat"
+                target="_blank"
+                rel="noopener"
                 class="lightbox-contact"
-                @click="handleInquiryAction('lightbox', activeItem.title)"
+                @click="handleKakaoInquiryAction('lightbox', activeItem.title)"
               >
-                이 스타일로 문의하기
-              </NuxtLink>
+                이 스타일로 카톡 문의
+              </a>
             </div>
           </div>
         </div>
