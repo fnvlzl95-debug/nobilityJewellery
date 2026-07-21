@@ -9,7 +9,7 @@ interface Props {
 defineProps<Props>()
 
 const route = useRoute()
-const { trackPhoneClick, trackPageInquiryClick, trackKakaoClick } = useGtag()
+const { trackPhoneClick, trackKakaoClick } = useGtag()
 
 // 현재 페이지 이름 추출
 const pageName = computed(() => {
@@ -25,14 +25,6 @@ const intent = computed(() => {
 
 const handlePhoneClick = () => {
   trackPhoneClick(pageName.value, {
-    placement: 'section_cta',
-    intent: intent.value,
-    topic: pageName.value,
-  })
-}
-
-const handleInquiryClick = () => {
-  trackPageInquiryClick(pageName.value, {
     placement: 'section_cta',
     intent: intent.value,
     topic: pageName.value,
@@ -65,12 +57,6 @@ const handleKakaoClick = () => {
         </svg>
         <span>전화 상담</span>
       </a>
-      <NuxtLink to="/contact" class="btn-outline" @click="handleInquiryClick">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-        </svg>
-        <span>온라인 문의</span>
-      </NuxtLink>
     </div>
   </div>
 </template>
@@ -106,8 +92,7 @@ const handleKakaoClick = () => {
 }
 
 .btn-gold,
-.btn-kakao,
-.btn-outline {
+.btn-kakao {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -131,8 +116,7 @@ const handleKakaoClick = () => {
   }
 
   .btn-gold,
-  .btn-kakao,
-  .btn-outline {
+  .btn-kakao {
     min-width: 100%;
     width: 100%;
   }
@@ -158,15 +142,4 @@ const handleKakaoClick = () => {
   box-shadow: 0 8px 24px rgba(254, 229, 0, 0.3);
 }
 
-.btn-outline {
-  color: #fafafa;
-  background: transparent;
-  border-color: rgba(250, 250, 250, 0.3);
-}
-
-.btn-outline:hover {
-  border-color: #c9a227;
-  color: #c9a227;
-  transform: translateY(-2px);
-}
 </style>
