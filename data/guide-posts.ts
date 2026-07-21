@@ -11,6 +11,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'earring-post-bent-repair',
+    path: '/guide/earring-post-bent-repair',
+    title: '귀걸이 침 휘어짐·부러짐 수리, 교체 전 확인할 것',
+    description: '휘어진 침의 변형 위치와 접합부를 확인하고, 펴기·재접합·새 침 교체 및 뒷마개 점검 기준을 정리했습니다.',
+    keyword: '귀걸이 침 수리',
+    image: '/Image/guide/earring-post-repair-hero.webp',
+    publishedAt: '2026-07-21',
+    category: '방법',
+  },
+  {
+    slug: 'pearl-value-factors',
+    path: '/guide/pearl-value-factors',
+    title: '진주 등급 보는 법, GIA 가치 평가 7요소 정리',
+    description: '판매처별 A·AAA 표기와 GIA의 크기·형태·색·광택·표면·진주층·매칭 7요소, 실물 비교 순서를 설명합니다.',
+    keyword: '진주 등급 보는 법',
+    image: '/Image/guide/pearl-value-factors-hero.webp',
+    publishedAt: '2026-07-21',
+    category: '방법',
+  },
+  {
     slug: 'necklace-clasp-types',
     path: '/guide/necklace-clasp-types',
     title: '목걸이 잠금장치 종류, 스프링링·랍스터·토글 차이',

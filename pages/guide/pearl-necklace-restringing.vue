@@ -135,9 +135,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/pearl-value-factors', label: '진주 등급 보는 법', description: '광택·표면·진주층·매칭 비교' },
   { to: '/repair', label: '귀금속 수리 안내', description: '종로 매장 수리 항목과 상담 방법' },
   { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 세척·보관법', description: '진주와 유색 보석 관리 주의점' },
-  { to: '/guide/jongno-jewelry-store-visit-guide', label: '종로 금은방 방문 준비', description: '사진과 일정 준비 기준' },
 ]
 
 useHead({

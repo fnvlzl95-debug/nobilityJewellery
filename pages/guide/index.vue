@@ -5,7 +5,7 @@ import { guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
 const basePageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '목걸이 잠금장치 종류, 다이아몬드 컷·컬러·투명도 등급, 체인 종류와 금·은 수리 기준을 정리했습니다.'
+const pageDescription = '귀걸이 침 수리, 진주 등급과 가치 요소, 목걸이 잠금장치, 다이아몬드 등급 및 금·은 수리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 const postsPerPage = 10
 const categoryOptions = ['전체', '가격', '비용', '기간', '방법'] as const

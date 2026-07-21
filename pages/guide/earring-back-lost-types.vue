@@ -115,7 +115,7 @@ const cautions = [
 ]
 
 const relatedLinks = [
-  { to: '/repair', label: '귀금속 수리 안내', description: '귀걸이 침 교체와 잠금장식 상담' },
+  { to: '/guide/earring-post-bent-repair', label: '귀걸이 침 수리', description: '휘어짐·부러짐과 침 교체 기준' },
   { to: '/contact', label: '사진 상담 문의', description: '사진을 보내고 교체 가능 여부 확인' },
   { to: '/guide/jongno-jewelry-store-visit-guide', label: '방문 전 준비물', description: '매장 상담 전 사진 준비 기준' },
 ]
