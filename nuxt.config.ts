@@ -97,6 +97,8 @@ export default defineNuxtConfig({
         // Preconnect for Google
         { rel: 'preconnect', href: 'https://www.googletagmanager.com' },
         { rel: 'preconnect', href: 'https://maps.googleapis.com' },
+        // Preconnect for Meta Pixel
+        { rel: 'preconnect', href: 'https://connect.facebook.net', crossorigin: '' },
       ],
       script: process.env.NODE_ENV === 'production' ? [
         // Google Analytics 4
@@ -106,6 +108,18 @@ export default defineNuxtConfig({
         { innerHTML: `if(!window.wcs_add) window.wcs_add = {}; wcs_add['wa'] = '${siteConfig.analytics.naver}'; var _nasa={}; if(window.wcs) wcs.inflow('${siteConfig.domain}');` },
         { src: 'https://wcs.pstatic.net/wcslog.js', async: true },
         { innerHTML: `(function check(){if(window.wcs){wcs.inflow('${siteConfig.domain}');wcs_do(_nasa);}else{setTimeout(check,100);}})();` },
+        // Meta Pixel
+        {
+          key: 'meta-pixel',
+          innerHTML: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${siteConfig.analytics.metaPixel}');fbq('track','PageView');`,
+        },
+      ] : [],
+      noscript: process.env.NODE_ENV === 'production' ? [
+        {
+          key: 'meta-pixel-noscript',
+          innerHTML: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${siteConfig.analytics.metaPixel}&ev=PageView&noscript=1" alt="">`,
+          tagPosition: 'bodyOpen',
+        },
       ] : [],
     },
   },

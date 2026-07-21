@@ -47,6 +47,7 @@ export const siteConfig = {
   analytics: {
     ga4: 'G-RKK8E5CB6G',
     naver: '9582151f2a151',
+    metaPixel: '1330055412443994',
   },
 
   // 검색엔진 인증
