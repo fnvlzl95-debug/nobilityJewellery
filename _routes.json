@@ -24,7 +24,6 @@
     "/sitemap.xml",
     "/wedding",
     "/wholesale",
-    "/__site-config__/debug.json",
     "/__sitemap__/style.xsl",
     "/baby-gold/_payload.json",
     "/buy-gold/_payload.json",
@@ -102,6 +101,7 @@
     "/guide/diamond-color-grades/_payload.json",
     "/guide/diamond-cut-grades/_payload.json",
     "/guide/diamond-cut-shapes-guide/_payload.json",
-    "/guide/diamond-fluorescence-grades/_payload.json"
+    "/guide/diamond-fluorescence-grades/_payload.json",
+    "/guide/diamond-ring-setting-types/_payload.json"
   ]
 }
