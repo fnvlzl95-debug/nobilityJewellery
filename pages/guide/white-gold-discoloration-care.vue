@@ -192,7 +192,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="관리"
     keyword="화이트골드 변색"
     inquiry-type="repair"
     inquiry-topic="화이트골드 변색"

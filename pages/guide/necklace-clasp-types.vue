@@ -198,7 +198,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="목걸이 잠금장치 종류"
     inquiry-type="repair"
     inquiry-topic="목걸이 잠금장치 교체와 수리"

@@ -197,7 +197,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="반지 끼는 손가락 의미"
     inquiry-type="custom"
     inquiry-topic="반지 착용 위치와 디자인 상담"

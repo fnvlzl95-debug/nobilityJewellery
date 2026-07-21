@@ -199,7 +199,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="귀걸이 침 수리"
     inquiry-type="repair"
     inquiry-topic="귀걸이 침 휘어짐과 부러짐 수리"

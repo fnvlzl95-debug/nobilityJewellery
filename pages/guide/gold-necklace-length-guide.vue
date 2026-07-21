@@ -179,7 +179,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="금목걸이 길이 추천"
     inquiry-type="custom"
     inquiry-topic="금목걸이 길이 상담"

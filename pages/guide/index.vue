@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
-import { guidePosts } from '~/data/guide-posts'
+import { guideCategories, guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
-const basePageTitle = '귀금속 가이드 | 가격·수리·제작기간·주문방법 | 귀족'
-const pageDescription = '귀걸이 침 수리, 진주 등급과 가치 요소, 목걸이 잠금장치, 다이아몬드 등급 및 금·은 수리 기준을 정리했습니다.'
+const basePageTitle = '귀금속 가이드 | 가격·수리·관리·선택·제작기간 | 귀족'
+const pageDescription = '귀금속 가격과 비용, 제작 기간부터 수리·관리·선택·소재·보석·주문 기준까지 주제별로 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 const postsPerPage = 10
-const categoryOptions = ['전체', '가격', '비용', '기간', '방법'] as const
+const categoryOptions = ['전체', ...guideCategories] as const
 
 type CategoryFilter = typeof categoryOptions[number]
 
@@ -185,7 +185,7 @@ useHead(() => ({
       <header class="guide-header">
         <p class="guide-label">Guide</p>
         <h1>귀금속 가이드</h1>
-        <p>가격, 수리, 제작 기간 등 자주 물어보시는 내용을 모았습니다. 읽어보시고 궁금한 점이 있으면 편하게 문의해주세요.</p>
+        <p>가격, 수리, 관리, 선택, 제작 기간 등 자주 물어보시는 내용을 주제별로 모았습니다. 읽어보시고 궁금한 점이 있으면 편하게 문의해주세요.</p>
         <div class="guide-header-cta">
           <NuxtLink to="/contact" class="guide-header-btn guide-header-btn-primary">문의하기</NuxtLink>
           <NuxtLink to="/buy-gold" class="guide-header-btn">금·은 매입 안내</NuxtLink>
@@ -194,7 +194,7 @@ useHead(() => ({
       </header>
 
       <nav class="guide-categories" aria-label="가이드 종류">
-        <p class="guide-categories-label">종류별 보기</p>
+        <p class="guide-categories-label">주제별 보기</p>
         <div class="guide-category-list">
           <NuxtLink
             v-for="category in categoryOptions"

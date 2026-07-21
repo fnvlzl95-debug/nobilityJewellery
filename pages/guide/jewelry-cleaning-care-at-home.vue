@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="관리"
     keyword="금 세척 방법"
     inquiry-type="repair"
     inquiry-topic="주얼리 세척·관리 상담"

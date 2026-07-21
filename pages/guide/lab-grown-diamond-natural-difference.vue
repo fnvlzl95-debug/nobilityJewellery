@@ -189,7 +189,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="랩그로운 다이아몬드 천연 다이아 차이"
     inquiry-type="custom"
     inquiry-topic="랩그로운 다이아몬드 상담"

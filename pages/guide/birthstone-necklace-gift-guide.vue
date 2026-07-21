@@ -211,7 +211,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="탄생석 종류"
     inquiry-type="custom"
     inquiry-topic="탄생석 목걸이 선물 상담"

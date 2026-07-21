@@ -197,7 +197,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="결혼반지 가드링"
     inquiry-type="custom"
     inquiry-topic="결혼반지 가드링 맞춤제작"

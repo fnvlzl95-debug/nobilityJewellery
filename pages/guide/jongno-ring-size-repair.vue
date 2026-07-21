@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="종로 반지 사이즈 줄이기 늘리기"
     inquiry-type="repair"
     inquiry-topic="종로 반지 사이즈 수리"

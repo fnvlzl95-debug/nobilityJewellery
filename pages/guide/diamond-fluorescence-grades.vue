@@ -198,7 +198,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="다이아몬드 형광 등급"
     inquiry-type="custom"
     inquiry-topic="다이아몬드 감정서와 형광 비교"

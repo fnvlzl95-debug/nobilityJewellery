@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="관리"
     keyword="반지 금속 알레르기"
     inquiry-type="custom"
     inquiry-topic="반지 소재 상담"

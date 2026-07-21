@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="백금 화이트골드 차이"
     inquiry-type="custom"
     inquiry-topic="예물 반지 소재 상담"

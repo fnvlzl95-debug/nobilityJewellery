@@ -180,7 +180,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="귀걸이 뒷마개 분실"
     inquiry-type="repair"
     inquiry-topic="귀걸이 뒷마개 교체 상담"

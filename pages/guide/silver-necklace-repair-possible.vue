@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="은목걸이 수리 가능 여부"
     inquiry-type="repair"
     inquiry-topic="은목걸이 수리"

@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="어머니 목걸이 디자인 상담"
     inquiry-type="custom"
     inquiry-topic="어머니 목걸이 디자인 상담"

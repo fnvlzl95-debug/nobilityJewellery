@@ -198,7 +198,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="다이아 반지 세팅 종류"
     inquiry-type="custom"
     inquiry-topic="다이아 반지 세팅 상담"

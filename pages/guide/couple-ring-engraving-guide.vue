@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="주문"
     keyword="커플링 각인"
     inquiry-type="custom"
     inquiry-topic="커플링 각인 상담"

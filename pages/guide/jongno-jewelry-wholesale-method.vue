@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="주문"
     keyword="종로 귀금속 도매 거래 방법"
     inquiry-type="wholesale"
     inquiry-topic="종로 귀금속 도매 거래"

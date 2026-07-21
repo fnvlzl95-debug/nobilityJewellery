@@ -1,3 +1,7 @@
+export const guideCategories = ['가격', '비용', '기간', '수리', '관리', '선택', '소재·보석', '주문'] as const
+
+export type GuideCategory = typeof guideCategories[number]
+
 export interface GuidePostSummary {
   slug: string
   path: string
@@ -6,7 +10,7 @@ export interface GuidePostSummary {
   keyword: string
   image: string
   publishedAt: string
-  category: '가격' | '비용' | '기간' | '방법'
+  category: GuideCategory
 }
 
 export const guidePosts: GuidePostSummary[] = [
@@ -18,7 +22,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '귀걸이 침 수리',
     image: '/Image/guide/earring-post-repair-hero.webp',
     publishedAt: '2026-07-21',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'pearl-value-factors',
@@ -28,7 +32,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '진주 등급 보는 법',
     image: '/Image/guide/pearl-value-factors-hero.webp',
     publishedAt: '2026-07-21',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'necklace-clasp-types',
@@ -38,7 +42,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '목걸이 잠금장치 종류',
     image: '/Image/guide/necklace-clasp-types-hero.webp',
     publishedAt: '2026-07-20',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'diamond-cut-grades',
@@ -48,7 +52,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아몬드 컷 등급',
     image: '/Image/guide/diamond-cut-grades-hero.webp',
     publishedAt: '2026-07-20',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'necklace-chain-types-guide',
@@ -58,7 +62,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '목걸이 체인 종류',
     image: '/Image/guide/necklace-chain-types-hero.webp',
     publishedAt: '2026-07-19',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'diamond-color-grades',
@@ -68,7 +72,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아몬드 컬러 등급',
     image: '/Image/guide/diamond-color-grades-hero.webp',
     publishedAt: '2026-07-19',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'ring-finger-meaning-guide',
@@ -78,7 +82,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '반지 끼는 손가락 의미',
     image: '/Image/guide/ring-finger-meaning-hero.webp',
     publishedAt: '2026-07-16',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'diamond-clarity-grades',
@@ -88,7 +92,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아몬드 투명도 등급',
     image: '/Image/guide/diamond-clarity-grades-hero.webp',
     publishedAt: '2026-07-16',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'ring-cubic-stone-repair',
@@ -98,7 +102,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '반지 큐빅 빠짐 수리',
     image: '/Image/guide/ring-cubic-stone-repair-hero.webp',
     publishedAt: '2026-07-14',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'diamond-fluorescence-grades',
@@ -108,7 +112,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아몬드 형광 등급',
     image: '/Image/guide/diamond-fluorescence-grades-hero.webp',
     publishedAt: '2026-07-14',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'wedding-band-matte-gloss',
@@ -118,7 +122,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '웨딩밴드 무광 유광 차이',
     image: '/Image/guide/wedding-band-matte-gloss-hero.webp',
     publishedAt: '2026-07-13',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'jewelry-hallmark-numbers-meaning',
@@ -128,7 +132,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '귀금속 각인 숫자 뜻',
     image: '/Image/guide/jewelry-hallmark-numbers-hero.webp',
     publishedAt: '2026-07-13',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'wedding-band-guard-ring-guide',
@@ -138,7 +142,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '결혼반지 가드링',
     image: '/Image/guide/wedding-band-guard-ring-hero.webp',
     publishedAt: '2026-07-12',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'diamond-cut-shapes-guide',
@@ -148,7 +152,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아몬드 컷 종류',
     image: '/Image/guide/diamond-cut-shapes-hero.webp',
     publishedAt: '2026-07-12',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'pearl-necklace-restringing',
@@ -158,7 +162,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '진주 목걸이 줄 교체',
     image: '/Image/guide/pearl-necklace-restringing-hero.webp',
     publishedAt: '2026-07-11',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'gemstone-mohs-hardness-guide',
@@ -168,7 +172,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '보석 모스 경도',
     image: '/Image/guide/gemstone-mohs-hardness-hero.webp',
     publishedAt: '2026-07-11',
-    category: '방법',
+    category: '관리',
   },
   {
     slug: 'earring-back-lost-types',
@@ -178,7 +182,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '귀걸이 뒷마개 분실',
     image: '/Image/guide/earring-back-types-hero.webp',
     publishedAt: '2026-07-09',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'birthstone-necklace-gift-guide',
@@ -188,7 +192,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '탄생석 종류',
     image: '/Image/guide/birthstone-necklace-gift-hero.webp',
     publishedAt: '2026-07-09',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'jongno-jewelry-store-visit-guide',
@@ -198,7 +202,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '종로 금은방 방문 예약',
     image: '/Image/guide/jongno-jewelry-visit-consultation.webp',
     publishedAt: '2026-07-08',
-    category: '방법',
+    category: '주문',
   },
   {
     slug: 'diamond-ring-setting-types',
@@ -208,7 +212,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '다이아 반지 세팅 종류',
     image: '/Image/guide/diamond-ring-setting-types-comparison.webp',
     publishedAt: '2026-07-08',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'gold-necklace-length-guide',
@@ -218,7 +222,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금목걸이 길이 추천',
     image: '/Image/guide/necklace-length-guide-hero.webp',
     publishedAt: '2026-07-07',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'lab-grown-diamond-natural-difference',
@@ -228,7 +232,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '랩그로운 다이아몬드 천연 다이아 차이',
     image: '/Image/guide/lab-grown-diamond-ring-guide.webp',
     publishedAt: '2026-07-07',
-    category: '방법',
+    category: '소재·보석',
   },
   {
     slug: 'gold-price-how-to-check',
@@ -248,7 +252,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '백금 화이트골드 차이',
     image: '/Image/guide/platinum-white-gold.webp',
     publishedAt: '2026-06-03',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'jewelry-cleaning-care-at-home',
@@ -258,7 +262,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금 세척 방법',
     image: '/Image/guide/jewelry-cleaning-care.webp',
     publishedAt: '2026-06-03',
-    category: '방법',
+    category: '관리',
   },
   {
     slug: 'ring-metal-allergy-guide',
@@ -268,7 +272,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '반지 금속 알레르기',
     image: '/Image/guide/ring-metal-allergy.webp',
     publishedAt: '2026-06-03',
-    category: '방법',
+    category: '관리',
   },
   {
     slug: 'couple-ring-engraving-guide',
@@ -278,7 +282,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '커플링 각인',
     image: '/Image/guide/couple-ring-engraving.webp',
     publishedAt: '2026-06-03',
-    category: '방법',
+    category: '주문',
   },
   {
     slug: 'cubic-moissanite-diamond-difference',
@@ -298,7 +302,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '종로 반지 사이즈 수리',
     image: '/Image/guide/ring-size-measuring-method.webp',
     publishedAt: '2026-05-28',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'necklace-bracelet-chain-repair',
@@ -308,7 +312,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '목걸이 끊어짐 수리',
     image: '/Image/necklace/NC0301.webp',
     publishedAt: '2026-05-28',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'gold-plating-repair',
@@ -318,7 +322,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금 도금 수리',
     image: '/Image/guide/white-gold-rhodium-plating.webp',
     publishedAt: '2026-05-28',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'jongno-jewelry-wholesale-method',
@@ -328,7 +332,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '종로 귀금속 도매 거래 방법',
     image: '/Image/necklace/pexels-pixabay-248077.webp',
     publishedAt: '2026-05-28',
-    category: '방법',
+    category: '주문',
   },
   {
     slug: 'white-gold-discoloration-care',
@@ -338,7 +342,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '화이트골드 변색',
     image: '/Image/guide/white-gold-discoloration-comparison.webp',
     publishedAt: '2026-05-19',
-    category: '방법',
+    category: '관리',
   },
   {
     slug: 'diamond-3bu-5bu-difference',
@@ -368,7 +372,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '반지 사이즈 재는 법',
     image: '/Image/guide/ring-size-measuring-method.webp',
     publishedAt: '2026-05-18',
-    category: '방법',
+    category: '주문',
   },
   {
     slug: 'wedding-jewelry-set-composition',
@@ -378,7 +382,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '결혼예물 세트 구성',
     image: '/Image/guide/wedding-jewelry-set-box.webp',
     publishedAt: '2026-05-18',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'couple-ring-14k-18k-price-difference',
@@ -398,7 +402,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '어머니 목걸이 디자인 상담',
     image: '/Image/necklace/pexels-mlkbnl-12194265.webp',
     publishedAt: '2026-04-08',
-    category: '방법',
+    category: '선택',
   },
   {
     slug: 'silver-necklace-repair-possible',
@@ -408,7 +412,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '은목걸이 수리 가능 여부',
     image: '/Image/necklace/pexels-coppertist-wu-16124724.webp',
     publishedAt: '2026-04-08',
-    category: '방법',
+    category: '수리',
   },
   {
     slug: 'baby-ring-order-method',
@@ -418,7 +422,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '돌반지 주문 방법',
     image: '/Image/ring/SB0104.webp',
     publishedAt: '2026-03-30',
-    category: '방법',
+    category: '주문',
   },
   {
     slug: 'gold-necklace-repair-time',

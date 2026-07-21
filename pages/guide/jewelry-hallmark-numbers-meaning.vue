@@ -210,7 +210,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="귀금속 각인 숫자 뜻"
     inquiry-type="custom"
     inquiry-topic="귀금속 소재와 순도 확인"

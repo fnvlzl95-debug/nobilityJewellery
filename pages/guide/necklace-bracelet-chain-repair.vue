@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="목걸이 끊어짐 팔찌 잠금장식 수리"
     inquiry-type="repair"
     inquiry-topic="목걸이·팔찌 체인 수리"

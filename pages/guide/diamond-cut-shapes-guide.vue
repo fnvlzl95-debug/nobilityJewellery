@@ -195,7 +195,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="다이아몬드 컷 종류"
     inquiry-type="custom"
     inquiry-topic="다이아몬드 컷 모양 상담"

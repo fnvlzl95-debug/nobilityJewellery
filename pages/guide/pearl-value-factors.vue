@@ -199,7 +199,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="소재·보석"
     keyword="진주 등급 보는 법"
     inquiry-type="custom"
     inquiry-topic="진주 품질과 가치 요소 비교"

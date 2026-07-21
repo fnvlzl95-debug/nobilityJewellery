@@ -82,7 +82,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="금반지 화이트골드 도금 수리"
     inquiry-type="repair"
     inquiry-topic="금반지·화이트골드 도금 수리"

@@ -198,7 +198,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="목걸이 체인 종류"
     inquiry-type="custom"
     inquiry-topic="목걸이 체인과 펜던트 조합"

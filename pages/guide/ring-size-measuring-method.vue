@@ -188,7 +188,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="주문"
     keyword="반지 사이즈 재는 법"
     inquiry-type="custom"
     inquiry-topic="반지 사이즈 재는 법"

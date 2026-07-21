@@ -197,7 +197,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="웨딩밴드 무광 유광 차이"
     inquiry-type="custom"
     inquiry-topic="웨딩밴드 무광 유광 맞춤제작"

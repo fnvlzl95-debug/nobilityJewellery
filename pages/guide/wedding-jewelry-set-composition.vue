@@ -189,7 +189,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="선택"
     keyword="결혼예물 세트 구성"
     inquiry-type="custom"
     inquiry-topic="결혼예물 세트 구성"

@@ -198,7 +198,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="반지 큐빅 빠짐 수리"
     inquiry-type="repair"
     inquiry-topic="반지 큐빅 빠짐 수리"

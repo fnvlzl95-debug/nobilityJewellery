@@ -203,7 +203,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="관리"
     keyword="보석 모스 경도"
     inquiry-type="custom"
     inquiry-topic="유색 보석 주얼리 상담"

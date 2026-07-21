@@ -181,7 +181,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="주문"
     keyword="종로 금은방 방문 예약"
     inquiry-type="custom"
     inquiry-topic="종로 금은방 방문 상담"

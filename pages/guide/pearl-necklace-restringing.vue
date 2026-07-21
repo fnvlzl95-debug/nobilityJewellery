@@ -201,7 +201,7 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="방법"
+    category="수리"
     keyword="진주 목걸이 줄 교체"
     inquiry-type="repair"
     inquiry-topic="진주 목걸이 줄 교체 상담"
