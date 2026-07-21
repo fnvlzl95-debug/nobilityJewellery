@@ -16,6 +16,22 @@ const route = useRoute()
 const router = useRouter()
 const { trackKakaoClick } = useGtag()
 const listTop = ref<HTMLElement | null>(null)
+const categoryList = ref<HTMLElement | null>(null)
+
+/* 가로 스크롤되는 카테고리 줄에서 선택된 항목을 화면 안으로 (세로 스크롤은 건드리지 않음) */
+const centerActiveCategory = (behavior: ScrollBehavior = 'auto') => {
+  const list = categoryList.value
+  const current = list?.querySelector<HTMLElement>('.guide-category-link.is-current')
+  if (!list || !current || list.scrollWidth <= list.clientWidth) {
+    return
+  }
+
+  const target = current.offsetLeft - (list.clientWidth - current.offsetWidth) / 2
+  list.scrollTo({
+    left: Math.max(0, Math.min(target, list.scrollWidth - list.clientWidth)),
+    behavior,
+  })
+}
 
 const handleKakaoClick = () => {
   trackKakaoClick('guide', {
@@ -115,6 +131,8 @@ const pageLink = (page: number) => guideLink(page)
 const categoryLink = (category: CategoryFilter) => guideLink(1, category)
 
 onMounted(() => {
+  centerActiveCategory()
+
   const expectedPage = currentPage.value === 1 ? undefined : String(currentPage.value)
   const expectedCategory = activeCategory.value === '전체' ? undefined : activeCategory.value
   if (
@@ -133,8 +151,10 @@ watch([currentPage, activeCategory], async ([page, category], [previousPage, pre
   }
 
   await nextTick()
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  centerActiveCategory(reduceMotion ? 'auto' : 'smooth')
   listTop.value?.scrollIntoView({
-    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    behavior: reduceMotion ? 'auto' : 'smooth',
     block: 'start',
   })
   listTop.value?.focus({ preventScroll: true })
@@ -210,7 +230,7 @@ useHead(() => ({
 
       <nav class="guide-categories" aria-label="가이드 종류">
         <p class="guide-categories-label">주제별 보기</p>
-        <div class="guide-category-list">
+        <div ref="categoryList" class="guide-category-list">
           <NuxtLink
             v-for="category in categoryOptions"
             :key="category"
@@ -373,16 +393,27 @@ useHead(() => ({
 }
 
 .guide-category-list {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 4px;
+  min-width: 0;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.guide-category-list::-webkit-scrollbar {
+  display: none;
 }
 
 .guide-category-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;               /* 좁은 화면에서 칩이 찌그러져 글자가 겹치지 않게 */
   gap: 6px;
   min-height: 44px;
   padding: 0 14px;
@@ -391,6 +422,7 @@ useHead(() => ({
   color: rgba(250, 250, 250, 0.64);
   text-decoration: none;
   white-space: nowrap;
+  scroll-snap-align: center;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -608,23 +640,37 @@ useHead(() => ({
   }
 
   .guide-categories {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 2px;
+    display: block;
+    margin-bottom: 18px;
     border-bottom: 0;
   }
 
   .guide-categories-label {
-    padding-bottom: 4px;
+    padding-bottom: 6px;
   }
 
   .guide-category-list {
-    border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+    /* 좌우 페이지 여백을 상쇄해 화면 끝까지 스크롤 — 잘린 칩이 스크롤 힌트가 된다 */
+    margin-right: -18px;
+    margin-left: -18px;
+    padding-right: 18px;
+    padding-left: 18px;
+    gap: 2px;
+    /* 스크롤되지 않는 밑줄 (border는 콘텐츠와 함께 잘려 보임) */
+    box-shadow: inset 0 -1px 0 rgba(201, 162, 39, 0.22);
   }
 
   .guide-category-link {
-    padding-right: 12px;
-    padding-left: 12px;
+    min-height: 42px;
+    padding-right: 11px;
+    padding-left: 11px;
+    margin-bottom: 0;
+    gap: 5px;
+    font-size: 14px;
+  }
+
+  .guide-category-link small {
+    font-size: 10px;
   }
 
   .guide-pagination {
