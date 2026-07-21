@@ -50,6 +50,7 @@
     "/guide/diamond-fluorescence-grades",
     "/guide/diamond-ring-setting-types",
     "/guide/earring-back-lost-types",
+    "/guide/earring-post-bent-repair",
     "/guide/gemstone-mohs-hardness-guide",
     "/guide/gold-jewelry-remodeling-cost",
     "/guide/gold-necklace-length-guide",
@@ -71,6 +72,7 @@
     "/guide/necklace-chain-types-guide",
     "/guide/necklace-clasp-types",
     "/guide/pearl-necklace-restringing",
+    "/guide/pearl-value-factors",
     "/guide/platinum-vs-white-gold-difference",
     "/guide/ring-cubic-stone-repair",
     "/guide/ring-finger-meaning-guide",
@@ -100,8 +102,6 @@
     "/guide/diamond-color-grades/_payload.json",
     "/guide/diamond-cut-grades/_payload.json",
     "/guide/diamond-cut-shapes-guide/_payload.json",
-    "/guide/diamond-fluorescence-grades/_payload.json",
-    "/guide/diamond-ring-setting-types/_payload.json",
-    "/guide/earring-back-lost-types/_payload.json"
+    "/guide/diamond-fluorescence-grades/_payload.json"
   ]
 }
