@@ -204,7 +204,7 @@ const handleNaverMapClick = () => {
     bottom: clamp(24px, 3vw, 40px);
     left: auto;
     display: block;
-    width: min(260px, calc(100vw - 48px));
+    width: min(224px, calc(100vw - 48px));
     padding: 0;
     background: transparent;
     border: 0;
@@ -217,7 +217,7 @@ const handleNaverMapClick = () => {
     justify-content: flex-start;
     width: 100%;
     min-height: 72px;
-    padding: 0 18px;
+    padding: 0 16px;
     box-shadow: 0 14px 38px rgba(0, 0, 0, 0.34);
   }
 
@@ -245,14 +245,14 @@ const handleNaverMapClick = () => {
   }
 
   .kakao-desktop-copy small {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.04em;
     opacity: 0.66;
   }
 
   .kakao-desktop-copy strong {
-    font-size: 15px;
+    font-size: 17px;
     letter-spacing: 0.02em;
   }
 
