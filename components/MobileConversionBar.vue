@@ -200,17 +200,19 @@ const handleNaverMapClick = () => {
 
 @media (min-width: 900px) {
   .mobile-conversion-bar {
-    /* 화면이 좁아지면 버튼도 같이 줄어들도록 — 전 구간 vw 기반 */
-    --cta-width: clamp(178px, 15.2vw, 238px);
-    --cta-height: clamp(54px, 4.9vw, 74px);
-    --cta-pad-x: clamp(13px, 1.15vw, 18px);
-    --cta-gap: clamp(9px, 0.85vw, 13px);
-    --cta-icon: clamp(19px, 1.7vw, 25px);
-    --cta-title: clamp(14px, 1.12vw, 17px);
-    --cta-sub: clamp(10px, 0.76vw, 12px);
+    /* 사이트의 나머지 UI(본문·버튼)가 전부 고정 px이므로 CTA도 고정 px 단계로 간다.
+       vw로 키우면 2560px 노트북처럼 뷰포트가 넓은 화면에서 본문 대비 혼자 커진다.
+       고정 px이면 화면이 촘촘할수록(고해상도 노트북) 물리적으로 작게 보이는 게 정상 동작. */
+    --cta-width: 168px;
+    --cta-height: 50px;
+    --cta-pad-x: 12px;
+    --cta-gap: 8px;
+    --cta-icon: 17px;
+    --cta-title: 13px;
+    --cta-sub: 9.5px;
 
-    right: clamp(18px, 2.2vw, 44px);
-    bottom: clamp(18px, 2.2vw, 40px);
+    right: 20px;
+    bottom: 20px;
     left: auto;
     display: block;
     width: min(var(--cta-width), calc(100vw - 48px));
@@ -249,7 +251,7 @@ const handleNaverMapClick = () => {
     border: 1px solid rgba(255, 243, 210, 0.5);
     box-shadow:
       0 0 0 1px rgba(10, 10, 10, 0.55),  /* 밝은 배경에서도 윤곽이 서게 */
-      0 16px 36px rgba(0, 0, 0, 0.45),
+      0 12px 28px rgba(0, 0, 0, 0.45),
       inset 0 1px 0 rgba(255, 250, 235, 0.42);
   }
 
@@ -273,11 +275,11 @@ const handleNaverMapClick = () => {
 
   .conversion-action-kakao:hover,
   .conversion-action-kakao:focus-visible {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     border-color: rgba(255, 249, 232, 0.85);
     box-shadow:
       0 0 0 1px rgba(10, 10, 10, 0.55),
-      0 22px 46px rgba(0, 0, 0, 0.5),
+      0 16px 34px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(255, 250, 235, 0.55);
   }
 
@@ -300,7 +302,7 @@ const handleNaverMapClick = () => {
     flex: 1;
     flex-direction: column;
     align-items: flex-start;
-    gap: clamp(3px, 0.3vw, 5px);
+    gap: 3px;
   }
 
   /* 좁은 PC 화면에서 두 줄로 깨지지 않게 (body에 word-break: keep-all이 걸려 있음) */
@@ -324,7 +326,7 @@ const handleNaverMapClick = () => {
 
   .kakao-arrow {
     display: inline;
-    font-size: clamp(15px, 1.2vw, 18px);
+    font-size: calc(var(--cta-title) + 2px);
     transition: transform 0.24s ease;
   }
 
@@ -339,15 +341,50 @@ const handleNaverMapClick = () => {
   }
 }
 
-/* 노트북처럼 세로가 짧은 화면에서는 더 낮게 */
-@media (min-width: 900px) and (max-height: 720px) {
+/* 일반 데스크톱 */
+@media (min-width: 1200px) {
   .mobile-conversion-bar {
-    --cta-width: clamp(160px, 13.5vw, 206px);
-    --cta-height: clamp(50px, 4.2vw, 60px);
-    --cta-icon: clamp(18px, 1.5vw, 22px);
-    --cta-title: clamp(13px, 1vw, 15px);
+    --cta-width: 182px;
+    --cta-height: 54px;
+    --cta-pad-x: 13px;
+    --cta-gap: 9px;
+    --cta-icon: 18px;
+    --cta-title: 13.5px;
+    --cta-sub: 10px;
 
-    bottom: clamp(14px, 1.8vw, 24px);
+    right: 26px;
+    bottom: 24px;
+  }
+}
+
+/* 넓은 모니터 — 여기서 성장을 멈춘다 */
+@media (min-width: 1600px) {
+  .mobile-conversion-bar {
+    --cta-width: 194px;
+    --cta-height: 58px;
+    --cta-pad-x: 14px;
+    --cta-gap: 10px;
+    --cta-icon: 19px;
+    --cta-title: 14.5px;
+    --cta-sub: 10.5px;
+
+    right: 32px;
+    bottom: 28px;
+  }
+}
+
+/* 세로가 짧은 노트북에서는 화면을 덜 가리도록 납작하게 */
+@media (min-width: 900px) and (max-height: 800px) {
+  .mobile-conversion-bar {
+    --cta-width: 172px;
+    --cta-height: 50px;
+    --cta-pad-x: 12px;
+    --cta-gap: 8px;
+    --cta-icon: 17px;
+    --cta-title: 13px;
+    --cta-sub: 9.5px;
+
+    bottom: 18px;
   }
 }
 
@@ -376,7 +413,7 @@ const handleNaverMapClick = () => {
 
   60%,
   100% {
-    box-shadow: 0 0 0 16px rgba(201, 162, 39, 0);
+    box-shadow: 0 0 0 12px rgba(201, 162, 39, 0);
   }
 }
 
