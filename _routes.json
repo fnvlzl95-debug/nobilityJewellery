@@ -24,6 +24,7 @@
     "/sitemap.xml",
     "/wedding",
     "/wholesale",
+    "/__site-config__/debug.json",
     "/__sitemap__/style.xsl",
     "/baby-gold/_payload.json",
     "/buy-gold/_payload.json",
@@ -38,6 +39,7 @@
     "/guide/baby-ring-price",
     "/guide/baby-ring-production-time",
     "/guide/birthstone-necklace-gift-guide",
+    "/guide/bracelet-size-measuring-guide",
     "/guide/couple-ring-14k-18k-price-difference",
     "/guide/couple-ring-engraving-guide",
     "/guide/cubic-moissanite-diamond-difference",
@@ -77,6 +79,7 @@
     "/guide/ring-finger-meaning-guide",
     "/guide/ring-metal-allergy-guide",
     "/guide/ring-size-measuring-method",
+    "/guide/sapphire-quality-factors",
     "/guide/silver-buying",
     "/guide/silver-necklace-repair-possible",
     "/guide/silver-ring-repair-cost",
@@ -93,15 +96,12 @@
     "/guide/baby-ring-price/_payload.json",
     "/guide/baby-ring-production-time/_payload.json",
     "/guide/birthstone-necklace-gift-guide/_payload.json",
+    "/guide/bracelet-size-measuring-guide/_payload.json",
     "/guide/couple-ring-14k-18k-price-difference/_payload.json",
     "/guide/couple-ring-engraving-guide/_payload.json",
     "/guide/cubic-moissanite-diamond-difference/_payload.json",
     "/guide/diamond-3bu-5bu-difference/_payload.json",
     "/guide/diamond-clarity-grades/_payload.json",
-    "/guide/diamond-color-grades/_payload.json",
-    "/guide/diamond-cut-grades/_payload.json",
-    "/guide/diamond-cut-shapes-guide/_payload.json",
-    "/guide/diamond-fluorescence-grades/_payload.json",
-    "/guide/diamond-ring-setting-types/_payload.json"
+    "/guide/diamond-color-grades/_payload.json"
   ]
 }
