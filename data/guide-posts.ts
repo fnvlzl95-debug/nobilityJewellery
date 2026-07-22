@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'bracelet-size-measuring-guide',
+    path: '/guide/bracelet-size-measuring-guide',
+    title: '팔찌 사이즈 재는 법, 손목 둘레와 여유 길이 계산',
+    description: '손목 둘레 측정과 착용 여유 계산, 체인·테니스·참 팔찌와 뱅글 구조별 사이즈 차이를 정리했습니다.',
+    keyword: '팔찌 사이즈 재는 법',
+    image: '/Image/guide/bracelet-size-measurement-hero.webp',
+    publishedAt: '2026-07-22',
+    category: '선택',
+  },
+  {
+    slug: 'sapphire-quality-factors',
+    path: '/guide/sapphire-quality-factors',
+    title: '사파이어 등급 보는 법, 색·투명도·컷·처리 기준',
+    description: '단일 문자 등급의 한계와 색·투명도·컷·캐럿, 가열·격자 확산 처리 및 감별서 확인 기준을 설명합니다.',
+    keyword: '사파이어 등급 보는 법',
+    image: '/Image/guide/sapphire-quality-factors-hero.webp',
+    publishedAt: '2026-07-22',
+    category: '소재·보석',
+  },
+  {
     slug: 'earring-post-bent-repair',
     path: '/guide/earring-post-bent-repair',
     title: '귀걸이 침 휘어짐·부러짐 수리, 교체 전 확인할 것',

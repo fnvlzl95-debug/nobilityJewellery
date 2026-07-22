@@ -114,6 +114,7 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/bracelet-size-measuring-guide', label: '팔찌 사이즈 재는 법', description: '손목 둘레와 착용 여유 계산' },
   { to: '/custom', label: '주문제작 안내', description: '원하는 길이와 디자인으로 제작 상담' },
   { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '링크 구조와 펜던트 조합 비교' },
   { to: '/guide/necklace-bracelet-chain-repair', label: '목걸이 체인 수리', description: '길이 조절과 체인 수리 기준' },
