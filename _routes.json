@@ -52,6 +52,7 @@
     "/guide/diamond-ring-setting-types",
     "/guide/earring-back-lost-types",
     "/guide/earring-post-bent-repair",
+    "/guide/earring-types-guide",
     "/guide/gemstone-mohs-hardness-guide",
     "/guide/gold-jewelry-remodeling-cost",
     "/guide/gold-necklace-length-guide",
@@ -72,6 +73,7 @@
     "/guide/necklace-bracelet-chain-repair",
     "/guide/necklace-chain-types-guide",
     "/guide/necklace-clasp-types",
+    "/guide/opal-types-guide",
     "/guide/pearl-necklace-restringing",
     "/guide/pearl-value-factors",
     "/guide/platinum-vs-white-gold-difference",
@@ -100,8 +102,6 @@
     "/guide/couple-ring-14k-18k-price-difference/_payload.json",
     "/guide/couple-ring-engraving-guide/_payload.json",
     "/guide/cubic-moissanite-diamond-difference/_payload.json",
-    "/guide/diamond-3bu-5bu-difference/_payload.json",
-    "/guide/diamond-clarity-grades/_payload.json",
-    "/guide/diamond-color-grades/_payload.json"
+    "/guide/diamond-3bu-5bu-difference/_payload.json"
   ]
 }
