@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'earring-types-guide',
+    path: '/guide/earring-types-guide',
+    title: '귀걸이 종류, 스터드·드롭·후프·클립형 차이',
+    description: '스터드·후프·허기·드롭·클립형의 움직임과 무게, 잠금 구조 및 착용 목적별 선택 기준을 정리했습니다.',
+    keyword: '귀걸이 종류',
+    image: '/Image/guide/earring-types-hero.webp',
+    publishedAt: '2026-07-23',
+    category: '선택',
+  },
+  {
+    slug: 'opal-types-guide',
+    path: '/guide/opal-types-guide',
+    title: '오팔 종류, 블랙·화이트·볼더·파이어 오팔 차이',
+    description: '블랙·화이트·볼더·크리스털·파이어 오팔의 바탕색, 투명도, 유색 효과와 품질 비교 순서를 정리했습니다.',
+    keyword: '오팔 종류',
+    image: '/Image/guide/opal-types-hero.webp',
+    publishedAt: '2026-07-23',
+    category: '소재·보석',
+  },
+  {
     slug: 'bracelet-size-measuring-guide',
     path: '/guide/bracelet-size-measuring-guide',
     title: '팔찌 사이즈 재는 법, 손목 둘레와 여유 길이 계산',

@@ -1,0 +1,211 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/earring-types-guide'
+const pageTitle = '귀걸이 종류, 스터드·드롭·후프·클립형 차이 | 귀족'
+const pageDescription = '귀걸이 종류를 스터드·후프·허기·드롭·클립형으로 나누고 움직임, 무게, 잠금 구조와 착용 목적에 맞는 선택 기준을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/earring-types-hero.webp`
+const publishedAt = '2026-07-23'
+
+const faqItems = [
+  {
+    question: '매일 착용하기 편한 귀걸이 종류는 무엇인가요?',
+    answer: '귓불에 가깝게 고정되는 작은 스터드나 허기 귀걸이가 움직임과 걸림이 적어 일상용으로 비교하기 쉽습니다. 다만 침 길이, 후프 안지름, 귀걸이 전체 무게와 잠금 상태가 귀 모양에 맞아야 편합니다.',
+  },
+  {
+    question: '후프 귀걸이와 허기 귀걸이는 어떻게 다른가요?',
+    answer: '둘 다 원형 계열이지만 허기는 귓불을 감싸듯 안지름이 작고 귀에 가깝게 붙는 형태를 가리킵니다. 일반 후프는 지름 선택 폭이 더 넓고 귓불 아래로 보이는 원의 크기와 움직임이 커질 수 있습니다.',
+  },
+  {
+    question: '드롭 귀걸이와 댕글 귀걸이는 같은 종류인가요?',
+    answer: '판매 현장에서는 두 이름이 겹쳐 쓰이기도 합니다. 보통 드롭은 귓불 아래로 장식이 내려오는 넓은 범주이고, 댕글은 연결 마디가 있어 움직임이 더 큰 디자인을 설명할 때 많이 사용하므로 실제 길이와 연결 구조를 확인하는 편이 정확합니다.',
+  },
+  {
+    question: '귀를 뚫지 않아도 착용할 수 있는 귀걸이는 무엇인가요?',
+    answer: '클립형 귀걸이와 이어 커프를 비교할 수 있습니다. 클립형은 귓불을 앞뒤에서 잡고, 이어 커프는 귓바퀴 가장자리에 끼우는 구조이므로 압력 조절 범위와 착용 위치, 활동 중 빠짐 여부를 확인해야 합니다.',
+  },
+  {
+    question: '무거운 귀걸이는 어떻게 골라야 하나요?',
+    answer: '한쪽 무게와 전체 길이를 확인하고 짧은 시간부터 착용해 압박감과 귓불 당김을 살펴보세요. 넓은 뒷마개가 하중을 분산하는 데 도움을 줄 수 있지만, 통증이 생기는 무게를 뒷마개만으로 해결할 수는 없습니다.',
+  },
+]
+
+const quickAnswers = [
+  '귀걸이 종류는 귓불에 붙는 위치, 장식의 움직임, 원의 크기와 잠금 구조를 함께 보면 쉽게 구분할 수 있습니다.',
+  '스터드·허기는 걸림이 적은 일상용, 후프·드롭은 크기와 움직임을 활용한 포인트용으로 비교하기 좋습니다.',
+  '디자인 이름보다 한쪽 무게, 침 길이, 후프 안지름, 전체 길이와 실제 잠금 방식을 확인해야 착용 실패를 줄일 수 있습니다.',
+]
+
+const sections = [
+  {
+    title: '귀걸이 종류는 위치·움직임·잠금으로 구분합니다',
+    paragraphs: [
+      '귀걸이 종류를 찾을 때는 상품명만 외우기보다 귀에 어디까지 붙는지, 장식이 얼마나 움직이는지, 어떤 방식으로 고정되는지를 먼저 보세요. 같은 원형 귀걸이라도 귓불에 밀착하면 허기, 지름이 커져 원이 드러나면 후프로 분류되는 식입니다.',
+      '판매처에 따라 드롭과 댕글, 버튼과 스터드처럼 이름을 겹쳐 쓰기도 합니다. 주문 전에는 명칭만 전달하지 말고 정면 사진과 옆면 사진, 한쪽 무게, 길이와 지름을 함께 확인하는 것이 정확합니다.',
+    ],
+    bullets: [
+      '위치: 귓불에 붙는지, 귓불 아래로 내려오는지',
+      '움직임: 본체가 고정되는지, 연결 장식이 흔들리는지',
+      '크기: 정면 폭, 후프 바깥지름과 안지름, 전체 길이',
+      '고정: 침과 뒷마개, 힌지, 후크, 클립 중 어떤 구조인지',
+    ],
+  },
+  {
+    title: '스터드는 귓불에 가깝게 고정되는 기본형입니다',
+    paragraphs: [
+      '스터드 귀걸이는 장식 뒤의 침을 피어싱 구멍에 통과시키고 뒷마개로 고정하는 형태입니다. 작은 금속 볼이나 한 알 보석처럼 장식이 귀에 가깝게 붙어 움직임이 적고, 옷이나 머리카락에 걸릴 부분이 비교적 적어 일상용으로 많이 비교합니다.',
+      '정면 장식이 넓은 버튼형이나 여러 알이 모인 클러스터형도 침으로 고정되면 스터드 계열로 볼 수 있습니다. 장식이 커질수록 한쪽 무게와 뒷면의 기울어짐을 확인하고, 침이 귓불 두께에 맞는 길이인지 살펴보세요.',
+    ],
+    bullets: [
+      '작은 스터드: 움직임과 걸림이 적은 편',
+      '버튼형: 정면 면적이 넓어 귓불을 크게 덮는 형태',
+      '클러스터형: 여러 장식이나 보석을 한 덩어리처럼 배열',
+      '확인 치수: 장식 폭, 침 길이와 굵기, 한쪽 무게',
+    ],
+  },
+  {
+    title: '후프와 허기는 원의 크기와 밀착감이 다릅니다',
+    paragraphs: [
+      '후프 귀걸이는 원 또는 반원 형태가 귀 아래로 드러나는 디자인입니다. 작은 링부터 어깨 가까이 내려오는 큰 링까지 지름 차이가 크며, 지름이 커질수록 시각적 존재감과 움직임, 걸림 가능성도 함께 커집니다.',
+      '허기 귀걸이는 작은 후프가 귓불을 감싸듯 밀착하는 형태입니다. 바깥지름만 같아도 금속 두께와 안지름에 따라 착용 가능 여부가 달라집니다. 귓불이 두껍거나 피어싱 위치가 위쪽이면 안지름과 침에서 링 안쪽까지의 거리를 꼭 확인하세요.',
+    ],
+    bullets: [
+      '후프: 지름 선택 폭이 넓고 원형 실루엣이 잘 보임',
+      '허기: 작은 안지름으로 귓불 가까이 밀착',
+      '힌지형: 접히는 침과 잠금 홈의 맞물림 확인',
+      '원터치형: 닫을 때 걸리는 감각과 좌우 잠금 상태 비교',
+    ],
+  },
+  {
+    title: '드롭과 댕글은 길이와 움직임이 포인트입니다',
+    paragraphs: [
+      '드롭 귀걸이는 귓불 아래로 장식이 내려오는 형태를 넓게 가리킵니다. 짧은 막대나 한 알 보석이 고정된 디자인부터 여러 연결 고리가 움직이는 긴 형태까지 포함될 수 있어 전체 길이를 숫자로 확인해야 합니다.',
+      '댕글은 연결부가 자유롭게 움직이는 디자인을 설명할 때 많이 쓰고, 여러 갈래 장식이 넓게 퍼지는 형태는 샹들리에라고 부르기도 합니다. 길고 움직임이 큰 귀걸이는 목선과 머리카락에 닿는지, 좌우 장식의 균형과 연결 고리가 충분히 닫혀 있는지 살펴보세요.',
+    ],
+    bullets: [
+      '짧은 드롭: 귓불 아래에 한 개 장식이 내려오는 형태',
+      '댕글: 연결 마디를 따라 장식이 흔들리는 형태',
+      '샹들리에: 여러 갈래 장식이 아래로 넓게 펼쳐지는 형태',
+      '확인 치수: 후크 포함 전체 길이, 최대 폭, 한쪽 무게',
+    ],
+  },
+  {
+    title: '클립형과 이어 커프는 피어싱 없이 착용합니다',
+    paragraphs: [
+      '클립형 귀걸이는 스프링이나 나사 조절 장치로 귓불을 앞뒤에서 잡습니다. 피어싱이 없어도 착용할 수 있지만 압력이 약하면 빠지고 강하면 통증이 생길 수 있으므로 조절 범위와 패드 상태를 확인해야 합니다.',
+      '이어 커프는 귓바퀴 가장자리에 틈을 끼워 고정하는 형태입니다. 귓불용 클립과 착용 위치가 다르고 귀 모양에 따른 차이가 커서, 흔들었을 때 빠지지 않는 위치를 찾되 금속 틈을 반복해서 과하게 벌리지 않는 것이 좋습니다.',
+    ],
+    bullets: [
+      '스프링 클립: 여닫는 힘과 실리콘 패드 상태 확인',
+      '나사 클립: 귓불 두께에 맞춘 압력 미세 조절',
+      '이어 커프: 귓바퀴 두께와 고정 위치 확인',
+      '공통 점검: 통증, 눌림 자국, 활동 중 빠짐 여부',
+    ],
+  },
+  {
+    title: '용도와 실제 치수를 정한 뒤 잠금을 확인하세요',
+    paragraphs: [
+      '출퇴근과 매일 착용에는 움직임이 작은 스터드나 허기, 얼굴 주변에 선명한 포인트를 줄 때는 후프나 드롭을 우선 비교할 수 있습니다. 짧은 머리나 묶은 머리는 귀걸이 윤곽이 더 드러나고, 긴 머리는 가는 장식이 가려질 수 있으므로 실제 착용 위치에서 확인하세요.',
+      '마지막에는 디자인별 수치를 같은 표에 적어 비교합니다. 스터드는 정면 폭과 침 길이, 후프는 안지름과 바깥지름, 드롭은 전체 길이와 한쪽 무게, 클립은 압력 조절 여부를 기록하고 잠금이 좌우 모두 안정적으로 작동하는지 점검하세요.',
+    ],
+    bullets: [
+      '일상용: 전화기, 마스크 끈, 옷을 갈아입을 때 걸림 확인',
+      '포인트용: 얼굴과 목선에서 보이는 실제 길이 확인',
+      '장시간 착용: 한쪽 무게와 귓불 당김 비교',
+      '구매 직전: 좌우 잠금, 연결 고리, 침 끝 마감 점검',
+    ],
+    image: {
+      src: '/Image/guide/earring-style-comparison.webp',
+      alt: '나비형 뒷마개가 있는 스터드, 힌지형 허기 후프, 후크형 드롭 귀걸이 세 종류의 옆면 구조 비교',
+      caption: '같은 금색 귀걸이라도 침과 뒷마개, 힌지, 후크처럼 고정 구조가 달라 착용 방법과 점검 항목이 달라집니다.',
+    },
+  },
+]
+
+const cautions = [
+  '드롭·댕글·허기 같은 이름은 판매처별 범위가 다를 수 있으므로 상품명만으로 크기와 구조를 단정하지 마세요.',
+  '무거운 귀걸이로 통증이나 귓불 늘어짐이 느껴지면 넓은 뒷마개로 버티기보다 착용을 중단하고 더 가벼운 제품을 선택하세요.',
+  '힌지와 침을 반복해서 억지로 벌리거나 구부리면 금속 피로와 잠금 불량이 생길 수 있어 헐거움은 수리 가능 여부를 확인하는 편이 안전합니다.',
+]
+
+const relatedLinks = [
+  { to: '/guide/earring-back-lost-types', label: '귀걸이 뒷마개 종류', description: '침과 뒷마개 규격별 교체 기준' },
+  { to: '/guide/earring-post-bent-repair', label: '귀걸이 침 수리', description: '휘어짐·부러짐과 교체 전 점검' },
+  { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 세척과 보관', description: '소재와 보석별 관리 주의점' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '귀걸이 종류', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="선택"
+    keyword="귀걸이 종류"
+    inquiry-type="custom"
+    inquiry-topic="귀걸이 형태와 착용 구조 비교"
+    title="귀걸이 종류, 스터드·드롭·후프·클립형 차이"
+    lead="귀걸이는 귓불에 붙는 위치와 움직임, 원의 크기, 고정 방식에 따라 종류가 달라집니다. 스터드·후프·허기·드롭·클립형의 구조와 착용 목적별 선택 기준을 정리했습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="스터드, 허기, 후프, 드롭, 클립형으로 구성한 옐로우골드 귀걸이 다섯 종류 비교"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

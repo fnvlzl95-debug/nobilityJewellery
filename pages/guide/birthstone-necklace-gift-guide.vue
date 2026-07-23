@@ -146,6 +146,7 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/opal-types-guide', label: '오팔 종류 비교', description: '블랙·화이트·볼더·파이어 오팔 차이' },
   { to: '/guide/sapphire-quality-factors', label: '사파이어 등급 보는 법', description: '색·투명도·컷과 처리 기준' },
   { to: '/custom', label: '주문제작 안내', description: '원하는 탄생석 목걸이 제작 상담' },
   { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도 순위', description: '착용 빈도와 내구성 기준 확인' },
