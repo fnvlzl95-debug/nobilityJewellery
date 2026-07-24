@@ -1,1 +1,0 @@
-import{s as m}from"./DOfMKc48.js";const i=e=>({"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:e.map((t,s)=>({"@type":"ListItem",position:s+1,name:t.name,item:`${m.url}${t.path}`}))});export{i as b};
