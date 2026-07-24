@@ -146,6 +146,7 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/garnet-types-guide', label: '가넷 종류 비교', description: '파이로프·스페사르틴·녹색 가넷 차이' },
   { to: '/guide/opal-types-guide', label: '오팔 종류 비교', description: '블랙·화이트·볼더·파이어 오팔 차이' },
   { to: '/guide/sapphire-quality-factors', label: '사파이어 등급 보는 법', description: '색·투명도·컷과 처리 기준' },
   { to: '/custom', label: '주문제작 안내', description: '원하는 탄생석 목걸이 제작 상담' },

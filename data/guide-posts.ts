@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'necklace-untangling-guide',
+    path: '/guide/necklace-untangling-guide',
+    title: '목걸이 엉켰을 때 푸는 법, 체인 손상 줄이는 순서',
+    description: '목걸이를 당기지 않고 매듭 중심을 넓혀 푸는 순서와 여러 체인 분리법, 수리가 필요한 상태를 정리했습니다.',
+    keyword: '목걸이 엉켰을 때 푸는 법',
+    image: '/Image/guide/necklace-untangling-hero.webp',
+    publishedAt: '2026-07-24',
+    category: '관리',
+  },
+  {
+    slug: 'garnet-types-guide',
+    path: '/guide/garnet-types-guide',
+    title: '가넷 종류, 파이로프·알만다인·스페사르틴·그로슐러·안드라다이트 차이',
+    description: '주요 5개 가넷 종과 로돌라이트·차보라이트·데만토이드 변종, 색·투명도·컷과 크기 비교 기준을 정리했습니다.',
+    keyword: '가넷 종류',
+    image: '/Image/guide/garnet-types-hero.webp',
+    publishedAt: '2026-07-24',
+    category: '소재·보석',
+  },
+  {
     slug: 'earring-types-guide',
     path: '/guide/earring-types-guide',
     title: '귀걸이 종류, 스터드·드롭·후프·클립형 차이',

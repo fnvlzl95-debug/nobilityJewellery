@@ -1,0 +1,213 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/garnet-types-guide'
+const pageTitle = '가넷 종류, 파이로프·알만다인·스페사르틴·그로슐러·안드라다이트 차이 | 귀족'
+const pageDescription = '가넷 종류를 주요 5개 종과 로돌라이트·차보라이트·데만토이드 변종으로 구분하고 색, 투명도, 컷과 크기 비교 기준을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/garnet-types-hero.webp`
+const publishedAt = '2026-07-24'
+
+const faqItems = [
+  {
+    question: '가넷은 모두 짙은 빨간색인가요?',
+    answer: '아닙니다. 가넷은 서로 가까운 여러 광물 종으로 이루어진 그룹이며 보라빛 빨강과 주황빛 빨강 외에도 선명한 주황, 노랑, 녹색과 일부 색변화 유형까지 나타납니다. 붉은 가넷이 흔해서 대표 이미지로 알려졌을 뿐입니다.',
+  },
+  {
+    question: '가넷의 종과 변종은 어떻게 다른가요?',
+    answer: '파이로프·알만다인·스페사르틴·그로슐러·안드라다이트는 화학 조성이 다른 가넷 종입니다. 로돌라이트, 차보라이트, 데만토이드 같은 이름은 특정 종이나 혼합 조성에서 색과 외관으로 구분하는 보석 변종명입니다.',
+  },
+  {
+    question: '차보라이트와 데만토이드는 같은 녹색 가넷인가요?',
+    answer: '둘 다 녹색 가넷이지만 광물 종이 다릅니다. 차보라이트는 녹색 그로슐러 가넷이고, 데만토이드는 녹색 안드라다이트 가넷입니다. 색만 보지 말고 판매 표기와 감별 정보를 함께 확인하세요.',
+  },
+  {
+    question: '로돌라이트 가넷은 어떤 종류인가요?',
+    answer: '로돌라이트는 보통 파이로프와 알만다인 성분이 섞인 보라빛 또는 자주빛 빨강 계열 가넷의 변종명으로 사용됩니다. 단일 종 이름이 아니므로 색과 투명도, 감별 표기를 함께 비교해야 합니다.',
+  },
+  {
+    question: 'AAA 가넷은 공통 품질 등급인가요?',
+    answer: '아닙니다. 판매 업체가 A·AA·AAA 같은 자체 품질 표현을 사용할 수 있지만 가넷 전체에 통용되는 표준 종합 등급표는 없습니다. 색, 투명도와 내포물, 컷, 캐럿과 실제 종류를 항목별로 비교하세요.',
+  },
+]
+
+const quickAnswers = [
+  '가넷은 한 가지 보석이 아니라 같은 결정 구조와 서로 다른 화학 조성을 가진 여러 광물 종의 그룹입니다.',
+  '보석으로 중요한 주요 종은 파이로프·알만다인·스페사르틴·그로슐러·안드라다이트이며 빨강 외에 주황·녹색도 있습니다.',
+  '종류가 품질 순위를 뜻하지 않으므로 각 유형 안에서 색, 투명도와 내포물, 컷, 크기, 감별 정보를 따로 비교해야 합니다.',
+]
+
+const sections = [
+  {
+    title: '가넷은 하나의 광물이 아니라 보석 그룹입니다',
+    paragraphs: [
+      '가넷 종류를 이해하려면 먼저 가넷이 단일 보석명이 아니라는 점을 알아야 합니다. GIA는 가넷을 같은 기본 결정 구조를 공유하지만 화학 조성이 다른 여러 광물 종의 그룹으로 설명합니다. 이 조성 차이 때문에 빨강, 주황, 노랑, 녹색 등 넓은 색 범위가 나타납니다.',
+      '상업적으로 중요한 주요 가넷 종은 파이로프, 알만다인, 스페사르틴, 그로슐러, 안드라다이트 다섯 가지입니다. 실제 보석은 두 종 이상의 성분이 섞인 경우가 많아 종 이름과 로돌라이트·차보라이트 같은 변종명을 구분해 읽어야 합니다.',
+    ],
+    bullets: [
+      '그룹: 서로 가까운 여러 가넷 광물 전체',
+      '종: 화학 조성으로 구분하는 파이로프·알만다인 등',
+      '변종: 색과 외관으로 부르는 로돌라이트·차보라이트 등',
+      '혼합: 두 가지 이상 가넷 종의 성분이 섞인 보석이 많음',
+    ],
+  },
+  {
+    title: '파이로프와 알만다인은 붉은 계열의 대표 종입니다',
+    paragraphs: [
+      '파이로프와 알만다인은 보라빛 빨강부터 주황빛 빨강까지 겹치는 색 범위를 보입니다. 파이로프는 선명한 빨강과 자주빛 빨강 계열로 유통되고, 알만다인은 흔히 더 짙고 갈색기가 섞인 빨강으로 보이지만 색만으로 종을 확정할 수는 없습니다.',
+      '로돌라이트는 보통 파이로프와 알만다인의 혼합 조성에서 나타나는 보라빛 또는 자주빛 빨강 가넷을 가리키는 변종명입니다. 붉은 돌을 비교할 때는 이름보다 명도가 너무 어두워 정면이 검게 닫혀 보이지 않는지, 색과 빛이 고르게 돌아오는지 확인하세요.',
+    ],
+    bullets: [
+      '파이로프: 빨강에서 보라빛 빨강 계열',
+      '알만다인: 짙은 빨강에서 갈색기·주황기가 섞인 빨강 계열',
+      '로돌라이트: 주로 파이로프-알만다인 계열의 보라빛 빨강 변종',
+      '공통 확인: 지나친 어두움, 갈색기, 정면의 검은 영역과 컷',
+    ],
+  },
+  {
+    title: '스페사르틴은 선명한 주황색으로 구분하기 쉽습니다',
+    paragraphs: [
+      '스페사르틴은 노란빛 주황부터 강한 주황, 붉은빛 주황까지 나타나는 가넷 종입니다. 시장에서는 밝고 선명한 주황색 재료를 만다린 가넷이라고 부르기도 하지만, 이는 모든 스페사르틴에 적용되는 공식 품질 등급이 아니라 색의 인상을 설명하는 상업명입니다.',
+      '주황색 가넷에는 헤소나이트도 있습니다. 헤소나이트는 그로슐러 가넷의 주황빛 또는 갈색빛 주황 변종으로, 스페사르틴과 종이 다릅니다. 두 돌을 비교할 때는 판매명만 보지 말고 색의 명도·채도, 투명도와 특징적인 내포물, 감별 표기를 확인하세요.',
+    ],
+    bullets: [
+      '스페사르틴: 노랑빛 주황부터 붉은빛 주황',
+      '만다린 가넷: 선명한 주황색 스페사르틴에 쓰이는 상업명',
+      '헤소나이트: 주황·갈색빛 주황의 그로슐러 변종',
+      '주황색만으로 스페사르틴과 헤소나이트를 확정하지 않기',
+    ],
+  },
+  {
+    title: '차보라이트와 데만토이드는 종이 다른 녹색 가넷입니다',
+    paragraphs: [
+      '차보라이트는 녹색 그로슐러 가넷입니다. 노란빛 녹색부터 선명하고 진한 녹색까지 나타날 수 있으며, 고품질 재료에서는 생기 있는 색과 투명도가 중요한 비교 요소입니다.',
+      '데만토이드는 녹색 안드라다이트 가넷입니다. 노란빛이 섞인 녹색부터 짙은 녹색까지 나타나고 높은 분산으로 무지갯빛 섬광이 두드러질 수 있습니다. 두 종류는 색 범위가 겹치므로 녹색이라는 이유만으로 이름을 정하지 말고 감별 정보를 확인하세요.',
+    ],
+    bullets: [
+      '차보라이트: 녹색 그로슐러 가넷',
+      '데만토이드: 녹색 안드라다이트 가넷',
+      '공통 비교: 초록색의 명도·채도와 정면 밝기',
+      '중요 구매: 독립 감별 보고서의 정체와 중량·치수 대조',
+    ],
+  },
+  {
+    title: '다섯 주요 종을 색과 이름으로 정리하세요',
+    paragraphs: [
+      '가넷 종류를 외울 때는 다섯 종의 대표 색을 출발점으로 삼되, 색 범위가 서로 겹친다는 점을 함께 기억해야 합니다. 파이로프와 알만다인은 붉은 계열, 스페사르틴은 주황 계열, 그로슐러는 무색부터 노랑·주황·녹색, 안드라다이트는 노랑부터 녹색까지 폭넓게 나타납니다.',
+      '우바로바이트도 녹색 가넷 종이지만 보통 결정이 작아 패싯 보석으로 연마하기보다 작은 결정 집합이 장식에 사용됩니다. 제품 설명에서 종과 변종, 상업명이 섞여 있으면 어떤 기준으로 이름을 붙였는지 판매처에 확인하세요.',
+    ],
+    bullets: [
+      '파이로프: 보라빛 빨강·빨강',
+      '알만다인: 보라빛 빨강·주황빛 빨강과 짙은 색',
+      '스페사르틴: 노랑빛 주황·주황·붉은빛 주황',
+      '그로슐러: 무색·노랑·주황·녹색',
+      '안드라다이트: 노랑·갈색·녹색',
+    ],
+  },
+  {
+    title: '종류를 확인한 뒤 색·투명도·컷·크기를 비교하세요',
+    paragraphs: [
+      'GIA는 가넷의 가장 중요한 품질 요소로 색을 설명합니다. 같은 종류 안에서 선호하는 색상, 명도와 채도를 비교하고 정면에서 너무 어둡거나 넓은 소광이 생기지 않는지 확인하세요. 가넷 종류마다 흔한 내포물의 정도가 다르므로 모든 돌에 같은 투명도 기준을 적용해서는 안 됩니다.',
+      '컷은 정면 밝기와 색 분포를 바꾸며, 캐럿의 가치 영향도 종류별 희소성에 따라 다릅니다. 큰 알만다인은 비교적 흔할 수 있지만 차보라이트와 데만토이드는 큰 크기에서 더 희소할 수 있습니다. 같은 조명에서 나란히 보고, 중요한 구매는 감별 보고서로 가넷의 정체를 확인하세요.',
+    ],
+    bullets: [
+      '색: 종류 안에서 색상·명도·채도와 균일성 비교',
+      '투명도: 육안 내포물의 위치와 종류별 일반적 특성 확인',
+      '컷: 정면의 밝기, 소광, 대칭과 광택 점검',
+      '크기: 캐럿과 밀리미터 치수, 종류별 희소성 구분',
+      '감별: 판매명과 실제 광물 정체, 보고서 번호 대조',
+    ],
+    image: {
+      src: '/Image/guide/garnet-color-inspection.webp',
+      alt: '감별 작업자가 주황색 가넷 한 개를 핀셋으로 들고 트레이의 빨강, 자주, 녹색 가넷 세 개와 비교하는 모습',
+      caption: '가넷은 같은 조명에서 종류별 색과 투명도, 컷의 빛 반사를 나란히 비교해야 외관 차이를 정확히 볼 수 있습니다.',
+    },
+  },
+]
+
+const cautions = [
+  '가넷의 종·변종·상업명을 품질 순위로 해석하지 말고 같은 종류 안에서 실물 품질 요소를 비교하세요.',
+  'A·AA·AAA 표기는 업체별 기준이 다를 수 있으므로 서로 다른 판매처의 등급을 일대일로 환산하지 마세요.',
+  '사진의 노출과 화이트밸런스는 빨강·주황·녹색의 명도와 채도를 바꿀 수 있어 중요한 구매는 같은 조명의 실물 비교가 필요합니다.',
+]
+
+const relatedLinks = [
+  { to: '/guide/birthstone-necklace-gift-guide', label: '탄생석 종류와 의미', description: '1월 가넷과 월별 탄생석 정리' },
+  { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도 순위', description: '가넷의 착용 내구성과 보관 기준' },
+  { to: '/custom', label: '유색보석 주얼리 상담', description: '가넷 반지·목걸이 맞춤 제작' },
+]
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:locale', content: 'ko_KR' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: '가넷 종류', path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    category="소재·보석"
+    keyword="가넷 종류"
+    inquiry-type="custom"
+    inquiry-topic="가넷 종류와 품질 비교"
+    title="가넷 종류, 파이로프·알만다인·스페사르틴·그로슐러·안드라다이트 차이"
+    lead="가넷은 짙은 빨간 보석 한 종류가 아니라 여러 광물 종으로 이루어진 그룹입니다. 주요 5개 종과 로돌라이트·차보라이트·데만토이드 변종의 차이, 실물 비교 기준을 정리했습니다."
+    :published-at="publishedAt"
+    :hero-image="ogImage"
+    hero-alt="파이로프, 알만다인, 스페사르틴, 그로슐러, 안드라다이트를 나타내는 다섯 가지 색상의 패싯 가넷"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+  />
+</template>

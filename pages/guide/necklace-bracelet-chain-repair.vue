@@ -119,6 +119,7 @@ useHead({
     ]"
     :faq-items="faqItems"
     :related-links="[
+      { to: '/guide/necklace-untangling-guide', label: '엉킨 목걸이 푸는 법', description: '매듭과 체인 손상 줄이는 순서' },
       { to: '/repair', label: '수리·AS 안내', description: '체인 외 수리 가능 항목 보기' },
       { to: '/guide/gold-necklace-repair-time', label: '금목걸이 수리 기간', description: '수리 일정 기준 확인' },
       { to: '/contact', label: '문의하기', description: '사진으로 체인 수리 상담' }
