@@ -124,8 +124,8 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/couple-ring', label: '커플링 맞춤제작', description: '커플링 디자인과 각인 상담' },
+  { to: '/guide/ring-stuck-finger-removal', label: '반지 안 빠질 때 빼는 법', description: '붓기와 응급 신호 확인 순서' },
   { to: '/guide/ring-finger-meaning-guide', label: '반지 끼는 손가락 의미', description: '왼손·오른손 위치별 착용 기준' },
-  { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K 18K 커플링 가격 차이', description: '소재 선택 기준도 함께 확인하세요' },
 ]
 
 useHead({

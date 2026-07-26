@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'ring-stuck-finger-removal',
+    path: '/guide/ring-stuck-finger-removal',
+    title: '반지 안 빠질 때 빼는 법, 손가락 붓기와 응급 신호 확인 순서',
+    description: '반지가 안 빠질 때 손가락 상태를 확인하고 붓기를 줄인 뒤 윤활과 회전을 시도하는 순서, 즉시 전문 제거가 필요한 신호를 정리했습니다.',
+    keyword: '반지 안 빠질 때 빼는 법',
+    image: '/Image/guide/ring-stuck-finger-hero.webp',
+    publishedAt: '2026-07-26',
+    category: '관리',
+  },
+  {
+    slug: 'gold-filled-vermeil-plated-difference',
+    path: '/guide/gold-filled-vermeil-plated-difference',
+    title: '골드필드·골드버메일·금도금 차이, 함량·두께·표기 기준',
+    description: '골드필드·골드버메일·금도금의 바탕 금속과 금층 결합 방식, 함량·두께 표기 및 마모·알레르기·관리 차이를 정리했습니다.',
+    keyword: '골드필드 금도금 차이',
+    image: '/Image/guide/gold-filled-vermeil-plated-hero.webp',
+    publishedAt: '2026-07-26',
+    category: '소재·보석',
+  },
+  {
     slug: 'necklace-untangling-guide',
     path: '/guide/necklace-untangling-guide',
     title: '목걸이 엉켰을 때 푸는 법, 체인 손상 줄이는 순서',
