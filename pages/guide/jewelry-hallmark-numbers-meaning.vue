@@ -146,7 +146,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K 18K 차이', description: '금 함량과 커플링 견적 비교' },
   { to: '/guide/platinum-vs-white-gold-difference', label: '백금과 화이트골드', description: '흰색 귀금속 소재와 관리 차이' },
-  { to: '/guide/silver-buying', label: '은제품 매입 기준', description: '은 함량과 방문 전 확인 항목' },
+  { to: '/guide/hollow-vs-solid-gold-jewelry', label: '중공·솔리드 금제품 차이', description: '금 순도와 내부 구조를 나눠 확인' },
 ]
 
 useHead({

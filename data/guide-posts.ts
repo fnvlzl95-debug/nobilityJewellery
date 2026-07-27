@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'hollow-vs-solid-gold-jewelry',
+    path: '/guide/hollow-vs-solid-gold-jewelry',
+    title: '중공 금목걸이·솔리드 차이, 무게와 찌그러짐 확인법',
+    description: '중공 금목걸이와 솔리드 금제품의 내부 구조, 같은 굵기에서 달라지는 중량·착용감·눌림 위험과 구매 전 확인 항목을 정리했습니다.',
+    keyword: '중공 금목걸이 솔리드 차이',
+    image: '/Image/guide/hollow-vs-solid-gold-jewelry-hero.webp',
+    publishedAt: '2026-07-27',
+    category: '선택',
+  },
+  {
+    slug: 'gemstone-grading-vs-identification-report',
+    path: '/guide/gemstone-grading-vs-identification-report',
+    title: '보석 감정서·감별서 차이, 다이아·유색보석 보고서 읽는 법',
+    description: '감정서와 감별서의 검사 범위, 다이아몬드 4C, 유색보석 종류·처리·산지 표기와 보고서 번호 대조 순서를 정리했습니다.',
+    keyword: '보석 감정서 감별서 차이',
+    image: '/Image/guide/grading-vs-identification-report-hero.webp',
+    publishedAt: '2026-07-27',
+    category: '소재·보석',
+  },
+  {
     slug: 'ring-stuck-finger-removal',
     path: '/guide/ring-stuck-finger-removal',
     title: '반지 안 빠질 때 빼는 법, 손가락 붓기와 응급 신호 확인 순서',

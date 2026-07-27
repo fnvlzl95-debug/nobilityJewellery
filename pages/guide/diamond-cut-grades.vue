@@ -136,7 +136,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/diamond-cut-shapes-guide', label: '다이아몬드 컷 종류', description: '라운드·오벌·쿠션 등 모양 비교' },
   { to: '/guide/diamond-color-grades', label: '다이아몬드 컬러 등급', description: 'D부터 Z까지 색 깊이 기준' },
-  { to: '/guide/diamond-clarity-grades', label: '다이아몬드 투명도 등급', description: 'FL부터 I3까지 내포물 기준' },
+  { to: '/guide/gemstone-grading-vs-identification-report', label: '보석 감정서·감별서 차이', description: '4C와 종류·처리 보고서 범위' },
 ]
 
 useHead({
