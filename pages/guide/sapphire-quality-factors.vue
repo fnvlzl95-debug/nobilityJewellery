@@ -133,7 +133,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/birthstone-necklace-gift-guide', label: '탄생석 종류와 의미', description: '9월 사파이어와 월별 보석 정리' },
   { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도 순위', description: '사파이어 경도와 착용 내구성' },
-  { to: '/custom', label: '유색보석 주얼리 상담', description: '사파이어 반지·목걸이 맞춤 제작' },
+  { to: '/guide/ruby-vs-pink-sapphire-difference', label: '루비·핑크 사파이어 차이', description: '코런덤의 빨강·분홍 색 경계' },
 ]
 
 useHead({

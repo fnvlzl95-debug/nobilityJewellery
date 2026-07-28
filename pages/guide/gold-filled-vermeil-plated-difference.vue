@@ -133,7 +133,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/jewelry-hallmark-numbers-meaning', label: '귀금속 각인 숫자 뜻', description: '585·750·925 소재 표기 확인' },
   { to: '/guide/gold-plating-repair', label: '금반지·화이트골드 도금 수리', description: '도금 전 세척과 표면 점검 기준' },
-  { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 세척·보관법', description: '표면 마모를 줄이는 관리 방법' },
+  { to: '/guide/gold-magnet-test-limitations', label: '금 자석 테스트 한계', description: '자석 반응과 전문 검사 구분' },
 ]
 
 useHead({

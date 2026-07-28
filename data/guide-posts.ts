@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'gold-magnet-test-limitations',
+    path: '/guide/gold-magnet-test-limitations',
+    title: '금이 자석에 붙으면 가짜일까? 자석 테스트 한계와 확인 순서',
+    description: '금제품의 본체와 잠금장식 자석 반응을 구분하는 법, 무반응도 진품을 보장하지 않는 이유와 각인·XRF·시금석 확인 순서를 정리했습니다.',
+    keyword: '금 자석에 붙으면',
+    image: '/Image/guide/gold-magnet-test-hero.webp',
+    publishedAt: '2026-07-28',
+    category: '소재·보석',
+  },
+  {
+    slug: 'ruby-vs-pink-sapphire-difference',
+    path: '/guide/ruby-vs-pink-sapphire-difference',
+    title: '루비·핑크 사파이어 차이, 같은 코런덤을 나누는 색 기준',
+    description: '루비와 핑크 사파이어가 같은 코런덤인 이유, 주조색·톤·채도로 나누는 색 경계와 감별서·처리·가격 비교 기준을 정리했습니다.',
+    keyword: '루비 핑크 사파이어 차이',
+    image: '/Image/guide/ruby-vs-pink-sapphire-hero.webp',
+    publishedAt: '2026-07-28',
+    category: '소재·보석',
+  },
+  {
     slug: 'hollow-vs-solid-gold-jewelry',
     path: '/guide/hollow-vs-solid-gold-jewelry',
     title: '중공 금목걸이·솔리드 차이, 무게와 찌그러짐 확인법',
