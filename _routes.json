@@ -54,6 +54,7 @@
     "/guide/gemstone-mohs-hardness-guide",
     "/guide/gold-filled-vermeil-plated-difference",
     "/guide/gold-jewelry-remodeling-cost",
+    "/guide/gold-magnet-test-limitations",
     "/guide/gold-necklace-length-guide",
     "/guide/gold-necklace-repair-time",
     "/guide/gold-one-don-gram",
@@ -83,6 +84,7 @@
     "/guide/ring-metal-allergy-guide",
     "/guide/ring-size-measuring-method",
     "/guide/ring-stuck-finger-removal",
+    "/guide/ruby-vs-pink-sapphire-difference",
     "/guide/sapphire-quality-factors",
     "/guide/silver-buying",
     "/guide/silver-necklace-repair-possible",
@@ -100,8 +102,6 @@
     "/guide/baby-ring-price/_payload.json",
     "/guide/baby-ring-production-time/_payload.json",
     "/guide/birthstone-necklace-gift-guide/_payload.json",
-    "/guide/bracelet-size-measuring-guide/_payload.json",
-    "/guide/couple-ring-14k-18k-price-difference/_payload.json",
-    "/guide/couple-ring-engraving-guide/_payload.json"
+    "/guide/bracelet-size-measuring-guide/_payload.json"
   ]
 }
