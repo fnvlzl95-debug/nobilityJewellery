@@ -49,6 +49,7 @@
     "/guide/earring-back-lost-types",
     "/guide/earring-post-bent-repair",
     "/guide/earring-types-guide",
+    "/guide/emerald-oil-treatment-care",
     "/guide/garnet-types-guide",
     "/guide/gemstone-grading-vs-identification-report",
     "/guide/gemstone-mohs-hardness-guide",
@@ -77,6 +78,7 @@
     "/guide/necklace-untangling-guide",
     "/guide/opal-types-guide",
     "/guide/pearl-necklace-restringing",
+    "/guide/pearl-real-vs-fake-identification",
     "/guide/pearl-value-factors",
     "/guide/platinum-vs-white-gold-difference",
     "/guide/ring-cubic-stone-repair",
@@ -100,8 +102,6 @@
     "/guide/baby-ring-engraving-cost/_payload.json",
     "/guide/baby-ring-order-method/_payload.json",
     "/guide/baby-ring-price/_payload.json",
-    "/guide/baby-ring-production-time/_payload.json",
-    "/guide/birthstone-necklace-gift-guide/_payload.json",
-    "/guide/bracelet-size-measuring-guide/_payload.json"
+    "/guide/baby-ring-production-time/_payload.json"
   ]
 }
