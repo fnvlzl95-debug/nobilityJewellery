@@ -135,7 +135,7 @@ const cautions = [
 const relatedLinks = [
   { to: '/guide/pearl-necklace-restringing', label: '진주 목걸이 줄 교체', description: '매듭과 잠금장식 점검 기준' },
   { to: '/guide/birthstone-necklace-gift-guide', label: '탄생석 종류와 의미', description: '월별 보석과 목걸이 선택 기준' },
-  { to: '/custom', label: '진주 주얼리 상담', description: '목걸이·귀걸이 맞춤 제작 문의' },
+  { to: '/guide/pearl-real-vs-fake-identification', label: '진주 진짜 가짜 구별법', description: '천연·양식·모조 진주 확인 순서' },
 ]
 
 useHead({

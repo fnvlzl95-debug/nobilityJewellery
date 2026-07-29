@@ -131,7 +131,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/guide/diamond-cut-grades', label: '다이아몬드 컷 등급', description: '보고서의 컷·폴리시·대칭 읽기' },
-  { to: '/guide/sapphire-quality-factors', label: '사파이어 품질 기준', description: '색·투명도·컷·처리 비교' },
+  { to: '/guide/emerald-oil-treatment-care', label: '에메랄드 오일 처리', description: '충전재와 처리 정도 표기 확인' },
   { to: '/guide/lab-grown-diamond-natural-difference', label: '랩그로운·천연 다이아 차이', description: '성장 기원과 보고서 표기 확인' },
 ]
 

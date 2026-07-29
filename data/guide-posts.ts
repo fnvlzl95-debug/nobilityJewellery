@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'pearl-real-vs-fake-identification',
+    path: '/guide/pearl-real-vs-fake-identification',
+    title: '진주 진짜 가짜 구별법, 양식·천연·모조 진주 확인 순서',
+    description: '천연·양식 진주와 모조 진주의 차이, 표면·광택·구멍 단서와 치아 테스트의 한계, X선 검사와 감별서 확인 순서를 정리했습니다.',
+    keyword: '진주 진짜 가짜 구별법',
+    image: '/Image/guide/pearl-real-imitation-hero.webp',
+    publishedAt: '2026-07-29',
+    category: '소재·보석',
+  },
+  {
+    slug: 'emerald-oil-treatment-care',
+    path: '/guide/emerald-oil-treatment-care',
+    title: '에메랄드 오일 처리 뜻, 감별서 등급과 세척 관리법',
+    description: '에메랄드 균열을 오일·수지로 충전하는 이유, 감별서의 처리 정도와 가격 비교, 초음파·스팀을 피하는 세척법을 정리했습니다.',
+    keyword: '에메랄드 오일 처리',
+    image: '/Image/guide/emerald-oil-treatment-hero.webp',
+    publishedAt: '2026-07-29',
+    category: '소재·보석',
+  },
+  {
     slug: 'gold-magnet-test-limitations',
     path: '/guide/gold-magnet-test-limitations',
     title: '금이 자석에 붙으면 가짜일까? 자석 테스트 한계와 확인 순서',
