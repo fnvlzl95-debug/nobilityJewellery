@@ -121,7 +121,7 @@ useHead({
     :related-links="[
       { to: '/repair', label: '수리·AS 안내', description: '반지 외 수리 가능 범위 확인' },
       { to: '/guide/ring-size-measuring-method', label: '반지 사이즈 재는 법', description: '주문 전 사이즈 기준 보기' },
-      { to: '/contact', label: '문의하기', description: '사진으로 사이즈 수리 상담' }
+      { to: '/guide/ring-resizing-repair-time', label: '반지 사이즈 수리 기간', description: '당일 수리와 추가 작업 기준' }
     ]"
   />
 </template>

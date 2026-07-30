@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'wedding-ring-production-time',
+    path: '/guide/wedding-ring-production-time',
+    title: '결혼반지 제작 기간, 촬영·예식 날짜 맞추는 주문 시점',
+    description: '결혼반지 제작 기간을 디자인 확정, CAD·모형, 주조, 세팅, 각인, 검수 단계로 나누고 촬영과 예식에 맞춘 주문 일정을 정리했습니다.',
+    keyword: '결혼반지 제작 기간',
+    image: '/Image/guide/wedding-ring-production-time-hero.webp',
+    publishedAt: '2026-07-30',
+    category: '기간',
+  },
+  {
+    slug: 'ring-resizing-repair-time',
+    path: '/guide/ring-resizing-repair-time',
+    title: '반지 사이즈 수리 기간, 당일 수리와 추가 작업 기준',
+    description: '반지 사이즈 줄이기·늘리기 수리 기간을 소재, 조절 폭, 보석 세팅, 각인과 도금 기준으로 설명하고 당일 수리 조건을 정리했습니다.',
+    keyword: '반지 사이즈 수리 기간',
+    image: '/Image/guide/ring-resizing-repair-time-hero.webp',
+    publishedAt: '2026-07-30',
+    category: '기간',
+  },
+  {
     slug: 'pearl-real-vs-fake-identification',
     path: '/guide/pearl-real-vs-fake-identification',
     title: '진주 진짜 가짜 구별법, 양식·천연·모조 진주 확인 순서',
