@@ -45,6 +45,7 @@
     "/guide/diamond-cut-grades",
     "/guide/diamond-cut-shapes-guide",
     "/guide/diamond-fluorescence-grades",
+    "/guide/diamond-ring-resetting-cost",
     "/guide/diamond-ring-setting-types",
     "/guide/earring-back-lost-types",
     "/guide/earring-post-bent-repair",
@@ -65,6 +66,7 @@
     "/guide/hollow-vs-solid-gold-jewelry",
     "/guide/jewelry-cleaning-care-at-home",
     "/guide/jewelry-hallmark-numbers-meaning",
+    "/guide/jongno-custom-couple-ring-order",
     "/guide/jongno-jewelry-store-visit-guide",
     "/guide/jongno-jewelry-wholesale-method",
     "/guide/jongno-ring-size-repair",
@@ -100,8 +102,6 @@
     "/privacy/_payload.json",
     "/repair/_payload.json",
     "/wedding/_payload.json",
-    "/wholesale/_payload.json",
-    "/guide/baby-ring-engraving-cost/_payload.json",
-    "/guide/baby-ring-order-method/_payload.json"
+    "/wholesale/_payload.json"
   ]
 }
