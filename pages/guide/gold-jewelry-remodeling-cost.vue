@@ -128,7 +128,7 @@ const cautions = [
 
 const relatedLinks = [
   { to: '/custom', label: '주문제작 안내', description: '원하는 디자인으로 새 주얼리를 제작하고 싶다면' },
-  { to: '/repair', label: '수리·AS 안내', description: '리폼보다 수리가 나은 경우도 확인하세요' },
+  { to: '/guide/diamond-ring-resetting-cost', label: '다이아 반지 리세팅 비용', description: '기존 다이아 재사용 견적을 확인하세요' },
   { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 비용', description: '수리와 리폼 기준을 비교해보세요' },
 ]
 

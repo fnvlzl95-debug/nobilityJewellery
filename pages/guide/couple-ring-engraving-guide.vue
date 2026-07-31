@@ -120,7 +120,7 @@ useHead({
     :faq-items="faqItems"
     :related-links="[
       { to: '/couple-ring', label: '커플링 보러가기', description: '디자인과 옵션 확인' },
-      { to: '/custom', label: '주문제작 안내', description: '각인 맞춤 상담' },
+      { to: '/guide/jongno-custom-couple-ring-order', label: '종로 커플링 주문제작', description: '상담부터 수령까지 주문 기준' },
       { to: '/contact', label: '문의하기', description: '각인 문구·위치 상담' }
     ]"
   />

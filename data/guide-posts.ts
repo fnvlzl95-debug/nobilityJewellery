@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'jongno-custom-couple-ring-order',
+    path: '/guide/jongno-custom-couple-ring-order',
+    title: '종로 커플링 주문제작, 상담부터 수령까지 확인할 것',
+    description: '종로 커플링 주문제작 전 예산·수령일을 준비하고 소재, 폭, 두께, 호수, 마감, 각인과 제작 확인서를 정하는 순서를 정리했습니다.',
+    keyword: '종로 커플링 주문제작',
+    image: '/Image/guide/jongno-custom-couple-ring-order-hero.webp',
+    publishedAt: '2026-07-31',
+    category: '주문',
+  },
+  {
+    slug: 'diamond-ring-resetting-cost',
+    path: '/guide/diamond-ring-resetting-cost',
+    title: '다이아 반지 리세팅 비용, 기존 보석 재사용 견적 기준',
+    description: '다이아 반지 리세팅 비용을 기존 보석 확인, 탈착, 새 난집·링 제작, 세팅, 보조석과 금속 정산 항목으로 나눠 정리했습니다.',
+    keyword: '다이아 반지 리세팅 비용',
+    image: '/Image/guide/diamond-ring-resetting-cost-hero.webp',
+    publishedAt: '2026-07-31',
+    category: '비용',
+  },
+  {
     slug: 'wedding-ring-production-time',
     path: '/guide/wedding-ring-production-time',
     title: '결혼반지 제작 기간, 촬영·예식 날짜 맞추는 주문 시점',
