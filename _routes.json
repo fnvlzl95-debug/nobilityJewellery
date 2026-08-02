@@ -56,6 +56,7 @@
     "/guide/gemstone-mohs-hardness-guide",
     "/guide/gold-filled-vermeil-plated-difference",
     "/guide/gold-jewelry-remodeling-cost",
+    "/guide/gold-jewelry-remodeling-time",
     "/guide/gold-magnet-test-limitations",
     "/guide/gold-necklace-length-guide",
     "/guide/gold-necklace-repair-time",
@@ -79,6 +80,7 @@
     "/guide/necklace-clasp-types",
     "/guide/necklace-untangling-guide",
     "/guide/opal-types-guide",
+    "/guide/pearl-necklace-cleaning-storage",
     "/guide/pearl-necklace-restringing",
     "/guide/pearl-real-vs-fake-identification",
     "/guide/pearl-value-factors",
@@ -100,8 +102,6 @@
     "/guide/wedding-ring-production-time",
     "/guide/white-gold-discoloration-care",
     "/privacy/_payload.json",
-    "/repair/_payload.json",
-    "/wedding/_payload.json",
-    "/wholesale/_payload.json"
+    "/repair/_payload.json"
   ]
 }
