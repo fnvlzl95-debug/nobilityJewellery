@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'gold-jewelry-remodeling-time',
+    path: '/guide/gold-jewelry-remodeling-time',
+    title: '금 리폼 기간, 디자인 확정부터 새 반지·목걸이 수령까지',
+    description: '금 리폼 기간을 기존 금·보석 확인, 디자인 확정, 제작, 세팅, 마감과 검수 단계로 나누고 희망 수령일에 맞춘 일정을 정리했습니다.',
+    keyword: '금 리폼 기간',
+    image: '/Image/guide/gold-jewelry-remodeling-time-hero.webp',
+    publishedAt: '2026-08-02',
+    category: '기간',
+  },
+  {
+    slug: 'pearl-necklace-cleaning-storage',
+    path: '/guide/pearl-necklace-cleaning-storage',
+    title: '진주 목걸이 세척·보관법, 광택과 실 손상 줄이는 관리 순서',
+    description: '진주 목걸이 세척·보관법을 착용 후 닦기, 미지근한 비눗물 세척, 평평하게 건조·보관하는 순서와 주의점으로 정리했습니다.',
+    keyword: '진주 목걸이 세척 보관법',
+    image: '/Image/guide/pearl-necklace-care-hero.webp',
+    publishedAt: '2026-08-02',
+    category: '관리',
+  },
+  {
     slug: 'jongno-custom-couple-ring-order',
     path: '/guide/jongno-custom-couple-ring-order',
     title: '종로 커플링 주문제작, 상담부터 수령까지 확인할 것',

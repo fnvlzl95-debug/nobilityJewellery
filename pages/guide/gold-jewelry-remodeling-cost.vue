@@ -127,9 +127,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/gold-jewelry-remodeling-time', label: '금 리폼 기간', description: '디자인 확정부터 수령까지 일정을 확인하세요' },
   { to: '/custom', label: '주문제작 안내', description: '원하는 디자인으로 새 주얼리를 제작하고 싶다면' },
   { to: '/guide/diamond-ring-resetting-cost', label: '다이아 반지 리세팅 비용', description: '기존 다이아 재사용 견적을 확인하세요' },
-  { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 비용', description: '수리와 리폼 기준을 비교해보세요' },
 ]
 
 useHead({
