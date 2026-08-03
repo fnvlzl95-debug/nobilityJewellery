@@ -133,9 +133,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/single-earring-reproduction-cost', label: '귀걸이 한짝 제작 비용', description: '남은 한쪽으로 복원하는 견적 기준' },
   { to: '/guide/earring-back-lost-types', label: '귀걸이 뒷마개 교체', description: '침 굵기와 잠금 방식 맞추는 기준' },
   { to: '/guide/jewelry-hallmark-numbers-meaning', label: '귀금속 각인 숫자', description: '585·750·925 소재 표기 확인' },
-  { to: '/repair', label: '귀금속 수리 안내', description: '귀걸이 침 상태 사진 상담' },
 ]
 
 useHead({

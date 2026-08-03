@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'single-earring-reproduction-cost',
+    path: '/guide/single-earring-reproduction-cost',
+    title: '귀걸이 한짝 제작 비용, 남은 한쪽으로 맞춤 복원할 때 견적 기준',
+    description: '귀걸이 한짝 제작 비용을 원본 실측, 모델 복원, 금 중량, 보석 매칭, 침·뒷마개와 마감 항목으로 나눠 정리했습니다.',
+    keyword: '귀걸이 한짝 제작 비용',
+    image: '/Image/guide/single-earring-reproduction-cost-hero.webp',
+    publishedAt: '2026-08-03',
+    category: '비용',
+  },
+  {
+    slug: 'custom-gold-bracelet-order',
+    path: '/guide/custom-gold-bracelet-order',
+    title: '금팔찌 주문제작, 길이·굵기·체인·잠금장치 정하는 법',
+    description: '금팔찌 주문제작 전 손목 둘레와 완성 길이, 14K·18K, 체인 구조, 폭·두께·중량, 잠금장치와 확인서 항목을 정리했습니다.',
+    keyword: '금팔찌 주문제작',
+    image: '/Image/guide/custom-gold-bracelet-order-hero.webp',
+    publishedAt: '2026-08-03',
+    category: '주문',
+  },
+  {
     slug: 'gold-jewelry-remodeling-time',
     path: '/guide/gold-jewelry-remodeling-time',
     title: '금 리폼 기간, 디자인 확정부터 새 반지·목걸이 수령까지',

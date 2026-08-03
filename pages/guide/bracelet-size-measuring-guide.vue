@@ -131,9 +131,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/custom-gold-bracelet-order', label: '금팔찌 주문제작', description: '길이·굵기·체인과 잠금장치 정하기' },
   { to: '/guide/gold-necklace-length-guide', label: '금목걸이 길이 추천', description: '42·45·50cm 착용 위치 비교' },
   { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '링크 구조와 유연성 차이' },
-  { to: '/guide/necklace-bracelet-chain-repair', label: '팔찌 체인 수리', description: '잠금장식과 연결부 수리 기준' },
 ]
 
 useHead({
