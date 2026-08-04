@@ -130,9 +130,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/custom-earrings-production-time', label: '귀걸이 주문제작 기간', description: '디자인 승인부터 한 쌍 검수까지 일정을 확인하세요' },
   { to: '/guide/earring-back-lost-types', label: '귀걸이 뒷마개 종류', description: '침과 뒷마개 규격별 교체 기준' },
   { to: '/guide/earring-post-bent-repair', label: '귀걸이 침 수리', description: '휘어짐·부러짐과 교체 전 점검' },
-  { to: '/guide/jewelry-cleaning-care-at-home', label: '주얼리 세척과 보관', description: '소재와 보석별 관리 주의점' },
 ]
 
 useHead({

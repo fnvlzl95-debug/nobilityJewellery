@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'custom-earrings-production-time',
+    path: '/guide/custom-earrings-production-time',
+    title: '귀걸이 주문제작 기간, 디자인 확정부터 한쌍 수령까지',
+    description: '귀걸이 주문제작 기간을 좌우 규격 확정, 모델 제작, 주조·조립, 세팅, 마감과 착용 검수 단계로 나눠 정리했습니다.',
+    keyword: '귀걸이 주문제작 기간',
+    image: '/Image/guide/custom-earrings-production-time-hero.webp',
+    publishedAt: '2026-08-04',
+    category: '기간',
+  },
+  {
+    slug: 'diamond-ring-cleaning-care',
+    path: '/guide/diamond-ring-cleaning-care',
+    title: '다이아 반지 세척 방법, 광택과 세팅 손상 줄이는 순서',
+    description: '다이아 반지 세척 방법을 세팅 점검, 미지근한 비눗물, 부드러운 솔질, 안전한 헹굼과 건조 순서로 정리했습니다.',
+    keyword: '다이아 반지 세척 방법',
+    image: '/Image/guide/diamond-ring-cleaning-care-hero.webp',
+    publishedAt: '2026-08-04',
+    category: '관리',
+  },
+  {
     slug: 'single-earring-reproduction-cost',
     path: '/guide/single-earring-reproduction-cost',
     title: '귀걸이 한짝 제작 비용, 남은 한쪽으로 맞춤 복원할 때 견적 기준',

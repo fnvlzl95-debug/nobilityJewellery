@@ -119,9 +119,9 @@ useHead({
     ]"
     :faq-items="faqItems"
     :related-links="[
+      { to: '/guide/diamond-ring-cleaning-care', label: '다이아 반지 세척 방법', description: '세팅 점검부터 안전한 헹굼까지' },
       { to: '/repair', label: '수리·AS 안내', description: '전문 세척·재도금' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금이 필요할 때' },
-      { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 모스 경도', description: '긁힘과 분리 보관 기준' }
     ]"
   />
 </template>
