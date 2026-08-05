@@ -67,6 +67,11 @@ function escapeHtml(value: string): string {
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig(event)
+  const cloudflareEnv = (
+    event.context as typeof event.context & {
+      cloudflare?: { env?: Record<string, string | undefined> }
+    }
+  ).cloudflare?.env ?? {}
   const ip = event.node.req.headers['x-forwarded-for'] as string ||
              event.node.req.socket.remoteAddress ||
              'unknown'
@@ -135,7 +140,25 @@ export default defineEventHandler(async (event) => {
 
   // Send email notification
   try {
-    const inquiryTo = runtimeConfig.inquiryTo || ''
+    // Cloudflare Pages exposes runtime bindings on the request context. Support
+    // both the existing variable names and Nuxt's NUXT_* runtime overrides.
+    const resendApiKey = cloudflareEnv.RESEND_API_KEY ||
+      cloudflareEnv.NUXT_RESEND_API_KEY ||
+      runtimeConfig.resendApiKey ||
+      ''
+    const resendFrom = cloudflareEnv.RESEND_FROM ||
+      cloudflareEnv.NUXT_RESEND_FROM ||
+      runtimeConfig.resendFrom ||
+      ''
+    const inquiryTo = cloudflareEnv.INQUIRY_TO ||
+      cloudflareEnv.NUXT_INQUIRY_TO ||
+      runtimeConfig.inquiryTo ||
+      ''
+
+    if (!resendApiKey) {
+      throw new Error('RESEND_API_KEY not configured')
+    }
+
     if (!inquiryTo) {
       throw new Error('inquiry recipient not configured')
     }
@@ -143,6 +166,8 @@ export default defineEventHandler(async (event) => {
     await sendMail({
       to: inquiryTo,
       subject: `[귀족] 새 문의 ${inquiry.id} - ${inquiry.typeLabel} / ${inquiry.name}`,
+      apiKey: resendApiKey,
+      fromEmail: resendFrom,
       html: `
         <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #c9a227; border-bottom: 2px solid #c9a227; padding-bottom: 10px;">

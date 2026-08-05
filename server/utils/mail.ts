@@ -1,16 +1,16 @@
-import { useRuntimeConfig } from '#imports'
 import { siteConfig } from '~/config/site'
 
 interface MailOptions {
   to: string
   subject: string
   html: string
+  apiKey: string
+  fromEmail?: string
 }
 
 export async function sendMail(options: MailOptions) {
-  const runtimeConfig = useRuntimeConfig()
-  const apiKey = runtimeConfig.resendApiKey || process.env.RESEND_API_KEY || ''
-  const fromEmail = runtimeConfig.resendFrom || siteConfig.mail.from
+  const apiKey = options.apiKey
+  const fromEmail = options.fromEmail || siteConfig.mail.from
   const from = fromEmail.includes('<') ? fromEmail : `${siteConfig.name} 문의 <${fromEmail}>`
 
   if (!apiKey) {
