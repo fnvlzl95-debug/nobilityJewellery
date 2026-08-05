@@ -3,10 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gold-necklace-length-guide'
-const pageTitle = '금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준 | 귀족'
+const pageTitle = '남자·여자 목걸이 길이 추천: 42·45·50cm 비교 | 귀족'
 const pageDescription = '금목걸이 길이 추천 기준을 42cm, 45cm, 50cm 중심으로 정리했습니다. 체형, 펜던트 크기, 체인 굵기, 선물용 상담 전 확인할 내용을 안내합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/necklace-length-guide-hero.webp`
 const publishedAt = '2026-07-07'
+const updatedAt = '2026-08-05'
 
 const faqItems = [
   {
@@ -153,7 +154,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -184,9 +185,10 @@ useHead({
     keyword="금목걸이 길이 추천"
     inquiry-type="custom"
     inquiry-topic="금목걸이 길이 상담"
-    title="금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준"
+    title="남자·여자 목걸이 길이 추천: 42·45·50cm 비교"
     lead="금목걸이 길이 추천은 42cm, 45cm, 50cm 숫자만 보고 정하면 실패하기 쉽습니다. 목둘레, 체형, 펜던트 크기, 체인 굵기, 선물 목적까지 함께 봐야 실제 착용했을 때 어울리는 길이를 고를 수 있습니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="ogImage"
     hero-alt="금목걸이 길이 추천을 위한 여러 길이의 골드 목걸이"
     :quick-answers="quickAnswers"

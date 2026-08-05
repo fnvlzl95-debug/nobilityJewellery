@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
+import { findGuideClusterForPath } from '~/data/guide-clusters'
 
 interface ArticleSection {
   title: string
@@ -23,6 +24,12 @@ interface FAQItem {
   answer: string
 }
 
+interface SourceReference {
+  label: string
+  url: string
+  note?: string
+}
+
 const props = withDefaults(defineProps<{
   category: string
   title: string
@@ -39,12 +46,18 @@ const props = withDefaults(defineProps<{
   cautions?: string[]
   faqItems?: FAQItem[]
   relatedLinks: RelatedLink[]
+  sourceNote?: string
+  sources?: SourceReference[]
 }>(), {
   inquiryType: 'custom',
   inquiryTopic: '',
+  sourceNote: '귀족 매장 상담과 제작·수리 실무를 바탕으로 작성했으며, 제품 상태·시세·작업 가능 여부는 상담 시점에 다시 확인합니다.',
+  sources: () => [],
 })
 
 const { trackPhoneClick, trackKakaoClick, trackInquiryClick } = useGtag()
+const route = useRoute()
+const guideCluster = computed(() => findGuideClusterForPath(route.path))
 
 const sectionAnchor = (index: number) => `sec-${index + 1}`
 const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
@@ -101,9 +114,10 @@ const handleInquiryClick = () => {
         <h1 class="guide-title">{{ props.title }}</h1>
         <p class="guide-lead">{{ props.lead }}</p>
         <div class="guide-meta">
-          <span>{{ props.publishedAt }} 작성</span>
-          <span v-if="props.updatedAt && props.updatedAt !== props.publishedAt">{{ props.updatedAt }} 업데이트</span>
+          <span>{{ props.publishedAt }} 최초 작성</span>
+          <span>{{ props.updatedAt || props.publishedAt }} 최종 검토</span>
         </div>
+        <slot name="hero-summary" />
         <img :src="props.heroImage" :alt="props.heroAlt" class="guide-hero-image" loading="eager">
       </header>
 
@@ -167,6 +181,17 @@ const handleInquiryClick = () => {
         </ul>
       </section>
 
+      <section class="guide-sources" aria-labelledby="guide-sources-title">
+        <h2 id="guide-sources-title">검토 및 정보 기준</h2>
+        <p>{{ props.sourceNote }}</p>
+        <ul v-if="props.sources.length">
+          <li v-for="source in props.sources" :key="source.url">
+            <a :href="source.url" target="_blank" rel="noopener noreferrer">{{ source.label }}</a>
+            <span v-if="source.note"> — {{ source.note }}</span>
+          </li>
+        </ul>
+      </section>
+
       <section v-if="props.faqItems?.length" class="guide-faq">
         <h2>자주 묻는 질문</h2>
         <div class="guide-faq-list">
@@ -191,6 +216,12 @@ const handleInquiryClick = () => {
           </NuxtLink>
         </div>
       </section>
+
+      <GuideClusterLinks
+        v-if="guideCluster"
+        :cluster-id="guideCluster.id"
+        :current-path="route.path"
+      />
 
       <section class="guide-bottom-cta">
         <h2>이것만 알려주시면 상담이 빨라져요</h2>
@@ -312,7 +343,8 @@ const handleInquiryClick = () => {
 .quick-answer {
   margin-bottom: 28px;
   padding: 20px 22px;
-  border-left: 3px solid #c9a227;
+  border-top: 1px solid rgba(201, 162, 39, 0.7);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.22);
   background: rgba(201, 162, 39, 0.06);
 }
 
@@ -476,7 +508,8 @@ const handleInquiryClick = () => {
 .guide-caution {
   margin-bottom: 40px;
   padding: 18px 22px;
-  border-left: 3px solid rgba(255, 168, 168, 0.6);
+  border-top: 1px solid rgba(255, 168, 168, 0.6);
+  border-bottom: 1px solid rgba(255, 168, 168, 0.18);
   background: rgba(255, 168, 168, 0.05);
 }
 
@@ -494,6 +527,39 @@ const handleInquiryClick = () => {
   margin-bottom: 8px;
   line-height: 1.8;
   color: rgba(250, 250, 250, 0.9);
+}
+
+.guide-sources {
+  margin-bottom: 44px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(250, 250, 250, 0.1);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+.guide-sources h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.guide-sources p,
+.guide-sources li {
+  color: rgba(250, 250, 250, 0.74);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.guide-sources p {
+  margin: 0;
+}
+
+.guide-sources ul {
+  margin: 12px 0 0;
+  padding-left: 1.1em;
+}
+
+.guide-sources a {
+  color: #d4b44a;
+  text-underline-offset: 3px;
 }
 
 /* ── FAQ: 이중 박스 제거, 구분선으로 ── */

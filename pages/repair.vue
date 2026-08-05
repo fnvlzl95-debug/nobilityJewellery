@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족',
+  title: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/repair` }
   ],
@@ -15,7 +15,7 @@ useHead({
     { name: 'description', content: '종로 귀금속 수리 전문 귀족. 반지 사이즈 조절, 목걸이 체인 수리, 귀걸이 침 교체, 금 세척·광택. 30년 경력 장인이 직접 수리. 종로3가 금은방.' },
     { name: 'keywords', content: '금반지 수리, 귀금속 AS, 사이즈 조절, 광택, 도금, 종로 귀금속 수리, 체인 수리, 금 세척' },
     // Open Graph
-    { property: 'og:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
+    { property: 'og:title', content: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/repair` },
@@ -24,7 +24,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '귀금속 수리·AS | 반지 사이즈·도금 | 귀족' },
+    { name: 'twitter:title', content: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp` },
   ],
@@ -118,23 +118,6 @@ const repairServices = [
   }
 ]
 
-const relatedGuides = [
-  {
-    to: '/guide/gold-ring-repair-cost',
-    title: '금반지 수리 비용 기준',
-    description: '작업별 비용과 상담 포인트 정리',
-  },
-  {
-    to: '/guide/pearl-necklace-restringing',
-    title: '진주 목걸이 줄 교체 기준',
-    description: '늘어난 실·매듭·잠금장식 점검 항목',
-  },
-  {
-    to: '/guide',
-    title: '귀금속 가이드 전체 보기',
-    description: '가격·비용·기간 콘텐츠 모음',
-  },
-]
 </script>
 
 <template>
@@ -212,21 +195,7 @@ const relatedGuides = [
           </div>
         </div>
 
-        <section class="guide-links-section">
-          <h2 class="section-title">관련 가이드</h2>
-          <p class="section-desc">수리 상담 전에 참고하면 도움이 되는 글입니다.</p>
-          <div class="guide-links-grid">
-            <NuxtLink
-              v-for="guide in relatedGuides"
-              :key="guide.to"
-              :to="guide.to"
-              class="guide-link-card"
-            >
-              <strong>{{ guide.title }}</strong>
-              <span>{{ guide.description }}</span>
-            </NuxtLink>
-          </div>
-        </section>
+        <GuideClusterLinks cluster-id="repair" current-path="/repair" />
 
         <!-- CTA -->
         <LandingCTA
@@ -477,45 +446,6 @@ const relatedGuides = [
   border-radius: 50%;
 }
 
-/* Related Guide */
-.guide-links-section {
-  margin-bottom: 80px;
-}
-
-.guide-links-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.guide-link-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 18px;
-  text-decoration: none;
-  border: 1px solid rgba(201, 162, 39, 0.3);
-  background: rgba(201, 162, 39, 0.05);
-  transition: border-color 0.2s, transform 0.2s;
-}
-
-.guide-link-card:hover {
-  border-color: #c9a227;
-  transform: translateY(-2px);
-}
-
-.guide-link-card strong {
-  font-size: 15px;
-  color: #fafafa;
-}
-
-.guide-link-card span {
-  font-size: 13px;
-  color: rgba(250, 250, 250, 0.7);
-  line-height: 1.6;
-}
-
 /* CTA */
 .repair-cta {
   text-align: center;
@@ -689,9 +619,4 @@ const relatedGuides = [
   color: #fafafa;
 }
 
-@media (max-width: 900px) {
-  .guide-links-grid {
-    grid-template-columns: 1fr;
-  }
-}
 </style>

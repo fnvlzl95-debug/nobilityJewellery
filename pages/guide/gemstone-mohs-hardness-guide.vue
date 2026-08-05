@@ -3,10 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gemstone-mohs-hardness-guide'
-const pageTitle = '보석 모스 경도 순위, 다이아·루비·오팔·진주 비교 | 귀족'
+const pageTitle = '보석 경도 순위표: 다이아·루비·오팔·진주 비교 | 귀족'
 const pageDescription = '보석 모스 경도 순위를 다이아몬드, 루비·사파이어, 토파즈, 수정, 오팔, 진주로 비교하고 긁힘·충격·보관 기준을 안내합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/gemstone-mohs-hardness-hero.webp`
 const publishedAt = '2026-07-11'
+const updatedAt = '2026-08-05'
 
 const faqItems = [
   {
@@ -176,7 +177,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
         publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
@@ -207,15 +208,23 @@ useHead({
     keyword="보석 모스 경도"
     inquiry-type="custom"
     inquiry-topic="유색 보석 주얼리 상담"
-    title="보석 모스 경도 순위, 다이아·루비·오팔·진주 비교"
+    title="보석 경도 순위표: 다이아·루비·오팔·진주 비교"
     lead="보석 모스 경도는 다이아몬드가 10, 루비와 사파이어가 9처럼 긁힘 저항을 비교하는 기준입니다. 하지만 숫자가 높다고 충격에도 절대 깨지지 않는 것은 아니므로, 반지와 목걸이를 고를 때는 경도와 인성, 안정성, 세팅을 함께 봐야 합니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="ogImage"
     hero-alt="다이아몬드부터 진주까지 보석 모스 경도 순서로 비교한 이미지"
     :quick-answers="quickAnswers"
     :sections="sections"
     :cautions="cautions"
     :faq-items="faqItems"
+    :sources="[
+      {
+        label: 'GIA 모스 경도 안내',
+        url: 'https://4cs.gia.edu/en-us/blog/mohs-scale/',
+        note: '경도는 긁힘 저항이며 충격에 대한 인성과 다르다는 기준'
+      }
+    ]"
     :related-links="relatedLinks"
   />
 </template>

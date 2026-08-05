@@ -10,6 +10,7 @@ export interface GuidePostSummary {
   keyword: string
   image: string
   publishedAt: string
+  updatedAt?: string
   category: GuideCategory
 }
 
@@ -427,11 +428,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gemstone-mohs-hardness-guide',
     path: '/guide/gemstone-mohs-hardness-guide',
-    title: '보석 모스 경도 순위, 다이아·루비·오팔·진주 비교',
+    title: '보석 경도 순위표: 다이아·루비·오팔·진주 비교',
     description: '보석 모스 경도를 다이아몬드, 루비·사파이어, 토파즈, 수정, 오팔, 진주 순으로 비교하고 착용·보관 기준을 정리했습니다.',
     keyword: '보석 모스 경도',
     image: '/Image/guide/gemstone-mohs-hardness-hero.webp',
     publishedAt: '2026-07-11',
+    updatedAt: '2026-08-05',
     category: '관리',
   },
   {
@@ -477,11 +479,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gold-necklace-length-guide',
     path: '/guide/gold-necklace-length-guide',
-    title: '금목걸이 길이 추천, 42cm·45cm·50cm 선택 기준',
+    title: '남자·여자 목걸이 길이 추천: 42·45·50cm 비교',
     description: '금목걸이 길이는 체형, 펜던트 크기, 체인 굵기, 선물 목적에 따라 달라져요. 42cm·45cm·50cm 기준과 상담 전 확인할 내용을 정리했습니다.',
     keyword: '금목걸이 길이 추천',
     image: '/Image/guide/necklace-length-guide-hero.webp',
     publishedAt: '2026-07-07',
+    updatedAt: '2026-08-05',
     category: '선택',
   },
   {
@@ -507,11 +510,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'platinum-vs-white-gold-difference',
     path: '/guide/platinum-vs-white-gold-difference',
-    title: '백금과 화이트골드 차이, 예물 반지 고를 때 기준',
+    title: '화이트골드·백금 차이: 가격·무게·변색·예물 선택',
     description: '백금(플래티넘)과 화이트골드는 색·무게·관리·가격이 달라요. 소재 차이와 재도금, 예물 반지 고를 때 기준을 정리했습니다.',
     keyword: '백금 화이트골드 차이',
     image: '/Image/guide/platinum-white-gold.webp',
     publishedAt: '2026-06-03',
+    updatedAt: '2026-08-05',
     category: '선택',
   },
   {
@@ -567,11 +571,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'necklace-bracelet-chain-repair',
     path: '/guide/necklace-bracelet-chain-repair',
-    title: '목걸이 끊어짐·팔찌 잠금장식 수리, 종로에서 맡기기 전 체크',
+    title: '목걸이 끊어짐·팔찌 체인 수리: 가능 여부·기간·상담',
     description: '목걸이 체인 끊어짐, 팔찌 잠금장식 교체, 연결 고리 손상 상담 전에 확인할 사진과 정보를 정리했습니다.',
     keyword: '목걸이 끊어짐 수리',
     image: '/Image/necklace/NC0301.webp',
     publishedAt: '2026-05-28',
+    updatedAt: '2026-08-05',
     category: '수리',
   },
   {
@@ -777,11 +782,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gold-one-don-gram',
     path: '/guide/gold-one-don-gram',
-    title: '금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리',
+    title: '금 1돈 몇 g? 3.75g 환산·순도별 무게 계산',
     description: '금 1돈은 3.75g입니다. 하지만 가격은 순도, 공임, 구성까지 함께 봐야 정확해요. 상담 전에 꼭 알아둘 기준을 정리했습니다.',
     keyword: '금 1돈 몇 g',
     image: '/Image/ring/SB0105.webp',
     publishedAt: '2026-03-31',
+    updatedAt: '2026-08-05',
     category: '가격',
   },
 ]

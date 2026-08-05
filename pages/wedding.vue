@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '결혼예물 세트·커플링 | 종로 예물 | 귀족',
+  title: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/wedding` }
   ],
@@ -15,7 +15,7 @@ useHead({
     { name: 'description', content: '결혼예물 주문제작 전문 귀족. 결혼반지, 예물 세트, 시댁예물, 처가예물. 18K 골드, 다이아몬드 예물. 30년 장인 직접 세공. 종로3가 금은방 도매가. 신부예물, 신랑예물 맞춤 구성.' },
     { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
-    { property: 'og:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
+    { property: 'og:title', content: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족' },
     { property: 'og:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/wedding` },
@@ -24,7 +24,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '결혼예물 세트·커플링 | 종로 예물 | 귀족' },
+    { name: 'twitter:title', content: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족' },
     { name: 'twitter:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
   ],
@@ -34,7 +34,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: '결혼예물 세트·커플링 | 종로 예물 | 귀족',
+        name: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족',
         description: '결혼예물 세트, 결혼반지, 시댁예물, 처가예물 주문제작 안내 페이지입니다.',
         url: `${siteConfig.url}/wedding`,
         image: `${siteConfig.url}/Image/set/set0101.webp`,
@@ -127,6 +127,27 @@ const processSteps = [
             도매 기반이라 같은 예산으로 한 단계 높은 구성이 가능합니다.
           </p>
         </div>
+
+        <section class="wedding-overview" aria-labelledby="wedding-overview-title">
+          <h2 id="wedding-overview-title">예물 상담 전에 세 가지만 정하세요</h2>
+          <div class="wedding-overview-grid">
+            <div>
+              <strong>세트 구성</strong>
+              <p>커플링을 중심으로 목걸이·귀걸이·양가 선물 중 필요한 품목만 고릅니다.</p>
+              <NuxtLink to="/guide/wedding-jewelry-set-composition">구성 기준 보기</NuxtLink>
+            </div>
+            <div>
+              <strong>예산</strong>
+              <p>전체 상한선을 먼저 정하고 커플링, 신부·신랑, 양가 예물로 나누면 비교가 쉬워집니다.</p>
+              <NuxtLink to="/contact?type=custom&source=wedding_overview&topic=예물%20예산">예산 상담 남기기</NuxtLink>
+            </div>
+            <div>
+              <strong>제작기간</strong>
+              <p>기본 제작은 2–3주를 기준으로 보되 촬영일과 예식일에서 역산해 여유 있게 확정합니다.</p>
+              <NuxtLink to="/guide/wedding-ring-production-time">일정 기준 보기</NuxtLink>
+            </div>
+          </div>
+        </section>
 
         <!-- Hero Image -->
         <div class="hero-image">
@@ -262,6 +283,8 @@ const processSteps = [
           </div>
         </div>
 
+        <GuideClusterLinks cluster-id="wedding" current-path="/wedding" />
+
         <!-- Related -->
         <div class="related-section">
           <h2 class="section-title">함께 보기</h2>
@@ -333,6 +356,73 @@ const processSteps = [
 .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a227; margin-bottom: 16px; }
 .title { font-size: clamp(32px, 5vw, 48px); font-weight: 300; color: #fafafa; margin-bottom: 20px; }
 .desc { font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(250, 250, 250, 0.6); }
+
+.wedding-overview {
+  margin: 0 0 36px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(201, 162, 39, 0.6);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.24);
+}
+
+.wedding-overview h2 {
+  margin: 0 0 20px;
+  color: #fafafa;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 500;
+  text-align: center;
+}
+
+.wedding-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wedding-overview-grid > div {
+  padding: 4px 24px;
+  border-left: 1px solid rgba(250, 250, 250, 0.12);
+}
+
+.wedding-overview-grid > div:first-child {
+  border-left: 0;
+}
+
+.wedding-overview strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #d4b44a;
+  font-size: 15px;
+}
+
+.wedding-overview p {
+  margin: 0 0 10px;
+  color: rgba(250, 250, 250, 0.76);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.wedding-overview a {
+  color: #fafafa;
+  font-size: 13px;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 720px) {
+  .wedding-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wedding-overview-grid > div,
+  .wedding-overview-grid > div:first-child {
+    padding: 18px 0;
+    border-top: 1px solid rgba(250, 250, 250, 0.1);
+    border-left: 0;
+  }
+
+  .wedding-overview-grid > div:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
 
 /* Hero Image */
 .hero-image { margin-bottom: 80px; aspect-ratio: 16/9; overflow: hidden; border: 1px solid rgba(250, 250, 250, 0.1); }

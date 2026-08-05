@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '24K 순금 돌반지 주문제작 | 종로 | 귀족',
+  title: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인·제작기간 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/baby-gold` }
   ],
@@ -15,7 +15,7 @@ useHead({
     { name: 'description', content: '순금 돌반지 주문제작 전문 귀족. 24K 순금 돌반지, 백일반지, 아기반지. 띠별 디자인(말띠, 용띠, 뱀띠) 맞춤제작. 이름 각인 가능. 종로3가 금은방 도매가 제공. 돌잔치 선물 추천.' },
     { name: 'keywords', content: '돌반지, 순금 돌반지, 돌반지 주문제작, 백일반지, 아기반지, 돌잔치 반지, 24K 돌반지, 순금 아기반지, 띠별 돌반지, 말띠 돌반지, 용띠 돌반지, 종로 돌반지, 금은방 돌반지' },
     // Open Graph
-    { property: 'og:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
+    { property: 'og:title', content: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인·제작기간 | 귀족' },
     { property: 'og:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작. 종로3가 금은방 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/baby-gold` },
@@ -24,7 +24,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '24K 순금 돌반지 주문제작 | 종로 | 귀족' },
+    { name: 'twitter:title', content: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인·제작기간 | 귀족' },
     { name: 'twitter:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/SB0101.webp` },
   ],
@@ -34,7 +34,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: '24K 순금 돌반지 주문제작 | 종로 | 귀족',
+        name: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인·제작기간 | 귀족',
         description: '24K 순금 돌반지, 백일반지, 아기반지 주문제작 안내 페이지입니다.',
         url: `${siteConfig.url}/baby-gold`,
         image: `${siteConfig.url}/Image/ring/SB0101.webp`,

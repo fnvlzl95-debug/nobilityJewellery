@@ -11,6 +11,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
+    "audit:ctr": "node scripts/audit-search-ctr.mjs",
     "verify:seo": "node scripts/verify-seo-output.mjs",
     "verify:seo:live": "node scripts/verify-seo-output.mjs --live https://noblessegold.com",
     "postinstall": "nuxt prepare",

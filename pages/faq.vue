@@ -5,7 +5,7 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 useHead({
-  title: 'FAQ | 도매·주문제작·수리 안내 | 귀족',
+  title: '귀금속 FAQ | 주문제작·수리·금매입·방문 상담 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/faq` }
   ],
@@ -13,7 +13,7 @@ useHead({
     { name: 'description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매 주문방법, 돌반지 주문제작, 커플링, 결혼예물, 반지 사이즈 조절, 귀금속 수리, A/S, 배송, 주차 안내. 종로3가 금은방 자주 묻는 질문.' },
     { name: 'keywords', content: '귀금속 FAQ, 금반지 AS, 수리 기간, 주문제작 기간, 도매 조건, 금 시세, 반지 사이즈, 종로 금은방' },
     // Open Graph
-    { property: 'og:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
+    { property: 'og:title', content: '귀금속 FAQ | 주문제작·수리·금매입·방문 상담 | 귀족' },
     { property: 'og:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/faq` },
@@ -22,7 +22,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'FAQ | 도매·주문제작·수리 안내 | 귀족' },
+    { name: 'twitter:title', content: '귀금속 FAQ | 주문제작·수리·금매입·방문 상담 | 귀족' },
     { name: 'twitter:description', content: '종로 귀금속 도매 귀족 FAQ. 금반지 도매, 돌반지, 커플링, 결혼예물, 귀금속 수리, A/S 안내.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0701.webp` },
   ],

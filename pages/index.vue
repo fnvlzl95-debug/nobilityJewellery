@@ -47,44 +47,6 @@ const handleCtaKakaoClick = () => {
   })
 }
 
-// ===== 무게 환산 계산기 =====
-const DON_TO_GRAM = 3.75
-
-const purityOptions = [
-  { key: '24k', label: '24K 순금', rate: 0.999 },
-  { key: '18k', label: '18K', rate: 0.75 },
-  { key: '14k', label: '14K', rate: 0.585 },
-] as const
-
-type PurityKey = typeof purityOptions[number]['key']
-
-const calcWeight = ref<number | null>(null)
-const calcUnit = ref<'don' | 'gram'>('don')
-const calcPurity = ref<PurityKey>('24k')
-
-const activePurity = computed(() => purityOptions.find((p) => p.key === calcPurity.value)!)
-
-const calcGrams = computed(() => {
-  if (typeof calcWeight.value !== 'number' || calcWeight.value <= 0) return null
-  return calcUnit.value === 'don' ? calcWeight.value * DON_TO_GRAM : calcWeight.value
-})
-
-const formatNum = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
-
-const calcConversion = computed(() => {
-  if (calcGrams.value === null) return null
-  const don = calcGrams.value / DON_TO_GRAM
-  // 입력한 단위를 왼쪽에 표시
-  return calcUnit.value === 'don'
-    ? `${formatNum(don)}돈 = ${formatNum(calcGrams.value)}g`
-    : `${formatNum(calcGrams.value)}g = ${formatNum(don)}돈`
-})
-
-const calcPureGold = computed(() => {
-  if (calcGrams.value === null) return null
-  return `약 ${formatNum(calcGrams.value * activePurity.value.rate)}g`
-})
-
 const previewItems = getPreviewItems(6)
 const intentRoutes = [
   {
@@ -794,60 +756,7 @@ const handleNaverMapClick = () => {
             순도별 순금 함량을 바로 확인해보세요.
           </p>
 
-          <div class="calc-card reveal reveal-delay-3">
-            <div class="calc-controls">
-              <div class="calc-field">
-                <label class="calc-label" for="calc-weight">무게</label>
-                <div class="calc-input-row">
-                  <input
-                    id="calc-weight"
-                    v-model.number="calcWeight"
-                    type="number"
-                    min="0"
-                    step="0.1"
-                    inputmode="decimal"
-                    placeholder="0"
-                    class="calc-input"
-                  >
-                  <div class="calc-toggle" role="group" aria-label="무게 단위 선택">
-                    <button type="button" :class="{ active: calcUnit === 'don' }" @click="calcUnit = 'don'">돈</button>
-                    <button type="button" :class="{ active: calcUnit === 'gram' }" @click="calcUnit = 'gram'">g</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="calc-field">
-                <span class="calc-label" id="calc-purity-label">순도</span>
-                <div class="calc-toggle calc-purity" role="group" aria-labelledby="calc-purity-label">
-                  <button
-                    v-for="p in purityOptions"
-                    :key="p.key"
-                    type="button"
-                    :class="{ active: calcPurity === p.key }"
-                    @click="calcPurity = p.key"
-                  >
-                    {{ p.label }}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="calc-results" aria-live="polite">
-              <div class="calc-result">
-                <span class="calc-result-label">환산 무게</span>
-                <strong class="calc-result-value">{{ calcConversion ?? '—' }}</strong>
-              </div>
-              <div class="calc-result-divider" aria-hidden="true"></div>
-              <div class="calc-result">
-                <span class="calc-result-label">순금 함량 ({{ activePurity.label }})</span>
-                <strong class="calc-result-value">{{ calcPureGold ?? '—' }}</strong>
-              </div>
-            </div>
-
-            <p class="calc-note">
-              * 1돈 = 3.75g 기준. 실제 매입가는 매장에서 감정·계량 후 당일 시세로 정확히 안내해드립니다.
-            </p>
-          </div>
+          <GoldWeightCalculator id-prefix="home-gold-weight" class="reveal reveal-delay-3" />
         </div>
       </div>
     </section>
@@ -1056,10 +965,12 @@ const handleNaverMapClick = () => {
   position: absolute;
   bottom: -4px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 1px;
   background: #c9a227;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover {
@@ -1067,7 +978,7 @@ const handleNaverMapClick = () => {
 }
 
 .nav-link:hover::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
 .nav-cta {
@@ -2285,156 +2196,6 @@ const handleNaverMapClick = () => {
 .calc-inner {
   max-width: 640px;
   margin: 0 auto;
-}
-
-.calc-card {
-  margin-top: 48px;
-  padding: 40px;
-  text-align: left;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(201, 162, 39, 0.2);
-}
-
-.calc-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.calc-field {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.calc-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.85);
-}
-
-.calc-input-row {
-  display: flex;
-  gap: 8px;
-}
-
-.calc-input {
-  flex: 1;
-  min-width: 0;
-  padding: 14px 16px;
-  font-size: 18px;
-  font-family: inherit;
-  color: #fafafa;
-  background: rgba(250, 250, 250, 0.04);
-  border: 1px solid rgba(250, 250, 250, 0.12);
-  transition: border-color 0.3s;
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-.calc-input::-webkit-outer-spin-button,
-.calc-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.calc-input:focus {
-  border-color: rgba(201, 162, 39, 0.5);
-  outline: none;
-}
-
-.calc-toggle {
-  display: flex;
-  gap: 6px;
-}
-
-.calc-toggle button {
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: inherit;
-  color: rgba(250, 250, 250, 0.7);
-  background: rgba(250, 250, 250, 0.03);
-  border: 1px solid rgba(250, 250, 250, 0.12);
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.calc-toggle button:hover {
-  border-color: rgba(201, 162, 39, 0.4);
-}
-
-.calc-toggle button.active {
-  color: #0a0a0a;
-  background: #c9a227;
-  border-color: #c9a227;
-}
-
-.calc-purity {
-  flex-wrap: wrap;
-}
-
-.calc-purity button {
-  flex: 1;
-  min-width: 100px;
-}
-
-.calc-results {
-  display: flex;
-  align-items: stretch;
-  gap: 24px;
-  margin-top: 32px;
-  padding: 24px;
-  background: rgba(201, 162, 39, 0.06);
-  border: 1px solid rgba(201, 162, 39, 0.15);
-}
-
-.calc-result {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.calc-result-label {
-  font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
-}
-
-.calc-result-value {
-  font-size: clamp(20px, 3vw, 26px);
-  font-weight: 700;
-  color: #c9a227;
-}
-
-.calc-result-divider {
-  width: 1px;
-  background: rgba(250, 250, 250, 0.1);
-}
-
-.calc-note {
-  margin-top: 20px;
-  font-size: 12px;
-  line-height: 1.7;
-  color: rgba(250, 250, 250, 0.6);
-}
-
-@media (max-width: 600px) {
-  .calc-card {
-    padding: 24px 20px;
-  }
-
-  .calc-results {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .calc-result-divider {
-    width: 100%;
-    height: 1px;
-  }
 }
 
 /* ===== Location Section ===== */

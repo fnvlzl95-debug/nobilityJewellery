@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '금·은 매입 | 종로 고가매입 상담 | 귀족',
+  title: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/buy-gold` }
   ],
@@ -15,7 +15,7 @@ useHead({
     { name: 'description', content: '종로 금 매입 전문 귀족. 금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K 매입. 은 매입, 백금 매입. 당일 현금 지급. 정확한 시세 적용, 투명한 거래. 종로3가 금은방.' },
     { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
     // Open Graph
-    { property: 'og:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
+    { property: 'og:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족' },
     { property: 'og:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바, 순금, 18K, 14K 매입. 당일 현금 지급. 종로3가 금은방.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/buy-gold` },
@@ -24,7 +24,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '금·은 매입 | 종로 고가매입 상담 | 귀족' },
+    { name: 'twitter:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족' },
     { name: 'twitter:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바 매입. 당일 현금 지급.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
   ],

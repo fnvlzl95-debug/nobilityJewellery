@@ -4,13 +4,25 @@ import { buildBreadcrumbJsonLd } from '~/utils/seo'
 import { guideCategories, guidePosts } from '~/data/guide-posts'
 
 const pagePath = '/guide'
-const basePageTitle = '귀금속 가이드 | 가격·수리·관리·선택·제작기간 | 귀족'
+const basePageTitle = '귀금속 가이드 | 가격·수리·제작기간·소재 비교 | 귀족'
 const pageDescription = '귀금속 가격과 비용, 제작 기간부터 수리·관리·선택·소재·보석·주문 기준까지 주제별로 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0701.webp`
 const postsPerPage = 10
 const categoryOptions = ['전체', ...guideCategories] as const
 
 type CategoryFilter = typeof categoryOptions[number]
+
+const categoryContexts: Record<CategoryFilter, string> = {
+  '전체': '비용과 기간을 먼저 확인한 뒤 수리·관리·소재 선택으로 좁혀보세요. 실제 상담 전에 필요한 기준을 한곳에서 찾을 수 있습니다.',
+  '가격': '제품 가격은 금속 시세만이 아니라 순도·중량·공임·보석·구성에 따라 달라집니다. 같은 조건으로 견적을 비교하는 방법부터 확인하세요.',
+  '비용': '수리와 주문제작 비용은 작업 범위와 제품 상태가 핵심입니다. 확정가 대신 견적을 바꾸는 항목과 상담 전 준비할 사진을 정리했습니다.',
+  '기간': '제작·수리 기간은 사양 확정일, 부속 수급, 표면 마감과 검수 범위에 따라 달라집니다. 필요한 날짜에서 역산해 확인하세요.',
+  '수리': '파손 부위만 보지 말고 소재·보석 세팅·도금·마모 범위를 함께 점검해야 합니다. 증상별 가능 여부와 접수 기준을 모았습니다.',
+  '관리': '세척과 보관법은 금속, 보석, 도금과 접착 여부마다 다릅니다. 손상을 키울 수 있는 방법을 먼저 피하고 안전한 순서로 관리하세요.',
+  '선택': '착용 목적과 빈도, 예산, 관리 부담을 먼저 정하면 소재·길이·사이즈 선택이 쉬워집니다. 비교 기준을 실제 질문 순서로 정리했습니다.',
+  '소재·보석': '순도·경도·처리·감별 정보를 서로 다른 기준으로 읽어야 합니다. 금속과 보석의 특성을 비교하고 착용·관리까지 연결해 보세요.',
+  '주문': '원하는 디자인뿐 아니라 예산, 소재, 치수와 수령일을 함께 확정해야 제작이 시작됩니다. 상담부터 검수까지 필요한 정보를 확인하세요.',
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -52,6 +64,7 @@ const rawCategory = computed(() => {
 const activeCategory = computed<CategoryFilter>(() => (
   categoryOptions.find((category) => category === rawCategory.value) ?? '전체'
 ))
+const activeCategoryContext = computed(() => categoryContexts[activeCategory.value])
 const filteredPosts = computed(() => activeCategory.value === '전체'
   ? guidePosts
   : guidePosts.filter((post) => post.category === activeCategory.value))
@@ -244,6 +257,17 @@ useHead(() => ({
         </div>
       </nav>
 
+      <p class="guide-category-context" aria-live="polite">
+        <strong>{{ activeCategory }}</strong>
+        <span>{{ activeCategoryContext }}</span>
+      </p>
+
+      <GuideClusterLinks
+        v-if="activeCategory === '소재·보석'"
+        cluster-id="gemstone"
+        current-path="/guide?category=소재·보석"
+      />
+
       <div ref="listTop" class="guide-list-meta" tabindex="-1">
         <p>
           <strong>{{ visibleStart }}–{{ visibleEnd }}</strong>
@@ -259,7 +283,7 @@ useHead(() => ({
             <span class="guide-badge">{{ post.category }}</span>
             <h2>{{ post.title }}</h2>
             <p>{{ post.description }}</p>
-            <small>{{ post.publishedAt }}</small>
+            <small>{{ post.updatedAt ? `${post.updatedAt} 업데이트` : post.publishedAt }}</small>
           </div>
         </NuxtLink>
       </div>
@@ -458,6 +482,29 @@ useHead(() => ({
 
 .guide-category-link.is-current small {
   color: rgba(201, 162, 39, 0.68);
+}
+
+.guide-category-context {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 18px;
+  margin: 0 0 22px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  color: rgba(250, 250, 250, 0.76);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.guide-category-context strong {
+  color: #d4b44a;
+}
+
+@media (max-width: 640px) {
+  .guide-category-context {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 }
 
 .guide-list-meta {

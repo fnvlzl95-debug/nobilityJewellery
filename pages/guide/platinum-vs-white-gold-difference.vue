@@ -3,10 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/platinum-vs-white-gold-difference'
-const pageTitle = '백금과 화이트골드 차이, 예물 반지 고를 때 기준 | 귀족'
+const pageTitle = '화이트골드·백금 차이: 가격·무게·변색·예물 선택 | 귀족'
 const pageDescription = '백금(플래티넘)과 화이트골드는 색·무게·관리·가격이 달라요. 소재 차이부터 재도금, 예물 반지를 고를 때 보면 좋은 기준까지 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/platinum-white-gold.webp`
 const publishedAt = '2026-06-03'
+const updatedAt = '2026-08-05'
 const faqItems = [
   {
     question: '백금이 화이트골드보다 무조건 좋나요?',
@@ -55,7 +56,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -86,9 +87,10 @@ useHead({
     keyword="백금 화이트골드 차이"
     inquiry-type="custom"
     inquiry-topic="예물 반지 소재 상담"
-    title="백금과 화이트골드 차이, 예물 반지 고를 때 기준"
+    title="화이트골드·백금 차이: 가격·무게·변색 비교"
     lead="둘 다 은백색이라 헷갈리지만, 백금(플래티넘)과 화이트골드는 소재 자체가 달라요. 색·무게·관리·가격이 달라서, 예물 반지를 고를 때 어떤 점을 보면 좋은지 정리했습니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     hero-image="/Image/guide/platinum-white-gold.webp"
     hero-alt="백금과 화이트골드 반지 비교"
     :quick-answers="[
@@ -118,10 +120,134 @@ useHead({
       '같은 디자인이라도 소재에 따라 가격·무게가 달라집니다.'
     ]"
     :faq-items="faqItems"
+    :sources="[
+      {
+        label: 'GIA 반지 금속 선택 가이드',
+        url: 'https://4cs.gia.edu/en-us/blog/best-ring-material-everyday-wear/',
+        note: '플래티넘·화이트골드의 무게, 도금과 관리 특성'
+      },
+      {
+        label: 'GIA 플래티넘 소재 안내',
+        url: 'https://4cs.gia.edu/en-us/blog/platinum-a-metal-fit-for-kings/',
+        note: '플래티넘의 자연스러운 흰색과 소재 특성'
+      }
+    ]"
     :related-links="[
       { to: '/wedding', label: '예물 안내', description: '예물 반지 구성 보기' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금 기준 보기' },
       { to: '/contact', label: '문의하기', description: '소재·예물 상담' }
     ]"
-  />
+  >
+    <template #hero-summary>
+      <section class="metal-summary" aria-labelledby="metal-summary-title">
+        <h2 id="metal-summary-title">색은 비슷하지만 소재와 관리법은 다릅니다</h2>
+        <p>화이트골드는 금 합금에 로듐 도금을 하는 경우가 많고, 백금(플래티넘)은 금과 다른 자연 은백색 금속입니다.</p>
+
+        <div class="metal-table-wrap">
+          <table>
+            <caption>화이트골드와 백금 핵심 비교</caption>
+            <thead>
+              <tr>
+                <th scope="col">비교 기준</th>
+                <th scope="col">화이트골드</th>
+                <th scope="col">백금(플래티넘)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">소재</th>
+                <td>금에 다른 금속을 섞은 합금</td>
+                <td>금과 다른 백금족 금속</td>
+              </tr>
+              <tr>
+                <th scope="row">무게감</th>
+                <td>같은 크기라면 비교적 가벼움</td>
+                <td>밀도가 높아 더 묵직함</td>
+              </tr>
+              <tr>
+                <th scope="row">표면색</th>
+                <td>로듐 도금이 닳으면 따뜻한 바탕색이 보일 수 있음</td>
+                <td>소재 자체가 은백색</td>
+              </tr>
+              <tr>
+                <th scope="row">관리</th>
+                <td>상태에 따라 재도금</td>
+                <td>광택·표면 마감으로 관리</td>
+              </tr>
+              <tr>
+                <th scope="row">가격</th>
+                <td>순도·중량·디자인·도금에 따라 견적</td>
+                <td>중량·순도·가공 난이도에 따라 견적</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </template>
+  </GuideArticleView>
 </template>
+
+<style scoped>
+.metal-summary {
+  margin: 8px 0 28px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(201, 162, 39, 0.7);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.28);
+}
+
+.metal-summary h2 {
+  margin: 0 0 10px;
+  color: #d4b44a;
+  font-size: clamp(21px, 4vw, 28px);
+  line-height: 1.4;
+}
+
+.metal-summary > p {
+  margin: 0 0 20px;
+  color: rgba(250, 250, 250, 0.86);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.metal-table-wrap {
+  overflow-x: auto;
+}
+
+.metal-summary table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+}
+
+.metal-summary caption {
+  margin-bottom: 10px;
+  color: rgba(250, 250, 250, 0.62);
+  font-size: 12px;
+  text-align: left;
+}
+
+.metal-summary th,
+.metal-summary td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  text-align: left;
+  vertical-align: top;
+}
+
+.metal-summary thead th {
+  color: rgba(250, 250, 250, 0.68);
+  font-size: 12px;
+}
+
+.metal-summary tbody th {
+  width: 92px;
+  color: #d4b44a;
+  font-size: 13px;
+}
+
+.metal-summary td {
+  color: rgba(250, 250, 250, 0.84);
+  font-size: 13px;
+  line-height: 1.65;
+}
+</style>

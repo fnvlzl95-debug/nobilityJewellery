@@ -3,10 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/necklace-bracelet-chain-repair'
-const pageTitle = '목걸이 끊어짐·팔찌 잠금장식 수리, 종로에서 맡기기 전 체크 | 귀족'
+const pageTitle = '목걸이 끊어짐·팔찌 체인 수리 | 가능 여부·기간·상담 | 귀족'
 const pageDescription = '목걸이 끊어짐, 팔찌 체인 수리, 잠금장식 교체를 맡기기 전 확인할 손상 부위, 부속, 일정 상담 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/necklace/NC0301.webp`
 const publishedAt = '2026-05-28'
+const updatedAt = '2026-08-05'
 const faqItems = [
   {
     question: '목걸이가 끊어졌는데 사진만으로 상담할 수 있나요?',
@@ -55,7 +56,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -86,9 +87,10 @@ useHead({
     keyword="목걸이 끊어짐 팔찌 잠금장식 수리"
     inquiry-type="repair"
     inquiry-topic="목걸이·팔찌 체인 수리"
-    title="목걸이 끊어짐·팔찌 잠금장식 수리, 종로에서 맡기기 전 체크"
+    title="목걸이 끊어짐·팔찌 체인 수리: 가능 여부·기간·상담"
     lead="목걸이나 팔찌가 끊어졌을 때는 끊어진 위치, 체인 형태, 잠금장식 상태에 따라 상담 내용이 달라집니다. 방문 전에 어떤 사진과 정보를 준비하면 좋은지 정리했습니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="`${siteConfig.url}/Image/necklace/NC0301.webp`"
     hero-alt="목걸이 체인 수리 상담"
     :quick-answers="[

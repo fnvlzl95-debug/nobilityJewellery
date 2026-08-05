@@ -3,10 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gold-one-don-gram'
-const pageTitle = '금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리 | 귀족'
+const pageTitle = '금 1돈 몇 g? 3.75g 환산·순도별 무게 계산 | 귀족'
 const pageDescription = '금 1돈은 3.75g입니다. 하지만 돌반지와 금목걸이 가격은 1돈 숫자만으로 정해지지 않아요. 순도, 공임, 구성까지 함께 보는 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0105.webp`
 const publishedAt = '2026-03-31'
+const updatedAt = '2026-08-05'
 const faqItems = [
   {
     question: '금 1돈은 정확히 몇 g인가요?',
@@ -63,7 +64,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -94,9 +95,10 @@ useHead({
     keyword="금 1돈 몇 g"
     inquiry-type="custom"
     inquiry-topic="금 1돈 몇 g"
-    title="금 1돈은 몇 g일까? 돌반지·목걸이 볼 때 헷갈리지 않게 정리"
+    title="금 1돈 몇 g? 3.75g 환산과 순도별 무게 계산"
     lead="금 상담을 하다 보면 “1돈이면 몇 그램이에요?”, “돌반지 1돈이면 어느 정도예요?” 같은 질문이 정말 많습니다. 결론부터 말하면 금 1돈은 3.75g이고, 실제 제품 가격은 무게에 순도와 공임, 구성까지 함께 봐야 정확합니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="`${siteConfig.url}/Image/ring/SB0105.webp`"
     hero-alt="금반지와 돌반지 무게 상담"
     :quick-answers="[
@@ -178,10 +180,120 @@ useHead({
       '비교 견적을 볼 때는 무게, 순도, 공임, 포함 항목을 같은 조건으로 맞춰보세요.'
     ]"
     :faq-items="faqItems"
+    :sources="[
+      {
+        label: '국가기술표준원 법정단위 FAQ',
+        url: 'https://www.kats.go.kr/content.do?cmsid=78',
+        note: '1돈 = 3.75g 환산과 g 단위 계량 기준'
+      },
+      {
+        label: '한국거래소 KRX금시장 안내',
+        url: 'https://open.krx.co.kr/contents/OPN/01/01050206/OPN01050206.jsp',
+        note: '금 가격 형성 요인과 1g 거래 기준'
+      }
+    ]"
     :related-links="[
       { to: '/guide/baby-ring-price', label: '돌반지 가격 가이드', description: '1돈 기준 상담 전에 함께 보면 좋아요' },
       { to: '/guide/mother-necklace-price', label: '금목걸이 가격 가이드', description: '목걸이 가격이 어떻게 달라지는지 확인하세요' },
       { to: '/contact', label: '문의하기', description: '무게와 예산을 기준으로 바로 상담받기' }
     ]"
-  />
+  >
+    <template #hero-summary>
+      <section class="don-summary" aria-labelledby="don-summary-title">
+        <h2 id="don-summary-title">금 1돈은 3.75g입니다</h2>
+        <p>돈은 무게 단위이므로 14K·18K·24K 모두 1돈의 무게는 같고, 순금 함량과 제품 가격만 달라집니다.</p>
+
+        <div class="don-table-wrap">
+          <table>
+            <caption>돈을 그램으로 바로 환산</caption>
+            <thead>
+              <tr>
+                <th scope="col">돈</th>
+                <th scope="col">그램(g)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>반돈(0.5돈)</td><td>1.875g</td></tr>
+              <tr><td>1돈</td><td>3.75g</td></tr>
+              <tr><td>2돈</td><td>7.5g</td></tr>
+              <tr><td>3돈</td><td>11.25g</td></tr>
+              <tr><td>10돈</td><td>37.5g</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="don-calculator">
+          <h3>직접 환산해 보기</h3>
+          <GoldWeightCalculator id-prefix="guide-gold-weight" :initial-weight="1" compact />
+        </div>
+      </section>
+    </template>
+  </GuideArticleView>
 </template>
+
+<style scoped>
+.don-summary {
+  margin: 8px 0 28px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(201, 162, 39, 0.7);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.28);
+}
+
+.don-summary h2 {
+  margin: 0 0 10px;
+  color: #d4b44a;
+  font-size: clamp(22px, 4vw, 30px);
+  line-height: 1.35;
+}
+
+.don-summary > p {
+  margin: 0 0 22px;
+  color: rgba(250, 250, 250, 0.86);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.don-table-wrap {
+  overflow-x: auto;
+}
+
+.don-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.don-summary caption {
+  margin-bottom: 10px;
+  color: rgba(250, 250, 250, 0.62);
+  font-size: 12px;
+  text-align: left;
+}
+
+.don-summary th,
+.don-summary td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  text-align: left;
+}
+
+.don-summary th {
+  color: rgba(250, 250, 250, 0.68);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.don-summary td:last-child {
+  color: #fafafa;
+  font-weight: 700;
+}
+
+.don-calculator {
+  margin-top: 28px;
+}
+
+.don-calculator h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+</style>
