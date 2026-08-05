@@ -61,6 +61,9 @@ const guideCluster = computed(() => findGuideClusterForPath(route.path))
 
 const sectionAnchor = (index: number) => `sec-${index + 1}`
 const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
+const displaySectionTitle = (title: string) => String(title || '')
+  .replace(/^\s*(?:\d{1,2}\s*[.)．:：-]\s+|[①-⑳]\s*)/u, '')
+  .trim()
 const inquiryActionLabel = computed(() => {
   if (props.inquiryType === 'repair') return '수리 문의'
   if (props.inquiryType === 'wholesale') return '도매 상담'
@@ -147,7 +150,7 @@ const handleInquiryClick = () => {
         <p class="guide-toc-label">목차</p>
         <ol>
           <li v-for="(section, index) in props.sections" :key="section.title">
-            <a :href="`#${sectionAnchor(index)}`">{{ section.title }}</a>
+            <a :href="`#${sectionAnchor(index)}`">{{ displaySectionTitle(section.title) }}</a>
           </li>
         </ol>
       </nav>
@@ -161,7 +164,7 @@ const handleInquiryClick = () => {
         >
           <h2 class="article-section-title">
             <span class="article-section-index">{{ formatSectionIndex(index) }}</span>
-            {{ section.title }}
+            <span>{{ displaySectionTitle(section.title) }}</span>
           </h2>
           <p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p>
           <ul v-if="section.bullets?.length" class="article-bullets">
@@ -314,6 +317,7 @@ const handleInquiryClick = () => {
   font-size: clamp(28px, 5vw, 40px);
   line-height: 1.32;
   margin: 0 0 16px;
+  text-wrap: balance;
 }
 
 .guide-lead {
@@ -446,6 +450,7 @@ const handleInquiryClick = () => {
 /* ── 본문: 테두리 없는 한 글줄, 제목 앞 인라인 번호 ── */
 .article-section {
   margin-bottom: 48px;
+  scroll-margin-top: 92px;
 }
 
 .article-section-title {
@@ -560,6 +565,7 @@ const handleInquiryClick = () => {
 .guide-sources a {
   color: #d4b44a;
   text-underline-offset: 3px;
+  overflow-wrap: anywhere;
 }
 
 /* ── FAQ: 이중 박스 제거, 구분선으로 ── */
@@ -681,25 +687,160 @@ const handleInquiryClick = () => {
 
 @media (max-width: 720px) {
   .guide-page {
-    padding: 96px 18px 72px;
+    padding: 88px 16px max(88px, calc(72px + env(safe-area-inset-bottom)));
+    font-size: 16px;
+  }
+
+  .guide-back {
+    min-height: 44px;
+    margin-bottom: 12px;
+  }
+
+  .guide-hero {
+    margin-bottom: 30px;
+  }
+
+  .guide-title {
+    margin-bottom: 14px;
+    font-size: clamp(27px, 7.6vw, 32px);
+    line-height: 1.28;
+    letter-spacing: -0.025em;
+  }
+
+  .guide-lead {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .guide-meta {
+    gap: 6px 12px;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  .guide-hero-image,
+  .article-image img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .quick-answer {
+    margin-bottom: 24px;
+    padding: 18px 16px;
+  }
+
+  .quick-answer li,
+  .article-bullets li,
+  .guide-caution li {
+    line-height: 1.72;
   }
 
   .guide-cta-inline {
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 32px;
+    padding: 14px;
   }
 
   .guide-cta-inline-links {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .cta-pill {
     justify-content: center;
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+
+  .cta-pill:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .guide-toc {
+    margin-bottom: 36px;
+    padding: 14px 0;
+  }
+
+  .guide-toc ol {
+    gap: 2px;
+    padding-left: 1.2em;
+  }
+
+  .guide-toc a {
+    display: block;
+    padding: 5px 0;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .article-section {
+    margin-bottom: 40px;
+  }
+
+  .article-section-title {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    font-size: 21px;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .article-section-index {
+    padding-top: 0.18em;
+  }
+
+  .guide-article p {
+    font-size: 16px;
+    line-height: 1.82;
+  }
+
+  .article-image {
+    margin-top: 20px;
+  }
+
+  .article-image figcaption {
+    font-size: 12px;
+  }
+
+  .guide-caution {
+    padding: 18px 16px;
+  }
+
+  .guide-faq-item {
+    padding: 16px 0;
   }
 
   .related-grid {
     grid-template-columns: 1fr;
+  }
+
+  .related-card {
+    min-height: 44px;
+  }
+
+  .guide-bottom-cta {
+    padding: 20px 16px;
+  }
+
+  .guide-bottom-links {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .guide-bottom-links a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .guide-back-bottom {
+    min-height: 44px;
   }
 }
 </style>
