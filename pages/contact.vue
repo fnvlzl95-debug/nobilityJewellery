@@ -224,7 +224,8 @@ const handleSubmit = async () => {
     successHeadingRef.value?.focus()
   } catch (e: any) {
     const errorMessage = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
-    trackFormError('contact', errorMessage, e.statusCode ? 'api_error' : 'submission')
+    const errorCode = e.data?.data?.code || e.data?.code || errorMessage
+    trackFormError('contact', errorCode, e.statusCode ? 'api_error' : 'submission')
     formError.value = errorMessage
   } finally {
     isSubmitting.value = false

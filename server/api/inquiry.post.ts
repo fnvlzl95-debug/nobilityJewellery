@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { defineEventHandler, readBody, createError, getRequestHeader, getRequestIP } from 'h3'
 import { useRuntimeConfig } from '#imports'
 import { sendMail } from '../utils/mail'
 
@@ -72,8 +72,8 @@ export default defineEventHandler(async (event) => {
       cloudflare?: { env?: Record<string, string | undefined> }
     }
   ).cloudflare?.env ?? {}
-  const ip = event.node.req.headers['x-forwarded-for'] as string ||
-             event.node.req.socket.remoteAddress ||
+  const ip = getRequestHeader(event, 'cf-connecting-ip') ||
+             getRequestIP(event, { xForwardedFor: true }) ||
              'unknown'
 
   // Rate limiting
@@ -163,7 +163,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('inquiry recipient not configured')
     }
 
-    await sendMail({
+    const mailResult = await sendMail({
       to: inquiryTo,
       subject: `[귀족] 새 문의 ${inquiry.id} - ${inquiry.typeLabel} / ${inquiry.name}`,
       apiKey: resendApiKey,
@@ -224,11 +224,15 @@ ${escapeHtml(inquiry.message)}
         </div>
       `,
     })
+    console.log('Inquiry email sent:', { inquiryId: inquiry.id, mailId: mailResult.id })
   } catch (error) {
     console.error('Failed to send email:', error)
+    const message = error instanceof Error ? error.message : ''
+    const code = message.includes('not configured') ? 'MAIL_NOT_CONFIGURED' : 'MAIL_PROVIDER_REJECTED'
     throw createError({
-      statusCode: 502,
+      statusCode: code === 'MAIL_NOT_CONFIGURED' ? 503 : 502,
       message: '문의 전송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해주세요.',
+      data: { code },
     })
   }
 

@@ -9,8 +9,8 @@ interface MailOptions {
 }
 
 export async function sendMail(options: MailOptions) {
-  const apiKey = options.apiKey
-  const fromEmail = options.fromEmail || siteConfig.mail.from
+  const apiKey = options.apiKey.trim()
+  const fromEmail = options.fromEmail?.trim() || siteConfig.mail.from
   const from = fromEmail.includes('<') ? fromEmail : `${siteConfig.name} 문의 <${fromEmail}>`
 
   if (!apiKey) {
@@ -32,7 +32,10 @@ export async function sendMail(options: MailOptions) {
   })
 
   if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.message || 'Failed to send email')
+    const error = await response.json().catch(() => null) as { message?: string } | null
+    throw new Error(error?.message || `Resend request failed with status ${response.status}`)
   }
+
+  const result = await response.json().catch(() => null) as { id?: string } | null
+  return { id: result?.id || '' }
 }
