@@ -15,6 +15,7 @@
     "/_nuxt/*",
     "/",
     "/_payload.json",
+    "/.nojekyll",
     "/baby-gold",
     "/buy-gold",
     "/contact",
