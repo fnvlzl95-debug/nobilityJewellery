@@ -124,7 +124,7 @@ const handleKakaoClick = () => {
 
 .btn-gold {
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
 }
 
 .btn-gold:hover {

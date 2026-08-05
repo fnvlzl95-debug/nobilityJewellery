@@ -90,7 +90,6 @@ const handleInquiryClick = () => {
 
 <template>
   <div class="guide-page">
-    <CustomCursor />
 
     <div class="guide-wrap">
       <NuxtLink to="/guide" class="guide-back">

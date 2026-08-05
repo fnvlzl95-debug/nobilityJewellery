@@ -7,8 +7,7 @@ const isVisible = ref(false)
 
 const onMouseMove = (e: MouseEvent) => {
   if (cursorRef.value) {
-    cursorRef.value.style.left = e.clientX + 'px'
-    cursorRef.value.style.top = e.clientY + 'px'
+    cursorRef.value.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`
   }
   if (!isVisible.value) isVisible.value = true
 }
@@ -21,7 +20,14 @@ const onMouseLeave = () => {
   isHovering.value = false
 }
 
+let observer: MutationObserver | null = null
+
 onMounted(() => {
+  // 데스크톱 포인터 환경에서만 활성화. JS가 실행됐을 때만 기본 커서를 숨기도록
+  // html에 클래스를 달아 CSS(cursor: none)의 스코프로 사용한다.
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+  document.documentElement.classList.add('has-custom-cursor')
+
   document.addEventListener('mousemove', onMouseMove)
 
   // Add hover listeners to interactive elements
@@ -32,7 +38,7 @@ onMounted(() => {
   })
 
   // Use MutationObserver to handle dynamically added elements
-  const observer = new MutationObserver(() => {
+  observer = new MutationObserver(() => {
     const newElements = document.querySelectorAll('a, button, [role="button"], .cursor-hover-target')
     newElements.forEach(el => {
       el.removeEventListener('mouseenter', onMouseEnter)
@@ -46,7 +52,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  document.documentElement.classList.remove('has-custom-cursor')
   document.removeEventListener('mousemove', onMouseMove)
+  observer?.disconnect()
+  observer = null
 })
 </script>
 
@@ -66,13 +75,15 @@ onUnmounted(() => {
 <style>
 .custom-cursor {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 20px;
   height: 20px;
   pointer-events: none;
   z-index: 99999;
   opacity: 0;
   transition: opacity 0.3s;
-  will-change: left, top;
+  will-change: transform;
   transform: translate(-50%, -50%);
 }
 

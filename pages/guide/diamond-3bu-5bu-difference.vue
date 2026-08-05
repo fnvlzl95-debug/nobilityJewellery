@@ -193,7 +193,7 @@ useHead({
   <GuideArticleView
     category="가격"
     keyword="다이아 3부 5부 차이"
-    inquiry-type="wedding"
+    inquiry-type="custom"
     inquiry-topic="다이아 3부 5부 차이"
     title="다이아 3부 5부 차이, 예물 반지 고를 때 가격·크기 기준"
     lead="다이아 3부 5부 차이는 예물 반지와 프로포즈 반지를 고를 때 가장 먼저 비교하는 기준입니다. 0.3캐럿과 0.5캐럿의 크기 차이뿐 아니라 4C 등급, 감정서, 세팅 높이, 14K·18K 소재와 전체 예산까지 함께 봐야 후회 없는 선택이 가능합니다."

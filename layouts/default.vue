@@ -4,12 +4,16 @@
 
 <template>
   <div class="min-h-screen">
+    <a href="#main-content" class="skip-link">본문 바로가기</a>
+
     <!-- Global Navigation -->
     <TheNavigation />
 
     <!-- Main content -->
-    <main>
+    <main id="main-content">
       <slot />
     </main>
+
+    <TheFooter />
   </div>
 </template>

@@ -48,6 +48,23 @@ const typeLabels: Record<string, string> = {
   other: '기타',
 }
 
+function createInquiryId(): string {
+  const date = new Date()
+    .toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' })
+    .replaceAll('-', '')
+  const random = crypto.randomUUID().replaceAll('-', '').slice(0, 8).toUpperCase()
+  return `NG-${date}-${random}`
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+}
+
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig(event)
   const ip = event.node.req.headers['x-forwarded-for'] as string ||
@@ -100,7 +117,9 @@ export default defineEventHandler(async (event) => {
   }
 
   // Process inquiry
+  const inquiryId = createInquiryId()
   const inquiry = {
+    id: inquiryId,
     name: body.name.trim(),
     phone: body.phone.replace(/\s/g, ''),
     type: body.type || 'other',
@@ -123,7 +142,7 @@ export default defineEventHandler(async (event) => {
 
     await sendMail({
       to: inquiryTo,
-      subject: `[귀족] 새 문의 - ${inquiry.typeLabel} / ${inquiry.name}`,
+      subject: `[귀족] 새 문의 ${inquiry.id} - ${inquiry.typeLabel} / ${inquiry.name}`,
       html: `
         <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #c9a227; border-bottom: 2px solid #c9a227; padding-bottom: 10px;">
@@ -132,17 +151,21 @@ export default defineEventHandler(async (event) => {
 
           <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             <tr>
+              <td style="padding: 12px; background: #f5f5f5; font-weight: bold; width: 100px;">접수번호</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong>${inquiry.id}</strong></td>
+            </tr>
+            <tr>
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold; width: 100px;">문의 유형</td>
-              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.typeLabel}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${escapeHtml(inquiry.typeLabel)}</td>
             </tr>
             <tr>
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">이름</td>
-              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.name}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${escapeHtml(inquiry.name)}</td>
             </tr>
             <tr>
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">연락처</td>
               <td style="padding: 12px; border-bottom: 1px solid #eee;">
-                <a href="tel:${inquiry.phone}" style="color: #c9a227;">${inquiry.phone}</a>
+                <a href="tel:${escapeHtml(inquiry.phone)}" style="color: #c9a227;">${escapeHtml(inquiry.phone)}</a>
               </td>
             </tr>
             <tr>
@@ -152,13 +175,13 @@ export default defineEventHandler(async (event) => {
             ${inquiry.source ? `
             <tr>
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">유입 출처</td>
-              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.source}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${escapeHtml(inquiry.source)}</td>
             </tr>
             ` : ''}
             ${inquiry.topic ? `
             <tr>
               <td style="padding: 12px; background: #f5f5f5; font-weight: bold;">상담 주제</td>
-              <td style="padding: 12px; border-bottom: 1px solid #eee;">${inquiry.topic}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #eee;">${escapeHtml(inquiry.topic)}</td>
             </tr>
             ` : ''}
           </table>
@@ -166,7 +189,7 @@ export default defineEventHandler(async (event) => {
           <div style="margin: 20px 0;">
             <h3 style="color: #333; margin-bottom: 10px;">문의 내용</h3>
             <div style="background: #f9f9f9; padding: 15px; border-left: 3px solid #c9a227; white-space: pre-wrap;">
-${inquiry.message}
+${escapeHtml(inquiry.message)}
             </div>
           </div>
 
@@ -184,5 +207,5 @@ ${inquiry.message}
     })
   }
 
-  return { ok: true }
+  return { ok: true, inquiryId }
 })

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 // 랜딩 페이지 전용 레이아웃
-// CustomCursor, TheNavigation, TheFooter 자동 포함
+// TheNavigation, TheFooter 자동 포함 (CustomCursor는 app.vue 전역)
 </script>
 
 <template>
   <div class="page-landing">
-    <CustomCursor />
+    <a href="#main-content" class="skip-link">본문 바로가기</a>
     <TheNavigation />
 
-    <main class="main">
+    <main id="main-content" class="main">
       <slot />
     </main>
 

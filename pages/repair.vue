@@ -553,7 +553,7 @@ const relatedGuides = [
   font-size: 14px;
   font-weight: 700;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -663,7 +663,7 @@ const relatedGuides = [
 
 .footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .footer-bottom {
@@ -676,12 +676,12 @@ const relatedGuides = [
 
 .copyright {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .privacy-link {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
   text-decoration: none;
 }
 

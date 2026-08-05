@@ -116,7 +116,7 @@ const relatedGuides = [
           <h1 class="title">금·은 매입</h1>
           <p class="desc">
             사용하지 않는 귀금속, 정당한 가격으로 매입합니다.<br>
-            30년 경력의 신뢰할 수 있는 거래를 약속드립니다.
+            종로3가 금은방 귀족이 30년 경력의 신뢰할 수 있는 거래를 약속드립니다.
           </p>
         </div>
 
@@ -208,6 +208,31 @@ const relatedGuides = [
             </div>
           </div>
         </div>
+
+        <!-- Gold Price Info -->
+        <section class="price-info-section">
+          <h2 class="section-title">순금 시세, 이렇게 확인하세요</h2>
+          <div class="price-info-body">
+            <p>
+              금 시세는 국제 금 가격과 환율에 따라 매일, 하루 중에도 여러 번 바뀝니다.
+              국내에서는 보통 <strong>1돈(3.75g)</strong> 단위로 시세를 표시하며,
+              살 때(소매가)와 팔 때(매입가)의 가격이 다릅니다.
+              한국금거래소 등에서 고시하는 당일 기준 시세를 확인한 뒤 방문하시면
+              매입가가 적정한지 바로 비교하실 수 있습니다.
+            </p>
+            <p>
+              귀족은 서울 종로3가 금은방 밀집 지역, 종묘귀금속백화점 1층에 있어
+              당일 국제 시세를 실시간으로 반영해 매입가를 산정합니다.
+              14K·18K는 순도에 따라 금 함량을 계산해 매입하며,
+              감정과 계량 과정을 모두 보시는 앞에서 진행합니다.
+              방문 전 전화(<a :href="`tel:${siteConfig.phone}`">{{ siteConfig.phone }}</a>)로
+              문의하시면 당일 매입 시세를 미리 안내해드립니다.
+            </p>
+            <NuxtLink to="/guide/gold-price-how-to-check" class="price-info-link">
+              금시세 확인 방법 자세히 보기 →
+            </NuxtLink>
+          </div>
+        </section>
 
         <!-- Notice -->
         <div class="notice-section">
@@ -476,7 +501,7 @@ const relatedGuides = [
 .items-note {
   text-align: center;
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
   margin-top: 24px;
 }
 
@@ -526,7 +551,7 @@ const relatedGuides = [
 .step-arrow {
   width: 24px;
   height: 24px;
-  color: rgba(250, 250, 250, 0.3);
+  color: rgba(250, 250, 250, 0.6);
   margin-top: 24px;
 }
 
@@ -585,6 +610,40 @@ const relatedGuides = [
 }
 
 /* Notice */
+.price-info-section {
+  margin-bottom: 80px;
+}
+
+.price-info-body {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.price-info-body p {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(250, 250, 250, 0.75);
+  margin-bottom: 20px;
+}
+
+.price-info-body strong {
+  color: #c9a227;
+  font-weight: 700;
+}
+
+.price-info-body a {
+  color: #c9a227;
+}
+
+.price-info-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #c9a227;
+  text-decoration: none;
+}
+
 .notice-section {
   margin-bottom: 80px;
   padding: 40px;
@@ -696,7 +755,7 @@ const relatedGuides = [
   font-size: 14px;
   font-weight: 700;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -806,7 +865,7 @@ const relatedGuides = [
 
 .footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .footer-bottom {
@@ -819,12 +878,12 @@ const relatedGuides = [
 
 .copyright {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .privacy-link {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
   text-decoration: none;
 }
 

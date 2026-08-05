@@ -124,6 +124,8 @@ useHead({
 
 let lenis: Lenis | null = null
 let rafId: number | null = null
+let revealObserver: IntersectionObserver | null = null
+let fallbackScrollHandler: (() => void) | null = null
 
 const isScrolled = ref(false)
 const availableCategories = computed(() => availableCategoryData)
@@ -179,18 +181,29 @@ const goToImage = (index: number) => {
 // 라이트박스
 const isLightboxOpen = ref(false)
 
+let lastFocusedElement: HTMLElement | null = null
+
 const openLightbox = () => {
+  lastFocusedElement = document.activeElement as HTMLElement | null
   isLightboxOpen.value = true
   document.body.style.overflow = 'hidden'
+  lenis?.stop()
+  nextTick(() => {
+    document.querySelector<HTMLElement>('.lightbox-close')?.focus()
+  })
 }
 
 const closeLightbox = () => {
   isLightboxOpen.value = false
   document.body.style.overflow = ''
+  lenis?.start()
+  lastFocusedElement?.focus()
+  lastFocusedElement = null
 }
 
-// ESC 키로 닫기
+// 라이트박스 열림 상태에서만 키보드 내비게이션 동작
 const handleKeydown = (e: KeyboardEvent) => {
+  if (!isLightboxOpen.value) return
   if (e.key === 'Escape') closeLightbox()
   if (e.key === 'ArrowRight') nextImage()
   if (e.key === 'ArrowLeft') prevImage()
@@ -201,26 +214,34 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    wheelMultiplier: 1,
-    touchMultiplier: 1.5,
-  })
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  function raf(time: number) {
-    lenis?.raf(time)
+  if (!reduceMotion) {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    })
+
+    function raf(time: number) {
+      lenis?.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
     rafId = requestAnimationFrame(raf)
-  }
-  rafId = requestAnimationFrame(raf)
 
-  lenis.on('scroll', ({ scroll }: { scroll: number }) => {
-    isScrolled.value = scroll > 80
-  })
+    lenis.on('scroll', ({ scroll }: { scroll: number }) => {
+      isScrolled.value = scroll > 80
+    })
+  } else {
+    fallbackScrollHandler = () => { isScrolled.value = window.scrollY > 80 }
+    window.addEventListener('scroll', fallbackScrollHandler, { passive: true })
+    fallbackScrollHandler()
+  }
 
   // Reveal animations
-  const observer = new IntersectionObserver(
+  revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -230,21 +251,27 @@ onMounted(() => {
     },
     { threshold: 0.1 }
   )
-  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver!.observe(el))
 })
 
 onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   lenis?.destroy()
+  revealObserver?.disconnect()
+  revealObserver = null
+  if (fallbackScrollHandler) {
+    window.removeEventListener('scroll', fallbackScrollHandler)
+    fallbackScrollHandler = null
+  }
   window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
 })
 </script>
 
 <template>
   <div class="page">
-    <CustomCursor />
 
-    <main class="main">
+    <div class="main">
       <div class="gallery-container">
         <header class="gallery-header reveal">
           <div>
@@ -374,14 +401,21 @@ onUnmounted(() => {
           </NuxtLink>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- Lightbox -->
     <Teleport to="body">
       <Transition name="lightbox-fade">
-        <div v-if="isLightboxOpen" class="lightbox" @click.self="closeLightbox">
-          <button class="lightbox-close" @click="closeLightbox">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <div
+          v-if="isLightboxOpen"
+          class="lightbox"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="`${activeItem.title} 이미지 보기`"
+          @click.self="closeLightbox"
+        >
+          <button class="lightbox-close" aria-label="닫기" @click="closeLightbox">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>
@@ -398,13 +432,13 @@ onUnmounted(() => {
           </div>
 
           <template v-if="activeItem.images.length > 1">
-            <button class="lightbox-arrow lightbox-prev" @click="prevImage">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <button class="lightbox-arrow lightbox-prev" aria-label="이전 이미지" @click="prevImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6"/>
               </svg>
             </button>
-            <button class="lightbox-arrow lightbox-next" @click="nextImage">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <button class="lightbox-arrow lightbox-next" aria-label="다음 이미지" @click="nextImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </button>
@@ -416,6 +450,8 @@ onUnmounted(() => {
               :key="idx"
               class="lightbox-dot"
               :class="{ active: currentImageIndex === idx }"
+              :aria-label="`${idx + 1}번째 이미지 보기`"
+              :aria-current="currentImageIndex === idx ? 'true' : undefined"
               @click="goToImage(idx)"
             ></button>
           </div>
@@ -775,7 +811,7 @@ onUnmounted(() => {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.42);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .card-meta-list dd {

@@ -29,7 +29,7 @@ const getPrerenderRoutes = (dir = pagesDir): string[] => {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
 
   runtimeConfig: {
     // Server-only (환경변수에서 읽어옴)
@@ -100,7 +100,10 @@ export default defineNuxtConfig({
         // Preconnect for Meta Pixel
         { rel: 'preconnect', href: 'https://connect.facebook.net', crossorigin: '' },
       ],
-      script: process.env.NODE_ENV === 'production' ? [
+      script: [
+        // .reveal 등 JS 의존 스타일의 게이트 클래스 — JS 미실행 시 콘텐츠가 숨지 않도록
+        { innerHTML: 'document.documentElement.classList.add("js-enabled")' },
+        ...(process.env.NODE_ENV === 'production' ? [
         // Google Analytics 4
         { src: `https://www.googletagmanager.com/gtag/js?id=${siteConfig.analytics.ga4}`, async: true },
         { innerHTML: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${siteConfig.analytics.ga4}');` },
@@ -113,7 +116,8 @@ export default defineNuxtConfig({
           key: 'meta-pixel',
           innerHTML: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${siteConfig.analytics.metaPixel}');fbq('track','PageView');`,
         },
-      ] : [],
+      ] : []),
+      ],
       noscript: process.env.NODE_ENV === 'production' ? [
         {
           key: 'meta-pixel-noscript',
@@ -130,7 +134,28 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    cloudflare: {
+      pages: {
+        routes: {
+          // Cloudflare Pages는 _routes.json 규칙을 최대 100개까지만 허용.
+          // 개별 경로 나열 대신 와일드카드로 정적 자산·가이드 전체를 워커 밖으로 뺀다.
+          exclude: [
+            '/_nuxt/*',
+            '/_ipx/*',
+            '/Image/*',
+            '/guide/*',
+            '/favicon.svg',
+            '/favicon.ico',
+            '/robots.txt',
+            '/sitemap.xml',
+          ],
+        },
+      },
+    },
     prerender: {
+      // canonical·sitemap·내부링크의 무슬래시 URL과 Cloudflare Pages 응답을 일치시킨다.
+      // /buy-gold/index.html 대신 /buy-gold.html을 생성해 /buy-gold를 200으로 제공한다.
+      autoSubfolderIndex: false,
       crawlLinks: true,
       routes: getPrerenderRoutes(),
     },

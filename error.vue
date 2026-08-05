@@ -1,9 +1,26 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
+import { siteConfig } from '~/config/site'
 
 const props = defineProps<{
   error: NuxtError
 }>()
+
+useHead({
+  title: props.error.statusCode === 404
+    ? '페이지를 찾을 수 없습니다 | 귀족'
+    : '오류가 발생했습니다 | 귀족',
+  meta: [
+    { name: 'robots', content: 'noindex' },
+  ],
+})
+
+const popularLinks = [
+  { to: '/baby-gold', label: '돌반지' },
+  { to: '/couple-ring', label: '커플링' },
+  { to: '/buy-gold', label: '금·은 매입' },
+  { to: '/guide', label: '주얼리 가이드' },
+]
 
 const handleError = () => {
   clearError({ redirect: '/' })
@@ -26,6 +43,21 @@ const handleError = () => {
       <button @click="handleError" class="error-button">
         <span>홈으로 돌아가기</span>
       </button>
+
+      <div class="error-cta">
+        <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="error-cta-link">
+          카카오톡 문의
+        </a>
+        <a :href="`tel:${siteConfig.phone}`" class="error-cta-link">
+          전화 {{ siteConfig.phone }}
+        </a>
+      </div>
+
+      <nav class="error-links" aria-label="주요 페이지">
+        <NuxtLink v-for="link in popularLinks" :key="link.to" :to="link.to">
+          {{ link.label }}
+        </NuxtLink>
+      </nav>
     </div>
 
     <!-- Decorative Elements -->
@@ -105,6 +137,50 @@ const handleError = () => {
 .error-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3);
+}
+
+.error-cta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.error-cta-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c9a227;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.error-cta-link:hover {
+  border-color: #c9a227;
+  color: #fafafa;
+}
+
+.error-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.error-links a {
+  font-size: 13px;
+  color: rgba(250, 250, 250, 0.65);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.error-links a:hover {
+  color: #c9a227;
 }
 
 /* Decorative lines */

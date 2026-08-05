@@ -138,11 +138,17 @@ export const useGtag = () => {
     trackInquiryClick(pageName, params)
   }
 
-  const trackLeadSubmitted = (leadType: string, leadSource?: string, leadTopic?: string) => {
+  const trackLeadSubmitted = (
+    leadType: string,
+    leadSource?: string,
+    leadTopic?: string,
+    leadId?: string,
+  ) => {
     const leadParams = withOptionalParams({
       lead_type: leadType,
       lead_source: leadSource,
       lead_topic: leadTopic,
+      lead_id: leadId,
     })
     trackEvent('generate_lead', leadParams)
     trackMetaEvent('Lead', leadParams)

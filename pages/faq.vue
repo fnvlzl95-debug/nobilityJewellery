@@ -120,10 +120,9 @@ onUnmounted(() => {
 <template>
   <div class="page">
     <!-- Custom Cursor -->
-    <CustomCursor />
 
     <!-- Main Content -->
-    <main class="main">
+    <div class="main">
       <div class="faq-container">
         <!-- Header -->
         <div class="faq-header">
@@ -147,6 +146,7 @@ onUnmounted(() => {
           <button
             class="category-btn"
             :class="{ active: selectedCategory === 'all' }"
+            :aria-pressed="selectedCategory === 'all'"
             @click="selectCategory('all')"
           >
             전체
@@ -156,6 +156,7 @@ onUnmounted(() => {
             :key="cat.id"
             class="category-btn"
             :class="{ active: selectedCategory === cat.id }"
+            :aria-pressed="selectedCategory === cat.id"
             @click="selectCategory(cat.id)"
           >
             {{ cat.name }}
@@ -171,17 +172,26 @@ onUnmounted(() => {
             class="faq-item"
             :class="{ open: openId === item.id }"
           >
-            <button class="faq-question" @click="toggle(item.id)">
-              <span class="question-text">{{ item.question }}</span>
-              <span class="question-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14M5 12h14" v-if="openId !== item.id" />
-                  <path d="M5 12h14" v-else />
-                </svg>
-              </span>
-            </button>
-            <div class="faq-answer">
-              <p>{{ item.answer }}</p>
+            <h2 class="faq-question-heading">
+              <button
+                class="faq-question"
+                :aria-expanded="openId === item.id"
+                :aria-controls="`faq-answer-${item.id}`"
+                @click="toggle(item.id)"
+              >
+                <span class="question-text">{{ item.question }}</span>
+                <span class="question-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" v-if="openId !== item.id" />
+                    <path d="M5 12h14" v-else />
+                  </svg>
+                </span>
+              </button>
+            </h2>
+            <div :id="`faq-answer-${item.id}`" class="faq-answer" :inert="openId !== item.id">
+              <div class="faq-answer-inner">
+                <p>{{ item.answer }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -219,7 +229,7 @@ onUnmounted(() => {
           </a>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
@@ -319,7 +329,7 @@ onUnmounted(() => {
 
 .category-btn:hover {
   color: #fafafa;
-  border-color: rgba(250, 250, 250, 0.3);
+  border-color: rgba(250, 250, 250, 0.6);
 }
 
 .category-btn.active {
@@ -382,14 +392,26 @@ onUnmounted(() => {
   transform: rotate(180deg);
 }
 
+.faq-question-heading {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* grid-rows 트릭: 답변 길이와 무관하게 잘리지 않고 부드럽게 펼쳐짐 */
 .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .faq-item.open .faq-answer {
-  max-height: 300px;
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 
 .faq-answer p {
@@ -480,7 +502,7 @@ onUnmounted(() => {
 }
 
 .cta-button:hover {
-  background: #d4af37;
+  background: #d4b44a;
   transform: translateY(-2px);
 }
 

@@ -31,6 +31,60 @@ const handleLocationPhoneClick = () => {
   })
 }
 
+const handleCtaPhoneClick = () => {
+  trackPhoneClick('home', {
+    placement: 'footer_cta',
+    intent: 'general',
+    topic: '지금 문의하세요',
+  })
+}
+
+const handleCtaKakaoClick = () => {
+  trackKakaoClick('home', {
+    placement: 'footer_cta',
+    intent: 'general',
+    topic: '지금 문의하세요',
+  })
+}
+
+// ===== 무게 환산 계산기 =====
+const DON_TO_GRAM = 3.75
+
+const purityOptions = [
+  { key: '24k', label: '24K 순금', rate: 0.999 },
+  { key: '18k', label: '18K', rate: 0.75 },
+  { key: '14k', label: '14K', rate: 0.585 },
+] as const
+
+type PurityKey = typeof purityOptions[number]['key']
+
+const calcWeight = ref<number | null>(null)
+const calcUnit = ref<'don' | 'gram'>('don')
+const calcPurity = ref<PurityKey>('24k')
+
+const activePurity = computed(() => purityOptions.find((p) => p.key === calcPurity.value)!)
+
+const calcGrams = computed(() => {
+  if (typeof calcWeight.value !== 'number' || calcWeight.value <= 0) return null
+  return calcUnit.value === 'don' ? calcWeight.value * DON_TO_GRAM : calcWeight.value
+})
+
+const formatNum = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
+
+const calcConversion = computed(() => {
+  if (calcGrams.value === null) return null
+  const don = calcGrams.value / DON_TO_GRAM
+  // 입력한 단위를 왼쪽에 표시
+  return calcUnit.value === 'don'
+    ? `${formatNum(don)}돈 = ${formatNum(calcGrams.value)}g`
+    : `${formatNum(calcGrams.value)}g = ${formatNum(don)}돈`
+})
+
+const calcPureGold = computed(() => {
+  if (calcGrams.value === null) return null
+  return `약 ${formatNum(calcGrams.value * activePurity.value.rate)}g`
+})
+
 const previewItems = getPreviewItems(6)
 const intentRoutes = [
   {
@@ -97,7 +151,7 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
+        '@type': 'JewelryStore',
         '@id': siteConfig.url,
         name: siteConfig.name,
         description: '종로 귀금속 도매 전문. 반지, 목걸이, 귀걸이, 팔찌 도매 상담, 주문 제작, 수리·세공까지.',
@@ -132,7 +186,12 @@ useHead({
           '@type': 'Country',
           name: 'South Korea'
         },
-        sameAs: []
+        sameAs: [
+          siteConfig.social.naverPlace,
+          siteConfig.social.instagram,
+          siteConfig.social.facebook,
+          siteConfig.social.blog,
+        ].filter(Boolean)
       })
     }
   ]
@@ -157,6 +216,8 @@ const mapWrapper = ref<HTMLElement | null>(null)
 
 let lenis: Lenis | null = null
 let rafId: number | null = null
+let revealObserver: IntersectionObserver | null = null
+let fallbackScrollHandler: (() => void) | null = null
 
 const scrollTo = (id: string) => {
   isMenuOpen.value = false
@@ -199,26 +260,34 @@ onMounted(() => {
   // Hero animation
   setTimeout(() => heroLoaded.value = true, 100)
 
-  lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    wheelMultiplier: 1,
-    touchMultiplier: 1.5,
-  })
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  function raf(time: number) {
-    lenis?.raf(time)
+  if (!reduceMotion) {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    })
+
+    function raf(time: number) {
+      lenis?.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
     rafId = requestAnimationFrame(raf)
-  }
-  rafId = requestAnimationFrame(raf)
 
-  lenis.on('scroll', ({ scroll }: { scroll: number }) => {
-    isScrolled.value = scroll > 80
-  })
+    lenis.on('scroll', ({ scroll }: { scroll: number }) => {
+      isScrolled.value = scroll > 80
+    })
+  } else {
+    fallbackScrollHandler = () => { isScrolled.value = window.scrollY > 80 }
+    window.addEventListener('scroll', fallbackScrollHandler, { passive: true })
+    fallbackScrollHandler()
+  }
 
   // Reveal animation observer
-  const observer = new IntersectionObserver(
+  revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -228,7 +297,7 @@ onMounted(() => {
     },
     { threshold: 0.08 }
   )
-  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver!.observe(el))
 
   // 3D Tilt cards - only on desktop
   if (window.matchMedia('(min-width: 1024px)').matches) {
@@ -256,6 +325,12 @@ onMounted(() => {
 onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   lenis?.destroy()
+  revealObserver?.disconnect()
+  revealObserver = null
+  if (fallbackScrollHandler) {
+    window.removeEventListener('scroll', fallbackScrollHandler)
+    fallbackScrollHandler = null
+  }
 })
 
 const handleKakaoMapClick = () => {
@@ -280,7 +355,6 @@ const handleNaverMapClick = () => {
 <template>
   <div class="page">
     <!-- Custom Cursor -->
-    <CustomCursor />
 
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
@@ -391,8 +465,16 @@ const handleNaverMapClick = () => {
               <em>신뢰</em>를 쌓아왔습니다
             </h2>
             <p class="section-desc reveal reveal-delay-2">
-              종묘귀금속상가에서 시작한 귀족은 도매 거래의 본질에 집중해왔습니다.
-              정확한 납기, 일관된 품질, 투명한 가격으로 500개 이상의 파트너사와 함께하고 있습니다.
+              귀족은 서울 종로3가 귀금속 거리,
+              종묘귀금속백화점에서 30년째 운영 중인 금은방입니다.
+              정확한 납기, 일관된 품질, 투명한 가격을 지키며
+              500개 이상의 파트너사와 거래하고 있습니다.
+            </p>
+            <p class="section-desc reveal reveal-delay-2">
+              돌반지·커플링·결혼예물 주문제작부터
+              14K·18K·24K 순금 도매, 금·은 매입,
+              반지 사이즈 조절과 세공 수리까지
+              필요한 모든 일을 한 자리에서 해결하실 수 있습니다.
             </p>
 
             <div class="stats-row reveal reveal-delay-3">
@@ -701,6 +783,75 @@ const handleNaverMapClick = () => {
       </div>
     </section>
 
+    <!-- Weight Calculator Section -->
+    <section id="calculator" class="section-calc">
+      <div class="container-lg">
+        <div class="calc-inner">
+          <span class="section-label reveal">Calculator</span>
+          <h2 class="section-title reveal reveal-delay-1">금 무게 환산 계산기</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            가지고 계신 귀금속의 무게를 돈·그램으로 환산하고
+            순도별 순금 함량을 바로 확인해보세요.
+          </p>
+
+          <div class="calc-card reveal reveal-delay-3">
+            <div class="calc-controls">
+              <div class="calc-field">
+                <label class="calc-label" for="calc-weight">무게</label>
+                <div class="calc-input-row">
+                  <input
+                    id="calc-weight"
+                    v-model.number="calcWeight"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    inputmode="decimal"
+                    placeholder="0"
+                    class="calc-input"
+                  >
+                  <div class="calc-toggle" role="group" aria-label="무게 단위 선택">
+                    <button type="button" :class="{ active: calcUnit === 'don' }" @click="calcUnit = 'don'">돈</button>
+                    <button type="button" :class="{ active: calcUnit === 'gram' }" @click="calcUnit = 'gram'">g</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="calc-field">
+                <span class="calc-label" id="calc-purity-label">순도</span>
+                <div class="calc-toggle calc-purity" role="group" aria-labelledby="calc-purity-label">
+                  <button
+                    v-for="p in purityOptions"
+                    :key="p.key"
+                    type="button"
+                    :class="{ active: calcPurity === p.key }"
+                    @click="calcPurity = p.key"
+                  >
+                    {{ p.label }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-results" aria-live="polite">
+              <div class="calc-result">
+                <span class="calc-result-label">환산 무게</span>
+                <strong class="calc-result-value">{{ calcConversion ?? '—' }}</strong>
+              </div>
+              <div class="calc-result-divider" aria-hidden="true"></div>
+              <div class="calc-result">
+                <span class="calc-result-label">순금 함량 ({{ activePurity.label }})</span>
+                <strong class="calc-result-value">{{ calcPureGold ?? '—' }}</strong>
+              </div>
+            </div>
+
+            <p class="calc-note">
+              * 1돈 = 3.75g 기준. 실제 매입가는 매장에서 감정·계량 후 당일 시세로 정확히 안내해드립니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Location Section -->
     <section id="location" class="section-location">
       <div class="container-lg">
@@ -775,39 +926,27 @@ const handleNaverMapClick = () => {
             도매 상담, 주문 제작, 수리 문의 등<br>
             무엇이든 편하게 연락주세요.
           </p>
+          <div class="cta-actions reveal reveal-delay-2">
+            <a
+              :href="siteConfig.social.kakaoOpenChat"
+              target="_blank"
+              rel="noopener"
+              class="cta-btn cta-btn-kakao"
+              @click="handleCtaKakaoClick"
+            >
+              카카오톡 문의
+            </a>
+            <a
+              :href="`tel:${siteConfig.phone}`"
+              class="cta-btn cta-btn-phone"
+              @click="handleCtaPhoneClick"
+            >
+              {{ siteConfig.phone }}
+            </a>
+          </div>
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-top">
-          <NuxtLink to="/" class="footer-brand">귀족</NuxtLink>
-          <div class="footer-nav">
-            <NuxtLink to="/">홈</NuxtLink>
-            <NuxtLink to="/gallery">갤러리</NuxtLink>
-            <NuxtLink to="/baby-gold">돌반지</NuxtLink>
-            <NuxtLink to="/couple-ring">커플링</NuxtLink>
-            <NuxtLink to="/wedding">결혼예물</NuxtLink>
-            <NuxtLink to="/guide">가이드</NuxtLink>
-            <NuxtLink to="/buy-gold">금 매입</NuxtLink>
-            <NuxtLink to="/wholesale">도매 안내</NuxtLink>
-            <NuxtLink to="/custom">주문제작</NuxtLink>
-            <NuxtLink to="/repair">수리/AS</NuxtLink>
-            <NuxtLink to="/faq">FAQ</NuxtLink>
-            <NuxtLink to="/contact">문의하기</NuxtLink>
-          </div>
-        </div>
-        <div class="footer-info">
-          <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
-        </div>
-        <div class="footer-bottom">
-          <span class="copyright">© 2024 귀족. All rights reserved.</span>
-          <NuxtLink to="/privacy" class="privacy-link">개인정보처리방침</NuxtLink>
-        </div>
-      </div>
-    </footer>
 
   </div>
 </template>
@@ -1166,7 +1305,7 @@ const handleNaverMapClick = () => {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   cursor: pointer;
   overflow: hidden;
@@ -1179,7 +1318,7 @@ const handleNaverMapClick = () => {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #e5c654 0%, #d4af37 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #d4b44a 100%);
   opacity: 0;
   transition: opacity 0.4s;
   z-index: 0;
@@ -1504,6 +1643,16 @@ const handleNaverMapClick = () => {
   color: rgba(250, 250, 250, 0.6);
 }
 
+/* About 문단: 줄 길이 균형 + 문단 간격 */
+.about-content .section-desc {
+  text-wrap: balance;
+  margin-bottom: 18px;
+}
+
+.about-content .section-desc:last-of-type {
+  margin-bottom: 0;
+}
+
 .stats-row {
   display: flex;
   gap: 40px;
@@ -1726,7 +1875,7 @@ const handleNaverMapClick = () => {
   font-size: 14px;
   font-weight: 700;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   text-decoration: none;
   cursor: pointer;
@@ -1739,7 +1888,7 @@ const handleNaverMapClick = () => {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #e5c654 0%, #d4af37 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #d4b44a 100%);
   opacity: 0;
   transition: opacity 0.4s;
   z-index: 0;
@@ -2126,6 +2275,168 @@ const handleNaverMapClick = () => {
   }
 }
 
+/* ===== Weight Calculator Section ===== */
+.section-calc {
+  padding: 120px 0 160px;
+  background: #0f0f0f;
+  text-align: center;
+}
+
+.calc-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.calc-card {
+  margin-top: 48px;
+  padding: 40px;
+  text-align: left;
+  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.calc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250, 250, 250, 0.85);
+}
+
+.calc-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.calc-input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+  font-size: 18px;
+  font-family: inherit;
+  color: #fafafa;
+  background: rgba(250, 250, 250, 0.04);
+  border: 1px solid rgba(250, 250, 250, 0.12);
+  transition: border-color 0.3s;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.calc-input::-webkit-outer-spin-button,
+.calc-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.calc-input:focus {
+  border-color: rgba(201, 162, 39, 0.5);
+  outline: none;
+}
+
+.calc-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.calc-toggle button {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  color: rgba(250, 250, 250, 0.7);
+  background: rgba(250, 250, 250, 0.03);
+  border: 1px solid rgba(250, 250, 250, 0.12);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.calc-toggle button:hover {
+  border-color: rgba(201, 162, 39, 0.4);
+}
+
+.calc-toggle button.active {
+  color: #0a0a0a;
+  background: #c9a227;
+  border-color: #c9a227;
+}
+
+.calc-purity {
+  flex-wrap: wrap;
+}
+
+.calc-purity button {
+  flex: 1;
+  min-width: 100px;
+}
+
+.calc-results {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  margin-top: 32px;
+  padding: 24px;
+  background: rgba(201, 162, 39, 0.06);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+.calc-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calc-result-label {
+  font-size: 12px;
+  color: rgba(250, 250, 250, 0.65);
+}
+
+.calc-result-value {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  color: #c9a227;
+}
+
+.calc-result-divider {
+  width: 1px;
+  background: rgba(250, 250, 250, 0.1);
+}
+
+.calc-note {
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.6);
+}
+
+@media (max-width: 600px) {
+  .calc-card {
+    padding: 24px 20px;
+  }
+
+  .calc-results {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .calc-result-divider {
+    width: 100%;
+    height: 1px;
+  }
+}
+
 /* ===== Location Section ===== */
 .section-location {
   padding: 160px 0;
@@ -2308,92 +2619,43 @@ const handleNaverMapClick = () => {
   margin-bottom: 48px;
 }
 
-.cta-buttons {
+.cta-actions {
   display: flex;
   gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-
-/* ===== Footer ===== */
-.footer {
-  background: #050505;
-  padding: 48px clamp(20px, 5vw, 60px);
-  border-top: 1px solid rgba(250, 250, 250, 0.05);
-}
-
-.footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-top {
-  display: flex;
+.cta-btn {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 24px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.05);
-}
-
-.footer-brand {
-  font-size: 20px;
+  justify-content: center;
+  min-width: 200px;
+  padding: 18px 36px;
+  font-size: 15px;
   font-weight: 700;
-  color: #fafafa;
   text-decoration: none;
-  letter-spacing: 0.1em;
+  transition: all 0.3s;
 }
 
-.footer-nav {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
+.cta-btn-kakao {
+  color: #0a0a0a;
+  background: #c9a227;
 }
 
-.footer-nav a {
-  font-size: clamp(13px, 2vw, 15px);
-  color: rgba(250, 250, 250, 0.5);
-  text-decoration: none;
-  transition: color 0.3s;
+.cta-btn-kakao:hover {
+  background: #d4b44a;
+  transform: translateY(-2px);
 }
 
-.footer-nav a:hover {
+.cta-btn-phone {
   color: #fafafa;
+  border: 1px solid rgba(250, 250, 250, 0.3);
 }
 
-.footer-info {
-  margin-bottom: 16px;
-}
-
-.footer-info span {
-  font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
-}
-
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.copyright {
-  font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
-}
-
-.privacy-link {
-  font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
-  text-decoration: none;
-}
-
-.privacy-link:hover {
-  color: #fafafa;
+.cta-btn-phone:hover {
+  border-color: #c9a227;
+  color: #c9a227;
 }
 
 /* ===== Reveal Animations ===== */
@@ -2732,7 +2994,7 @@ const handleNaverMapClick = () => {
   font-weight: 700;
   letter-spacing: 0.05em;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   text-decoration: none;
   transition: all 0.3s;
 }

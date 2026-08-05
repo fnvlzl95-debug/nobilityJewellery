@@ -26,12 +26,33 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
-// Watch menu state for scroll lock
-watch(isMenuOpen, (open) => {
+const toggleButtonRef = ref<HTMLButtonElement | null>(null)
+
+// Watch menu state for scroll lock + focus management
+watch(isMenuOpen, async (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
   if (open) {
-    (document.activeElement as HTMLElement)?.blur()
+    await nextTick()
+    document.querySelector<HTMLElement>('.mobile-menu-close')?.focus()
+  } else {
+    toggleButtonRef.value?.focus()
   }
+})
+
+// ESC로 메뉴 닫기
+const handleMenuKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && isMenuOpen.value) {
+    isMenuOpen.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleMenuKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleMenuKeydown)
+  document.body.style.overflow = ''
 })
 
 const navLinks = [
@@ -73,7 +94,15 @@ const handleMobileMenuPhoneClick = () => {
       </NuxtLink>
     </div>
     <!-- Mobile Toggle -->
-    <button class="nav-toggle" @click="isMenuOpen = !isMenuOpen" aria-label="메뉴" :class="{ active: isMenuOpen }">
+    <button
+      ref="toggleButtonRef"
+      class="nav-toggle"
+      aria-label="메뉴"
+      :aria-expanded="isMenuOpen"
+      aria-controls="mobile-menu-overlay"
+      :class="{ active: isMenuOpen }"
+      @click="isMenuOpen = !isMenuOpen"
+    >
       <span></span>
       <span></span>
       <span></span>
@@ -83,7 +112,7 @@ const handleMobileMenuPhoneClick = () => {
   <!-- Mobile Menu -->
   <Teleport to="body">
     <Transition name="menu-fade">
-      <div v-if="isMenuOpen" class="mobile-menu-overlay">
+      <div v-if="isMenuOpen" id="mobile-menu-overlay" class="mobile-menu-overlay" role="dialog" aria-modal="true" aria-label="메뉴">
         <!-- Close Button -->
         <button class="mobile-menu-close" @click="closeMenu" aria-label="닫기">
           <span></span>
@@ -347,7 +376,6 @@ const handleMobileMenuPhoneClick = () => {
 .mobile-menu-link:hover,
 .mobile-menu-link:focus {
   padding-left: 12px;
-  outline: none;
 }
 
 .mobile-menu-link:hover .mobile-menu-link-num,

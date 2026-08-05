@@ -61,7 +61,7 @@ export const siteConfig = {
     instagram: '',
     facebook: '',
     blog: '',
-    naverPlace: '',
+    naverPlace: 'https://map.naver.com/p/entry/place/12892435', // 단축: https://naver.me/xen7hRCZ
     kakaoOpenChat: 'https://open.kakao.com/o/sc8gQx8h',
   },
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 const footerLinks = [
   { to: '/', label: '홈' },
   { to: '/gallery', label: '갤러리' },
@@ -9,6 +11,7 @@ const footerLinks = [
   { to: '/wholesale', label: '도매 안내' },
   { to: '/custom', label: '주문제작' },
   { to: '/repair', label: '수리/AS' },
+  { to: '/guide', label: '주얼리 가이드' },
   { to: '/faq', label: 'FAQ' },
   { to: '/contact', label: '문의하기' }
 ]
@@ -30,10 +33,11 @@ const footerLinks = [
         </div>
       </div>
       <div class="footer-info">
+        <span>종로3가 금은방 귀족 | {{ siteConfig.address.full }} | 전화 <a :href="`tel:${siteConfig.phone}`" class="footer-tel">{{ siteConfig.phone }}</a></span>
         <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
       </div>
       <div class="footer-bottom">
-        <span class="copyright">© 2024 귀족. All rights reserved.</span>
+        <span class="copyright">© 2026 귀족. All rights reserved.</span>
         <NuxtLink to="/privacy" class="privacy-link">개인정보처리방침</NuxtLink>
       </div>
     </div>
@@ -89,12 +93,24 @@ const footerLinks = [
 }
 
 .footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: 16px;
 }
 
 .footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
+}
+
+.footer-tel {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-tel:hover {
+  color: #fafafa;
 }
 
 .footer-bottom {
@@ -107,12 +123,12 @@ const footerLinks = [
 
 .copyright {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
 }
 
 .privacy-link {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.4);
+  color: rgba(250, 250, 250, 0.65);
   text-decoration: none;
 }
 

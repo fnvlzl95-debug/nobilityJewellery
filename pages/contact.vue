@@ -127,7 +127,10 @@ const formData = ref(buildInitialFormData())
 
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
+const submittedInquiryId = ref('')
 const isScrolled = ref(false)
+const formError = ref('')
+const successHeadingRef = ref<HTMLElement | null>(null)
 const inquiryContext = computed(() => {
   const sourceLabel = formData.value.source ? inquirySourceLabels[formData.value.source as InquirySource] : ''
   if (!sourceLabel && !formData.value.topic) return null
@@ -166,6 +169,8 @@ watch(
   () => {
     formData.value = buildInitialFormData()
     isSubmitted.value = false
+    submittedInquiryId.value = ''
+    formError.value = ''
   }
 )
 
@@ -179,9 +184,17 @@ onUnmounted(() => {
 })
 
 const handleSubmit = async () => {
+  formError.value = ''
+
+  if (!formData.value.type) {
+    trackFormError('contact', 'missing_type', 'validation')
+    formError.value = '문의 유형을 선택해주세요.'
+    return
+  }
+
   if (!formData.value.consent) {
     trackFormError('contact', 'missing_consent', 'validation')
-    alert('개인정보 수집에 동의해주세요.')
+    formError.value = '개인정보처리방침에 동의해주세요.'
     return
   }
 
@@ -189,18 +202,30 @@ const handleSubmit = async () => {
   const submissionSnapshot = { ...formData.value }
 
   try {
-    await $fetch('/api/inquiry', { method: 'POST', body: formData.value })
+    const response = await $fetch<{ ok: boolean, inquiryId?: string }>('/api/inquiry', {
+      method: 'POST',
+      body: formData.value,
+    })
+
+    if (!response.inquiryId) {
+      throw new Error('접수번호를 확인할 수 없습니다.')
+    }
+
+    submittedInquiryId.value = response.inquiryId
     trackLeadSubmitted(
       submissionSnapshot.type || 'other',
       submissionSnapshot.source || 'contact',
-      submissionSnapshot.topic || undefined
+      submissionSnapshot.topic || undefined,
+      response.inquiryId,
     )
     isSubmitted.value = true
     formData.value = buildInitialFormData()
+    await nextTick()
+    successHeadingRef.value?.focus()
   } catch (e: any) {
     const errorMessage = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
     trackFormError('contact', errorMessage, e.statusCode ? 'api_error' : 'submission')
-    alert(errorMessage)
+    formError.value = errorMessage
   } finally {
     isSubmitting.value = false
   }
@@ -210,10 +235,9 @@ const handleSubmit = async () => {
 <template>
   <div class="page">
     <!-- Custom Cursor -->
-    <CustomCursor />
 
     <!-- Main Content -->
-    <main class="main">
+    <div class="main">
       <div class="contact-wrapper">
         <!-- Left Side: Info -->
         <div class="info-side">
@@ -281,9 +305,10 @@ const handleSubmit = async () => {
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
-            <h3 class="success-title">문의가 접수되었습니다</h3>
+            <h2 ref="successHeadingRef" tabindex="-1" class="success-title">문의가 접수되었습니다</h2>
             <p class="success-desc">24시간 내 연락드리겠습니다</p>
-            <button @click="isSubmitted = false" class="btn-reset">
+            <p v-if="submittedInquiryId" class="success-id">접수번호 {{ submittedInquiryId }}</p>
+            <button @click="isSubmitted = false; submittedInquiryId = ''" class="btn-reset">
               <span>추가 문의하기</span>
             </button>
           </div>
@@ -306,8 +331,8 @@ const handleSubmit = async () => {
             </div>
 
             <!-- Type Selection -->
-            <div class="form-group">
-              <label class="form-label">문의 유형</label>
+            <fieldset class="form-group type-fieldset">
+              <legend class="form-label">문의 유형</legend>
               <div class="type-grid">
                 <label
                   v-for="type in inquiryTypes"
@@ -315,32 +340,37 @@ const handleSubmit = async () => {
                   class="type-option"
                   :class="{ active: formData.type === type.value }"
                 >
-                  <input type="radio" v-model="formData.type" :value="type.value" required>
+                  <input type="radio" v-model="formData.type" :value="type.value" name="inquiry-type">
                   <span class="type-label">{{ type.label }}</span>
                   <span class="type-label-en">{{ type.labelEn }}</span>
                 </label>
               </div>
-            </div>
+            </fieldset>
 
             <!-- Name & Phone -->
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">이름/업체명</label>
+                <label class="form-label" for="inquiry-name">이름/업체명</label>
                 <input
+                  id="inquiry-name"
                   v-model="formData.name"
                   type="text"
                   class="form-input"
                   placeholder="이름 또는 업체명"
+                  autocomplete="name"
                   required
                 >
               </div>
               <div class="form-group">
-                <label class="form-label">연락처</label>
+                <label class="form-label" for="inquiry-phone">연락처</label>
                 <input
+                  id="inquiry-phone"
                   v-model="formData.phone"
                   type="tel"
                   class="form-input"
                   placeholder="010-0000-0000"
+                  autocomplete="tel"
+                  inputmode="tel"
                   required
                 >
               </div>
@@ -348,8 +378,9 @@ const handleSubmit = async () => {
 
             <!-- Message -->
             <div class="form-group">
-              <label class="form-label">문의 내용</label>
+              <label class="form-label" for="inquiry-message">문의 내용</label>
               <textarea
+                id="inquiry-message"
                 v-model="formData.message"
                 class="form-textarea"
                 placeholder="문의하실 내용을 입력해주세요"
@@ -357,10 +388,12 @@ const handleSubmit = async () => {
               ></textarea>
             </div>
 
+            <p v-if="formError" class="form-error" role="alert">{{ formError }}</p>
+
             <!-- Consent & Submit -->
             <div class="form-footer">
               <label class="consent-check">
-                <input v-model="formData.consent" type="checkbox" required>
+                <input v-model="formData.consent" type="checkbox">
                 <span class="check-box">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                     <polyline points="20 6 9 17 4 12"/>
@@ -382,7 +415,7 @@ const handleSubmit = async () => {
           </form>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
@@ -671,6 +704,26 @@ const handleSubmit = async () => {
   color: rgba(250, 250, 250, 0.85);
 }
 
+.type-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.type-fieldset legend {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.form-error {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #d4b44a;
+  background: rgba(201, 162, 39, 0.08);
+  border-left: 2px solid #c9a227;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -711,7 +764,16 @@ const handleSubmit = async () => {
 .type-option input {
   position: absolute;
   opacity: 0;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
   pointer-events: none;
+}
+
+.type-option:has(input:focus-visible) {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
 }
 
 .type-option:hover {
@@ -806,8 +868,24 @@ const handleSubmit = async () => {
   cursor: pointer;
 }
 
+/* 시각적으로만 숨김 — display:none은 required 검증 포커스 실패로 submit 자체를 막음 */
 .consent-check input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.consent-check input:focus-visible + .check-box {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
 }
 
 .check-box {
@@ -841,7 +919,7 @@ const handleSubmit = async () => {
   font-size: 14px;
   font-weight: 700;
   color: #0a0a0a;
-  background: linear-gradient(135deg, #d4af37 0%, #c9a227 50%, #b8960f 100%);
+  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   cursor: pointer;
   transition: all 0.3s;
@@ -890,7 +968,15 @@ const handleSubmit = async () => {
 .success-desc {
   font-size: 15px;
   color: rgba(250, 250, 250, 0.5);
-  margin-bottom: 32px;
+  margin-bottom: 12px;
+}
+
+.success-id {
+  margin: 0 0 28px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(250, 250, 250, 0.72);
 }
 
 .btn-reset {

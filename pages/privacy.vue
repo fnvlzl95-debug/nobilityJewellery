@@ -38,10 +38,9 @@ useHead({
 <template>
   <div class="page">
     <!-- Custom Cursor -->
-    <CustomCursor />
 
     <!-- Main Content -->
-    <main class="main">
+    <div class="main">
       <div class="container">
         <div class="back-link">
           <NuxtLink to="/">&larr; 메인으로</NuxtLink>
@@ -123,7 +122,7 @@ useHead({
           </section>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
