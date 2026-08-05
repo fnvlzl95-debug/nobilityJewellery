@@ -15,6 +15,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'jongno-ring-polishing-cost',
+    path: '/guide/jongno-ring-polishing-cost',
+    title: '종로 반지 광택 비용, 잔기스 제거와 새제품 마감 견적 기준',
+    description: '종로 반지 광택 비용을 세척·폴리싱·표면 재마감 차이, 흠집 깊이, 반지 폭과 보석 세팅, 도금 여부로 나눠 정리했습니다.',
+    keyword: '종로 반지 광택 비용',
+    image: '/Image/guide/jongno-ring-polishing-cost-hero.webp',
+    publishedAt: '2026-08-05',
+    category: '비용',
+  },
+  {
+    slug: 'gold-anklet-size-guide',
+    path: '/guide/gold-anklet-size-guide',
+    title: '금발찌 길이 재는 법, 발목둘레와 여유 길이 주문 기준',
+    description: '금발찌 길이 재는 법을 착용 위치의 발목둘레 측정, 원하는 늘어짐, 체인·장식·잠금과 연장 체인 기준으로 정리했습니다.',
+    keyword: '금발찌 길이 재는 법',
+    image: '/Image/guide/gold-anklet-size-guide-hero.webp',
+    publishedAt: '2026-08-05',
+    category: '주문',
+  },
+  {
     slug: 'custom-earrings-production-time',
     path: '/guide/custom-earrings-production-time',
     title: '귀걸이 주문제작 기간, 디자인 확정부터 한쌍 수령까지',

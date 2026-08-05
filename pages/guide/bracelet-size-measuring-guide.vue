@@ -131,9 +131,9 @@ const cautions = [
 ]
 
 const relatedLinks = [
+  { to: '/guide/gold-anklet-size-guide', label: '금발찌 길이 재는 법', description: '발목둘레와 착용 여유 주문 기준' },
   { to: '/guide/custom-gold-bracelet-order', label: '금팔찌 주문제작', description: '길이·굵기·체인과 잠금장치 정하기' },
   { to: '/guide/gold-necklace-length-guide', label: '금목걸이 길이 추천', description: '42·45·50cm 착용 위치 비교' },
-  { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '링크 구조와 유연성 차이' },
 ]
 
 useHead({

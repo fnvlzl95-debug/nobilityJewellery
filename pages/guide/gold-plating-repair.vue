@@ -119,9 +119,9 @@ useHead({
     ]"
     :faq-items="faqItems"
     :related-links="[
+      { to: '/guide/jongno-ring-polishing-cost', label: '종로 반지 광택 비용', description: '세척·폴리싱·재마감 견적 기준' },
       { to: '/repair', label: '수리·AS 안내', description: '도금 외 수리 가능 항목 보기' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '변색 원인과 관리 기준 확인' },
-      { to: '/guide/gold-filled-vermeil-plated-difference', label: '골드필드·골드버메일·금도금 차이', description: '금층과 바탕 금속 비교' }
     ]"
   />
 </template>
