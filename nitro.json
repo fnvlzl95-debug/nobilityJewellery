@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-05T02:04:40.300Z",
+  "date": "2026-08-05T07:32:57.299Z",
   "preset": "cloudflare-pages",
   "framework": {
     "name": "nuxt",
@@ -13,6 +13,21 @@
     "deploy": "npx wrangler pages deploy ."
   },
   "config": {
-    "cloudflare": {}
+    "cloudflare": {
+      "pages": {
+        "routes": {
+          "exclude": [
+            "/_nuxt/*",
+            "/_ipx/*",
+            "/Image/*",
+            "/guide/*",
+            "/favicon.svg",
+            "/favicon.ico",
+            "/robots.txt",
+            "/sitemap.xml"
+          ]
+        }
+      }
+    }
   }
 }
