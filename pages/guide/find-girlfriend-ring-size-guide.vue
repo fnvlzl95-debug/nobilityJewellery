@@ -1,0 +1,227 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/find-girlfriend-ring-size-guide'
+const pageTitle = '여자친구 반지 사이즈는 기존 반지로 조용히 확인하세요 | 귀족'
+const pageDescription = '깜짝 선물을 준비할 때 평소 착용하는 반지를 활용해 여자친구의 반지 사이즈를 추정하는 방법과 오차를 줄이기 위해 함께 확인할 기준을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/find-girlfriend-ring-size-guide-hero.webp`
+const publishedAt = '2026-08-07'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "여자친구가 평소 끼는 반지만 있으면 사이즈를 알 수 있나요?",
+    "answer": "평소 착용하는 반지의 안쪽 원을 종이에 따라 그리거나 반지 실물을 상담 시 보여주면 대략적인 사이즈를 확인하는 참고 자료가 될 수 있습니다. 다만 해당 반지를 끼는 손가락과 선물할 반지를 끼는 손가락이 다르면 오차가 생길 수 있습니다."
+  },
+  {
+    "question": "반지를 몰래 가져오지 않고 확인하는 방법도 있나요?",
+    "answer": "기존 반지를 자신의 손가락에 가볍게 끼워 멈추는 위치를 표시하는 방법이나, 비누에 반지 안쪽 형태의 자국을 남기는 방법이 소개되어 있습니다. 두 방법 모두 직접 측정값이 아닌 참고 자료이므로 기준 반지의 착용 손가락 정보를 함께 전달하는 것이 좋습니다."
+  },
+  {
+    "question": "다른 손가락에 끼는 반지를 기준으로 삼아도 되나요?",
+    "answer": "손가락마다 사이즈가 다를 수 있어 정확도가 낮아질 수 있습니다. 가능하면 선물할 반지를 착용할 손가락에 평소 끼는 반지를 기준으로 하고, 다른 손가락의 반지를 사용했다면 그 사실을 상담 시 알려야 합니다."
+  },
+  {
+    "question": "사이즈를 확실히 모르는 상태에서도 상담할 수 있나요?",
+    "answer": "상담은 가능하지만 기존 반지의 실물 또는 윤곽 자료, 기준 반지의 착용 손가락, 평소 착용 여유, 선물할 반지의 디자인과 폭을 함께 준비하면 조건을 검토하는 데 도움이 됩니다. 실제 주문 조건은 제품과 상담 시점에 따라 확인이 필요합니다."
+  }
+]
+const quickAnswers = [
+  "평소 착용하는 반지를 잠시 빌려 안쪽 원을 종이에 따라 그리고, 어느 손가락에 끼는 반지인지 함께 기록하세요.",
+  "반지를 비누에 눌러 안쪽 형태의 자국을 남기거나 자신의 손가락에 끼워 멈추는 위치를 표시하는 방법도 참고할 수 있습니다.",
+  "기존 반지 자료는 추정용이므로 선물할 반지의 디자인·폭과 착용 손가락을 상담 시 함께 알려 최종 조건을 확인하세요."
+]
+const sections = [
+  {
+    "title": "기존 반지의 안쪽 원을 종이에 기록하기",
+    "paragraphs": [
+      "여자친구가 평소 착용하는 반지를 잠시 빌릴 수 있다면 깨끗한 종이 위에 올려두고 안쪽 원을 따라 그릴 수 있습니다. 상담할 때는 이렇게 남긴 윤곽이나 반지 실물을 대략적인 사이즈를 살피는 참고 자료로 활용할 수 있습니다.",
+      "같은 사람이라도 손가락마다 둘레가 다를 수 있으므로, 기준으로 삼은 반지가 어느 손가락에 착용되는지 먼저 확인하는 것이 중요합니다. 선물할 반지를 낄 손가락과 기존 반지의 착용 손가락이 서로 다르면 추정값에도 차이가 생길 수 있습니다."
+    ],
+    "bullets": [
+      "반지 바깥쪽이 아닌 안쪽 원의 윤곽을 따라 그립니다.",
+      "기존 반지를 착용하는 손가락을 함께 메모합니다.",
+      "가능하다면 반지 실물도 상담 자료로 준비합니다."
+    ]
+  },
+  {
+    "title": "비누 자국으로 안쪽 형태 남기기",
+    "paragraphs": [
+      "깜짝 선물을 준비할 때 GIA는 기존 반지를 비누에 눌러 안쪽 형태의 자국을 남기는 방법을 소개합니다. 기존 반지의 크기를 가늠할 때는 반지 안쪽의 형태가 보이도록 남긴 자국을 참고 자료로 활용할 수 있습니다.",
+      "비누 자국만으로 실제 사이즈를 확정하기는 어렵습니다. 자국의 형태가 흐리거나 기준 반지가 선물할 반지를 끼는 손가락의 반지가 아니라면, 해당 자료의 한계를 상담 시 함께 전달하는 편이 좋습니다."
+    ],
+    "bullets": [
+      "기존 반지의 안쪽 형태가 보이도록 자국을 남깁니다.",
+      "자국이 흐려지기 전 형태를 확인합니다.",
+      "기준 반지를 어느 손가락에 착용하는지 함께 기록합니다."
+    ],
+    "image": {
+      "src": "/Image/guide/find-girlfriend-ring-size-guide-section-2.webp",
+      "alt": "비누 자국으로 안쪽 형태 남기기 예시 이미지",
+      "caption": "비누 자국으로 안쪽 형태 남기기에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  },
+  {
+    "title": "자신의 손가락에서 멈추는 위치 표시하기",
+    "paragraphs": [
+      "기존 반지를 자신의 손가락에 가볍게 끼워 보고 어느 위치에서 멈추는지 표시한 뒤 그 정보를 전달하는 방법도 GIA 자료에서 안내합니다. 반지가 멈춘 지점을 표시하거나 사진으로 남기면 상담 시 참고 자료로 활용할 수 있습니다.",
+      "이 방법은 여자친구의 손가락을 직접 재는 방식이 아니며, 본인의 손가락 형태와 기준 반지의 폭·디자인에 따라 차이가 있을 수 있습니다. 반지가 빡빡하게 걸리는 경우에는 무리해서 끼우거나 빼지 말고 다른 자료와 함께 참고하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "반지가 자연스럽게 멈추는 위치를 표시하거나 사진으로 기록합니다.",
+      "반지가 걸리거나 불편하면 시도를 중단합니다.",
+      "기존 반지의 착용 손가락 정보를 함께 전달합니다."
+    ]
+  },
+  {
+    "title": "주문 전 함께 확인할 조건",
+    "paragraphs": [
+      "기존 반지의 윤곽, 비누 자국, 손가락 위치 표시는 모두 대략적인 사이즈를 추정하기 위한 자료입니다. 상담할 때는 기준 반지를 낀 손가락, 평소 여유 있게 끼는 편인지 여부, 선물할 반지의 디자인과 폭을 함께 설명하면 판단에 필요한 조건을 검토하는 데 도움이 됩니다.",
+      "GIA는 반지 디자인에 따라 사이즈 조정이 쉽지 않을 수 있으므로 구매 전에 가능한 한 정확한 사이즈를 확인할 것을 권합니다. 사이즈가 확실하지 않다면 주문 전에 제품별 조건과 확인 절차를 먼저 상담하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "기존 반지 실물 또는 안쪽 원을 그린 자료",
+      "기준 반지와 선물할 반지를 착용할 손가락",
+      "평소 반지를 끼는 여유와 선호하는 착용감",
+      "선물할 반지의 디자인과 폭 등 제품 조건"
+    ],
+    "image": {
+      "src": "/Image/guide/find-girlfriend-ring-size-guide-section-4.webp",
+      "alt": "주문 전 함께 확인할 조건 예시 이미지",
+      "caption": "주문 전 함께 확인할 조건에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  }
+]
+const cautions = [
+  "기존 반지를 활용하는 방법은 대략적인 추정 자료이며 여자친구의 실제 손가락 사이즈를 보장하지 않습니다.",
+  "착용 손가락, 반지 폭, 디자인, 손가락 형태와 평소 착용 여유가 다르면 결과에 차이가 생길 수 있습니다.",
+  "반지가 손가락에 걸리거나 빡빡한 경우에는 억지로 끼우거나 빼지 않는 것이 좋습니다.",
+  "반지 디자인에 따라 사이즈 조정이 쉽지 않을 수 있으므로 주문 전 제품별 조건을 확인하세요."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/ring-size-measuring-method",
+    "label": "반지 사이즈 재는 법, 커플링·결혼반지 주문 전 실수 줄이는 기준",
+    "description": "손가락 붓기, 측정 시간, 반지 폭, 마디 통과감까지 커플링·결혼반지 주문 전 확인할 사이즈 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/ring-stuck-finger-removal",
+    "label": "반지 안 빠질 때 빼는 법, 손가락 붓기와 응급 신호 확인 순서",
+    "description": "반지가 안 빠질 때 손가락 상태를 확인하고 붓기를 줄인 뒤 윤활과 회전을 시도하는 순서, 즉시 전문 제거가 필요한 신호를 정리"
+  },
+  {
+    "to": "/guide/ring-metal-allergy-guide",
+    "label": "반지 금속 알레르기, 소재별로 덜 생기는 기준",
+    "description": "금속 알레르기는 대부분 금이 아니라 합금 속 니켈에서 생겨요. 14K·18K·순금·화이트골드 소재별 트러블 가능성을 정리했습니"
+  },
+  {
+    "to": "/guide/diamond-ring-cleaning-care",
+    "label": "다이아 반지 세척 방법, 광택과 세팅 손상 줄이는 순서",
+    "description": "다이아 반지 세척 방법을 세팅 점검, 미지근한 비눗물, 부드러운 솔질, 안전한 헹굼과 건조 순서로 정리했습니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '여자친구 반지 사이즈는 기존 반지로 조용히 확인하세요'
+const gmArticleLead = '평소 여자친구가 착용하는 반지를 잠시 확인할 수 있다면, 종이에 안쪽 원을 따라 그리거나 비누에 안쪽 형태를 남겨 대략적인 사이즈를 추정할 수 있습니다. 다만 결과는 반지를 끼는 손가락과 반지의 폭·디자인, 평소 착용 여유에 따라 달라질 수 있습니다. 따라서 주문 전에는 확인한 자료와 조건을 함께 상담하는 것이 좋습니다.'
+const gmArticleCategory = '주문'
+const gmArticleKeyword = '여자친구 반지 사이즈 몰래 확인'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '깜짝 선물용 반지 사이즈 확인 및 맞춤 주문 상담'
+const gmHeroAlt = '기존 반지를 활용해 깜짝 선물용 반지 사이즈를 확인하는 모습'
+const gmSourceNote = '기존 반지의 윤곽을 종이에 남기거나 비누 자국을 활용하는 방법, 자신의 손가락에서 반지가 멈추는 위치를 참고하는 방법, 사이즈 확인 시 고려할 조건은 아래 GIA 자료를 바탕으로 정리했습니다. 실제 주문 조건과 제품별 사이즈 관련 안내는 상담 시점에 확인이 필요합니다.'
+const gmSources = [
+  {
+    "label": "GIA 4Cs — Engagement Ring Buying: Questions to Think About",
+    "url": "https://4cs.gia.edu/en-us/blog/buying-diamond-engagement-ring-questions-jeweler-will-ask/",
+    "note": "GIA가 깜짝 선물을 위해 기존 반지를 활용해 사이즈를 확인하는 구체적 방법을 제시함."
+  },
+  {
+    "label": "GIA 4Cs — How to Determine Ring Size: Tips and Ring Size Chart",
+    "url": "https://4cs.gia.edu/en-us/blog/how-to-determine-ring-size-tips-and-ring-size-chart/",
+    "note": "반지 사이즈 측정 시 고려할 점과 사이즈 확인의 한계를 설명하는 GIA 자료."
+  },
+  {
+    "label": "GIA — How to Purchase the Perfect Diamond Engagement Ring",
+    "url": "https://www.gia.edu/gia-website/gia-news-research-purchase-diamond-engagement-ring",
+    "note": "기존 반지를 빌려 윤곽을 그리거나 비누에 눌러 보석상에게 확인받는 방법을 안내함."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

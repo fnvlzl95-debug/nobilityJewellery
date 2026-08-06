@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'find-girlfriend-ring-size-guide',
+      path: '/guide/find-girlfriend-ring-size-guide',
+      title: '여자친구 반지 사이즈는 기존 반지로 조용히 확인하세요',
+      description: '깜짝 선물을 준비할 때 평소 착용하는 반지를 활용해 여자친구의 반지 사이즈를 추정하는 방법과 오차를 줄이기 위해 함께 확인할 기준을 정리했습니다.',
+      keyword: '여자친구 반지 사이즈 몰래 확인',
+      image: '/Image/guide/find-girlfriend-ring-size-guide-hero.webp',
+      publishedAt: '2026-08-07',
+      category: '주문',
+    },
+  {
       slug: 'jongno-wedding-jewelry-consultation-checklist',
       path: '/guide/jongno-wedding-jewelry-consultation-checklist',
       title: '결혼예물 상담 전 확인할 체크리스트',
@@ -268,11 +278,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'bracelet-size-measuring-guide',
     path: '/guide/bracelet-size-measuring-guide',
-    title: '팔찌 사이즈 재는 법, 손목 둘레와 여유 길이 계산',
-    description: '손목 둘레 측정과 착용 여유 계산, 체인·테니스·참 팔찌와 뱅글 구조별 사이즈 차이를 정리했습니다.',
+    title: '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정',
+    description: '체인 팔찌는 손목 둘레와 실제 착용 길이를 구분해 확인하세요. 뱅글은 손을 통과하는 안쪽 지름이 중요합니다. 측정 위치, 기존 팔찌 실측, 제품별 사이즈표 확인 순서를 정리했습니다.',
     keyword: '팔찌 사이즈 재는 법',
     image: '/Image/guide/bracelet-size-measurement-hero.webp',
     publishedAt: '2026-07-22',
+    updatedAt: '2026-08-07',
     category: '선택',
   },
   {
