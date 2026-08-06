@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-wedding-jewelry-consultation-checklist',
+      path: '/guide/jongno-wedding-jewelry-consultation-checklist',
+      title: '결혼예물 상담 전 확인할 체크리스트',
+      description: '종로에서 결혼예물을 상담하기 전 예산, 금속과 보석 사양, 반지 치수, 계약 조건, 증빙자료를 확인하는 방법을 정리했습니다.',
+      keyword: '종로 결혼예물 상담 전 체크리스트',
+      image: '/Image/guide/jongno-wedding-jewelry-consultation-checklist-hero.webp',
+      publishedAt: '2026-08-06',
+      category: '주문',
+    },
+  {
     slug: 'jongno-ring-polishing-cost',
     path: '/guide/jongno-ring-polishing-cost',
     title: '종로 반지 광택 비용, 잔기스 제거와 새제품 마감 견적 기준',
@@ -388,11 +398,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'jewelry-hallmark-numbers-meaning',
     path: '/guide/jewelry-hallmark-numbers-meaning',
-    title: '귀금속 각인 585·750·925 뜻, 금·은·백금 숫자 읽는 법',
-    description: '귀금속 각인 585, 750, 925, Pt950을 천분율과 K 단위로 비교하고 도금 약어, 각인이 흐릴 때 확인 순서를 정리했습니다.',
+    title: '금 585 뜻: 14K·750·925 귀금속 각인 읽는 법',
+    description: '585는 금 58.5%를 뜻하는 천분율 표기로 보통 14K와 연결해 읽습니다. 750·925·Pt950의 뜻과 도금 표기, 각인만으로 진위를 확정할 수 없는 이유를 정리했습니다.',
     keyword: '귀금속 각인 숫자 뜻',
-    image: '/Image/guide/jewelry-hallmark-numbers-hero.webp',
+    image: '/Image/guide/jewelry-hallmark-numbers-meaning-hero.webp',
     publishedAt: '2026-07-13',
+    updatedAt: '2026-08-06',
     category: '소재·보석',
   },
   {
