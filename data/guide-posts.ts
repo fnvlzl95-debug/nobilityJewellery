@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'thin-necklace-breakage-causes',
+      path: '/guide/thin-necklace-breakage-causes',
+      title: '목걸이가 자주 끊어질 때는 끊어진 위치와 착용·보관 환경부터 점검하세요',
+      description: '목걸이가 반복해서 끊어진다면 체인 중간, 잠금장치 주변, 연결 고리 중 어디에서 문제가 생겼는지 먼저 확인하고 걸림·엉킴·꺾임·화학물질 노출·수리 이력을 함께 살펴보세요.',
+      keyword: '목걸이가 자주 끊어질 때 원인',
+      image: '/Image/guide/thin-necklace-breakage-causes-hero.webp',
+      publishedAt: '2026-08-08',
+      category: '수리',
+    },
+  {
       slug: 'find-girlfriend-ring-size-guide',
       path: '/guide/find-girlfriend-ring-size-guide',
       title: '여자친구 반지 사이즈는 기존 반지로 조용히 확인하세요',
@@ -400,10 +410,11 @@ export const guidePosts: GuidePostSummary[] = [
     slug: 'wedding-band-matte-gloss',
     path: '/guide/wedding-band-matte-gloss',
     title: '웨딩밴드 무광 유광 차이, 종로 결혼반지 선택 기준',
-    description: '웨딩밴드 무광 유광 차이를 반사, 스크래치, 손 모양, 사진, 재마감 기준으로 비교하고 종로 상담 전 체크리스트를 정리했습니다.',
+    description: '웨딩밴드 무광 유광 차이를 표면 반사, 질감, 사용 흔적, 촬영, 재마감 기준으로 비교하고 종로 결혼반지 상담 전 확인할 내용을 정리했습니다.',
     keyword: '웨딩밴드 무광 유광 차이',
     image: '/Image/guide/wedding-band-matte-gloss-hero.webp',
     publishedAt: '2026-07-13',
+    updatedAt: '2026-08-08',
     category: '선택',
   },
   {
@@ -674,11 +685,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'couple-ring-14k-18k-price-difference',
     path: '/guide/couple-ring-14k-18k-price-difference',
-    title: '14K 18K 커플링 가격 차이 총정리, 구매 전 비교 기준',
-    description: '14K와 18K 커플링은 금 함량, 중량, 금시세, 공임에 따라 가격이 달라집니다. 주문 전 선택 기준을 정리했습니다.',
+    title: '14K·18K 커플링 가격 차이: 금 함량·중량·공임 비교',
+    description: '14K·18K 커플링은 금 함량, 완성 중량, 당일 시세, 세팅·공임 조건에 따라 가격 차이가 납니다. 같은 디자인이라도 소재·폭·두께·중량을 맞춰 비교하세요.',
     keyword: '14K 18K 커플링 가격 차이',
     image: '/Image/guide/couple-ring-14k-18k-comparison.webp',
     publishedAt: '2026-05-18',
+    updatedAt: '2026-08-08',
     category: '가격',
   },
   {
