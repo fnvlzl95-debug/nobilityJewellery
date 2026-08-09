@@ -9,18 +9,120 @@ const ogImage = `${siteConfig.url}/Image/ring/SB0101.webp`
 const publishedAt = '2026-02-14'
 const faqItems = [
   {
-    question: '돌반지 가격은 어떻게 정해지나요?',
-    answer: '상담일 기준 금 시세, 실제 무게, 각인/디자인 작업 난이도를 함께 반영해서 안내드립니다.',
+    "question": "돌반지 가격은 어떻게 정해지나요?",
+    "answer": "상담일의 금 시세, 제품의 실제 중량과 순도, 각인·디자인 작업 조건을 함께 확인해 안내합니다. 조건이 정해지기 전에는 정확한 금액을 확정하기 어렵습니다."
   },
   {
-    question: '전화로도 정확한 견적이 가능한가요?',
-    answer: '대략적인 범위 안내는 가능하지만, 정확한 금액은 원하시는 무게와 각인 조건 확인 후 확정됩니다.',
+    "question": "전화로도 정확한 견적이 가능한가요?",
+    "answer": "대략적인 상담은 가능하지만, 정확한 금액은 원하는 중량과 순도, 각인·디자인 조건을 확인한 뒤 안내받는 것이 좋습니다."
   },
   {
-    question: '돌잔치 일정이 가까운데 빠른 제작도 가능한가요?',
-    answer: '가능 여부는 작업 내용에 따라 달라집니다. 수령 희망일을 먼저 알려주시면 가능한 옵션부터 안내드립니다.',
-  },
+    "question": "돌잔치 일정이 가까운데 빠른 제작도 가능한가요?",
+    "answer": "제작 가능 여부와 일정은 선택한 디자인, 각인 등 작업 조건에 따라 달라질 수 있습니다. 희망 수령일을 먼저 알려주시면 상담 시 확인할 수 있습니다."
+  }
 ]
+
+const updatedAt = '2026-08-09'
+const quickAnswers = [
+  "가격은 금 시세 + 무게 + 제작 난이도로 정해져요.",
+  "예산과 수령일을 먼저 정해두시면 상담이 훨씬 빨라집니다.",
+  "정확한 금액은 상담 당일 시세 기준으로 안내드려요."
+]
+
+const sections = [
+  {
+    "title": "가격이 달라지는 기준",
+    "paragraphs": [
+      "돌반지 가격을 확인할 때는 디자인만 보지 않아야 합니다. 먼저 상담일의 금 시세와 제품의 실제 중량을 확인한 뒤, 순도와 각인·디자인 작업 조건까지 함께 살펴야 합니다.",
+      "순금은 일반적으로 24K로 표기되며, 금의 순도는 캐럿 또는 천분율로 표시할 수 있습니다. 제품이 같은 무게처럼 보여도 순도가 다르면 비교 기준이 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "상담일의 금 시세",
+      "제품의 실제 금 중량",
+      "금의 순도 표기",
+      "각인과 디자인 작업 조건"
+    ]
+  },
+  {
+    "title": "상담 전에 정리할 내용",
+    "paragraphs": [
+      "필요한 조건을 빠르게 비교하려면 상담 전에 예산과 원하는 형태를 정해두는 것이 좋습니다. 돌잔치나 선물 일정이 있는 경우에는 희망 수령일도 함께 알려주시기 바랍니다.",
+      "선택한 중량과 순도, 각인·디자인 조건을 확인한 뒤 상담 시점의 시세를 적용해야 정확한 금액을 안내받을 수 있습니다."
+    ],
+    "bullets": [
+      "대략적인 예산 범위",
+      "원하는 중량 또는 크기",
+      "금 순도 확인",
+      "각인 문구와 작업 여부",
+      "희망 수령일"
+    ],
+    "image": {
+      "src": "/Image/guide/baby-ring-price-section-2.webp",
+      "alt": "상담 전에 정리할 내용 예시 이미지",
+      "caption": "상담 전에 정리할 내용에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  },
+  {
+    "title": "가격을 비교할 때 확인할 항목",
+    "paragraphs": [
+      "서로 다른 견적을 비교할 때는 표시된 금액만 먼저 보지 않는 것이 좋습니다. 견적마다 포함 항목이 다를 수 있으므로 같은 순도와 중량인지, 각인 조건도 같은지 먼저 맞춰 보시기 바랍니다.",
+      "날짜에 따라 금 시세가 변동할 수 있는 이유는 국제 기준가격과 시장 거래가격의 영향을 받기 때문입니다. 견적을 받은 날짜와 적용 기준을 함께 확인하면 견적 간 비교가 더 명확해집니다."
+    ],
+    "bullets": [
+      "순도와 실제 중량이 같은지",
+      "각인과 디자인 작업 조건이 같은지",
+      "견적 기준일의 금 시세가 언제인지",
+      "별도로 안내되는 항목이 있는지"
+    ]
+  }
+]
+
+const cautions = [
+  "전화로 안내받은 대략적인 견적과 최종 금액은 실제 중량, 순도, 각인·디자인 조건 확인 후 달라질 수 있습니다.",
+  "금 시세는 날짜에 따라 변동할 수 있으므로 이전에 받은 금액을 현재 상담 금액으로 단정하기 어렵습니다.",
+  "중량이나 각인 조건이 바뀌면 가격도 함께 달라질 수 있습니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/baby-ring-order-method",
+    "label": "돌반지 주문 방법, 처음 문의할 때 이렇게 준비하세요",
+    "description": "예산, 무게, 각인, 수령일을 미리 정리해 상담과 주문을 준비하는 방법을 확인하세요."
+  },
+  {
+    "to": "/guide/baby-ring-engraving-cost",
+    "label": "돌반지 각인 비용, 추가금이 생기는 경우는?",
+    "description": "글자 수와 각인 위치, 주문제작 조건에 따라 확인할 항목을 정리했습니다."
+  },
+  {
+    "to": "/guide/baby-ring-production-time",
+    "label": "돌반지 주문제작 기간, 일정 맞추는 가장 확실한 방법",
+    "description": "디자인과 각인 조건에 따라 달라질 수 있는 제작 일정 확인 방법을 안내합니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '돌반지 가격 문의 전에 꼭 확인할 3가지'
+const gmArticleLead = '한 가지 금액만으로 돌반지 가격을 정하기는 어렵습니다. 정확한 안내를 받으려면 상담 시점의 금 시세와 제품의 실제 중량을 확인하고, 순도와 각인·디자인 조건도 함께 살펴야 합니다.'
+const gmArticleCategory = '가격'
+const gmArticleKeyword = '돌반지 가격 문의'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '돌반지 가격 문의'
+const gmHeroAlt = '금빛 돌반지와 상담 메모'
+const gmSourceNote = '금의 순도와 표기 방식은 GIA 교육 자료를, 국제 금 가격 기준의 성격과 가격 변동 관련 내용은 LBMA 공식 자료를 참고했습니다. 개별 제품의 가격, 재고, 제작 기간은 사업자 상담을 통해 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "GIA 금의 순도와 캐럿 표기 안내",
+    "url": "https://4cs.gia.edu/en-us/blog/buying-guide-white-yellow-rose-gold-engagement-rings/",
+    "note": "금의 순도를 캐럿과 천분율로 표시하는 방식과 순금의 일반적인 24K 표기를 설명하는 교육기관 자료입니다."
+  },
+  {
+    "label": "LBMA Gold Price",
+    "url": "https://www.lbma.org.uk/prices-and-data/lbma-gold-price",
+    "note": "국제 금 가격 기준의 성격과 운영 주체를 확인할 수 있는 국제 귀금속 협회 공식 자료입니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +157,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +184,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="가격"
-    keyword="돌반지 가격 문의"
-    inquiry-type="custom"
-    inquiry-topic="돌반지 가격 문의"
-    title="돌반지 가격 문의 전에 꼭 확인할 3가지"
-    lead="돌반지 가격은 '한 개에 얼마'로 딱 정해져 있지 않아요. 금 시세, 무게, 각인 디자인에 따라 달라지기 때문에 이 세 가지를 먼저 알아두시면 상담이 훨씬 수월합니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/ring/SB0101.webp`"
-    hero-alt="24K 순금 돌반지"
-    :quick-answers="[
-      '가격은 금 시세 + 무게 + 제작 난이도로 정해져요.',
-      '예산과 수령일을 먼저 정해두시면 상담이 훨씬 빨라집니다.',
-      '정확한 금액은 상담 당일 시세 기준으로 안내드려요.'
-    ]"
-    :sections="[
-      {
-        title: '가격이 달라지는 세 가지 이유',
-        paragraphs: ['디자인만 보고 가격이 정해진다고 생각하시는 분들이 많은데, 사실은 금 시세와 무게가 더 큰 비중을 차지해요.'],
-        bullets: ['금 시세 — 상담하시는 날의 시세가 반영돼요', '무게 — 1돈 기준으로 가격대가 달라져요', '작업비 — 각인이나 디테일이 많을수록 추가돼요']
-      },
-      {
-        title: '상담 전에 이것만 정해두세요',
-        paragraphs: ['아래 네 가지만 미리 정리해 오시면 견적도 빠르고 정확해져요. 돌잔치 날짜가 정해져 있다면 꼭 먼저 알려주세요.'],
-        bullets: ['대략적인 예산 범위', '원하시는 무게(또는 사이즈)', '각인 문구를 넣을지 여부', '받으실 날짜']
-      },
-      {
-        title: '다른 곳과 비교하실 때',
-        paragraphs: ['가격만 단순 비교하면 포함된 항목이 달라서 오히려 헷갈릴 수 있어요. 같은 조건으로 맞춰서 비교해보세요.'],
-        bullets: ['각인 비용이 포함된 가격인지', '케이스나 보증서가 함께 제공되는지', '추가 작업비가 별도로 붙는 조건은 없는지']
-      }
-    ]"
-    :cautions="[
-      '전화로 안내드린 대략적인 견적과 최종 금액은 다를 수 있어요.',
-      '무게나 각인 조건이 바뀌면 가격도 함께 달라집니다.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/baby-gold', label: '돌반지 보러가기', description: '제품과 제작 과정을 확인하세요' },
-      { to: '/custom', label: '주문제작 안내', description: '맞춤 디자인으로 만들고 싶다면' },
-      { to: '/contact', label: '문의하기', description: '견적이나 일정 상담' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>
