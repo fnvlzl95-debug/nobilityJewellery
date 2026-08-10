@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'anniversary-ring-gift-selection',
+      path: '/guide/anniversary-ring-gift-selection',
+      title: '기념일 반지 선물, 관계와 착용 방식에 맞게 고르는 기준',
+      description: '교제 기념일, 결혼 기념일, 약속의 의미처럼 선물하는 관계와 착용 방식을 기준으로 반지 선택 전 확인할 내용을 정리했습니다.',
+      keyword: '기념일 반지 선물 선택',
+      image: '/Image/guide/anniversary-ring-gift-selection-hero.webp',
+      publishedAt: '2026-08-10',
+      category: '선택',
+    },
+  {
       slug: 'rose-gold-couple-ring-selection-guide',
       path: '/guide/rose-gold-couple-ring-selection-guide',
       title: '로즈골드 커플링, 피부톤·도금·스크래치·레이어드 확인법',
@@ -330,10 +340,11 @@ export const guidePosts: GuidePostSummary[] = [
     slug: 'earring-post-bent-repair',
     path: '/guide/earring-post-bent-repair',
     title: '귀걸이 침 휘어짐·부러짐 수리, 교체 전 확인할 것',
-    description: '휘어진 침의 변형 위치와 접합부를 확인하고, 펴기·재접합·새 침 교체 및 뒷마개 점검 기준을 정리했습니다.',
+    description: '귀걸이 침 휘어짐과 부러짐을 접합부·소재·장식 상태별로 구분하고, 펴기·재접합·침 교체를 상담하기 전에 확인할 사항과 사진 준비법을 정리했습니다.',
     keyword: '귀걸이 침 수리',
     image: '/Image/guide/earring-post-repair-hero.webp',
     publishedAt: '2026-07-21',
+    updatedAt: '2026-08-10',
     category: '수리',
   },
   {
@@ -410,10 +421,11 @@ export const guidePosts: GuidePostSummary[] = [
     slug: 'ring-cubic-stone-repair',
     path: '/guide/ring-cubic-stone-repair',
     title: '반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것',
-    description: '반지 큐빅 빠짐 수리 전 착용 중단, 빠진 스톤 보관, 재사용·교체 판단, 세팅 발 점검과 종로 상담 준비물을 정리했습니다.',
+    description: '반지 큐빅 빠짐 수리 전 착용을 멈춰야 하는 이유와 빠진 스톤 보관, 재사용·교체 판단, 세팅 발 점검, 종로 수리 상담 준비물을 정리했습니다.',
     keyword: '반지 큐빅 빠짐 수리',
     image: '/Image/guide/ring-cubic-stone-repair-hero.webp',
     publishedAt: '2026-07-14',
+    updatedAt: '2026-08-10',
     category: '수리',
   },
   {
@@ -544,10 +556,11 @@ export const guidePosts: GuidePostSummary[] = [
     slug: 'lab-grown-diamond-natural-difference',
     path: '/guide/lab-grown-diamond-natural-difference',
     title: '랩그로운 다이아몬드 천연 다이아 차이, 예물 반지 선택 기준',
-    description: '랩그로운 다이아몬드와 천연 다이아는 생성 방식, 감정서, 4C, 가격, 예물 의미가 달라요. 구매 전 확인할 체크리스트를 정리했습니다.',
+    description: '랩그로운 다이아몬드와 천연 다이아 차이를 생성 방식, 감정서, 4C, 가격, 예물 의미 기준으로 정리했습니다. 구매 전 확인할 체크리스트를 안내합니다.',
     keyword: '랩그로운 다이아몬드 천연 다이아 차이',
     image: '/Image/guide/lab-grown-diamond-ring-guide.webp',
     publishedAt: '2026-07-07',
+    updatedAt: '2026-08-10',
     category: '소재·보석',
   },
   {
@@ -807,11 +820,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'mother-necklace-price',
     path: '/guide/mother-necklace-price',
-    title: '어머니 금목걸이, 예산별 선택 방법',
-    description: '소재, 중량, 체인·펜던트 구성에 따라 가격이 달라져요. 예산에 맞게 고르는 방법을 알려드립니다.',
+    title: '어머니 금목걸이 가격, 예산별 선택 방법',
+    description: '어머니 금목걸이 가격은 당일 금 시세, 14K·18K, 체인 길이, 펜던트 포함 여부에 따라 달라집니다. 상담 전에 확인할 기준을 정리했습니다.',
     keyword: '어머니 금목걸이 가격',
     image: '/Image/necklace/NC0101.webp',
     publishedAt: '2026-02-14',
+    updatedAt: '2026-08-10',
     category: '가격',
   },
   {

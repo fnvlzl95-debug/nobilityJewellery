@@ -359,7 +359,8 @@ const handleInquiryClick = () => {
 
 .quick-answer ul {
   margin: 0;
-  padding-left: 1.1em;
+  padding-inline-start: 1.35em;
+  list-style: disc outside;
 }
 
 .quick-answer li {
@@ -432,9 +433,15 @@ const handleInquiryClick = () => {
 
 .guide-toc ol {
   margin: 0;
-  padding-left: 1.3em;
+  padding-inline-start: 1.5em;
+  list-style: decimal outside;
   display: grid;
   gap: 6px;
+}
+
+.guide-toc li::marker {
+  color: #d4b44a;
+  font-weight: 700;
 }
 
 .guide-toc a {
@@ -482,7 +489,15 @@ const handleInquiryClick = () => {
 
 .article-bullets {
   margin: 6px 0 16px;
-  padding-left: 1.15em;
+  padding-inline-start: 1.35em;
+  list-style: disc outside;
+}
+
+.quick-answer li::marker,
+.article-bullets li::marker,
+.guide-sources li::marker {
+  color: #d4b44a;
+  font-size: 0.9em;
 }
 
 .article-bullets li {
@@ -525,7 +540,13 @@ const handleInquiryClick = () => {
 
 .guide-caution ul {
   margin: 0;
-  padding-left: 1.1em;
+  padding-inline-start: 1.35em;
+  list-style: disc outside;
+}
+
+.guide-caution li::marker {
+  color: #ffb4b4;
+  font-size: 0.9em;
 }
 
 .guide-caution li {
@@ -559,7 +580,8 @@ const handleInquiryClick = () => {
 
 .guide-sources ul {
   margin: 12px 0 0;
-  padding-left: 1.1em;
+  padding-inline-start: 1.35em;
+  list-style: disc outside;
 }
 
 .guide-sources a {
