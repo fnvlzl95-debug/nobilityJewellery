@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'necklace-breakage-meaning-and-causes',
+      path: '/guide/necklace-breakage-meaning-and-causes',
+      title: '목걸이 끊어짐은 징조일까? 의미보다 먼저 확인할 물리적 원인과 수리 점검',
+      description: '목걸이가 끊어졌을 때 불운이나 이별의 징조인지 궁금하다면, 객관적으로 확인할 수 있는 손상 원인과 보관 및 수리 상담 전 점검 순서를 살펴보세요.',
+      keyword: '목걸이 끊어짐 의미',
+      image: '/Image/guide/necklace-breakage-meaning-and-causes-hero.webp',
+      publishedAt: '2026-08-11',
+      category: '수리',
+    },
+  {
       slug: 'anniversary-ring-gift-selection',
       path: '/guide/anniversary-ring-gift-selection',
       title: '기념일 반지 선물, 관계와 착용 방식에 맞게 고르는 기준',
