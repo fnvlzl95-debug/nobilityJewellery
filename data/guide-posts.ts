@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'yellow-gold-ring-discoloration-causes',
+      path: '/guide/yellow-gold-ring-discoloration-causes',
+      title: '옐로골드 금반지가 검거나 붉게 보이는 원인과 관리 순서',
+      description: '옐로골드 금반지가 검게, 붉게 또는 칙칙하게 보일 때 표면 오염과 변색, 합금 색, 도금 마모 가능성을 나누어 살펴보고 안전하게 관리하는 순서를 안내합니다.',
+      keyword: '옐로골드 금반지 변색 원인 관리',
+      image: '/Image/guide/yellow-gold-ring-discoloration-causes-hero.webp',
+      publishedAt: '2026-08-13',
+      category: '관리',
+    },
+  {
       slug: 'necklace-breakage-meaning-and-causes',
       path: '/guide/necklace-breakage-meaning-and-causes',
       title: '목걸이 끊어짐은 징조일까? 의미보다 먼저 확인할 물리적 원인과 수리 점검',
