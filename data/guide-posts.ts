@@ -647,12 +647,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'necklace-bracelet-chain-repair',
     path: '/guide/necklace-bracelet-chain-repair',
-    title: '목걸이 끊어짐 수리 전 확인할 곳 | 팔찌 체인·잠금장식 상담',
-    description: '목걸이·팔찌가 끊어졌다면 먼저 체인 중간, 잠금장식 연결부, 고리와 분실 부속을 확인하세요. 사진으로 1차 상담할 때 필요한 촬영 범위와 실물 확인 전 점검 순서를 정리했습니다.',
+    title: '목걸이 끊어짐과 팔찌 잠금장식 수리 전 확인할 것',
+    description: '목걸이나 팔찌가 끊어졌다면 체인 중간인지 잠금장식 연결부인지 먼저 구분하고, 제품 전체와 손상 부위를 함께 확인해야 합니다. 사진 상담 준비부터 실물 확인 전 주의할 점까지 정리했습니다.',
     keyword: '목걸이 끊어짐 팔찌 잠금장식 수리',
     image: '/Image/guide/necklace-bracelet-chain-repair-hero.webp',
     publishedAt: '2026-05-28',
-    updatedAt: '2026-08-05',
+    updatedAt: '2026-08-13',
     category: '수리',
   },
   {
