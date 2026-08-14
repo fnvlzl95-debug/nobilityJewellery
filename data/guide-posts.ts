@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'platinum-ring-drawbacks-wear-guide',
+      path: '/guide/platinum-ring-drawbacks-wear-guide',
+      title: '백금 반지 단점은 스크래치·무게·변형·마감 변화에서 확인합니다',
+      description: '백금 반지를 고르기 전에 생활 스크래치, 무게감, 원형 변형, 광택 변화가 실제 착용에 어떤 의미인지 확인하는 방법을 정리했습니다.',
+      keyword: '백금 반지 단점',
+      image: '/Image/guide/platinum-ring-drawbacks-wear-guide-hero.webp',
+      publishedAt: '2026-08-14',
+      category: '선택',
+    },
+  {
       slug: 'yellow-gold-ring-discoloration-causes',
       path: '/guide/yellow-gold-ring-discoloration-causes',
       title: '옐로골드 금반지가 검거나 붉게 보이는 원인과 관리 순서',
