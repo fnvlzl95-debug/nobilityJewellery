@@ -738,11 +738,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'wedding-jewelry-set-composition',
     path: '/guide/wedding-jewelry-set-composition',
-    title: '결혼예물 세트 구성, 신부·신랑·혼주 예물 준비 기준',
-    description: '웨딩밴드, 다이아 3부·5부, 신랑 예물, 혼주 예물까지 예산에 맞춰 어디까지 준비할지 상담 전 기준을 정리했습니다.',
+    title: '결혼예물 세트 구성 가이드｜신부·신랑·혼주 예물 준비 기준',
+    description: '결혼예물 세트 구성은 웨딩밴드를 기준으로 신부·신랑·혼주 예물 범위를 정하는 것부터 시작합니다. 다이아 3부·5부, 데일리 주얼리, 상담 전 체크리스트를 정리했습니다.',
     keyword: '결혼예물 세트 구성',
     image: '/Image/guide/wedding-jewelry-set-box.webp',
     publishedAt: '2026-05-18',
+    updatedAt: '2026-08-14',
     category: '선택',
   },
   {
@@ -779,11 +780,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'baby-ring-order-method',
     path: '/guide/baby-ring-order-method',
-    title: '돌반지 주문 방법, 처음 문의할 때 이렇게 준비하세요',
-    description: '예산, 무게, 각인, 수령일만 미리 정리해도 상담과 주문이 훨씬 빨라져요. 실제 주문 흐름을 정리했습니다.',
+    title: '돌반지 주문 방법｜문의 전 예산·각인·수령일 체크리스트',
+    description: '돌반지 주문 전에는 예산 범위, 원하는 크기감, 각인 문구, 수령 희망일을 먼저 정리하세요. 참고 사진·수령 방식·포장 확인까지 문의 순서대로 안내합니다.',
     keyword: '돌반지 주문 방법',
-    image: '/Image/ring/SB0104.webp',
+    image: '/Image/guide/baby-ring-order-method-hero.webp',
     publishedAt: '2026-03-30',
+    updatedAt: '2026-08-14',
     category: '주문',
   },
   {
