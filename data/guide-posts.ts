@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'wedding-paemul-yesul-difference',
+      path: '/guide/wedding-paemul-yesul-difference',
+      title: '결혼 패물과 예물의 차이, 준비 범위는 이렇게 정리하세요',
+      description: '결혼 예물과 패물의 의미를 구분하고, 오늘날 준비 범위를 양가 합의와 귀금속·장신구 중심으로 정리한 안내입니다.',
+      keyword: '결혼 패물 예물 차이',
+      image: '/Image/guide/wedding-paemul-yesul-difference-hero.webp',
+      publishedAt: '2026-08-15',
+      category: '선택',
+    },
+  {
       slug: 'platinum-ring-drawbacks-wear-guide',
       path: '/guide/platinum-ring-drawbacks-wear-guide',
       title: '백금 반지 단점은 스크래치·무게·변형·마감 변화에서 확인합니다',
@@ -420,11 +430,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'diamond-color-grades',
     path: '/guide/diamond-color-grades',
-    title: '다이아몬드 컬러 등급, D·E·F부터 Z까지 뜻',
-    description: 'GIA D–Z 컬러 23단계와 다섯 범주, 통제 조명과 마스터스톤 감정 방식, 세팅 금속 위 실물 비교법을 정리했습니다.',
+    title: '다이아몬드 컬러 등급 뜻: D·E·F부터 Z까지 23단계',
+    description: '다이아몬드 컬러 등급은 D부터 Z까지의 일반 색 범위 평가입니다. D–F·G–J 등 다섯 범주, 감정서 Color 확인법과 세팅·형광 비교 기준을 정리합니다.',
     keyword: '다이아몬드 컬러 등급',
     image: '/Image/guide/diamond-color-grades-hero.webp',
     publishedAt: '2026-07-19',
+    updatedAt: '2026-08-15',
     category: '소재·보석',
   },
   {
@@ -596,11 +607,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gold-price-how-to-check',
     path: '/guide/gold-price-how-to-check',
-    title: '금 시세 보는 법, 살 때·팔 때 확인할 것',
-    description: '금 시세는 매일 바뀌고 살 때와 팔 때 가격이 달라요. 시세 보는 곳과 고시가에 공임·순도·부가세가 더해지는 구조를 정리했습니다.',
+    title: '금 시세 보는 법: 고시가와 살 때·팔 때 가격 확인 기준',
+    description: '금 시세는 어디서 확인하고, 왜 실제 구매·매입 금액과 다른지 정리했습니다. 거래 전에는 당일 기준 시세, 순도·중량, 공임과 세금 포함 여부를 함께 확인하세요.',
     keyword: '금 시세 보는 법',
-    image: '/Image/guide/gold-price-check.webp',
+    image: '/Image/guide/gold-price-how-to-check-hero.webp',
     publishedAt: '2026-06-03',
+    updatedAt: '2026-08-15',
     category: '가격',
   },
   {
