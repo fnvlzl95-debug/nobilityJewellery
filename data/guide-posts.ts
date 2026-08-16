@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gemstone-durability-for-ring-selection',
+      path: '/guide/gemstone-durability-for-ring-selection',
+      title: '반지용 보석은 경도·인성·안정성을 함께 확인해야 합니다',
+      description: '반지용 보석을 고를 때 모스 경도만으로 판단하기 어려운 이유를 경도, 인성, 안정성, 보석 형태와 세팅, 실제 착용 환경의 관점에서 정리합니다.',
+      keyword: '반지용 보석 내구성',
+      image: '/Image/guide/gemstone-durability-for-ring-selection-hero.webp',
+      publishedAt: '2026-08-16',
+      category: '선택',
+    },
+  {
       slug: 'baby-ring-half-don-one-don-selection',
       path: '/guide/baby-ring-half-don-one-don-selection',
       title: '대표성은 1돈, 부담을 줄인 의미 있는 선물은 반돈으로 고르세요',
