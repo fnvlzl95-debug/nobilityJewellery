@@ -3,24 +3,175 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/mother-necklace-design-consulting'
-const pageTitle = '어머니 목걸이 디자인 상담, 선물용으로 많이 고르는 기준 | 귀족'
-const pageDescription = '어머니 목걸이 디자인은 체인 굵기, 길이, 펜던트 유무, 평소 착용 여부에 따라 달라져요. 상담 전에 보면 좋은 기준을 정리했습니다.'
-const ogImage = `${siteConfig.url}/Image/necklace/pexels-mlkbnl-12194265.webp`
+const pageTitle = '어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준 | 귀족'
+const pageDescription = '어머니 선물용 목걸이는 평소 착용 빈도, 체인 굵기·길이, 펜던트 유무와 잠금장치 사용 편의부터 확인하세요. 상담 전에 준비할 질문과 제품별 확인 항목을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/mother-necklace-design-consulting-hero.webp`
 const publishedAt = '2026-04-08'
 const faqItems = [
   {
-    question: '어머니 목걸이는 굵은 체인과 얇은 체인 중 어떤 쪽이 더 선호되나요?',
-    answer: '평소 자주 착용하실 경우에는 너무 얇지 않으면서도 부담 없는 굵기를 많이 고르세요. 특별한 날 중심이면 존재감 있는 체인이나 펜던트 조합을 선호하는 경우가 많습니다.',
+    "question": "사진이 없어도 어머니 목걸이 디자인 상담이 가능한가요?",
+    "answer": "가능합니다. 평소 착용 빈도, 자주 입는 옷, 기존 액세서리의 분위기, 원하는 길이와 예산 범위를 말하면 상담 방향을 정할 수 있습니다. 참고 사진이 있으면 비교가 더 쉬워집니다."
   },
   {
-    question: '펜던트 없는 기본 체인이 더 실용적인가요?',
-    answer: '네, 일상 착용만 보면 기본 체인이 활용도가 높습니다. 다만 선물 느낌을 더 살리고 싶다면 작은 펜던트를 더하는 방식도 많이 선택하십니다.',
+    "question": "기본 체인과 작은 펜던트 중 어떤 구성이 더 좋은가요?",
+    "answer": "평소 활용도를 우선하면 기본 체인을 먼저 비교할 수 있고, 선물 느낌이나 포인트를 원하면 작은 펜던트를 함께 검토할 수 있습니다. 최종 선택은 수령자의 옷차림과 펜던트 착용감 선호에 따라 달라집니다."
   },
   {
-    question: '사진이 없어도 디자인 상담이 가능한가요?',
-    answer: '가능합니다. 평소 스타일, 착용 빈도, 예산만 알려주셔도 방향을 먼저 잡을 수 있어요. 참고 사진이 있으면 상담이 더 빨라집니다.',
+    "question": "어머니 목걸이 길이는 어떻게 정하나요?",
+    "answer": "기존 목걸이 중 가장 자주 착용하는 길이를 사진이나 실물로 확인한 뒤 상담하는 것이 좋습니다. 목선과 옷차림, 펜던트 유무에 따라 어울리는 길이가 달라질 수 있습니다."
   },
+  {
+    "question": "길이 조정이나 수리가 가능한 목걸이인지 미리 알 수 있나요?",
+    "answer": "디자인만으로 단정하기 어렵습니다. 선택한 제품의 체인 구조와 부속 부품, 판매처의 접수 기준을 확인해야 하며 가능 여부와 방식은 제품마다 다를 수 있습니다."
+  }
 ]
+
+const updatedAt = '2026-08-17'
+const quickAnswers = [
+  "평소 자주 착용하실 선물이라면 옷차림과 기존 액세서리에 무난하게 어울리는 체인·펜던트 구성을 먼저 정하세요.",
+  "사진이 없다면 자주 입는 옷, 기존에 쓰는 액세서리, 원하는 분위기와 예산 범위를 상담 때 전달하면 됩니다.",
+  "길이 조정·수리 여부는 디자인만으로 판단하지 말고, 선택한 제품의 구조와 판매처 정책을 직접 확인하세요."
+]
+
+const sections = [
+  {
+    "title": "디자인 상담에서 먼저 보는 기준",
+    "paragraphs": [
+      "목걸이 디자인은 화려한지 아닌지만 보고 선택하기 어렵습니다. 누가 착용하는지와 얼마나 자주 사용하는지를 먼저 살펴봐야 합니다. 어떤 옷차림에 어울려야 하는지도 확인해야 하며, 잠금장치를 혼자 사용할 수 있는지도 함께 확인해야 합니다."
+    ],
+    "bullets": [
+      "평소 목걸이를 자주 착용하시는지",
+      "평소 착용용인지, 행사나 기념일용인지",
+      "체인만 착용하실지, 펜던트를 함께 원하시는지",
+      "가볍고 단정한 분위기인지, 존재감 있는 스타일인지",
+      "기존 목걸이 중 가장 자주 하는 길이가 어느 정도인지"
+    ]
+  },
+  {
+    "title": "선물용으로 많이 고르는 조합",
+    "paragraphs": [
+      "평소 옷차림에 부담 없이 어울리는 구성을 유행을 강하게 타는 디자인보다 먼저 검토할 수 있습니다. 선호도는 수령자가 기존에 사용하는 액세서리와 착용 습관에 따라 달라집니다. 따라서 상담 때 실제 예시를 함께 비교하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "기본 체인 단독 — 일상 착용을 우선할 때 비교하기 좋은 구성",
+      "작은 펜던트 추가 — 선물 느낌과 포인트를 함께 검토할 수 있는 구성",
+      "조금 더 굵은 체인 — 단정함과 존재감을 함께 살펴볼 수 있는 선택",
+      "잠금장치가 편한 타입 — 수령자가 혼자 여닫을 수 있는지 직접 확인할 항목"
+    ],
+    "image": {
+      "src": "/Image/guide/mother-necklace-design-consulting-section-2.webp",
+      "alt": "기본 체인과 작은 펜던트 목걸이를 비교하는 사진",
+      "caption": "기본 체인과 펜던트 구성은 선물 목적과 착용 빈도에 맞춰 비교합니다."
+    }
+  },
+  {
+    "title": "수령자에게 물어볼 네 가지",
+    "paragraphs": [
+      "선물을 준비하는 사람이 취향을 임의로 정하기보다, 다음 질문으로 실제 사용 조건을 먼저 확인하면 좋습니다. 이렇게 확인한 내용을 바탕으로 상담 방향도 좁히기 쉽습니다."
+    ],
+    "bullets": [
+      "목걸이를 평소에도 착용하시는지",
+      "펜던트가 옷에 걸리는 느낌을 불편해하시는지",
+      "기존 목걸이 중 가장 자주 하는 길이가 무엇인지",
+      "혼자 잠금장치를 여닫는 데 불편함이 없는지"
+    ]
+  },
+  {
+    "title": "상담 전에 준비하면 좋은 정보",
+    "paragraphs": [
+      "정확한 제품명을 몰라도 괜찮습니다. 평소 스타일과 예산 범위에 참고 사진을 더해 준비하면 디자인 방향을 설명하기 쉽습니다. 선물 날짜가 정해져 있다면 제작 일정에 관해 확인할 질문도 함께 준비하세요. 일정은 어머니 목걸이 제작 기간, 선물 날짜 맞추려면에서 확인할 수 있습니다."
+    ],
+    "bullets": [
+      "평소 자주 착용하는 액세서리의 사진",
+      "자주 입는 옷의 색과 목선에 관한 정보",
+      "예산 범위와 선호 소재",
+      "펜던트 필요 여부와 원하는 분위기",
+      "선물 날짜와 희망 수령 시점"
+    ],
+    "image": {
+      "src": "/Image/guide/mother-necklace-design-consulting-section-4.webp",
+      "alt": "상담 전에 준비하면 좋은 정보 예시 이미지",
+      "caption": "상담 전에 준비하면 좋은 정보에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  },
+  {
+    "title": "디자인 고를 때 놓치기 쉬운 부분",
+    "paragraphs": [
+      "실제 착용감과 제품별 확인 항목은 디자인과 함께 상담해야 합니다. 길이 조정이나 수리가 필요할 때는 상담 전에 선택한 제품의 체인 구조·부속 부품과 판매처의 접수 기준을 확인해야 합니다. 제품마다 가능 여부와 방식이 다를 수 있으므로 상담 과정에서도 다시 확인해야 합니다.",
+      "작은 펜던트에 탄생석을 고려할 때는 먼저 탄생석 종류와 의미를 정해야 합니다. 목걸이 선물을 고르는 기준도 함께 비교해 보는 것이 좋습니다. 사용 중 끊어짐이 생겼다면 의미를 단정하기보다 목걸이 끊어짐은 징조일까?라는 의미보다 물리적 원인을 먼저 확인해야 하며, 수리 점검에서 상태를 살펴보는 것이 좋습니다."
+    ],
+    "bullets": [
+      "잠금장치를 혼자 편하게 여닫을 수 있는지",
+      "체인과 부속 부품의 구조를 제품 설명에서 확인했는지",
+      "펜던트가 옷에 걸릴 가능성과 착용 환경을 확인했는지",
+      "금속 종류와 함량, 합금 정보가 표시되어 있는지",
+      "관리 방법과 수리 접수 기준을 판매처에 확인했는지"
+    ]
+  }
+]
+
+const cautions = [
+  "선물용은 디자인만 보고 결정하지 말고 수령자의 착용 빈도, 기존 목걸이 길이, 펜던트 선호와 잠금장치 사용 편의를 함께 확인하세요.",
+  "금속 종류와 품질, 함량, 합금 정보는 제품 표기와 공식 자료를 확인하고, 제품별 관리 방법은 판매처나 제조사 안내를 따르세요.",
+  "향수, 화장품, 세정제와 염소계 물질은 귀금속이나 보석에 영향을 줄 수 있으므로 착용 환경을 확인하세요.",
+  "길이 조정과 수리 가능 여부, 접수 방식과 비용 및 기간은 사업자나 제작자가 제공한 제품별 안내 없이는 단정하지 마세요."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/mother-necklace-production-time",
+    "label": "어머니 목걸이 제작 기간, 선물 날짜 맞추려면",
+    "description": "디자인 상담 뒤 선물 날짜에 맞춰 확인할 일정 질문을 정리했습니다."
+  },
+  {
+    "to": "/guide/necklace-clasp-types",
+    "label": "목걸이 잠금장치 종류, 스프링링·랍스터·토글 차이",
+    "description": "수령자가 혼자 여닫기 편한 잠금장치를 비교할 때 참고하세요."
+  },
+  {
+    "to": "/guide/necklace-chain-types-guide",
+    "label": "목걸이 체인 종류, 베네치아·커브·로프·스네이크 차이",
+    "description": "체인 구조와 착용감, 펜던트 구성 상담 전에 확인할 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/necklace-breakage-meaning-and-causes",
+    "label": "목걸이 끊어짐은 징조일까? 의미보다 먼저 확인할 물리적 원인과 수리 점검",
+    "description": "사용 중 끊어짐이 생겼을 때 물리적 손상과 수리 상담 전 점검 항목을 확인하세요."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준'
+const gmArticleLead = '어머니께 드릴 목걸이는 가격을 먼저 보기보다, 평소 어떤 분위기로 착용하실지를 확인하는 편이 좋습니다. 평소 목걸이를 자주 착용하시는지부터 확인하세요. 그다음 가지고 계신 목걸이의 길이와 펜던트 유무는 사진으로 살펴보세요. 상담할 때는 잠금장치를 혼자 여닫기 편한지도 직접 확인하세요.'
+const gmArticleCategory = '선택'
+const gmArticleKeyword = '어머니 목걸이 디자인 상담'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '어머니 목걸이 디자인 상담'
+const gmHeroAlt = '어머니 선물용 목걸이 디자인 상담을 위한 금속 체인과 작은 펜던트'
+const gmSourceNote = '소재 표기와 보석 관리에 관한 일반 안내는 승인된 공식 자료를 참고했습니다. 개별 제품의 가격, 제작 기간, 재고, 수리 가능 여부와 접수 기준은 사업자 또는 제조사가 제공하는 제품별 자료를 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "Federal Trade Commission Jewelry Guides",
+    "url": "https://www.ftc.gov/news-events/topics/tools-consumers/jewelry-guides",
+    "note": "금·은·백금과 보석 제품의 종류, 품질, 금속 함량, 내구성 및 서비스성 등을 정확히 표시해야 한다는 미국 연방거래위원회의 공식 안내입니다."
+  },
+  {
+    "label": "Federal Trade Commission, Advertising Platinum Jewelry",
+    "url": "https://www.ftc.gov/business-guidance/resources/advertising-platinum-jewelry",
+    "note": "백금 제품의 함량과 표시 방식, 합금 정보 공개에 관한 공식 안내입니다."
+  },
+  {
+    "label": "Gemological Institute of America, Tips on Caring for Jewelry",
+    "url": "https://www.gia.edu/articles/gia-news-research-tips-caring-jewelry",
+    "note": "보석과 귀금속을 열·빛·화학물질로부터 보호하고 별도로 보관하는 방법을 설명하는 공식 자료입니다."
+  },
+  {
+    "label": "Gemological Institute of America, How should I care for my pearls?",
+    "url": "https://www.gia.edu/FAQ/gia-faq-about-gemstones-how-to-care-for-pearls",
+    "note": "진주 목걸이의 화학물질 회피, 착용 후 닦기, 부드러운 보관, 실의 마모와 재줄 꿰기 가능성에 관한 공식 안내입니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +206,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,51 +233,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="선택"
-    keyword="어머니 목걸이 디자인 상담"
-    inquiry-type="custom"
-    inquiry-topic="어머니 목걸이 디자인 상담"
-    title="어머니 목걸이 디자인 상담, 선물용으로 많이 고르는 기준"
-    lead="어머니께 드릴 목걸이는 가격보다 먼저 어떤 분위기로 착용하실지부터 정하는 편이 좋습니다. 체인만 할지, 펜던트를 더할지, 얇고 가볍게 갈지, 존재감 있게 갈지에 따라 만족도가 달라지기 때문이에요. 선물용 디자인을 고를 때 가장 많이 보는 기준을 정리했습니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/necklace/pexels-mlkbnl-12194265.webp`"
-    hero-alt="어머니 목걸이 디자인 상담용 금목걸이 이미지"
-    :quick-answers="[
-      '평소 착용용인지, 기념 선물용인지에 따라 추천 디자인이 달라져요.',
-      '체인 굵기와 길이, 펜던트 유무가 분위기를 가장 크게 좌우합니다.',
-      '예산보다 먼저 착용 빈도와 스타일을 정하면 상담이 훨씬 빨라집니다.'
-    ]"
-    :sections="[
-      {
-        title: '디자인 상담에서 먼저 보는 기준',
-        paragraphs: ['목걸이 디자인은 단순히 화려한지 아닌지만으로 고르기 어렵습니다. 실제로는 누가 얼마나 자주 착용하실지, 어떤 옷차림에 잘 어울려야 하는지부터 보는 편이 실패가 적어요.'],
-        bullets: ['평소 착용용인지, 행사·기념일용인지', '체인만 착용하실지, 펜던트를 함께 원하시는지', '가볍고 단정한 분위기인지, 존재감 있는 스타일인지', '목걸이 길이를 짧게 할지, 여유 있게 할지']
-      },
-      {
-        title: '선물용으로 많이 고르는 조합',
-        paragraphs: ['어머니 목걸이는 지나치게 유행을 타는 디자인보다 오래 착용해도 부담 없는 조합이 선호되는 편입니다. 기본 체인 위주로 갈지, 작은 포인트 펜던트를 더할지에 따라 느낌이 크게 바뀝니다.'],
-        bullets: ['기본 체인 단독 — 가장 무난하고 일상 활용도가 높아요', '작은 펜던트 추가 — 선물 느낌을 살리면서도 부담이 적어요', '조금 더 굵은 체인 — 단정하면서도 존재감을 주기 좋아요', '잠금장치 편한 타입 — 실제 착용 만족도에 큰 영향을 줍니다']
-      },
-      {
-        title: '상담 전에 준비하면 좋은 정보',
-        paragraphs: ['정확한 제품명을 몰라도 괜찮습니다. 대신 평소 스타일과 예산, 참고 사진 정도만 정리해도 디자인 방향을 훨씬 쉽게 잡을 수 있어요.'],
-        bullets: ['평소 자주 착용하시는 액세서리 스타일', '예산 범위와 소재(14K, 18K 등) 선호', '펜던트가 필요한지 여부', '원하는 분위기 사진이나 비슷한 예시']
-      },
-      {
-        title: '디자인 고를 때 놓치기 쉬운 부분',
-        paragraphs: ['처음에는 디자인만 보다가 실제 착용감이나 수리 편의성을 놓치는 경우가 많습니다. 목걸이는 선물한 뒤 오래 쓰실 가능성이 높기 때문에 관리와 수리까지 생각해두는 편이 좋습니다.'],
-        bullets: ['잠금장치를 편하게 여닫을 수 있는지', '체인이 너무 얇아 관리가 까다롭지 않은지', '펜던트가 옷에 자주 걸리지 않는지', '나중에 길이 조정이나 수리가 가능한 구조인지']
-      }
-    ]"
-    :cautions="[
-      '선물용은 디자인만 예쁜 것보다 실제로 자주 착용할 수 있는 구성이 만족도가 높아요.',
-      '같은 예산이어도 체인 굵기와 펜던트 구성에 따라 분위기가 크게 달라질 수 있습니다.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '예산 기준을 함께 확인하세요' },
-      { to: '/guide/mother-necklace-production-time', label: '어머니 목걸이 제작 기간', description: '선물 일정 맞추는 방법을 보세요' },
-      { to: '/contact', label: '문의하기', description: '사진이나 예산 기준으로 디자인 상담받기' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>

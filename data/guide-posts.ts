@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'baby-ring-half-don-one-don-selection',
+      path: '/guide/baby-ring-half-don-one-don-selection',
+      title: '대표성은 1돈, 부담을 줄인 의미 있는 선물은 반돈으로 고르세요',
+      description: '돌반지 1돈과 반돈 중 무엇을 고를지 선물 목적과 중량 차이를 기준으로 정리했습니다. 정해진 예절보다 받는 분과 준비하는 분의 상황에 맞춰 선택해 보세요.',
+      keyword: '돌반지 1돈 반돈 선택',
+      image: '/Image/guide/baby-ring-half-don-one-don-selection-hero.webp',
+      publishedAt: '2026-08-17',
+      category: '선택',
+    },
+  {
       slug: 'wedding-paemul-yesul-difference',
       path: '/guide/wedding-paemul-yesul-difference',
       title: '결혼 패물과 예물의 차이, 준비 범위는 이렇게 정리하세요',
@@ -772,11 +782,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'mother-necklace-design-consulting',
     path: '/guide/mother-necklace-design-consulting',
-    title: '어머니 목걸이 디자인 상담, 선물용으로 많이 고르는 기준',
-    description: '체인 굵기, 길이, 펜던트 유무, 평소 착용 여부에 따라 어울리는 디자인이 달라져요. 상담 전에 볼 기준을 정리했습니다.',
+    title: '어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준',
+    description: '어머니 선물용 목걸이는 평소 착용 빈도, 체인 굵기·길이, 펜던트 유무와 잠금장치 사용 편의부터 확인하세요. 상담 전에 준비할 질문과 제품별 확인 항목을 정리했습니다.',
     keyword: '어머니 목걸이 디자인 상담',
-    image: '/Image/necklace/pexels-mlkbnl-12194265.webp',
+    image: '/Image/guide/mother-necklace-design-consulting-hero.webp',
     publishedAt: '2026-04-08',
+    updatedAt: '2026-08-17',
     category: '선택',
   },
   {
