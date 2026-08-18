@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'custom-ring-consultation-checklist',
+      path: '/guide/custom-ring-consultation-checklist',
+      title: '일반 반지 주문제작 상담 체크리스트',
+      description: '일반 반지를 주문제작할 때 상담 전에 정할 내용과 주문 확정 전에 문서로 확인할 항목을 정리했습니다.',
+      keyword: '일반 반지 주문제작 상담 체크리스트',
+      image: '/Image/guide/custom-ring-consultation-checklist-hero.webp',
+      publishedAt: '2026-08-18',
+      category: '주문',
+    },
+  {
       slug: 'gemstone-durability-for-ring-selection',
       path: '/guide/gemstone-durability-for-ring-selection',
       title: '반지용 보석은 경도·인성·안정성을 함께 확인해야 합니다',
@@ -318,11 +328,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'ring-stuck-finger-removal',
     path: '/guide/ring-stuck-finger-removal',
-    title: '반지 안 빠질 때 빼는 법, 손가락 붓기와 응급 신호 확인 순서',
-    description: '반지가 안 빠질 때 손가락 상태를 확인하고 붓기를 줄인 뒤 윤활과 회전을 시도하는 순서, 즉시 전문 제거가 필요한 신호를 정리했습니다.',
+    title: '반지 안 빠질 때 빼는 법: 붓기 줄이는 순서와 즉시 도움 신호',
+    description: '반지가 안 빠지면 먼저 손끝 색·감각·통증과 외상을 확인하세요. 이상이 없을 때만 손을 올리고 소량의 윤활제로 천천히 돌려 빼며, 색 변화·감각 저하·심한 통증이 있으면 즉시 의료기관의 도움을 받습니다.',
     keyword: '반지 안 빠질 때 빼는 법',
-    image: '/Image/guide/ring-stuck-finger-hero.webp',
+    image: '/Image/guide/ring-stuck-finger-removal-hero.webp',
     publishedAt: '2026-07-26',
+    updatedAt: '2026-08-18',
     category: '관리',
   },
   {
