@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gold-585-vs-750-selection',
+      path: '/guide/gold-585-vs-750-selection',
+      title: '585와 750 각인을 읽고 14K·18K 선택 기준 정하는 법',
+      description: '585와 750 각인이 각각 14K와 18K를 뜻하는 이유를 확인하고, 금 함량과 착용 목적을 기준으로 선택 조건을 정리합니다.',
+      keyword: '585 750 14K 18K 선택',
+      image: '/Image/guide/gold-585-vs-750-selection-hero.webp',
+      publishedAt: '2026-08-19',
+      category: '선택',
+    },
+  {
       slug: 'custom-ring-consultation-checklist',
       path: '/guide/custom-ring-consultation-checklist',
       title: '일반 반지 주문제작 상담 체크리스트',
