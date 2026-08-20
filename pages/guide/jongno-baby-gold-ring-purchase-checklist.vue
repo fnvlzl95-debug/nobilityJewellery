@@ -1,0 +1,233 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/jongno-baby-gold-ring-purchase-checklist'
+const pageTitle = '돌반지 주문 전 중량·각인·수령 조건을 기록하세요 | 귀족'
+const pageDescription = '종로에서 돌반지를 맞출 때 금 종류와 품위, 제품 중량, 각인 내용, 수령 예정일과 확인 절차를 주문 기록에 남기는 방법을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/jongno-baby-gold-ring-purchase-checklist-hero.webp`
+const publishedAt = '2026-08-20'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "돌반지 주문 때 중량은 어떻게 확인해야 하나요?",
+    "answer": "제품 중량을 그람 단위로 확인하고, 장식이나 부속품이 포함되는지 물어보세요. 상담 내용은 주문서나 문자 등 거래 기록에 남기는 것이 좋습니다."
+  },
+  {
+    "question": "각인 문구 외에 무엇을 확인해야 하나요?",
+    "answer": "문구의 철자와 숫자뿐 아니라 각인 위치와 방향, 각인 가능 여부를 확인하세요. 상품에 표시되는 품위와 중량, 판매자 식별정보도 함께 살펴보세요."
+  },
+  {
+    "question": "수령 예정일만 확인하면 되나요?",
+    "answer": "수령 예정일과 방법뿐 아니라 수령 때 확인할 중량, 각인, 포장 상태와 이상이 있을 때 연락할 곳과 협의 절차도 미리 확인하는 것이 좋습니다."
+  },
+  {
+    "question": "수령 후 제품에 이견이 생기면 어떤 자료가 필요한가요?",
+    "answer": "영수증, 주문서, 각인 문구, 중량 약정, 상담 기록과 수령 기록을 준비하세요. 소비자분쟁해결기준을 참고할 때도 거래 자료를 함께 제시할 수 있도록 보관하는 것이 유리합니다."
+  }
+]
+const quickAnswers = [
+  "금 종류와 품위, 제품 중량을 그람 단위로 확인하고 주문 기록에 남기세요.",
+  "각인 문구와 위치, 상표나 판매자 식별정보가 어떻게 표시되는지 수령 전에 확인하세요.",
+  "수령 예정일과 방법, 수령 때 확인할 항목, 이상이 있을 때 연락하고 협의할 절차를 서면으로 받아 두세요."
+]
+const sections = [
+  {
+    "title": "주문 전에 먼저 정할 항목",
+    "paragraphs": [
+      "선물 목적과 원하는 디자인은 상담을 시작하기 전에 정해 두는 것이 좋습니다. 금 종류와 품위, 제품 중량도 따로 확인하고, 중량이 제품 전체 기준인지 장식이나 부속품을 포함하는지는 판매자에게 물어본 뒤 기록하는 것이 좋습니다.",
+      "품위와 중량을 표시 항목으로 두는 공식 귀금속 표시 자료에서는 중량 단위를 그람으로 제시합니다. 돈 단위로만 안내받은 경우에는 그람 기준도 함께 확인해 두면 거래 내용을 비교하기 쉽습니다."
+    ],
+    "bullets": [
+      "금 종류와 품위",
+      "제품 중량과 중량 단위",
+      "장식이나 부속품의 포함 여부",
+      "제품 형태와 크기감",
+      "주문제작 여부"
+    ]
+  },
+  {
+    "title": "각인 내용과 표시를 맞춰 보세요",
+    "paragraphs": [
+      "각인 문구는 상담 중 글자와 숫자를 그대로 다시 읽어 보고, 각인 위치와 방향도 함께 확인하는 것이 좋습니다. 바깥쪽 또는 안쪽 등 원하는 위치가 있다면 제작 전에 가능한지 문의하고 답변을 기록합니다. 이때 판매자에게 확인하세요.",
+      "공식 자료에는 귀금속 가공상품에 품위, 중량, 상표나 약호 또는 승인번호를 각인하는 형식이 제시되어 있습니다. 꼬리표에는 상품명, 판매자 또는 표시자 정보, 중량, 품위 등을 적는 형식도 제시되어 있습니다. 실제 표시 방식은 상품과 판매자 안내를 기준으로 확인하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "각인할 문구의 철자와 숫자",
+      "각인 위치와 방향",
+      "각인 가능 여부와 글자 수 제한",
+      "상품에 표시되는 품위와 중량",
+      "꼬리표의 상품명과 판매자 정보"
+    ],
+    "image": {
+      "src": "/Image/guide/jongno-baby-gold-ring-purchase-checklist-section-2.webp",
+      "alt": "돌반지 안쪽 각인 위치를 살펴보는 확대 검사 모습",
+      "caption": "각인 문구와 위치는 제작 전에 확인합니다."
+    }
+  },
+  {
+    "title": "수령 조건을 주문 기록에 남기기",
+    "paragraphs": [
+      "수령 예정일과 수령 방법을 구매 전에 확인하세요. 주문제작 상품이라면 상담 시 안내받은 일정이 확정 일정인지, 일정이 달라질 때 어떻게 안내되는지도 함께 물어보는 것이 좋습니다.",
+      "수령할 때는 약정한 중량과 각인, 포장 상태를 차례로 확인하고 이상이 있으면 바로 연락할 수 있도록 연락 방법과 협의 절차를 기록해 두세요. 재제작, 수정, 환불 등 조치의 가능 여부와 조건은 사업자마다 다를 수 있으므로 미리 단정하지 말고 판매자에게 확인해야 합니다."
+    ],
+    "bullets": [
+      "수령 예정일과 수령 방법",
+      "수령 시 확인할 중량과 각인",
+      "포장과 구성품 확인 여부",
+      "이상 발견 시 연락할 곳과 시점",
+      "수정이나 재제작 등 협의 조건"
+    ]
+  },
+  {
+    "title": "기록을 보관하고 이견에 대비하기",
+    "paragraphs": [
+      "주문서, 영수증, 문자나 메신저 상담 내용, 각인 문구, 중량 약정, 수령 기록을 한곳에 보관하세요. 구두로 안내받은 내용도 가능하면 문자나 주문서에 다시 적어 서로 확인하는 편이 좋습니다.",
+      "수령 후 이견이 생기면 거래 기록을 바탕으로 판매자와 먼저 내용을 확인할 수 있습니다. 소비자분쟁해결기준은 소비자와 사업자 사이 분쟁의 합의나 권고를 위한 기준이므로, 관련 상담이나 절차를 알아볼 때 자료를 함께 준비하세요."
+    ],
+    "bullets": [
+      "주문서와 영수증",
+      "중량과 각인에 관한 상담 기록",
+      "수령 날짜와 수령 방법 기록",
+      "수령 당시 제품과 포장 상태 기록",
+      "문제가 생겼을 때 주고받은 연락 내용"
+    ],
+    "image": {
+      "src": "/Image/guide/jongno-baby-gold-ring-purchase-checklist-section-4.webp",
+      "alt": "기록을 보관하고 이견에 대비하기 예시 이미지",
+      "caption": "기록을 보관하고 이견에 대비하기에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  }
+]
+const cautions = [
+  "이 글에는 특정 판매자의 가격, 제작 기간, 재고, 수리 가능 여부 또는 인증 여부가 포함되어 있지 않습니다. 해당 조건은 주문 전 판매자에게 직접 확인하세요.",
+  "품위와 중량의 표시 형식이 안내되어 있어도 실제 제품의 각인 위치와 꼬리표 구성은 상품과 판매자에 따라 다를 수 있으므로 주문 기록과 수령품을 함께 대조하세요.",
+  "수정, 재제작, 환불 등의 처리 여부와 조건은 사업자별로 다를 수 있습니다. 수령 전에 적용 조건을 서면으로 확인하세요."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/baby-ring-order-method",
+    "label": "돌반지 주문 방법｜문의 전 예산·각인·수령일 체크리스트",
+    "description": "돌반지 주문 전에 예산 범위, 각인 문구, 수령 희망일과 수령 방식을 정리하는 방법을 안내합니다."
+  },
+  {
+    "to": "/guide/baby-ring-engraving-cost",
+    "label": "돌반지 각인 비용, 추가금이 생기는 경우는?",
+    "description": "각인 위치와 주문제작 여부에 따라 상담할 수 있는 비용 확인 항목을 정리했습니다."
+  },
+  {
+    "to": "/guide/baby-ring-production-time",
+    "label": "돌반지 주문제작 기간, 일정 맞추는 가장 확실한 방법",
+    "description": "수령 일정에 맞춰 주문 전에 확인할 제작 일정과 상담 항목을 정리했습니다."
+  },
+  {
+    "to": "/guide/jewelry-hallmark-numbers-meaning",
+    "label": "금 585 뜻: 14K·750·925 귀금속 각인 읽는 법",
+    "description": "귀금속에 표시된 품위 숫자를 확인할 때 참고할 수 있는 안내입니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '돌반지 주문 전 중량·각인·수령 조건을 기록하세요'
+const gmArticleLead = '주문 조건을 구체적으로 남겨 두면, 상담 때 들은 내용과 실제 수령품을 비교하기 쉽습니다. 금 종류와 품위, 중량, 각인 문구와 위치, 수령 방법과 확인 절차는 주문서나 문자 등 거래 기록에 서로 맞게 적어 두는 것이 중요합니다.'
+const gmArticleCategory = '주문'
+const gmArticleKeyword = '종로 돌반지 구매 전 확인'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '돌반지 주문 전 중량·각인·수령 조건 확인'
+const gmHeroAlt = '중량과 각인 내용을 확인하는 돌반지 주문 상담 모습'
+const gmSourceNote = '귀금속 표시 항목과 소비자분쟁해결기준의 활용 방법을 바탕으로, 돌반지 주문 전 거래 조건을 확인하고 기록하는 실무 항목을 정리했습니다. 가격과 기간 등 사업자별 조건은 포함하지 않았습니다.'
+const gmSources = [
+  {
+    "label": "국가법령정보센터, 귀금속의 함유량 관련 별표 2",
+    "url": "https://law.go.kr/LSW/flDownload.do?flNm=%5B%EB%B3%84%ED%91%9C+2%5D+%EA%B7%80%EA%B8%88%EC%86%8D%EC%9D%98%ED%95%A8%EC%9C%A0%EB%9F%89%0A&flSeq=84539719",
+    "note": "귀금속 품위, 중량, 상표나 약호, 각인과 꼬리표 기재 항목을 확인하는 공식 자료입니다."
+  },
+  {
+    "label": "국가법령정보센터, 소비자분쟁해결기준",
+    "url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000201045&chrClsCd=010201",
+    "note": "소비자와 사업자 사이 분쟁에 적용되는 품목별 합의나 권고 기준의 공식 자료입니다."
+  },
+  {
+    "label": "한국소비자원, 소비자분쟁해결기준 안내",
+    "url": "https://www.kca.go.kr/odr/pg/pi/osPgBjResolvW.do",
+    "note": "소비자분쟁해결기준의 목적과 활용 방법을 안내하는 공식 페이지입니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

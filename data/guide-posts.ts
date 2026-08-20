@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-baby-gold-ring-purchase-checklist',
+      path: '/guide/jongno-baby-gold-ring-purchase-checklist',
+      title: '돌반지 주문 전 중량·각인·수령 조건을 기록하세요',
+      description: '종로에서 돌반지를 맞출 때 금 종류와 품위, 제품 중량, 각인 내용, 수령 예정일과 확인 절차를 주문 기록에 남기는 방법을 정리했습니다.',
+      keyword: '종로 돌반지 구매 전 확인',
+      image: '/Image/guide/jongno-baby-gold-ring-purchase-checklist-hero.webp',
+      publishedAt: '2026-08-20',
+      category: '주문',
+    },
+  {
       slug: 'gold-585-vs-750-selection',
       path: '/guide/gold-585-vs-750-selection',
       title: '585와 750 각인을 읽고 14K·18K 선택 기준 정하는 법',
