@@ -1,0 +1,230 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/diamond-hardness-vs-toughness-guide'
+const pageTitle = '다이아몬드 경도 10, 긁힘과 깨짐은 다릅니다 | 귀족'
+const pageDescription = '다이아몬드의 모스 경도 10이 뜻하는 바와 경도·인성의 차이, 이 빠짐과 큰 파손을 구분하는 방법을 정리합니다.'
+const ogImage = `${siteConfig.url}/Image/guide/diamond-hardness-vs-toughness-guide-hero.webp`
+const publishedAt = '2026-08-21'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "다이아몬드 경도 10이면 절대 깨지지 않나요?",
+    "answer": "아닙니다. 경도 10은 주로 긁힘과 마모에 대한 저항을 뜻합니다. 다이아몬드는 강한 충격이나 특정 방향의 충격으로 이 빠짐, 균열 또는 파손이 생길 수 있습니다."
+  },
+  {
+    "question": "이 빠짐과 깨짐은 어떻게 다른가요?",
+    "answer": "이 빠짐은 보통 거들·끝부분·모서리 일부가 국소적으로 떨어진 손상입니다. 깨짐 또는 큰 파손은 균열이 더 진행되거나 돌이 크게 갈라진 상태를 가리키는 표현입니다. 정확한 구분은 실물 확인이 필요합니다."
+  },
+  {
+    "question": "어떤 다이아몬드 형태가 충격에 더 주의가 필요한가요?",
+    "answer": "뾰족한 끝이나 날카로운 모서리가 있는 형태는 해당 부위가 충격에 노출되기 쉽습니다. 다만 형태만으로 손상 여부나 위험을 확정할 수 없으며 거들 상태와 내포물 위치도 함께 확인해야 합니다."
+  },
+  {
+    "question": "다이아몬드에 이 빠짐이 보이면 어떻게 해야 하나요?",
+    "answer": "착용을 멈추고 손상 부위가 더 부딪히지 않도록 보관하세요. 빠진 조각이 있다면 함께 보관한 뒤 다이아몬드와 금속 세팅을 같이 점검받는 것이 좋습니다."
+  }
+]
+const quickAnswers = [
+  "모스 경도 10은 긁힘과 마모에 대한 저항을 뜻하며 충격에 대한 안전을 보장하지 않습니다.",
+  "이 빠짐은 보통 거들·끝부분·모서리 일부가 국소적으로 떨어지는 손상이고, 큰 파손은 균열이 더 진행되거나 돌이 크게 갈라진 상태를 가리킵니다.",
+  "뾰족한 끝과 날카로운 모서리, 매우 얇은 거들, 취약한 내포물의 위치는 충격 손상 위험을 살필 때 함께 확인해야 합니다."
+]
+const sections = [
+  {
+    "title": "모스 경도 10이 뜻하는 것",
+    "paragraphs": [
+      "광물이 서로 긁을 수 있는 정도를 비교하는 상대 척도가 모스 경도입니다. 이 척도에서 다이아몬드의 경도 10은 가장 높은 단계에 해당하며, 표면의 긁힘과 마모에 대한 저항을 주로 설명합니다.",
+      "경도 10이라는 표현만으로는 충격에 대한 내구성이나 파손 가능성까지 판단하기 어렵습니다. 경도와 인성은 서로 다른 성질이기 때문입니다."
+    ],
+    "bullets": [
+      "경도: 긁힘과 마모에 대한 저항",
+      "인성: 충격으로 깨짐·이 빠짐·균열이 생기는 것에 대한 저항",
+      "높은 경도와 충격에 대한 높은 저항은 같은 의미가 아님"
+    ]
+  },
+  {
+    "title": "이 빠짐과 큰 파손을 구분하는 기준",
+    "paragraphs": [
+      "일반적으로 이 빠짐은 거들, 끝부분 또는 모서리 일부가 국소적으로 떨어져 나간 손상을 뜻합니다. 겉으로 손상 범위가 작아 보여도 해당 부위가 더 취약해졌을 수 있으므로 확대 관찰을 하고 세팅을 점검해야 합니다.",
+      "깨짐 또는 파손은 균열이 더 진행되거나 돌이 크게 갈라진 손상을 가리키는 표현으로 안내할 수 있습니다. 손상 위치와 깊이, 균열의 진행 여부를 확인해야 실제 상태를 판단할 수 있습니다."
+    ],
+    "bullets": [
+      "거들 주변의 작은 조각 탈락은 이 빠짐으로 볼 수 있음",
+      "끝이나 모서리의 일부가 떨어진 경우도 국소 손상에 해당할 수 있음",
+      "균열이 이어지거나 돌이 크게 갈라진 경우는 큰 파손 가능성을 살핌",
+      "사진이나 육안만으로 손상 범위를 확정하기 어려울 수 있음"
+    ],
+    "image": {
+      "src": "/Image/guide/diamond-hardness-vs-toughness-guide-section-2.webp",
+      "alt": "다이아몬드의 거들과 모서리 손상 부위를 살펴보는 확대 사진",
+      "caption": "거들·끝부분·모서리는 충격이 집중될 수 있어 손상 여부를 자세히 살펴야 합니다."
+    }
+  },
+  {
+    "title": "충격 손상 위험이 커질 수 있는 경우",
+    "paragraphs": [
+      "다이아몬드에는 결정 구조상 약한 벽개면이 있어 특정 방향의 충격에 손상 위험이 높아질 수 있습니다. 단단한 물체에 부딪히는 상황은 표면이 잘 긁히지 않는다는 사실과 별개로 이 빠짐이나 파손을 일으킬 수 있습니다.",
+      "뾰족한 끝이나 날카로운 모서리가 있는 형태는 해당 부위가 충격에 노출되기 쉽습니다. 거들이 매우 얇거나 취약한 내포물이 거들·끝부분 가까이에 있는 경우에도 손상 위험을 함께 살펴야 합니다."
+    ],
+    "bullets": [
+      "벽개면과 관련된 특정 방향의 충격",
+      "뾰족한 끝과 날카로운 모서리가 있는 형태",
+      "충격에 노출되기 쉬운 거들",
+      "거들 또는 끝부분 가까이에 있는 취약한 내포물",
+      "착용 중 단단한 물체와 부딪히는 상황"
+    ]
+  },
+  {
+    "title": "손상 의심 시 확인할 순서",
+    "paragraphs": [
+      "이 빠짐이나 균열이 의심되면 먼저 해당 장신구의 착용을 멈추고, 손상 부위가 더 닿지 않도록 따로 보관하는 편이 안전합니다. 빠진 조각이 있다면 버리지 말고 함께 보관해 상담 시 보여 주세요.",
+      "다이아몬드 자체뿐 아니라 금속 세팅의 발과 물림 상태도 확인해야 합니다. 손상 범위와 수리 또는 교체 가능성은 실제 제품을 확인한 뒤 상담 시점에 판단할 수 있습니다."
+    ],
+    "bullets": [
+      "착용과 충격을 우선 멈추기",
+      "손상 부위와 빠진 조각을 따로 보관하기",
+      "확대 사진과 감정서가 있다면 함께 준비하기",
+      "다이아몬드와 세팅을 함께 점검받기",
+      "수리 가능성이나 교체 여부는 실물 확인 후 상담하기"
+    ],
+    "image": {
+      "src": "/Image/guide/diamond-hardness-vs-toughness-guide-section-4.webp",
+      "alt": "손상 의심 시 확인할 순서 예시 이미지",
+      "caption": "손상 의심 시 확인할 순서에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  }
+]
+const cautions = [
+  "모스 경도 10은 다이아몬드가 충격으로 깨지거나 이 빠짐이 생기지 않는다는 보장이 아닙니다.",
+  "손상 여부와 수리 가능성은 형태, 손상 위치, 균열 범위, 세팅 상태에 따라 달라질 수 있으므로 사진만으로 단정하지 마세요.",
+  "초음파 세척이나 강한 조작은 손상 또는 느슨한 세팅 상태를 악화시킬 수 있어 상태 확인 전에는 피하는 편이 좋습니다."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/diamond-cut-shapes-guide",
+    "label": "다이아몬드 컷 종류, 라운드·오벌·쿠션·페어·에메랄드 비교",
+    "description": "다이아몬드 형태별 특징과 실측 크기, 보타이, 세팅 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/gemstone-mohs-hardness-guide",
+    "label": "보석 모스 경도 순위: 다이아 10·루비·사파이어 9 비교",
+    "description": "보석 모스 경도의 의미와 다이아몬드, 강옥, 수정 계열의 상대적 경도를 비교합니다."
+  },
+  {
+    "to": "/guide/ring-cubic-stone-repair",
+    "label": "반지 큐빅 빠짐 수리, 종로에 맡기기 전 확인할 것",
+    "description": "스톤 빠짐이 생겼을 때 착용 중지, 스톤 보관, 세팅 점검 순서를 안내합니다."
+  },
+  {
+    "to": "/guide/diamond-clarity-grades",
+    "label": "다이아몬드 투명도 등급, FL·IF·VVS·VS·SI·I 뜻",
+    "description": "내포물의 위치와 가시성, 감정서 확인 방법을 정리했습니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '다이아몬드 경도 10, 긁힘과 깨짐은 다릅니다'
+const gmArticleLead = '다이아몬드의 모스 경도 10은 긁힘과 마모에 대한 저항이 매우 높다는 의미입니다. 다만 경도가 높아도 강한 충격에 깨지지 않는다는 뜻은 아닙니다. 충격의 방향과 위치, 형태, 거들 상태 등에 따라 이 빠짐이나 균열이 발생할 수 있습니다.'
+const gmArticleCategory = '소재·보석'
+const gmArticleKeyword = '다이아몬드 경도 10 깨짐 이 빠짐 인성'
+const gmInquiryType = 'other' as const
+const gmInquiryTopic = '다이아몬드 경도와 충격 손상 구분'
+const gmHeroAlt = '빛을 받는 다이아몬드의 모서리와 거들을 가까이 보여 주는 사진'
+const gmSourceNote = '다이아몬드의 경도와 인성 차이, 벽개면, 충격에 따른 이 빠짐과 파손 가능성은 아래 GIA 공식 자료를 바탕으로 정리했습니다. 손상 구분과 상담 안내는 해당 자료의 설명을 바탕으로 일반적인 이해를 돕기 위해 작성했으며, 개별 제품의 상태를 확정하는 진단은 아닙니다.'
+const gmSources = [
+  {
+    "label": "GIA, How to Protect Your Diamond from Chipping",
+    "url": "https://www.gia.edu/gia-news-research/how-protect-diamond-chipping",
+    "note": "다이아몬드의 경도·인성·안정성의 차이, 벽개면, 충격에 의한 이 빠짐과 파손 위험을 직접 설명하는 GIA 교육·연구 자료입니다."
+  },
+  {
+    "label": "GIA 4Cs, Mohs Scale – Gem and Mineral Hardness",
+    "url": "https://4cs.gia.edu/en-us/blog/mohs-scale/",
+    "note": "모스 경도가 긁힘 저항을 나타내며 인성과는 다른 개념임을 설명하고, 다이아몬드가 모스 경도 10임을 제시합니다."
+  },
+  {
+    "label": "GIA 4Cs, Diamond Engagement Ring Myths Demystified",
+    "url": "https://4cs.gia.edu/en-us/blog/diamond-engagement-ring-myths-demystified/",
+    "note": "다이아몬드가 충격에 의해 이 빠짐 또는 파손될 수 있고, 벽개면과 거들·노출된 끝부분이 취약할 수 있음을 설명합니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

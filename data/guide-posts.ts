@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'diamond-hardness-vs-toughness-guide',
+      path: '/guide/diamond-hardness-vs-toughness-guide',
+      title: '다이아몬드 경도 10, 긁힘과 깨짐은 다릅니다',
+      description: '다이아몬드의 모스 경도 10이 뜻하는 바와 경도·인성의 차이, 이 빠짐과 큰 파손을 구분하는 방법을 정리합니다.',
+      keyword: '다이아몬드 경도 10 깨짐 이 빠짐 인성',
+      image: '/Image/guide/diamond-hardness-vs-toughness-guide-hero.webp',
+      publishedAt: '2026-08-21',
+      category: '소재·보석',
+    },
+  {
       slug: 'jongno-baby-gold-ring-purchase-checklist',
       path: '/guide/jongno-baby-gold-ring-purchase-checklist',
       title: '돌반지 주문 전 중량·각인·수령 조건을 기록하세요',
