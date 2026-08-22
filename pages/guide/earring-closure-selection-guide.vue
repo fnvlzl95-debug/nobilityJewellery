@@ -1,0 +1,221 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/earring-closure-selection-guide'
+const pageTitle = '첫 귀걸이는 잠금 방식부터 고르세요 | 귀족'
+const pageDescription = '귀걸이 모양보다 마찰식, 나사식, 잠금식 등 뒷마개 구조를 먼저 살펴 첫 귀걸이를 고르는 기준을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/earring-closure-selection-guide-hero.webp`
+const publishedAt = '2026-08-22'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "첫 귀걸이로 가장 무난한 잠금 방식은 무엇인가요?",
+    "answer": "사용 습관에 따라 달라집니다. 자주 빼고 끼우면 조작이 쉬운 마찰식을, 분실 방지를 우선하면 나사식이나 잠금식을 검토할 수 있습니다. 귀 두께와 압박감까지 함께 확인해야 합니다."
+  },
+  {
+    "question": "나사식 귀걸이는 분실을 완전히 막아 주나요?",
+    "answer": "나사식은 고정력을 중시할 때 고려할 수 있는 방식이지만, 모든 상황에서 분실을 막는다고 단정할 수는 없습니다. 나사 체결 상태와 제품의 침, 뒷마개 상태를 함께 확인해야 합니다."
+  },
+  {
+    "question": "나사식 귀걸이가 불편할 수 있는 이유는 무엇인가요?",
+    "answer": "나사식은 기둥에 나사 구조가 있어 일반적인 마찰식보다 침이 두꺼울 수 있습니다. 일부 사용자에게는 이 두께가 불편하게 느껴질 수 있으므로 착용 전 확인이 필요합니다."
+  },
+  {
+    "question": "귀걸이 잠금 방식은 귀걸이 모양보다 중요한가요?",
+    "answer": "모양과 잠금 방식은 서로 다른 기준입니다. 같은 스터드나 후프라도 잠금 구조에 따라 고정 과정과 압박감, 탈착 편의성이 달라질 수 있어 첫 귀걸이에서는 함께 비교하는 것이 좋습니다."
+  },
+  {
+    "question": "첫 귀걸이 맞춤 상담 때 무엇을 알려야 하나요?",
+    "answer": "착용 시간, 탈착 빈도, 분실 걱정 정도, 귀 뒤쪽 압박에 대한 민감도, 새 피어싱 여부를 알려 주세요. 원하는 소재와 예산이 있다면 함께 전달하면 상담 범위를 정하는 데 도움이 됩니다."
+  }
+]
+const quickAnswers = [
+  "자주 빼고 끼우면 조작이 쉬운 마찰식이 비교적 편리할 수 있습니다.",
+  "분실 방지를 우선하면 나사식이나 잠금식 구조를 검토할 수 있지만 조작감과 침 두께를 함께 확인해야 합니다.",
+  "첫 상담에서는 귀 두께, 착용 시간, 압박감, 원하는 고정력을 알려 주면 잠금 방식 선택에 도움이 됩니다."
+]
+const sections = [
+  {
+    "title": "잠금 방식이 착용 경험을 좌우합니다",
+    "paragraphs": [
+      "마찰식 또는 클러치, 버터플라이 캐치는 귀걸이 침을 스프링 장력으로 잡는 구조입니다. 장력이 약하면 고정력이 떨어질 수 있고, 반대로 너무 강하면 착용과 탈착이 불편하거나 귀가 아플 수 있습니다.",
+      "따라서 같은 귀걸이 모양이라도 뒷마개의 장력과 침의 길이, 귀에 닿는 면적에 따라 실제 착용감이 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "쉽게 빼고 끼워야 하는지 확인하기",
+      "귀 뒤쪽을 누르는 정도를 확인하기",
+      "뒷마개가 침에 맞는 구조인지 확인하기"
+    ]
+  },
+  {
+    "title": "마찰식은 편의성, 나사식은 고정력을 비교합니다",
+    "paragraphs": [
+      "마찰식은 뒷마개를 밀어 넣고 빼는 방식이라 자주 착용하는 귀걸이에 고려할 수 있습니다. 다만 실제 고정력은 제품의 장력과 침 상태에 따라 달라질 수 있습니다.",
+      "나사식 캐치는 침에 나사산이 있어 뒷마개를 돌려 고정하는 방식입니다. 분실 방지를 중요하게 생각하는 경우 검토할 수 있지만, 나사식 침이 더 두꺼워 일부 사용자에게 불편할 수 있다는 점을 함께 살펴야 합니다."
+    ],
+    "bullets": [
+      "편하게 교체하는 일이 많은 경우 마찰식 검토하기",
+      "잠금 상태를 확실히 확인하고 싶은 경우 나사식 검토하기",
+      "나사식은 침 두께와 조작 시간을 직접 확인하기"
+    ],
+    "image": {
+      "src": "/Image/guide/earring-closure-selection-guide-section-2.webp",
+      "alt": "마찰식과 나사식 귀걸이 잠금 구조 비교",
+      "caption": "두 방식은 고정 과정과 착용감이 다르므로 사용 습관을 기준으로 비교합니다."
+    }
+  },
+  {
+    "title": "잠금식은 분실 걱정과 조작감을 함께 봅니다",
+    "paragraphs": [
+      "별도의 잠금 장치가 있는 캐치는 스터드 귀걸이를 고정하는 선택지로 소개됩니다. 분실 방지를 우선할 때 고려할 수 있지만, 잠금이 있다고 해서 모든 상황에서 분실을 막는다고 단정할 수는 없습니다.",
+      "첫 귀걸이라면 상담 과정에서 한 손으로 잠글 수 있는지부터 확인하는 것이 좋습니다. 잠금이 완전히 닫혔는지와 귀 뒤쪽이 피부를 누르지 않는지도 함께 점검해야 합니다."
+    ],
+    "bullets": [
+      "잠금 장치를 닫는 순서가 복잡하지 않은지 확인하기",
+      "닫힌 상태를 눈과 손으로 확인할 수 있는지 살펴보기",
+      "착용 뒤 귀 뒤쪽에 압박이나 쓸림이 없는지 확인하기"
+    ]
+  },
+  {
+    "title": "첫 귀걸이 상담 전 확인할 기준",
+    "paragraphs": [
+      "첫 귀걸이를 맞춤으로 고를 때는 귀걸이 형태보다 먼저 착용 상황을 알려 주는 것이 좋습니다. 하루 종일 착용하는지, 잠잘 때 빼는지, 운동이나 마스크 착용이 잦은지에 따라 필요한 고정력과 조작감이 달라질 수 있습니다.",
+      "새 피어싱에 착용할 제품은 일반 귀걸이 기준으로 결정하지 말고 시술자나 전문 상담자에게 적합한 구조와 길이를 확인해야 합니다. 선택 기준은 피부 상태와 시술 시점에 따라 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "자주 탈착하는지",
+      "분실 방지를 얼마나 중요하게 보는지",
+      "귀 뒤쪽 압박에 민감한지",
+      "침의 두께와 길이를 확인했는지",
+      "새 피어싱인지 기존 구멍에 착용하는지"
+    ],
+    "image": {
+      "src": "/Image/guide/earring-closure-selection-guide-section-4.webp",
+      "alt": "첫 귀걸이 상담 전 확인할 기준 예시 이미지",
+      "caption": "첫 귀걸이 상담 전 확인할 기준에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  }
+]
+const cautions = [
+  "잠금 방식만으로 분실이나 통증이 완전히 예방된다고 볼 수 없습니다. 장력, 침의 상태, 귀 형태, 착용 습관을 함께 확인해야 합니다.",
+  "나사식이나 잠금식은 고정 과정이 더 필요할 수 있으며, 침 두께나 뒷마개 구조가 사용자에게 불편할 수 있습니다. 실제 제품을 착용하거나 상담할 때 조작감과 압박을 확인하세요.",
+  "새 피어싱이나 피부 자극이 있는 상태라면 귀걸이 선택보다 현재 상태 확인이 먼저일 수 있습니다. 불편함이 지속되면 시술자 또는 의료 전문가에게 상담하세요."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/earring-types-guide",
+    "label": "귀걸이 종류, 스터드·드롭·후프·클립형 차이",
+    "description": "귀걸이 형태별 움직임과 무게, 잠금 구조 및 착용 목적을 비교합니다."
+  },
+  {
+    "to": "/guide/earring-back-lost-types",
+    "label": "귀걸이 뒷마개 분실, 종류별 교체 기준",
+    "description": "나비형, 실리콘, 나사형, 원터치 잠금의 차이와 교체 전 확인 사항을 정리합니다."
+  },
+  {
+    "to": "/guide/earring-post-bent-repair",
+    "label": "귀걸이 침 휘어짐·부러짐 수리, 교체 전 확인할 것",
+    "description": "귀걸이 침의 상태를 확인하고 수리나 교체 상담 전에 준비할 내용을 안내합니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '첫 귀걸이는 잠금 방식부터 고르세요'
+const gmArticleLead = '첫 귀걸이는 스터드인지 후프인지보다 귀에 닿는 침과 뒷마개의 잠금 방식을 먼저 확인하는 편이 좋습니다. 자주 빼고 끼우는지, 분실을 얼마나 걱정하는지, 착용 중 압박감에 민감한지에 따라 적합한 방식이 달라질 수 있습니다.'
+const gmArticleCategory = '선택'
+const gmArticleKeyword = '첫 귀걸이 잠금 방식'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '잠금 방식에 따른 첫 귀걸이 맞춤 상담'
+const gmHeroAlt = '서로 다른 잠금 방식을 비교하는 첫 귀걸이'
+const gmSourceNote = '잠금 방식의 작동 원리와 착용감, 분실 방지 관점의 비교는 아래 승인된 공식 자료를 바탕으로 정리했습니다. 개인별 적합성은 귀 형태와 제품 상태, 착용 습관에 따라 달라질 수 있습니다.'
+const gmSources = [
+  {
+    "label": "Gemological Institute of America, Bench Tip 4: How To Adjust Earring Backs",
+    "url": "https://www.gia.edu/bench-tip-how-to-adjust-earring-back",
+    "note": "마찰식, 클러치, 버터플라이 캐치의 작동 방식과 장력에 따른 고정력 및 착용감의 차이를 설명하는 공식 교육 자료입니다."
+  },
+  {
+    "label": "Gemological Institute of America, How to Choose Diamond Stud Earrings",
+    "url": "https://4cs.gia.edu/en-us/blog/how-to-choose-diamond-stud-earrings/",
+    "note": "나사식과 잠금식 캐치를 분실 방지 관점에서 비교하고 나사식 기둥의 두께가 불편할 수 있음을 설명합니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

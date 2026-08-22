@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'earring-closure-selection-guide',
+      path: '/guide/earring-closure-selection-guide',
+      title: '첫 귀걸이는 잠금 방식부터 고르세요',
+      description: '귀걸이 모양보다 마찰식, 나사식, 잠금식 등 뒷마개 구조를 먼저 살펴 첫 귀걸이를 고르는 기준을 정리했습니다.',
+      keyword: '첫 귀걸이 잠금 방식',
+      image: '/Image/guide/earring-closure-selection-guide-hero.webp',
+      publishedAt: '2026-08-22',
+      category: '선택',
+    },
+  {
       slug: 'diamond-hardness-vs-toughness-guide',
       path: '/guide/diamond-hardness-vs-toughness-guide',
       title: '다이아몬드 경도 10, 긁힘과 깨짐은 다릅니다',
