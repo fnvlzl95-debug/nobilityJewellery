@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'pearl-hardness-daily-wear-guide',
+      path: '/guide/pearl-hardness-daily-wear-guide',
+      title: '진주 경도 2.5에서 4.5, 일상 착용 중 표면 손상 줄이는 기준',
+      description: '진주의 상대적으로 낮은 모스 경도와 표면 손상 위험을 바탕으로 착용해도 되는 상황, 피해야 할 마찰과 화학물질, 착용 후 세척과 보관 기준을 정리합니다.',
+      keyword: '진주 경도 일상 착용',
+      image: '/Image/guide/pearl-hardness-daily-wear-guide-hero.webp',
+      publishedAt: '2026-08-23',
+      category: '소재·보석',
+    },
+  {
       slug: 'earring-closure-selection-guide',
       path: '/guide/earring-closure-selection-guide',
       title: '첫 귀걸이는 잠금 방식부터 고르세요',

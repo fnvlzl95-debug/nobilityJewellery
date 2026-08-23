@@ -1,0 +1,214 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/pearl-hardness-daily-wear-guide'
+const pageTitle = '진주 경도 2.5에서 4.5, 일상 착용 중 표면 손상 줄이는 기준 | 귀족'
+const pageDescription = '진주의 상대적으로 낮은 모스 경도와 표면 손상 위험을 바탕으로 착용해도 되는 상황, 피해야 할 마찰과 화학물질, 착용 후 세척과 보관 기준을 정리합니다.'
+const ogImage = `${siteConfig.url}/Image/guide/pearl-hardness-daily-wear-guide-hero.webp`
+const publishedAt = '2026-08-23'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "진주는 매일 착용해도 되나요?",
+    "answer": "착용 가능 여부는 진주의 상태와 장신구 구조, 생활 환경에 따라 달라집니다. 매일 착용하더라도 다른 장신구와의 마찰, 화학물질, 강한 열과 거친 물체 접촉을 줄이고 착용 후 닦는 관리가 필요합니다."
+  },
+  {
+    "question": "진주를 다른 반지나 목걸이와 함께 착용해도 되나요?",
+    "answer": "함께 착용할 수 있는지는 장신구끼리 직접 닿고 문지르는지에 따라 달라집니다. 진주는 상대적으로 부드러우므로 서로 닿는 조합은 피하거나 충분히 분리하는 편이 안전합니다."
+  },
+  {
+    "question": "진주를 물로 씻어도 되나요?",
+    "answer": "필요한 경우 미지근한 비눗물이나 부드러운 천을 이용한 순한 세척을 기준으로 삼을 수 있습니다. 초음파 세척기와 스팀 세척기는 사용하지 말고, 세척 뒤에는 충분히 건조해야 합니다."
+  },
+  {
+    "question": "진주 표면을 닦을 때 일반 천을 사용해도 되나요?",
+    "answer": "깨끗하고 매우 부드러운 천을 사용하는 것이 좋습니다. 거친 천이나 연마 성분이 있는 제품은 표면을 마모시킬 수 있어 피해야 합니다."
+  },
+  {
+    "question": "사우나나 요리할 때 진주를 착용해도 되나요?",
+    "answer": "강한 열과 고온 환경에서는 착용하지 않는 편이 안전합니다. GIA 자료는 강한 열이 진주의 변색, 갈라짐, 균열 또는 탈수와 관련될 수 있다고 안내합니다."
+  }
+]
+const quickAnswers = [
+  "진주는 모스 경도 2.5에서 4.5 범위로 알려진 상대적으로 부드러운 보석이므로 다른 장신구와 직접 부딪히거나 문지르지 않는 편이 좋습니다.",
+  "향수, 헤어스프레이, 화장품, 세정제, 땀과 강한 열은 진주 표면에 영향을 줄 수 있어 관련 제품을 사용한 뒤 진주를 착용하는 것이 안전합니다.",
+  "착용 후에는 매우 부드럽고 깨끗한 천으로 닦고, 다른 장신구와 분리해 부드러운 파우치나 케이스에 보관하는 것을 기준으로 삼습니다."
+]
+const sections = [
+  {
+    "title": "진주 경도가 일상 착용에 미치는 영향",
+    "paragraphs": [
+      "긁힘에 대한 상대적인 저항을 나타내는 기준이 모스 경도입니다. 진주는 다이아몬드나 여러 금속 장신구보다 상대적으로 부드러운 편이므로, 단단하거나 거친 물체에 문지르면 표면에 흠집이 생기거나 마모될 수 있습니다.",
+      "모든 손상 가능성을 경도만으로 판단하기는 어렵습니다. 진주의 표면 상태와 장신구의 구조, 착용 환경과 접촉 방식에 따라 위험이 달라지기 때문입니다. 그래서 착용 빈도보다 마찰과 충격을 줄이는 방법을 더 중요하게 살펴야 합니다."
+    ],
+    "bullets": [
+      "다른 보석이나 금속 장신구와 한꺼번에 착용할 때 서로 닿는지 확인합니다.",
+      "가방 장식, 책상 모서리, 거친 섬유와 같은 물체에 반복해 닿는 상황을 줄입니다.",
+      "진주가 피부나 옷에 닿는 정도보다 단단한 물체와 직접 마찰하는 상황을 우선 피합니다."
+    ]
+  },
+  {
+    "title": "일상에서 착용을 미루는 상황",
+    "paragraphs": [
+      "진주를 착용할 때는 향수, 헤어스프레이, 화장품을 먼저 사용한 뒤 충분히 정리하는 편이 안전합니다. 관련 제품이 진주 표면에 직접 닿을 경우 표면 손상 위험이 커질 수 있습니다.",
+      "온도가 높거나 급격히 변하는 장소에서는 진주 착용을 피하는 편이 좋습니다. 사우나와 고온 조리 환경, 강한 열원 주변이 이에 해당합니다. 강한 열은 변색이나 갈라짐, 균열 또는 탈수와 관련될 수 있습니다."
+    ],
+    "bullets": [
+      "향수와 헤어스프레이를 진주에 직접 분사하지 않습니다.",
+      "화장품과 세정제가 묻은 손으로 진주를 만지는 상황을 줄입니다.",
+      "수영, 목욕, 사우나와 같이 물질과 열에 노출될 수 있는 상황은 장신구 상태를 고려해 착용을 미룹니다.",
+      "땀이나 오염이 생긴 채로 오래 두지 않고 착용 후 닦습니다."
+    ],
+    "image": {
+      "src": "/Image/guide/pearl-hardness-daily-wear-guide-section-2.webp",
+      "alt": "진주 장신구를 착용 전 화장품과 분리해 둔 모습",
+      "caption": "화장품과 향수 사용을 마친 뒤 진주를 착용하는 순서가 안전합니다."
+    }
+  },
+  {
+    "title": "착용 후 세척과 보관 순서",
+    "paragraphs": [
+      "착용을 마친 뒤에는 진주 표면에 남은 땀과 잔여물을 줄이기 위해 깨끗하고 매우 부드러운 천으로 가볍게 닦습니다. 이때 문지르는 힘을 높이거나 표면을 여러 방향으로 세게 마찰하지 않도록 합니다.",
+      "오염이 남아 별도 세척이 필요할 때에는 미지근한 비눗물이나 부드러운 천을 이용하는 순한 방법을 기준으로 삼습니다. 세척을 마치면 충분히 건조한 뒤, 다른 장신구와 닿지 않도록 부드러운 파우치나 케이스에 보관합니다."
+    ],
+    "bullets": [
+      "초음파 세척기와 스팀 세척기는 사용하지 않습니다.",
+      "거친 천, 연마제, 강한 세정제를 사용하지 않습니다.",
+      "진주를 다른 보석과 한 케이스에 섞어 보관하지 않습니다.",
+      "목걸이나 귀걸이는 눌리거나 걸리지 않는 상태로 보관합니다."
+    ]
+  }
+]
+const cautions = [
+  "진주의 모스 경도 수치는 상대적인 기준이며, 실제 손상 여부는 진주의 상태와 장신구 구조, 접촉 환경에 따라 달라질 수 있습니다.",
+  "진주 표면에 이미 벗겨짐, 갈라짐, 균열 또는 광택 변화가 보인다면 집에서 강하게 닦거나 세척하지 말고 상태를 확인한 뒤 상담하는 편이 안전합니다.",
+  "사업자 제공 사실이 없으므로 특정 제품의 재질, 처리 여부, 재고, 수리 가능성이나 상담 기간은 이 글에서 판단할 수 없습니다."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/pearl-necklace-cleaning-storage",
+    "label": "진주 목걸이 세척·보관법, 광택과 실 손상 줄이는 관리 순서",
+    "description": "진주 목걸이를 착용 후 닦고 세척하며 보관하는 순서와 주의점을 정리했습니다."
+  },
+  {
+    "to": "/guide/pearl-necklace-restringing",
+    "label": "진주 목걸이 줄 교체, 종로 수리 전 확인할 것",
+    "description": "진주 목걸이 줄 상태를 살피고 상담 전에 확인할 내용을 정리했습니다."
+  },
+  {
+    "to": "/guide/opal-hardness-daily-wear-care",
+    "label": "오팔은 반지보다 펜던트와 귀걸이가 일상 착용에 더 적합합니다",
+    "description": "오팔의 경도와 충격, 열, 세척과 보관 기준을 함께 살펴볼 수 있습니다."
+  },
+  {
+    "to": "/guide/pearl-real-vs-fake-identification",
+    "label": "진주 진짜 가짜 구별법, 양식·천연·모조 진주 확인 순서",
+    "description": "진주의 종류와 표면 단서, 감별 확인 순서를 정리했습니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '진주 경도 2.5에서 4.5, 일상 착용 중 표면 손상 줄이는 기준'
+const gmArticleLead = '아름다운 광택을 지닌 진주는 다른 보석에 비해 상대적으로 부드럽습니다. GIA 자료에서는 진주의 모스 경도를 2.5로 제시하고, 다른 자료에서는 대체로 2.5에서 4.5 범위로 설명합니다. 따라서 일상 착용 자체를 줄이기보다 다른 장신구와의 마찰이나 거친 물체와의 접촉을 피하고, 화학물질과 열에 노출되는 상황을 줄이는 것이 중요합니다.'
+const gmArticleCategory = '소재·보석'
+const gmArticleKeyword = '진주 경도 일상 착용'
+const gmInquiryType = 'other' as const
+const gmInquiryTopic = '진주 경도와 표면 손상 위험을 고려한 일상 착용 기준'
+const gmHeroAlt = '부드러운 천 위에 놓인 진주 장신구와 보관 파우치'
+const gmSourceNote = '진주의 경도와 손상 위험, 화학물질과 열에 대한 주의, 세척과 보관 방법은 아래 GIA 공식 자료를 바탕으로 정리했습니다. 개별 장신구의 상태와 처리 여부는 별도 확인이 필요합니다.'
+const gmSources = [
+  {
+    "label": "Pearl Care and Cleaning Guide",
+    "url": "https://www.gia.edu/gems-gemology/pearl-care-cleaning",
+    "note": "GIA가 진주의 모스 경도, 긁힘과 화학물질 및 열에 의한 손상 위험, 세척 방법을 설명한 공식 자료입니다."
+  },
+  {
+    "label": "How should I care for my pearls?",
+    "url": "https://www.gia.edu/FAQ/gia-faq-about-gemstones-how-to-care-for-pearls",
+    "note": "진주를 거친 물체와 화학물질에서 멀리하고 착용 후 닦아 부드러운 파우치나 케이스에 보관하도록 안내하는 GIA 공식 자주 묻는 질문입니다."
+  },
+  {
+    "label": "Diamonds vs. Pearls: What’s the Difference?",
+    "url": "https://4cs.gia.edu/en-us/blog/diamonds-vs-pearls/",
+    "note": "진주의 모스 경도 범위와 긁힘 및 손상에 대한 상대적 취약성을 설명하는 GIA 4Cs 공식 교육 자료입니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>
