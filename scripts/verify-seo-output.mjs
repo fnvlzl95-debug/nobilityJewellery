@@ -34,6 +34,79 @@ const extractOgUrl = (html) => {
   return tag ? extractAttribute(tag, 'content') : undefined
 }
 
+const extractMetaContent = (html, attributeName, attributeValue) => {
+  const tags = html.match(/<meta\b[^>]*>/gi) || []
+  const tag = tags.find((candidate) => (
+    extractAttribute(candidate, attributeName)?.toLowerCase() === attributeValue.toLowerCase()
+  ))
+  return tag ? extractAttribute(tag, 'content') : undefined
+}
+
+const extractTitle = (html) => decodeXml(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() || '')
+
+const extractJsonLdNodes = (html) => {
+  const nodes = []
+  for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      const value = JSON.parse(decodeXml(match[1].trim()))
+      const values = Array.isArray(value) ? value : [value]
+      for (const item of values) {
+        if (item?.['@graph'] && Array.isArray(item['@graph'])) nodes.push(...item['@graph'])
+        else nodes.push(item)
+      }
+    } catch {
+      nodes.push({ '@type': 'InvalidJsonLd' })
+    }
+  }
+  return nodes
+}
+
+const hasSchemaType = (node, type) => {
+  const nodeType = node?.['@type']
+  return Array.isArray(nodeType) ? nodeType.includes(type) : nodeType === type
+}
+
+const verifyGallerySeoDocument = (html, pageUrl, failures) => {
+  if (!pageUrl.pathname.startsWith('/gallery/')) return null
+
+  const title = extractTitle(html)
+  const description = extractMetaContent(html, 'name', 'description')
+  const robots = extractMetaContent(html, 'name', 'robots')
+  const ogType = extractMetaContent(html, 'property', 'og:type')
+  const ogImage = extractMetaContent(html, 'property', 'og:image')
+  const ogImageAlt = extractMetaContent(html, 'property', 'og:image:alt')
+  const jsonLdNodes = extractJsonLdNodes(html)
+  const product = jsonLdNodes.find((node) => hasSchemaType(node, 'Product'))
+  const webPage = jsonLdNodes.find((node) => hasSchemaType(node, 'WebPage'))
+  const breadcrumb = jsonLdNodes.find((node) => hasSchemaType(node, 'BreadcrumbList'))
+
+  if (!title || !title.endsWith('| 귀족')) failures.push(`${pageUrl.pathname}: gallery title ${title || 'missing'}`)
+  if (!description || description.length < 60 || description.length > 220) {
+    failures.push(`${pageUrl.pathname}: gallery description length ${description?.length || 0}`)
+  }
+  if (!robots?.includes('index') || !robots.includes('follow')) {
+    failures.push(`${pageUrl.pathname}: robots ${robots || 'missing'}`)
+  }
+  if (ogType !== 'product') failures.push(`${pageUrl.pathname}: og:type ${ogType || 'missing'}`)
+  if (!ogImage) failures.push(`${pageUrl.pathname}: og:image missing`)
+  if (!ogImageAlt) failures.push(`${pageUrl.pathname}: og:image:alt missing`)
+  if (!product) failures.push(`${pageUrl.pathname}: Product JSON-LD missing`)
+  if (!webPage) failures.push(`${pageUrl.pathname}: WebPage JSON-LD missing`)
+  if (!breadcrumb) failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
+
+  if (product) {
+    if (product.material !== '14K·18K 골드') {
+      failures.push(`${pageUrl.pathname}: Product material ${product.material || 'missing'}`)
+    }
+    const color = String(product.color || '')
+    for (const expectedColor of ['옐로우골드', '로즈골드', '화이트골드']) {
+      if (!color.includes(expectedColor)) failures.push(`${pageUrl.pathname}: Product color missing ${expectedColor}`)
+    }
+  }
+
+  return ogImage ? new URL(ogImage, pageUrl) : null
+}
+
 const extractAnchors = (html) => [...html.matchAll(/<a\b[^>]*>/gi)]
   .map((match) => extractAttribute(match[0], 'href'))
   .filter(Boolean)
@@ -94,6 +167,14 @@ const verifyLive = async () => {
       failures.push(`${canonicalUrl.pathname}: og:url ${ogUrl || 'missing'}`)
     }
 
+    const galleryImage = verifyGallerySeoDocument(html, canonicalUrl, failures)
+    if (galleryImage) {
+      const imageResponse = await fetch(galleryImage, { redirect: 'manual' })
+      if (imageResponse.status !== 200 || !imageResponse.headers.get('content-type')?.startsWith('image/')) {
+        failures.push(`${canonicalUrl.pathname}: gallery image status ${imageResponse.status}`)
+      }
+    }
+
     const opposite = oppositeSlashUrl(canonicalUrl.href)
     if (!opposite) return
 
@@ -110,11 +191,29 @@ const verifyLive = async () => {
     }
   })
 
+  const galleryLocations = locations
+    .map((location) => new URL(location))
+    .filter((url) => url.pathname.startsWith('/gallery/'))
+  if (galleryLocations.length) {
+    const galleryIndexResponse = await fetch(new URL('/gallery', liveOrigin), { redirect: 'manual' })
+    if (galleryIndexResponse.status !== 200) {
+      failures.push(`/gallery: index status ${galleryIndexResponse.status}`)
+    } else {
+      const linkedPaths = new Set(extractAnchors(await galleryIndexResponse.text())
+        .map((href) => new URL(href, liveOrigin).pathname))
+      for (const detailUrl of galleryLocations) {
+        if (!linkedPaths.has(detailUrl.pathname)) {
+          failures.push(`${detailUrl.pathname}: missing from gallery index links`)
+        }
+      }
+    }
+  }
+
   if (failures.length) {
     throw new Error(`Live SEO verification failed (${failures.length})\n${failures.join('\n')}`)
   }
 
-  console.log(`Live SEO verification passed: ${locations.length} sitemap URLs`)
+  console.log(`Live SEO verification passed: ${locations.length} sitemap URLs, ${galleryLocations.length} gallery detail URLs`)
 }
 
 const findPublicDir = () => {
@@ -144,6 +243,7 @@ const verifyLocal = async () => {
   const failures = []
   const internalLinkFailures = new Set()
   const sitemapPaths = new Set(locations.map((location) => new URL(location).pathname))
+  const galleryDetailPaths = [...sitemapPaths].filter((pathname) => pathname.startsWith('/gallery/'))
 
   for (const location of locations) {
     const url = new URL(location)
@@ -174,6 +274,16 @@ const verifyLocal = async () => {
       failures.push(`${url.pathname}: og:url ${ogUrl || 'missing'}`)
     }
 
+    const galleryImage = verifyGallerySeoDocument(html, url, failures)
+    if (galleryImage) {
+      if (galleryImage.origin !== expectedOrigin) {
+        failures.push(`${url.pathname}: gallery image origin ${galleryImage.origin}`)
+      } else {
+        const imagePath = join(publicDir, ...decodeURIComponent(galleryImage.pathname).replace(/^\//, '').split('/'))
+        if (!existsSync(imagePath)) failures.push(`${url.pathname}: gallery image missing ${galleryImage.pathname}`)
+      }
+    }
+
     for (const href of extractAnchors(html)) {
       if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) continue
 
@@ -190,6 +300,20 @@ const verifyLocal = async () => {
 
   failures.push(...internalLinkFailures)
 
+  if (galleryDetailPaths.length) {
+    const galleryIndexPath = join(publicDir, 'gallery.html')
+    if (!existsSync(galleryIndexPath)) {
+      failures.push('/gallery: missing gallery.html')
+    } else {
+      const galleryIndexHtml = await readFile(galleryIndexPath, 'utf8')
+      const linkedPaths = new Set(extractAnchors(galleryIndexHtml)
+        .map((href) => new URL(href, expectedOrigin).pathname))
+      for (const detailPath of galleryDetailPaths) {
+        if (!linkedPaths.has(detailPath)) failures.push(`${detailPath}: missing from gallery index links`)
+      }
+    }
+  }
+
   const nestedIndexFiles = (await listHtmlFiles(publicDir))
     .filter((file) => file.endsWith(`${sep}index.html`) && resolve(file) !== resolve(publicDir, 'index.html'))
   if (nestedIndexFiles.length) {
@@ -200,7 +324,7 @@ const verifyLocal = async () => {
     throw new Error(`Local SEO verification failed (${failures.length})\n${failures.join('\n')}`)
   }
 
-  console.log(`Local SEO verification passed: ${locations.length} sitemap URLs`)
+  console.log(`Local SEO verification passed: ${locations.length} sitemap URLs, ${galleryDetailPaths.length} gallery detail URLs`)
   console.log(`Output: ${publicDir}`)
 }
 

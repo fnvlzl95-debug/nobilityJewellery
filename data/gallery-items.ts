@@ -11,6 +11,7 @@ export interface GalleryItem {
   titleEn: string
   description: string  // 카드용 짧은 설명 (2줄 이내)
   material: string
+  colorOptions: string[]
   workType: string
   delivery: string
   images: string[]  // 최대 4개 이미지
@@ -19,6 +20,15 @@ export interface GalleryItem {
   specs?: ProductSpec[]  // 상세 페이지 스펙 표
 }
 
+export const galleryProductDefaults = {
+  material: '14K·18K 골드',
+  colorOptions: ['옐로우골드', '로즈골드', '화이트골드'],
+  workType: '주문제작',
+  delivery: '약 1~2주',
+} as const
+
+type GalleryItemSource = Omit<GalleryItem, 'colorOptions'>
+
 export interface Category {
   id: string
   label: string
@@ -26,7 +36,7 @@ export interface Category {
   description: string  // SEO용 카테고리 설명
 }
 
-export const galleryItems: GalleryItem[] = [
+const galleryItemSource: GalleryItemSource[] = [
   {
     id: 1,
     slug: 'promise-couple-ring',
@@ -796,6 +806,16 @@ export const galleryItems: GalleryItem[] = [
     ],
   },
 ]
+
+// 색상·소재·제작 조건은 모든 제품에 공통으로 적용한다.
+// 새 제품을 추가해도 표기가 흔들리지 않도록 출력 단계에서 기본값을 정규화한다.
+export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => ({
+  ...item,
+  material: galleryProductDefaults.material,
+  colorOptions: [...galleryProductDefaults.colorOptions],
+  workType: galleryProductDefaults.workType,
+  delivery: galleryProductDefaults.delivery,
+}))
 
 export const categories: Category[] = [
   {

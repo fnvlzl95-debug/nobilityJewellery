@@ -48,6 +48,7 @@ const handleCtaKakaoClick = () => {
 }
 
 const previewItems = getPreviewItems(6)
+const categoryLabels = Object.fromEntries(categories.map((category) => [category.id, category.label]))
 const intentRoutes = [
   {
     to: '/gallery',
@@ -583,7 +584,7 @@ const handleNaverMapClick = () => {
               />
             </div>
             <div class="item-overlay">
-              <span class="item-category">{{ item.titleEn.split(' ')[0] }}</span>
+              <span class="item-category">{{ categoryLabels[item.category] ?? '제품' }}</span>
               <h3 class="item-title">{{ item.title }}</h3>
             </div>
           </div>

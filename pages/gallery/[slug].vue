@@ -25,7 +25,8 @@ const { trackPageInquiryClick, trackKakaoClick, trackPhoneClick, trackEvent, tra
 
 const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
 const heroImageUrl = `${siteConfig.url}${product.images[0]}`
-const metaDescription = `${product.title} - ${product.description} ${product.material} 소재로 ${product.workType}, 제작 기간 ${product.delivery}. 종로 귀금속 도매 귀족에서 상담받으세요.`
+const colorOptionsText = product.colorOptions.join(', ')
+const metaDescription = `${product.title}. ${product.description} ${product.material}로 ${colorOptionsText} 세 가지 색상을 주문제작할 수 있습니다. 종로 귀금속 도매 귀족에서 상담해 보세요.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
@@ -34,20 +35,41 @@ useHead({
   link: [{ rel: 'canonical', href: pageUrl }],
   meta: [
     { name: 'description', content: metaDescription },
+    { name: 'robots', content: 'index, follow, max-image-preview:large' },
     ...(product.keywords?.length ? [{ name: 'keywords', content: product.keywords.join(', ') }] : []),
     { property: 'og:title', content: `${product.title} | 귀족` },
     { property: 'og:description', content: product.description },
     { property: 'og:type', content: 'product' },
     { property: 'og:url', content: pageUrl },
     { property: 'og:image', content: heroImageUrl },
+    { property: 'og:image:alt', content: altFor(0) },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: '귀족' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: `${product.title} | 귀족` },
     { name: 'twitter:description', content: product.description },
     { name: 'twitter:image', content: heroImageUrl },
+    { name: 'twitter:image:alt', content: altFor(0) },
   ],
   script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: `${product.title} | 귀족`,
+        description: metaDescription,
+        inLanguage: 'ko-KR',
+        primaryImageOfPage: {
+          '@type': 'ImageObject',
+          url: heroImageUrl,
+          caption: altFor(0),
+        },
+        mainEntity: { '@id': `${pageUrl}#product` },
+      }),
+    },
     {
       type: 'application/ld+json',
       // 가격은 금시세 연동이라 공개하지 않으므로 offers를 넣지 않는다.
@@ -55,23 +77,39 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Product',
+        '@id': `${pageUrl}#product`,
         name: product.title,
         alternateName: product.titleEn,
         description: product.description,
         image: product.images.map((src) => `${siteConfig.url}${src}`),
         material: product.material,
+        color: colorOptionsText,
         category: categoryLabel,
         url: pageUrl,
+        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
         brand: { '@type': 'Brand', name: siteConfig.name },
-        ...(product.specs?.length
-          ? {
-              additionalProperty: product.specs.map((spec) => ({
-                '@type': 'PropertyValue',
-                name: spec.label,
-                value: spec.value,
-              })),
-            }
-          : {}),
+        additionalProperty: [
+          {
+            '@type': 'PropertyValue',
+            name: '주문 가능 색상',
+            value: colorOptionsText,
+          },
+          {
+            '@type': 'PropertyValue',
+            name: '제작 방식',
+            value: product.workType,
+          },
+          {
+            '@type': 'PropertyValue',
+            name: '예상 제작 기간',
+            value: product.delivery,
+          },
+          ...(product.specs ?? []).map((spec) => ({
+            '@type': 'PropertyValue',
+            name: spec.label,
+            value: spec.value,
+          })),
+        ],
       }),
     },
     {
@@ -191,13 +229,11 @@ onUnmounted(() => {
   <div class="page">
     <div class="detail-container">
       <nav class="breadcrumb" aria-label="현재 위치">
-        <NuxtLink to="/">홈</NuxtLink>
-        <span aria-hidden="true">/</span>
-        <NuxtLink to="/gallery">갤러리</NuxtLink>
-        <span aria-hidden="true">/</span>
-        <NuxtLink :to="`/gallery#category-${product.category}`">{{ categoryLabel }}</NuxtLink>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{{ product.title }}</span>
+        <ol>
+          <li class="breadcrumb-home"><NuxtLink to="/">홈</NuxtLink></li>
+          <li><NuxtLink to="/gallery">갤러리</NuxtLink></li>
+          <li><NuxtLink :to="`/gallery#category-${product.category}`">{{ categoryLabel }}</NuxtLink></li>
+        </ol>
       </nav>
 
       <div class="detail-layout">
@@ -245,7 +281,6 @@ onUnmounted(() => {
         <!-- 정보 -->
         <section class="info">
           <h1 class="product-title">{{ product.title }}</h1>
-          <p class="product-title-en">{{ product.titleEn }}</p>
           <p class="product-description">{{ product.description }}</p>
 
           <dl class="facts">
@@ -260,6 +295,12 @@ onUnmounted(() => {
             <div class="fact">
               <dt>기간</dt>
               <dd>{{ product.delivery }}</dd>
+            </div>
+            <div class="fact fact-colors">
+              <dt>주문 가능 색상</dt>
+              <dd class="color-options">
+                <span v-for="color in product.colorOptions" :key="color" class="color-option">{{ color }}</span>
+              </dd>
             </div>
           </dl>
 
@@ -318,7 +359,7 @@ onUnmounted(() => {
             </div>
             <div class="related-body">
               <span class="related-name">{{ related.title }}</span>
-              <span class="related-material">{{ related.material }}</span>
+              <span class="related-material">세 가지 골드 색상 주문 가능</span>
             </div>
           </NuxtLink>
         </div>
@@ -380,13 +421,32 @@ onUnmounted(() => {
 
 /* ── Breadcrumb ─────────────────────────────────────────────── */
 .breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
   font-size: 13px;
   color: var(--gray);
   margin-bottom: 40px;
+}
+
+.breadcrumb ol {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.breadcrumb li + li::before {
+  width: 18px;
+  height: 1px;
+  margin: 0 12px;
+  background: rgba(250, 250, 250, 0.2);
+  content: '';
 }
 
 .breadcrumb a {
@@ -397,10 +457,6 @@ onUnmounted(() => {
 
 .breadcrumb a:hover {
   color: var(--gold);
-}
-
-.breadcrumb span[aria-current] {
-  color: var(--white);
 }
 
 /* ── Layout ─────────────────────────────────────────────────── */
@@ -513,14 +569,6 @@ onUnmounted(() => {
   margin: 0;
 }
 
-.product-title-en {
-  margin: 10px 0 0;
-  font-size: 13px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
 .product-description {
   margin: 24px 0 0;
   font-size: 16px;
@@ -553,6 +601,28 @@ onUnmounted(() => {
   font-size: 14px;
   line-height: 1.5;
   color: var(--white);
+}
+
+.fact-colors {
+  grid-column: 1 / -1;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(250, 250, 250, 0.12);
+  background: rgba(250, 250, 250, 0.02);
+  color: var(--white);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .specs {
@@ -852,6 +922,14 @@ onUnmounted(() => {
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
+  .detail-container {
+    padding-top: 112px;
+  }
+
+  .breadcrumb {
+    margin-bottom: 32px;
+  }
+
   .detail-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 40px;
@@ -864,12 +942,20 @@ onUnmounted(() => {
 
 @media (max-width: 640px) {
   .detail-container {
-    padding: 104px 20px 100px;
+    padding: 96px 20px 100px;
   }
 
   .breadcrumb {
     margin-bottom: 24px;
     font-size: 12px;
+  }
+
+  .breadcrumb .breadcrumb-home {
+    display: none;
+  }
+
+  .breadcrumb-home + li::before {
+    display: none;
   }
 
   .facts {

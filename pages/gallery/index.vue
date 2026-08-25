@@ -242,7 +242,6 @@ onUnmounted(() => {
         >
           <div class="category-header">
             <div>
-              <p class="category-label">{{ section.labelEn }}</p>
               <h2 class="category-title">{{ section.label }}</h2>
             </div>
             <NuxtLink :to="section.cta.to" class="category-link">
@@ -472,14 +471,6 @@ onUnmounted(() => {
   gap: 20px;
   margin-bottom: 12px;
   flex-wrap: wrap;
-}
-
-.category-label {
-  margin: 0 0 8px;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #c9a227;
 }
 
 .category-title {
