@@ -43,6 +43,15 @@ const extractMetaContent = (html, attributeName, attributeValue) => {
 }
 
 const extractTitle = (html) => decodeXml(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() || '')
+const extractH1 = (html) => decodeXml(
+  (html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+)
+
+const seenGalleryProductNames = new Map()
+const forbiddenProductNamePattern = /(?:14|18|24)\s*K|순금|로즈골드|화이트골드|옐로우골드/i
 
 const extractJsonLdNodes = (html) => {
   const nodes = []
@@ -67,10 +76,18 @@ const hasSchemaType = (node, type) => {
 }
 
 const verifyGallerySeoDocument = (html, pageUrl, failures) => {
+  if (pageUrl.pathname === '/gallery') {
+    if (extractMetaContent(html, 'name', 'keywords')) {
+      failures.push('/gallery: obsolete meta keywords present')
+    }
+    return null
+  }
   if (!pageUrl.pathname.startsWith('/gallery/')) return null
 
   const title = extractTitle(html)
+  const h1 = extractH1(html)
   const description = extractMetaContent(html, 'name', 'description')
+  const keywords = extractMetaContent(html, 'name', 'keywords')
   const robots = extractMetaContent(html, 'name', 'robots')
   const ogType = extractMetaContent(html, 'property', 'og:type')
   const ogImage = extractMetaContent(html, 'property', 'og:image')
@@ -81,6 +98,7 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
   const breadcrumb = jsonLdNodes.find((node) => hasSchemaType(node, 'BreadcrumbList'))
 
   if (!title || !title.endsWith('| 귀족')) failures.push(`${pageUrl.pathname}: gallery title ${title || 'missing'}`)
+  if (keywords) failures.push(`${pageUrl.pathname}: obsolete meta keywords present`)
   if (!description || description.length < 60 || description.length > 220) {
     failures.push(`${pageUrl.pathname}: gallery description length ${description?.length || 0}`)
   }
@@ -95,6 +113,27 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
   if (!breadcrumb) failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
 
   if (product) {
+    const productName = String(product.name || '').trim()
+    if (!productName) {
+      failures.push(`${pageUrl.pathname}: Product name missing`)
+    } else {
+      if (forbiddenProductNamePattern.test(productName)) {
+        failures.push(`${pageUrl.pathname}: fixed color or purity in Product name ${productName}`)
+      }
+      if (h1 !== productName) failures.push(`${pageUrl.pathname}: H1 and Product name mismatch`)
+      if (!title.startsWith(`${productName} 주문제작 |`)) {
+        failures.push(`${pageUrl.pathname}: title does not lead with Product name`)
+      }
+      const existingPath = seenGalleryProductNames.get(productName)
+      if (existingPath && existingPath !== pageUrl.pathname) {
+        failures.push(`${pageUrl.pathname}: duplicate Product name with ${existingPath}`)
+      } else {
+        seenGalleryProductNames.set(productName, pageUrl.pathname)
+      }
+    }
+    if (forbiddenProductNamePattern.test(String(ogImageAlt || ''))) {
+      failures.push(`${pageUrl.pathname}: fixed color or purity in hero image alt`)
+    }
     if (product.material !== '문의 필요') {
       failures.push(`${pageUrl.pathname}: Product material ${product.material || 'missing'}`)
     }

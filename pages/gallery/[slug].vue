@@ -31,12 +31,11 @@ const metaDescription = `${product.title}. ${product.description} ${colorOptions
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
 useHead({
-  title: `${product.title} | 귀금속 갤러리 | 귀족`,
+  title: `${product.title} 주문제작 | 귀족`,
   link: [{ rel: 'canonical', href: pageUrl }],
   meta: [
     { name: 'description', content: metaDescription },
     { name: 'robots', content: 'index, follow, max-image-preview:large' },
-    ...(product.keywords?.length ? [{ name: 'keywords', content: product.keywords.join(', ') }] : []),
     { property: 'og:title', content: `${product.title} | 귀족` },
     { property: 'og:description', content: product.description },
     { property: 'og:type', content: 'product' },
@@ -79,7 +78,6 @@ useHead({
         '@type': 'Product',
         '@id': `${pageUrl}#product`,
         name: product.title,
-        alternateName: product.titleEn,
         description: product.description,
         image: product.images.map((src) => `${siteConfig.url}${src}`),
         material: product.material,
@@ -224,7 +222,9 @@ onUnmounted(() => {
         <ol>
           <li class="breadcrumb-home"><NuxtLink to="/">홈</NuxtLink></li>
           <li><NuxtLink to="/gallery">갤러리</NuxtLink></li>
-          <li><NuxtLink :to="`/gallery#category-${product.category}`">{{ categoryLabel }}</NuxtLink></li>
+          <li class="breadcrumb-current">
+            <NuxtLink :to="`/gallery#category-${product.category}`" aria-current="location">{{ categoryLabel }}</NuxtLink>
+          </li>
         </ol>
       </nav>
 
@@ -418,6 +418,7 @@ onUnmounted(() => {
 .breadcrumb ol {
   display: flex;
   align-items: center;
+  min-height: 44px;
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -425,25 +426,41 @@ onUnmounted(() => {
 }
 
 .breadcrumb li {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  height: 44px;
   min-width: 0;
 }
 
 .breadcrumb li + li::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
   margin: 0 12px;
   color: rgba(250, 250, 250, 0.32);
   content: '/';
+  line-height: 1;
 }
 
 .breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  min-height: 44px;
   color: var(--gray);
+  line-height: 1;
   text-decoration: none;
   transition: color 0.2s var(--ease-out-quart);
 }
 
 .breadcrumb a:hover {
   color: var(--gold);
+}
+
+.breadcrumb a[aria-current] {
+  color: var(--gold);
+  font-weight: 600;
 }
 
 /* ── Layout ─────────────────────────────────────────────────── */

@@ -55,7 +55,6 @@ useHead({
   ],
   meta: [
     { name: 'description', content: '종로 귀금속 도매 귀족 갤러리. 반지, 목걸이, 팔찌, 예물 세트를 카테고리별로 보고 주문제작·상담 포인트까지 한 번에 확인하실 수 있습니다.' },
-    { name: 'keywords', content: '금반지 갤러리, 귀금속 작품, 주문제작 반지, 커플링, 돌반지, 결혼예물, 금목걸이, 금팔찌, 종로 금은방' },
     // Open Graph
     { property: 'og:title', content: '귀금속 갤러리 | 돌반지·커플링·예물 | 귀족' },
     { property: 'og:description', content: '반지, 목걸이, 팔찌, 세트 컬렉션과 주문제작 상담 포인트를 함께 볼 수 있는 귀족 갤러리입니다.' },
