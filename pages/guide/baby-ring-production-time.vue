@@ -3,24 +3,138 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/baby-ring-production-time'
-const pageTitle = '돌반지 주문제작 기간, 일정 맞추는 가장 확실한 방법 | 귀족'
-const pageDescription = '디자인, 각인 여부에 따라 돌반지 제작 기간이 달라져요. 돌잔치 일정에 맞추는 방법을 알려드립니다.'
+const pageTitle = '돌반지 주문제작 기간 최소 2주｜수령일 맞추는 확인 순서 | 귀족'
+const pageDescription = '돌반지 주문제작은 최소 2주가 필요합니다. 디자인·각인·검수와 수령 방법을 확인하고 희망 수령일에 맞춰 상담하세요.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0102.webp`
 const publishedAt = '2026-02-14'
 const faqItems = [
   {
-    question: '돌반지 제작 기간은 보통 얼마나 걸리나요?',
-    answer: '기본 디자인과 각인 여부에 따라 달라집니다. 일정은 상담 시 수령 희망일 기준으로 안내드립니다.',
+    "question": "돌반지 주문제작 기간은 얼마나 걸리나요?",
+    "answer": "귀족의 돌반지 주문제작은 최소 2주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다."
   },
   {
-    question: '급하게 필요하면 빠른 제작이 가능한가요?',
-    answer: '일정이 촉박한 경우 가능한 디자인 범위 내에서 우선 제작 가능 여부를 확인해드립니다.',
+    "question": "돌잔치 날짜가 정해져 있으면 무엇을 먼저 알려야 하나요?",
+    "answer": "행사일과 희망 수령일, 수령 방법을 먼저 전달하세요. 이후 반드시 필요한 조건과 각인 내용을 정한 뒤 디자인 옵션을 상담하면 됩니다."
   },
   {
-    question: '제작 중 디자인 변경도 되나요?',
-    answer: '작업 단계에 따라 가능 여부가 다르며, 변경 시 수령일과 비용이 함께 조정될 수 있습니다.',
+    "question": "급하게 필요하면 더 빠르게 받을 수 있나요?",
+    "answer": "촉박한 일정의 수령 가능 여부는 디자인, 각인, 주문 확정일 등 실제 작업 조건을 확인한 뒤 안내받아야 합니다. 사전에 가능 여부를 단정하기는 어렵습니다."
   },
+  {
+    "question": "제작 중 디자인이나 각인을 바꿀 수 있나요?",
+    "answer": "사양 변경 가능 여부는 실제 작업 단계와 선택 조건을 확인한 뒤 상담으로 안내받아야 합니다. 변경 여부에 따라 수령 가능일도 다시 확인이 필요할 수 있습니다."
+  }
 ]
+
+const updatedAt = '2026-08-25'
+const quickAnswers = [
+  "귀족의 돌반지 주문제작은 최소 2주가 필요하며, 정확한 수령 가능일은 디자인·각인·주문 확정일 확인 후 안내합니다.",
+  "돌잔치나 선물 날짜가 있으면 희망 수령일을 가장 먼저 알려주세요.",
+  "가능한 일정과 선택 범위는 실제 작업 조건을 확인한 뒤 안내받으세요."
+]
+
+const sections = [
+  {
+    "title": "주문제작은 최소 2주가 필요합니다",
+    "paragraphs": [
+      "귀족의 모든 주문제작 제품은 최소 2주가 필요하며, 돌반지도 동일합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다.",
+      "주문제작 장신구에는 설계, 가공, 주조, 세팅, 연마처럼 여러 제작 작업이 포함될 수 있습니다. 실제 돌반지에 적용되는 작업 범위와 일정은 선택한 디자인 및 사양에 따라 상담 시 확인이 필요합니다."
+    ],
+    "bullets": [
+      "희망 수령일을 상담 시작 시 함께 전달하세요.",
+      "주문이 확정되는 시점도 수령일 안내에 영향을 줄 수 있습니다.",
+      "14K·18K 등 소재 사양은 상세 상담으로 확인하세요."
+    ]
+  },
+  {
+    "title": "제작 기간이 달라지는 이유",
+    "paragraphs": [
+      "돌반지는 디자인과 각인 조건을 정한 뒤 제작과 마감, 검수 과정을 거쳐 수령하게 됩니다. 따라서 최소 제작 기간과 별도로 정확한 수령 가능일은 선택 조건을 모두 확인한 뒤 판단해야 합니다.",
+      "각인 문구나 위치, 디자인의 형태처럼 최종 확인이 필요한 사항은 상담 전에 미리 정리해두면 수령일 안내를 받을 때 도움이 됩니다."
+    ],
+    "bullets": [
+      "원하는 디자인 또는 참고 이미지",
+      "각인 문구와 각인 위치",
+      "소재 사양과 꼭 유지해야 할 조건",
+      "희망 수령일과 수령 방법"
+    ]
+  },
+  {
+    "title": "상담할 때 이 순서로 말씀해주세요",
+    "paragraphs": [
+      "상담에서는 희망 수령일을 먼저 공유한 뒤, 반드시 유지해야 할 조건을 정하세요. 그다음 디자인과 기타 옵션을 가능한 일정 안에서 조율합니다.",
+      "희망 날짜가 있더라도 수령 가능 여부를 미리 단정하기보다 디자인, 각인, 주문 확정일을 확인한 뒤 안내받는 것이 좋습니다."
+    ],
+    "bullets": [
+      "희망 수령일을 먼저 전달하기",
+      "반드시 필요한 조건과 각인 내용 정하기",
+      "디자인과 기타 옵션 상담하기",
+      "전화 또는 카카오톡으로 정확한 수령 가능일 확인하기"
+    ]
+  },
+  {
+    "title": "돌잔치가 정해져 있다면",
+    "paragraphs": [
+      "돌잔치 또는 선물 날짜가 정해졌다면 행사일, 희망 수령일, 수령 방법을 함께 전달하세요. 제작 완료 이후의 확인과 수령에 관한 사항도 상담 시 함께 확인하는 것이 좋습니다.",
+      "행사일에 가까운 주문은 선택 조건과 실제 작업 단계에 따라 안내 범위가 달라질 수 있습니다. 촉박한 일정의 수령 가능 여부는 상담을 통해 확인해야 합니다."
+    ],
+    "bullets": [
+      "행사일",
+      "희망 수령일",
+      "수령 방법",
+      "각인 문구와 최종 확인이 필요한 조건"
+    ]
+  },
+  {
+    "title": "다른 주문제작 품목의 일정도 비교해보세요",
+    "paragraphs": [
+      "다른 주문제작 품목의 일정 확인 흐름은 귀걸이 주문제작 기간 가이드에서도 비교해 볼 수 있습니다. 품목별 제작 조건은 다를 수 있으므로 돌반지의 정확한 수령일은 별도로 상담해 확인하세요."
+    ],
+    "bullets": []
+  }
+]
+
+const cautions = [
+  "주문 확정 뒤 디자인이나 각인 등 사양 변경 가능 여부는 실제 작업 단계와 선택 조건을 확인한 뒤 안내받아야 합니다.",
+  "돌잔치나 선물 일정이 촉박한 경우 수령 가능 여부를 보장할 수 없으므로 희망 수령일을 먼저 알리고 상담으로 확인하세요.",
+  "14K·18K 등 소재 사양은 상세 상담이 필요합니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/baby-ring-order-method",
+    "label": "돌반지 주문 방법｜문의 전 예산·각인·수령일 체크리스트",
+    "description": "돌반지 상담 전에 정리할 예산, 각인, 희망 수령일과 수령 방식의 확인 항목을 살펴보세요."
+  },
+  {
+    "to": "/guide/baby-ring-engraving-cost",
+    "label": "돌반지 각인 비용｜글자 수·위치·작업 방식 확인",
+    "description": "돌반지 각인 문구와 위치, 주문제작 여부에 따라 확인할 내용을 정리했습니다."
+  },
+  {
+    "to": "/guide/custom-earrings-production-time",
+    "label": "귀걸이 주문제작 기간, 디자인 확정부터 한쌍 수령까지",
+    "description": "다른 주문제작 품목에서 디자인 확정부터 수령까지의 일정 확인 흐름을 비교해 볼 수 있습니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '돌반지 주문제작 기간 최소 2주｜수령일 맞추는 확인 순서'
+const gmArticleLead = '귀족의 돌반지 주문제작은 최소 2주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다. 돌잔치나 선물 날짜가 있다면 희망 수령일을 먼저 알려주세요.'
+const gmArticleCategory = '기간'
+const gmArticleKeyword = '돌반지 주문제작 기간'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '돌반지 주문제작 기간'
+const gmHeroAlt = '아기 이름과 날짜 각인을 준비한 돌반지 주문제작 상담 이미지'
+const gmSourceNote = '주문제작 장신구에 여러 제작 작업이 포함될 수 있다는 일반적인 설명은 아래의 승인 출처를 참고했습니다. 귀족 돌반지의 최소 제작 기간과 정확한 수령일 안내 방식은 사업자 제공 사실을 바탕으로 작성했습니다.'
+const gmSources = [
+  {
+    "label": "Jewelers of America Bench and Manufacturing Jeweler",
+    "url": "https://www.jewelers.org/jewelry-careers/career-pathways/bench-manufacturing-jeweler",
+    "note": "주문제작 장신구에 설계, 가공, 주조, 세팅, 연마 등 여러 제작 작업이 포함될 수 있음을 설명합니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +169,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +196,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="기간"
-    keyword="돌반지 주문제작 기간"
-    inquiry-type="custom"
-    inquiry-topic="돌반지 주문제작 기간"
-    title="돌반지 주문제작 기간, 일정 맞추는 가장 확실한 방법"
-    lead="돌반지 제작은 디자인과 각인에 따라 걸리는 시간이 달라요. 받으실 날짜를 먼저 알려주시면 거기에 맞춰서 안내드릴 수 있습니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/ring/SB0102.webp`"
-    hero-alt="돌반지 주문제작 기간 상담"
-    :quick-answers="[
-      '제작 기간은 디자인, 무게, 각인 작업 수에 따라 달라져요.',
-      '일정이 촉박하시면 상담 때 받으실 날짜를 먼저 말씀해주세요.',
-      '돌잔치 날짜가 정해져 있다면 여유 있게 상담을 시작하시는 게 좋아요.'
-    ]"
-    :sections="[
-      {
-        title: '제작 기간이 달라지는 이유',
-        paragraphs: ['돌반지는 기성품과 달리 주문 후 만들기 때문에 작업 내용에 따라 기간이 달라져요. 어떤 작업이 들어가는지 미리 알아두시면 일정 잡기가 쉽습니다.'],
-        bullets: ['디자인이 복잡할수록 시간이 더 걸려요', '각인 문구가 길거나 특수하면 추가 시간이 필요해요', '마감·검수 과정도 기간에 포함됩니다']
-      },
-      {
-        title: '상담할 때 이 순서로 말씀해주세요',
-        paragraphs: ['제품 정보보다 일정을 먼저 알려주시는 게 더 효율적이에요. 날짜에 맞춰서 가능한 옵션을 안내드릴 수 있거든요.'],
-        bullets: ['받으실 날짜를 먼저 알려주세요', '꼭 필요한 조건(무게, 각인)부터 정해주세요', '나머지 디자인 옵션은 그 안에서 조절 가능해요']
-      },
-      {
-        title: '돌잔치가 정해져 있다면',
-        paragraphs: ['행사 날짜가 있으면 여유 있게 준비하시는 게 가장 중요해요. 제작이 끝난 뒤 검수하고 수령하는 시간도 따로 생각해두세요.'],
-        bullets: ['행사 전 넉넉한 여유 기간을 두세요', '받으시는 방법(방문 or 택배)도 미리 정해주세요', '최종 확인 일정을 함께 잡아두면 안심이에요']
-      }
-    ]"
-    :cautions="[
-      '제작 중에 사양을 변경하시면 수령일이 늦어질 수 있어요.',
-      '행사 직전에 주문하시면 선택 가능한 디자인이 제한될 수 있습니다.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/baby-gold', label: '돌반지 보러가기', description: '제품 종류와 제작 과정' },
-      { to: '/custom', label: '주문제작 안내', description: '맞춤 제작은 이렇게 진행돼요' },
-      { to: '/contact', label: '문의하기', description: '일정 상담을 원하시면' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>

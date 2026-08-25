@@ -2,6 +2,18 @@
 import type { NuxtError } from '#app'
 import { siteConfig } from '~/config/site'
 
+const { trackPhoneClick, trackKakaoClick } = useGtag()
+const handleErrorPhoneClick = () => trackPhoneClick('error', {
+  placement: 'error_page',
+  intent: 'support',
+  destination: `tel:${siteConfig.phone}`,
+})
+const handleErrorKakaoClick = () => trackKakaoClick('error', {
+  placement: 'error_page',
+  intent: 'support',
+  destination: siteConfig.social.kakaoOpenChat,
+})
+
 const props = defineProps<{
   error: NuxtError
 }>()
@@ -45,10 +57,10 @@ const handleError = () => {
       </button>
 
       <div class="error-cta">
-        <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="error-cta-link">
+        <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="error-cta-link" @click="handleErrorKakaoClick">
           카카오톡 문의
         </a>
-        <a :href="`tel:${siteConfig.phone}`" class="error-cta-link">
+        <a :href="`tel:${siteConfig.phone}`" class="error-cta-link" @click="handleErrorPhoneClick">
           전화 {{ siteConfig.phone }}
         </a>
       </div>

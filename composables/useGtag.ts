@@ -85,6 +85,10 @@ export const useGtag = () => {
       phone_number: siteConfig.phone,
       ...conversionParams,
     })
+    trackEvent('click_phone', {
+      phone_number: siteConfig.phone,
+      ...conversionParams,
+    })
     trackMetaEvent('Contact', { contact_method: 'phone', ...conversionParams })
     trackCtaClick('phone_call', pageName, { ...params, destination })
   }
@@ -94,6 +98,7 @@ export const useGtag = () => {
     const destination = params?.destination || '/contact'
     const conversionParams = buildConversionParams(pageName, { ...params, destination })
     trackEvent('inquiry_click', conversionParams)
+    trackEvent('click_consultation', conversionParams)
     trackMetaEvent('Contact', { contact_method: 'inquiry_form', ...conversionParams })
     trackCtaClick('online_inquiry', pageName, { ...params, destination })
   }
@@ -103,6 +108,7 @@ export const useGtag = () => {
     const destination = params?.destination || siteConfig.social.kakaoOpenChat
     const conversionParams = buildConversionParams(pageName, { ...params, destination })
     trackEvent('kakao_click', conversionParams)
+    trackEvent('click_kakao', conversionParams)
     trackMetaEvent('Contact', { contact_method: 'kakao', ...conversionParams })
     trackCtaClick('kakao_chat', pageName, { ...params, destination })
   }
@@ -122,6 +128,10 @@ export const useGtag = () => {
       destination,
     })
     trackEvent(`${mapType}_map_click`, conversionParams)
+    trackEvent('click_directions', {
+      map_type: mapType,
+      ...conversionParams,
+    })
     trackMetaEvent('FindLocation', { map_type: mapType, ...conversionParams })
     trackCtaClick('directions', pageName, {
       ...params,

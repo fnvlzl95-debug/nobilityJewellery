@@ -3,24 +3,147 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/ring-metal-allergy-guide'
-const pageTitle = '반지 금속 알레르기, 소재별 트러블 줄이는 기준 | 귀족'
-const pageDescription = '금속 알레르기는 대부분 금이 아니라 합금 속 니켈 때문에 생겨요. 14K·18K·순금·화이트골드 소재별 트러블 가능성과 주문 전 확인할 점을 정리했습니다.'
+const pageTitle = '반지 금속 알레르기: 니켈·합금·도금 확인 전 체크리스트 | 귀족'
+const pageDescription = '반지 착용 뒤 가려움이나 발진이 반복될 때 니켈 등 금속 접촉 가능성을 단정 없이 살펴봅니다. 실제 합금·도금 사양 확인법과 착용 중단·의료 상담 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/ring-metal-allergy.webp`
 const publishedAt = '2026-06-03'
 const faqItems = [
   {
-    question: '14K는 알레르기가 잘 생기나요?',
-    answer: '합금이 들어가서 가능성이 아예 없진 않지만, 니켈 프리 합금이면 트러블이 적은 편이에요. 체질에 따라 다르니 평소 반응 여부를 알려주시면 맞춰 안내드립니다.',
+    "question": "K수만으로 니켈 포함 여부를 알 수 있나요?",
+    "answer": "알 수 없습니다. K수는 금 함량에 관한 표기이며, 특정 알레르겐의 포함 여부를 단독으로 뜻하지 않습니다. 제품별 실제 합금 구성과 도금 사양은 판매처에 확인하세요."
   },
   {
-    question: '순금이면 알레르기가 전혀 없나요?',
-    answer: '순금 자체는 반응이 드물어요. 다만 24K는 무르기 때문에 제품에 따라 소량의 합금이 들어가기도 하고, 체질에 따라 차이가 날 수 있습니다.',
+    "question": "14K 반지를 착용하면 반드시 피부 반응이 생기나요?",
+    "answer": "그렇게 단정할 수 없습니다. 피부 반응은 증상만으로 원인을 확정할 수 없고, K수 표기만으로 개인의 반응 가능성을 판단할 수도 없습니다. 반응이 반복되면 착용을 멈추고 의료 전문가와 상담하세요."
   },
   {
-    question: '화이트골드를 끼면 가렵습니다.',
-    answer: '표면 로듐 도금이 벗겨지면서 아래 금속이 드러나 생기는 경우가 있어요. 재도금이나 소재 변경으로 개선되는지 상담해보시는 걸 권해드립니다.',
+    "question": "화이트골드 반지가 가려우면 재도금으로 해결되나요?",
+    "answer": "재도금이 개인의 증상을 해결한다고 보장할 수는 없습니다. 우선 착용을 중단하고, 제품의 실제 합금 구성과 도금 사양을 확인하세요. 증상이 지속·반복되거나 심하면 의료 전문가와 상담하는 것이 우선입니다."
   },
+  {
+    "question": "판매처에는 무엇을 문의할 수 있나요?",
+    "answer": "제품의 K수, 확인 가능한 합금 구성, 도금 종류와 사양을 문의할 수 있습니다. 다만 이러한 제품 정보는 피부 질환을 진단하거나 증상 원인을 확정하는 정보는 아닙니다."
+  }
 ]
+
+const updatedAt = '2026-08-25'
+const quickAnswers = [
+  "반지 착용 부위의 가려움·발진은 니켈 등을 포함한 금속 접촉 알레르기와 관련될 수 있지만, 증상만으로 원인을 확정할 수는 없습니다.",
+  "14K·18K·화이트골드라는 표기만으로 니켈 포함 여부나 개인의 반응 가능성을 판단할 수 없으므로, 실제 합금과 도금 사양을 판매처에 확인해야 합니다.",
+  "붓기, 진물, 심한 통증 또는 증상이 지속·반복되면 반지 착용을 중단하고 의료 전문가와 상담하는 것이 우선입니다."
+]
+
+const sections = [
+  {
+    "title": "니켈과 접촉피부염의 관계",
+    "paragraphs": [
+      "니켈은 알레르기성 접촉피부염을 일으킬 수 있으며, 장신구는 니켈에 노출될 수 있는 제품 가운데 하나로 안내됩니다. 반지 착용 부위에 생긴 가려움이나 발진이 반드시 금속 때문이라고 단정할 수는 없지만, 반복되는 반응이 있다면 제품 접촉과 증상 시점을 함께 살펴볼 필요가 있습니다.",
+      "피부 반응의 원인은 개인별로 다를 수 있으므로 판매처가 피부 질환을 진단할 수는 없습니다. 귀족은 제품의 K수, 확인 가능한 합금 구성, 도금 사양처럼 제품과 관련된 정보를 안내할 수 있습니다."
+    ],
+    "bullets": [
+      "장신구 착용 뒤 증상이 반복되는지 확인합니다.",
+      "반응이 있었던 제품의 소재와 표면 마감 정보를 기록합니다.",
+      "증상만으로 특정 금속이나 피부 질환의 원인을 확정하지 않습니다."
+    ]
+  },
+  {
+    "title": "K수 표기와 합금·도금 사양을 나누어 확인하세요",
+    "paragraphs": [
+      "24K·18K·14K 같은 K수 표기는 금 함량에 관한 표기입니다. K수만으로 특정 알레르겐의 포함 여부나 개인에게 나타날 반응 가능성을 판단할 수는 없습니다.",
+      "화이트골드처럼 합금 구성과 표면 마감이 함께 고려되는 제품은 실제 합금 구성과 도금 사양을 확인하세요. 도금 제품은 도금 종류와 확인 가능한 아래 금속 사양을 판매처에 문의하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "24K·18K·14K 표기: K수와 별도로 확인 가능한 합금 구성을 문의합니다.",
+      "화이트골드: 합금 구성과 표면 마감 사양을 확인합니다.",
+      "도금 제품: 도금 종류와 아래 금속의 확인 가능한 사양을 확인합니다.",
+      "과거 반응이 있었다면: 반응 제품의 소재·도금 정보와 증상 시점을 기록합니다."
+    ]
+  },
+  {
+    "title": "착용 뒤 피부 반응이 있으면 이렇게 확인하세요",
+    "paragraphs": [
+      "가려움이나 발진이 생기면 우선 반지를 빼고, 해당 제품과의 접촉을 피하세요. 피부를 자극하지 않도록 주의하고, 증상이 지속되거나 반복되는 경우 의료 전문가와 상담하는 것이 좋습니다.",
+      "붓기, 진물, 심한 통증처럼 증상이 심한 경우에도 판매 상담보다 의료 상담을 우선하세요. 판매처에는 제품의 K수, 확인 가능한 실제 합금 구성, 도금 종류 등 제품 사양을 문의할 수 있지만, 그 정보만으로 증상의 원인을 진단하거나 개선을 보장할 수는 없습니다."
+    ],
+    "bullets": [
+      "반지를 빼고 의심 제품과의 접촉을 피합니다.",
+      "증상 발생 시점과 착용한 제품 정보를 기록합니다.",
+      "증상이 지속·반복되거나 심하면 의료 전문가와 상담합니다."
+    ]
+  },
+  {
+    "title": "주문·착용 전에 확인하면 좋은 것",
+    "paragraphs": [
+      "새 반지를 주문하거나 소재 상담을 받을 때는 과거에 반응이 있었던 제품의 종류, 확인 가능한 소재·도금 정보, 증상이 나타난 시점을 함께 전달하면 제품 사양을 확인하는 데 도움이 됩니다. 운동, 물일처럼 반지를 착용하는 환경도 함께 고려하세요.",
+      "피부 반응과 별개로 반지의 압박감이나 착용감이 문제라면 사이즈 측정 기준도 함께 확인하세요. 손가락이 붓는 시간대나 반지 폭은 착용감에 영향을 줄 수 있습니다."
+    ],
+    "bullets": [
+      "과거 반응 제품의 소재와 표면 마감 정보를 정리합니다.",
+      "평소 착용 환경과 반지를 빼는 상황을 점검합니다.",
+      "상담 시 K수, 확인 가능한 합금 구성, 도금 사양을 구분해 문의합니다."
+    ]
+  },
+  {
+    "title": "판매처 상담과 의료 상담의 범위",
+    "paragraphs": [
+      "귀족은 제품별 K수와 확인 가능한 합금 구성, 도금 사양을 안내할 수 있습니다. 다만 개인의 피부 상태를 진단하거나 특정 소재·도금·재도금이 증상을 해결한다고 보장하지는 않습니다.",
+      "반복되거나 심한 피부 증상은 의료 전문가의 평가가 필요한 영역입니다. 제품 사양 확인과 피부 증상 상담을 분리하면 주문 전 확인해야 할 내용과 건강 관련 대응을 더 명확히 정리할 수 있습니다."
+    ],
+    "bullets": [
+      "제품 상담: K수, 확인 가능한 합금 구성, 도금 사양을 문의합니다.",
+      "의료 상담: 지속·반복되거나 심한 피부 증상의 원인을 평가합니다.",
+      "재도금이나 소재 변경은 개인 증상 해결을 보장하는 방법으로 판단하지 않습니다."
+    ]
+  }
+]
+
+const cautions = [
+  "같은 K수라도 제품별 합금 구성과 도금 사양은 다를 수 있으므로, 표기만으로 니켈 포함 여부를 단정하지 마세요.",
+  "니켈이 포함되지 않았다는 표현은 제품별 시험 기준과 적용 범위가 확인되지 않았다면 안전 보장으로 받아들이지 마세요.",
+  "붓기, 진물, 심한 통증이 있거나 증상이 지속·반복되면 반지 착용을 중단하고 의료 전문가와 상담하세요.",
+  "귀족은 제품 사양 안내를 도울 수 있지만 피부 질환의 진단이나 증상 개선을 보장하지 않습니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/ring-size-measuring-method",
+    "label": "반지 사이즈 재는 법, 커플링·결혼반지 주문 전 실수 줄이는 기준",
+    "description": "피부 반응과 별개로 압박감과 착용감을 점검할 때 확인할 반지 사이즈 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/ring-stuck-finger-removal",
+    "label": "반지 안 빠질 때 빼는 법: 붓기 줄이는 순서와 즉시 도움 신호",
+    "description": "손가락 붓기로 반지가 빠지지 않을 때 먼저 확인할 상태와 도움을 받아야 할 신호를 안내합니다."
+  },
+  {
+    "to": "/guide/platinum-ring-drawbacks-wear-guide",
+    "label": "백금 반지 단점은 스크래치·무게·변형·마감 변화에서 확인합니다",
+    "description": "백금 반지의 생활 스크래치, 무게감, 원형 변화와 표면 마감의 특성을 확인하는 가이드입니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '반지 금속 알레르기: 니켈·합금·도금 확인 전 체크리스트'
+const gmArticleLead = '반지 착용 뒤 가려움이나 발진이 반복되면 니켈 등을 포함한 금속 접촉 알레르기와 관련될 수 있습니다. 다만 증상만으로 원인을 확정할 수 없으므로, K수 표기와 별도로 실제 합금·도금 사양을 확인하세요. 붓기·진물·심한 통증이 있거나 증상이 지속되면 착용을 중단하고 의료 전문가와 상담하세요.'
+const gmArticleCategory = '관리'
+const gmArticleKeyword = '반지 금속 알레르기'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '반지 소재 상담'
+const gmHeroAlt = '여러 색상의 금 반지를 부드러운 천 위에 놓은 모습'
+const gmSourceNote = '니켈 접촉 알레르기와 접촉피부염이 의심될 때의 접촉 회피 및 의료 상담 원칙은 아래 American Academy of Dermatology 안내를 참고했습니다. 제품별 합금·도금 사양은 개별 제품 확인이 필요합니다.'
+const gmSources = [
+  {
+    "label": "American Academy of Dermatology Nickel Allergy",
+    "url": "https://www.aad.org/public/diseases/eczema/insider/nickel-allergy",
+    "note": "니켈 알레르기의 원인, 흔한 노출 제품과 회피 원칙을 설명합니다."
+  },
+  {
+    "label": "American Academy of Dermatology Contact Dermatitis",
+    "url": "https://www.aad.org/public/everyday-care/itchy-skin/rash/itchy-rash-contact-dermatitis",
+    "note": "접촉피부염이 의심될 때 원인 접촉을 피하고 지속되는 증상은 피부과 진료를 받도록 안내합니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +178,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +205,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="관리"
-    keyword="반지 금속 알레르기"
-    inquiry-type="custom"
-    inquiry-topic="반지 소재 상담"
-    title="반지 금속 알레르기, 소재별로 덜 생기는 기준"
-    lead="금속 알레르기는 대부분 '금' 자체보다 합금에 섞인 니켈 같은 다른 금속 때문에 생기는 경우가 많아요. 소재와 도금에 따라 차이가 크니, 주문 전에 몇 가지만 알아두시면 트러블을 줄일 수 있습니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    hero-image="/Image/guide/ring-metal-allergy.webp"
-    hero-alt="14K·18K·순금 반지 소재 비교"
-    :quick-answers="[
-      '알레르기는 보통 금이 아니라 합금 속 니켈 등에서 생겨요.',
-      '순금(24K)에 가까울수록, 또는 니켈 프리 합금일수록 트러블이 적어요.',
-      '평소 반응이 있었다면 소재를 미리 알려주시면 맞춰서 안내드려요.'
-    ]"
-    :sections="[
-      {
-        title: '금속 알레르기는 왜 생길까',
-        paragraphs: ['금이나 은 자체에 반응하는 경우는 드물고, 대부분은 합금에 섞인 니켈·크롬 같은 금속이 땀·수분과 만나 이온이 빠져나오면서 피부를 자극해요. 그래서 같은 14K라도 합금 구성에 따라 사람마다 반응이 다를 수 있습니다.'],
-        bullets: ['니켈 — 가장 흔한 알레르기 유발 금속으로 땀에 약해요', '도금 벗겨짐 — 도금 아래 금속이 드러나면 반응이 시작되기도 해요', '여름·운동 — 땀이 많을 때 증상이 더 잘 나타나요']
-      },
-      {
-        title: '소재별로 보는 트러블 가능성',
-        paragraphs: ['순금에 가까울수록 합금 비율이 낮아 트러블이 적은 편이에요. 다만 순금은 무르기 때문에 데일리 반지로는 14K·18K를 많이 쓰는데, 이때 니켈 프리 합금인지 확인하는 게 포인트입니다.'],
-        bullets: ['24K 순금 — 합금이 거의 없어 가장 무난, 대신 잘 휘어요', '18K — 금 함량 75%로 14K보다 합금이 적어요', '14K — 데일리로 튼튼, 니켈 프리 합금 여부를 확인하세요', '화이트골드 — 로듐 도금 상태에 따라 달라질 수 있어요']
-      },
-      {
-        title: '주문·착용 전에 확인하면 좋은 것',
-        paragraphs: ['과거에 특정 금속에서 반응이 있었다면 미리 알려주세요. 소재나 도금 방식을 맞춰 안내드릴 수 있어요. 이미 착용 중 트러블이 있다면 사진과 함께 상담해주시면 원인을 좁히는 데 도움이 됩니다.'],
-        bullets: ['예전에 반응했던 소재(금·은·도금 액세서리 등)', '주로 착용할 환경(운동·물일 등)', '화이트골드라면 재도금 주기도 함께 확인']
-      }
-    ]"
-    :cautions="[
-      '같은 K수라도 합금 구성에 따라 반응이 다를 수 있어, 체질에 따라 차이가 납니다.',
-      '심한 피부 반응은 병원 진료가 우선이고, 저희는 소재 선택을 돕는 안내까지만 가능해요.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/custom', label: '주문제작 안내', description: '소재를 맞춰 상담받고 싶다면' },
-      { to: '/couple-ring', label: '커플링 보러가기', description: '14K·18K 디자인 확인' },
-      { to: '/contact', label: '문의하기', description: '소재·알레르기 상담' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>

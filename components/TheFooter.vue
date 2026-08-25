@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
 
+const route = useRoute()
+const { trackPhoneClick } = useGtag()
+const handleFooterPhoneClick = () => trackPhoneClick(
+  route.path === '/' ? 'home' : route.path.split('/').filter(Boolean).join('_'),
+  { placement: 'footer', intent: 'call', destination: `tel:${siteConfig.phone}` },
+)
+
 const footerLinks = [
   { to: '/', label: '홈' },
   { to: '/gallery', label: '갤러리' },
@@ -33,7 +40,7 @@ const footerLinks = [
         </div>
       </div>
       <div class="footer-info">
-        <span>종로3가 금은방 귀족 | {{ siteConfig.address.full }} | 전화 <a :href="`tel:${siteConfig.phone}`" class="footer-tel">{{ siteConfig.phone }}</a></span>
+        <span>종로3가 금은방 귀족 | {{ siteConfig.address.full }} | 전화 <a :href="`tel:${siteConfig.phone}`" class="footer-tel" @click="handleFooterPhoneClick">{{ siteConfig.phone }}</a></span>
         <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
       </div>
       <div class="footer-bottom">

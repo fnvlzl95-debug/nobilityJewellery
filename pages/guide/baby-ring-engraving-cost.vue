@@ -3,24 +3,146 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/baby-ring-engraving-cost'
-const pageTitle = '돌반지 각인 비용, 추가금이 생기는 경우는? | 귀족'
-const pageDescription = '돌반지 각인 비용은 글자 수, 각인 위치, 주문제작 여부에 따라 달라져요. 상담 전에 확인할 포인트를 정리했습니다.'
+const pageTitle = '돌반지 각인 비용｜글자 수·위치·작업 방식 확인 | 귀족'
+const pageDescription = '돌반지 각인 비용은 글자 수, 각인 위치, 기성 제품 추가 작업인지 주문제작인지에 따라 달라질 수 있습니다. 문구·수령 희망일·제품 상태를 상담 전에 확인하세요.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0103.webp`
 const publishedAt = '2026-03-28'
 const faqItems = [
   {
-    question: '돌반지 각인은 글자 수가 많아도 가능한가요?',
-    answer: '반지 폭과 디자인에 따라 가능 글자 수가 달라집니다. 문구가 길수록 배치 조정이나 추가 작업이 필요할 수 있습니다.',
+    "question": "돌반지 각인은 글자 수가 많아도 가능한가요?",
+    "answer": "제품 폭과 표면 상태, 문구 구성에 따라 달라질 수 있습니다. 문구가 길다면 원하는 문구 초안과 제품 사진을 함께 전달해 배치 범위를 상담에서 확인하세요."
   },
   {
-    question: '각인 문구를 나중에 바꿔도 되나요?',
-    answer: '제작 확정 전까지는 조정이 가능하지만, 각인 작업이 시작된 뒤에는 변경이 어려울 수 있어요. 문구는 최종 확인 후 진행하시는 것이 안전합니다.',
+    "question": "각인 문구를 나중에 바꿔도 되나요?",
+    "answer": "문구 변경 가능 범위는 작업 진행 상태와 접수 조건에 따라 달라질 수 있습니다. 제작 확정 전 철자와 날짜를 최종 확인하고, 변경이 필요한 경우에는 상담에서 먼저 확인하는 것이 좋습니다."
   },
   {
-    question: '기성 돌반지에도 각인을 추가할 수 있나요?',
-    answer: '가능한 경우가 많지만 반지 폭과 표면 상태에 따라 제한이 있을 수 있습니다. 원하시는 문구와 제품 사진을 함께 보내주시면 빠르게 안내드립니다.',
-  },
+    "question": "기성 돌반지에도 각인을 추가할 수 있나요?",
+    "answer": "기성 돌반지의 각인 접수 여부와 범위는 제품 폭, 표면 상태, 문구, 작업 방식에 따라 달라질 수 있습니다. 제품 사진과 원하는 문구를 보내면 귀족 상담에서 확인 후 안내합니다."
+  }
 ]
+
+const updatedAt = '2026-08-25'
+const quickAnswers = [
+  "돌반지 각인 비용은 글자 수, 각인 위치, 기성 제품 추가 작업인지 주문제작인지에 따라 달라질 수 있습니다.",
+  "반지 폭이나 표면 상태에 따라 문구 길이와 배치 방식에 제한이 있을 수 있으므로 제품 사진과 문구 초안을 함께 확인하는 것이 좋습니다.",
+  "돌잔치 일정이 있다면 문구·수령 희망일·제품 상태를 주문 상담 시작 시점에 함께 전달하세요."
+]
+
+const sections = [
+  {
+    "title": "각인 비용 확인 전 살필 세 가지",
+    "paragraphs": [
+      "각인 비용을 문의할 때는 글자 수, 각인 위치, 작업 시점을 먼저 정리하면 상담이 수월합니다. 귀족의 구체적인 비용과 작업 가능 범위는 제품 폭·표면·문구·작업 방식을 확인한 뒤 전화 또는 카카오톡 상담에서 안내합니다."
+    ],
+    "bullets": [
+      "글자 수: 이름·날짜·짧은 문구 가운데 어떤 내용을 넣을지 정합니다.",
+      "각인 위치: 반지 안쪽 또는 바깥면 가운데 희망 위치를 정합니다.",
+      "작업 시점: 기성 제품에 추가로 작업하는 경우인지, 주문제작 과정에서 요청하는 경우인지 알립니다."
+    ]
+  },
+  {
+    "title": "각인 비용이 달라지는 기준",
+    "paragraphs": [
+      "돌반지 각인은 글자만 새기는 요청이 아니라 반지의 폭과 표면 상태, 문구 배치를 함께 확인하는 작업입니다. 제품별 조건에 따라 각인 가능 여부와 방식이 달라질 수 있으며, 기계 각인과 손 각인처럼 작업 방식도 서로 다를 수 있습니다.",
+      "같은 문구라도 반지 폭, 희망 위치, 제품 상태와 작업 방식에 따라 안내 내용이 달라질 수 있습니다. 비용을 단정하기보다 제품 사진과 문구 초안을 전달해 상담에서 확인하는 편이 좋습니다."
+    ],
+    "bullets": [
+      "글자 수: 이름, 생년월일, 짧은 기념 문구처럼 문구의 길이와 구성",
+      "각인 위치: 반지 안쪽인지 바깥면인지, 문구를 배치할 표면의 상태",
+      "작업 시점: 주문제작 단계의 요청인지 기성 제품의 추가 작업인지"
+    ]
+  },
+  {
+    "title": "상담 전에 미리 정하면 좋은 것",
+    "paragraphs": [
+      "문구가 완전히 확정되지 않았더라도 초안을 준비해 두면 확인할 내용을 줄일 수 있습니다. 돌잔치 일정이 있다면 수령 희망일과 함께 알려 주세요. 각인 문구, 위치, 서체를 더 구체적으로 정하려면 관련 각인 가이드를 참고할 수 있습니다."
+    ],
+    "bullets": [
+      "넣고 싶은 문구의 초안과 철자",
+      "한글, 영문, 숫자, 기호 가운데 원하는 표기 형식",
+      "희망하는 각인 위치",
+      "수령 희망일과 돌잔치 날짜",
+      "예산 안에서 제품 중량과 각인 가운데 우선할 조건"
+    ]
+  },
+  {
+    "title": "추가 작업 여부를 상담에서 확인할 경우",
+    "paragraphs": [
+      "문구 길이, 반지 폭, 희망 서체나 기호에 따라 일반 각인 범위를 벗어나는지 상담에서 확인해야 합니다. 별도 비용이나 작업 범위는 제품 상태와 운영 조건을 확인하기 전에는 확정할 수 없습니다."
+    ],
+    "bullets": [
+      "문구가 길어 글자 간격과 배치 조정 여부를 확인할 경우",
+      "반지 폭 또는 표면 상태에 따라 문구 배치 범위를 확인할 경우",
+      "기호 또는 특별한 서체 요청에 따른 작업 방식을 확인할 경우"
+    ]
+  },
+  {
+    "title": "문구 확정 전 확인할 사항",
+    "paragraphs": [
+      "각인 문구는 제작 확정 전에 철자와 날짜를 다시 확인하는 것이 좋습니다. 작업 시작 뒤 문구 변경이나 수정의 가능 범위는 제품과 접수 시점, 작업 진행 상태에 따라 달라질 수 있으므로 상담 과정에서 확인하세요.",
+      "반지에 새기는 문구 각인과 금의 순도를 나타내는 표기는 의미가 다릅니다. 순도 표기가 궁금하다면 금 각인표 가이드를 함께 살펴보세요."
+    ],
+    "bullets": [
+      "이름의 띄어쓰기와 영문 철자",
+      "날짜의 표기 순서",
+      "기호 포함 여부",
+      "최종 문구 확인 시점"
+    ]
+  }
+]
+
+const cautions = [
+  "각인 문구는 제작 확정 전에 철자와 날짜를 다시 한 번 확인하는 것이 좋습니다.",
+  "각인 작업이 시작된 뒤 문구 변경이나 수정의 가능 범위는 제품 상태와 진행 시점에 따라 달라질 수 있습니다.",
+  "기성 돌반지의 각인 접수 여부와 가능한 범위는 반지 폭·표면 상태·문구를 확인한 뒤 상담에서 안내됩니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/couple-ring-engraving-guide",
+    "label": "커플링 각인, 문구·위치·서체 정하는 법",
+    "description": "각인 문구 초안, 위치와 서체를 정할 때 참고할 기준을 확인하세요."
+  },
+  {
+    "to": "/guide/jewelry-hallmark-numbers-meaning",
+    "label": "금 585·750 뜻은? 14K·18K·925 각인표",
+    "description": "기념 문구 각인과 금 순도 표기의 차이를 확인하세요."
+  },
+  {
+    "to": "/guide/baby-ring-order-method",
+    "label": "돌반지 주문 방법｜문의 전 예산·각인·수령일 체크리스트",
+    "description": "돌반지 상담 전에 문구와 수령 희망일을 정리하는 방법을 살펴보세요."
+  },
+  {
+    "to": "/guide/gold-jewelry-remodeling-cost",
+    "label": "금 리폼 비용, 오래된 금제품을 새 반지·목걸이로 바꾸는 기준",
+    "description": "기존 금제품을 새 제품으로 바꾸려는 경우에 비용 확인 기준을 살펴보세요."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '돌반지 각인 비용｜글자 수·위치·작업 방식 확인'
+const gmArticleLead = '돌반지 각인 비용은 제품마다 동일하게 정해지지 않습니다. 귀족에서는 제품 폭·표면·문구·작업 방식을 확인한 뒤 전화 또는 카카오톡 상담에서 비용과 가능한 범위를 안내합니다. 확정 전에는 문구 길이와 희망 위치, 제품 상태를 함께 확인하는 것이 좋습니다.'
+const gmArticleCategory = '비용'
+const gmArticleKeyword = '돌반지 각인 비용'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '돌반지 각인 비용'
+const gmHeroAlt = '아기 이름과 날짜를 새길 수 있도록 준비한 금색 돌반지'
+const gmSourceNote = '각인 가능 여부와 작업 방식은 제품별 조건에 따라 달라질 수 있다는 일반 원칙은 제조사 공식 안내를 참고했습니다. 귀족의 돌반지 각인 비용과 실제 작업 범위는 제품 확인 후 전화 또는 카카오톡 상담에서 안내합니다.'
+const gmSources = [
+  {
+    "label": "Tiffany & Co. Engraving FAQ",
+    "url": "https://www.tiffany.com/faq/engraving-faq/",
+    "note": "각인 가능한 제품과 방식, 위치, 비용과 기간을 제품·서비스별로 확인하도록 구성된 공식 안내입니다."
+  },
+  {
+    "label": "Tiffany & Co. Personalization",
+    "url": "https://www.tiffany.com/client-services/personalization.html",
+    "note": "제품 형태와 소재에 따라 맞춤 가능 여부가 달라지고 일부 요청은 상담이 필요하다는 제조사 안내입니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +177,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +204,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="비용"
-    keyword="돌반지 각인 비용"
-    inquiry-type="custom"
-    inquiry-topic="돌반지 각인 비용"
-    title="돌반지 각인 비용, 추가금이 생기는 경우는?"
-    lead="돌반지 가격과 별도로 각인 비용이 얼마나 드는지 많이 물어보세요. 실제로는 문구 길이, 각인 위치, 제작 방식에 따라 가능 여부와 비용이 달라지기 때문에 처음 상담 때 함께 정해두시는 것이 가장 정확합니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/ring/SB0103.webp`"
-    hero-alt="돌반지 각인 상담"
-    :quick-answers="[
-      '각인 비용은 글자 수와 작업 방식에 따라 달라져요.',
-      '반지 폭이 좁거나 면적이 작으면 각인 제한이 있을 수 있어요.',
-      '돌잔치 일정이 있으면 각인 여부를 처음 상담 때 같이 알려주시는 게 가장 안전합니다.'
-    ]"
-    :sections="[
-      {
-        title: '각인 비용이 달라지는 기준',
-        paragraphs: ['돌반지 각인은 단순히 글자만 새기는 작업이 아니라, 반지 폭과 표면 상태를 함께 봐야 해요. 같은 한 줄 각인이라도 배치와 작업 방식이 달라지면 비용도 달라질 수 있습니다.'],
-        bullets: ['글자 수 — 이름, 생년월일, 짧은 문구 중 어떤 형태인지', '각인 위치 — 반지 안쪽인지, 바깥면 포인트 각인인지', '제작 방식 — 기성 제품 추가 작업인지, 처음부터 주문제작인지']
-      },
-      {
-        title: '상담 전에 미리 정하면 좋은 것',
-        paragraphs: ['각인 문구가 완전히 확정되지 않아도 괜찮지만, 아래 내용은 미리 정해두시면 상담이 훨씬 빨라져요. 특히 돌잔치 일정이 가까우면 수령일을 먼저 알려주시는 것이 중요합니다.'],
-        bullets: ['넣고 싶은 문구 초안', '한글, 영문, 숫자 중 어떤 형식인지', '수령 희망일과 돌잔치 날짜', '예산 안에서 무게와 각인 중 무엇을 더 우선할지']
-      },
-      {
-        title: '추가금이 생기기 쉬운 경우',
-        paragraphs: ['문의하실 때 가장 많이 놓치는 부분이 추가 작업 범위예요. 일반 각인으로 가능한지, 별도 배치 조정이 필요한지에 따라 작업비가 달라질 수 있습니다.'],
-        bullets: ['문구가 길어서 글자 간격 조정이 필요한 경우', '반지 폭이 좁아 일반 각인 대신 별도 작업이 필요한 경우', '기본 각인 외에 기호나 특별 서체를 원하는 경우']
-      }
-    ]"
-    :cautions="[
-      '각인 문구는 제작 확정 전에 철자와 날짜를 다시 한 번 확인하시는 것이 좋아요.',
-      '각인 작업이 들어간 뒤에는 수정이나 교환 가능 범위가 달라질 수 있어요.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/guide/baby-ring-price', label: '돌반지 가격 가이드', description: '가격이 정해지는 기준을 함께 확인하세요' },
-      { to: '/guide/baby-ring-production-time', label: '돌반지 제작 기간', description: '일정 맞추는 방법을 확인하세요' },
-      { to: '/contact', label: '문의하기', description: '각인 가능 여부와 견적 상담' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>

@@ -2,6 +2,13 @@
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const { trackPhoneClick } = useGtag()
+const handleInlinePhoneClick = () => trackPhoneClick('buy_gold', {
+  placement: 'price_info',
+  intent: 'sell_gold',
+  destination: `tel:${siteConfig.phone}`,
+})
+
 definePageMeta({
   layout: 'landing'
 })
@@ -237,7 +244,7 @@ const relatedGuides = [
               당일 국제 시세를 실시간으로 반영해 매입가를 산정합니다.
               14K·18K는 순도에 따라 금 함량을 계산해 매입하며,
               감정과 계량 과정을 모두 보시는 앞에서 진행합니다.
-              방문 전 전화(<a :href="`tel:${siteConfig.phone}`">{{ siteConfig.phone }}</a>)로
+              방문 전 전화(<a :href="`tel:${siteConfig.phone}`" @click="handleInlinePhoneClick">{{ siteConfig.phone }}</a>)로
               문의하시면 당일 매입 시세를 미리 안내해드립니다.
             </p>
             <NuxtLink to="/guide/gold-price-how-to-check" class="price-info-link">

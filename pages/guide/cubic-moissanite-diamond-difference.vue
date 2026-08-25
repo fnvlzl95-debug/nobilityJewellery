@@ -3,24 +3,148 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/cubic-moissanite-diamond-difference'
-const pageTitle = '큐빅·모이사나이트·다이아 차이, 예물 메인스톤 고르는 법 | 귀족'
-const pageDescription = '큐빅, 모이사나이트, 다이아몬드는 겉보기엔 비슷해도 가격·단단함·반짝임이 달라요. 예산과 착용 목적에 맞게 예물 메인스톤을 고르는 기준을 정리했습니다.'
+const pageTitle = '큐빅·모이사나이트·다이아 차이: 예물 반지 비교 기준 | 귀족'
+const pageDescription = '큐빅(CZ)·모이사나이트·다이아몬드는 재료와 제품 표기가 다릅니다. 예산·착용 목적·세팅 조건·감정 문서 필요 여부를 같은 기준으로 비교하세요.'
 const ogImage = `${siteConfig.url}/Image/guide/gemstone-comparison.webp`
 const publishedAt = '2026-06-03'
 const faqItems = [
   {
-    question: '겉으로 봐서 큐빅과 다이아를 구분할 수 있나요?',
-    answer: '일반인 눈으로는 구분이 어렵습니다. 다만 단단함과 반짝임의 결, 시간이 지난 뒤의 상태에서 차이가 나요.',
+    "question": "큐빅과 다이아몬드는 같은 재료인가요?",
+    "answer": "아닙니다. GIA는 큐빅 지르코니아를 다이아몬드처럼 보이도록 사용될 수 있는 모조석의 예로 안내합니다. 구매 전에는 제품의 스톤 표기를 확인하세요."
   },
   {
-    question: '모이사나이트는 가짜 다이아인가요?',
-    answer: '가짜라기보단 다이아와 비슷하게 만든 별개의 인조 스톤이에요. 반짝임이 화려하고 가격이 합리적이라 예물로도 많이 찾으십니다.',
+    "question": "모이사나이트는 가짜 다이아몬드인가요?",
+    "answer": "합성 모이사나이트는 다이아몬드처럼 보이도록 사용될 수 있지만 다이아몬드와 다른 재료입니다. 제품 설명에 적힌 스톤명과 표기를 확인하는 것이 좋습니다."
   },
   {
-    question: '예물엔 꼭 다이아여야 하나요?',
-    answer: '정해진 답은 없어요. 예산과 가치 보존을 중시하면 다이아, 합리적인 선택을 원하면 모이사나이트도 좋은 대안입니다.',
+    "question": "예물 반지는 꼭 다이아몬드로 골라야 하나요?",
+    "answer": "정해진 답은 없습니다. 원하는 외관, 예산 범위, 착용 빈도, 세팅 방식, 감정 문서 필요 여부를 적어 후보를 비교해 보세요. 가격과 문서 제공 여부는 제품 상담 시 확인하세요."
   },
+  {
+    "question": "다이아몬드의 천연·랩그로운 구분은 왜 확인해야 하나요?",
+    "answer": "다이아몬드 제품을 비교할 때는 제품 표기와 관련 문서의 내용을 같은 기준으로 확인하기 위해서입니다. 구매 전 판매처와 문서 발행 기관 기준을 확인하세요."
+  }
 ]
+
+const updatedAt = '2026-08-25'
+const quickAnswers = [
+  "세 스톤은 재료가 다르므로, 같은 크기처럼 보여도 제품 사양과 세팅을 함께 비교해야 합니다.",
+  "내구성은 경도만으로 판단하지 말고 스톤 상태와 세팅, 착용 습관을 함께 확인하세요.",
+  "다이아몬드는 천연·랩그로운 구분과 감정 문서 내용을 구매 전 확인하세요."
+]
+
+const sections = [
+  {
+    "title": "재료와 표기부터 구분하세요",
+    "paragraphs": [
+      "큐빅은 보통 큐빅 지르코니아를 뜻하며 CZ로도 표기합니다. GIA는 큐빅 지르코니아와 합성 모이사나이트를 다이아몬드처럼 보이도록 사용될 수 있는 모조석의 예로 안내합니다.",
+      "모조석은 다이아몬드와 비슷한 외관을 낼 수 있지만 다이아몬드와 다른 재료입니다. 따라서 온라인 이미지나 반지의 전체 인상만으로 판단하기보다 판매 페이지와 상담 과정에서 스톤명을 명확히 확인하는 편이 좋습니다."
+    ],
+    "bullets": [
+      "큐빅: 큐빅 지르코니아 또는 CZ 표기 확인",
+      "모이사나이트: 제품 표기에 적힌 스톤명 확인",
+      "다이아몬드: 천연·랩그로운 구분 및 제품 설명 확인"
+    ]
+  },
+  {
+    "title": "경도와 광학 특성은 제품 설명과 함께 살펴보세요",
+    "paragraphs": [
+      "스톤의 경도와 광학 특성은 서로 다른 비교 항목입니다. 경도는 한 재료가 다른 재료에 긁히는 것에 관한 척도이며, 반짝임의 인상은 스톤 재료뿐 아니라 연마 상태, 크기, 조명과 세팅의 영향을 함께 받을 수 있습니다.",
+      "이번 안내의 승인 출처는 큐빅 지르코니아와 합성 모이사나이트가 다이아몬드와 다른 재료라는 점을 뒷받침합니다. 개별 제품의 경도 수치나 광학 특성, 일상 착용 상태는 이 출처만으로 일괄 판단하지 말고 판매처의 제품 사양과 관리 안내를 확인하세요."
+    ],
+    "bullets": [
+      "경도와 반짝임의 인상은 같은 항목이 아닙니다.",
+      "스톤 표면 상태와 세팅 상태를 함께 살펴보세요.",
+      "착용 빈도와 활동 환경을 상담 시 함께 알리세요."
+    ]
+  },
+  {
+    "title": "예물 반지 비교 체크리스트",
+    "paragraphs": [
+      "예물 반지 비교는 특정 스톤을 정답으로 정하기보다, 두세 가지 후보를 같은 기준으로 적어 보는 방식이 도움이 됩니다. 특히 중심 스톤의 크기와 외관, 반지 세팅, 착용 목적을 분리해 비교하면 원하는 조건을 전달하기 쉽습니다.",
+      "가격, 재판매 가치, 재고와 특정 제품의 감정 문서 제공 여부는 스톤 종류만으로 정해지지 않습니다. 해당 조건은 제품 상담 시 확인하세요."
+    ],
+    "bullets": [
+      "스톤 종류와 제품 표기",
+      "원하는 크기와 전체 반지 비율",
+      "연마 상태와 외관 선호",
+      "프롱·베젤 등 세팅 방식",
+      "착용 빈도와 활동 환경",
+      "감정 문서 필요 여부",
+      "가격과 사후 관리 조건"
+    ]
+  },
+  {
+    "title": "감정 문서는 무엇을 확인해야 하나요?",
+    "paragraphs": [
+      "문서가 필요한 경우에는 문서의 명칭만 보기보다 어떤 스톤을 대상으로 어떤 내용을 확인한 문서인지 살펴보는 것이 중요합니다. 문서 번호가 있다면 제품 정보와 일치하는지도 확인하세요.",
+      "다이아몬드를 비교한다면 천연·랩그로운 구분을 구매 전에 확인하고, 문서 제공 여부와 내용은 판매처 및 발행 기관 기준으로 확인하세요. 특정 제품의 문서 제공 여부는 상담 시 확인할 수 있습니다."
+    ],
+    "bullets": [
+      "문서의 발행 기관",
+      "대상 스톤의 종류와 표기",
+      "제품 정보와 문서 정보의 일치 여부",
+      "발행일과 문서 번호 확인 가능 여부"
+    ]
+  }
+]
+
+const cautions = [
+  "같은 크기로 보이는 반지라도 스톤 종류, 연마 상태, 세팅 방식과 제품 사양이 다를 수 있습니다.",
+  "가격, 재판매 가치, 재고와 특정 제품의 감정 문서 제공 여부는 제품 상담 시 확인하세요.",
+  "경도 수치만으로 착용 중 발생할 수 있는 모든 상태 변화를 판단하지 마세요. 스톤 상태, 세팅, 착용 습관을 함께 살펴야 합니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/gemstone-grading-vs-identification-report",
+    "label": "보석 감정서·감별서 차이, 다이아·유색보석 보고서 읽는 법",
+    "description": "감정 문서의 검사 범위와 제품 정보 대조 방법을 확인하세요."
+  },
+  {
+    "to": "/guide/lab-grown-diamond-natural-difference",
+    "label": "랩그로운 다이아몬드 천연 다이아 차이, 예물 반지 선택 기준",
+    "description": "다이아몬드의 천연·랩그로운 구분을 더 자세히 살펴보세요."
+  },
+  {
+    "to": "/guide/diamond-3bu-5bu-difference",
+    "label": "다이아 3부 5부 차이, 예물 반지 고를 때 가격·크기 기준",
+    "description": "다이아몬드 반지의 크기와 세팅 비율을 비교하는 다음 단계 안내입니다."
+  },
+  {
+    "to": "/guide/gemstone-mohs-hardness-guide",
+    "label": "보석 모스 경도 순위: 다이아 10·루비·사파이어 9 비교",
+    "description": "경도와 충격 내구성이 다른 기준인 이유를 이어서 확인하세요."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '큐빅·모이사나이트·다이아 차이: 예물 반지 비교 기준'
+const gmArticleLead = '큐빅, 모이사나이트, 다이아몬드는 비슷한 외관으로 비교되지만 같은 재료가 아닙니다. 반지를 고를 때는 스톤 이름만 보지 말고 제품 표기, 크기, 연마 상태, 세팅 방식, 착용 빈도와 문서 필요 여부를 함께 확인하는 것이 좋습니다.'
+const gmArticleCategory = '가격'
+const gmArticleKeyword = '큐빅 모이사나이트 다이아 차이'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '예물 메인스톤 상담'
+const gmHeroAlt = '흰색 금속 반지 위에 서로 다른 투명 스톤 세 개를 놓고 비교하는 모습'
+const gmSourceNote = '큐빅 지르코니아와 합성 모이사나이트의 모조석 분류, 합성 보석과 모조석의 개념, 모스 경도의 의미는 아래 GIA 교육 자료를 바탕으로 정리했습니다. 가격, 재판매 가치, 재고, 개별 제품의 문서 제공 여부는 제품 상담 시 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "GIA Gem Imitation",
+    "url": "https://www.gia.edu/gem-imitation",
+    "note": "다이아몬드 모조석의 정의와 큐빅 지르코니아·합성 모이사나이트의 구분을 설명합니다."
+  },
+  {
+    "label": "GIA An Introduction to Synthetic Gem Materials",
+    "url": "https://www.gia.edu/gem-synthetic",
+    "note": "합성 보석과 천연 보석이 화학적·물리적·광학적 특성을 공유한다는 정의를 설명합니다."
+  },
+  {
+    "label": "GIA 4Cs Mohs Scale",
+    "url": "https://4cs.gia.edu/en-us/blog/mohs-scale/",
+    "note": "모스 경도가 긁힘 저항을 비교하는 상대 척도임을 설명합니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +179,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +206,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="가격"
-    keyword="큐빅 모이사나이트 다이아 차이"
-    inquiry-type="custom"
-    inquiry-topic="예물 메인스톤 상담"
-    title="큐빅·모이사나이트·다이아 차이, 예물 메인스톤 고르는 법"
-    lead="예물 반지 중앙에 들어가는 스톤은 큐빅, 모이사나이트, 다이아몬드 중에 고르는 경우가 많아요. 겉보기엔 비슷해도 가격·단단함·반짝임이 달라서, 예산과 용도에 맞게 고르는 기준을 정리했습니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    hero-image="/Image/guide/gemstone-comparison.webp"
-    hero-alt="큐빅·모이사나이트·다이아몬드 비교"
-    :quick-answers="[
-      '큐빅 < 모이사나이트 < 다이아 순으로 가격이 올라가요.',
-      '데일리·패션용은 큐빅, 가성비 예물은 모이사나이트, 정통 예물은 다이아를 많이 골라요.',
-      '예산과 착용 목적을 정하면 추천이 훨씬 쉬워집니다.'
-    ]"
-    :sections="[
-      {
-        title: '세 가지 스톤, 무엇이 다를까',
-        paragraphs: ['셋 다 투명하게 반짝이지만 본질이 달라요. 큐빅은 인조 보석, 모이사나이트는 다이아와 비슷한 인조 스톤, 다이아몬드는 천연(또는 랩그로운) 보석입니다.'],
-        bullets: ['큐빅(CZ) — 인조 보석으로 저렴하고 가벼운 데일리용', '모이사나이트 — 다이아급 반짝임에 합리적인 가격', '다이아몬드 — 천연/랩그로운, 가장 단단하고 가치 보존']
-      },
-      {
-        title: '단단함과 반짝임',
-        paragraphs: ['오래 끼는 예물이라면 단단함(긁힘 저항)이 중요해요. 다이아가 가장 단단하고, 모이사나이트도 꽤 단단해 데일리로 무난합니다. 큐빅은 상대적으로 무르고 시간이 지나면 광이 줄 수 있어요.'],
-        bullets: ['경도 — 다이아 > 모이사나이트 > 큐빅', '반짝임 — 모이사나이트는 무지갯빛으로 화려, 다이아는 맑고 깊은 광', '변화 — 큐빅은 오래되면 뿌예질 수 있어요']
-      },
-      {
-        title: '예산·용도별 선택 기준',
-        paragraphs: ['매일 끼는 데일리나 패션 반지라면 큐빅으로 부담 없이, 예물인데 예산을 아끼고 싶다면 모이사나이트, 평생 예물·가치 보존을 원하면 다이아를 권해드려요. 감정서가 필요한지도 미리 정하면 좋습니다.'],
-        bullets: ['데일리·패션 — 큐빅', '가성비 예물 — 모이사나이트', '정통 예물·가치 보존 — 다이아몬드(감정서 포함 가능)']
-      }
-    ]"
-    :cautions="[
-      '같은 크기여도 스톤 종류·등급·세팅에 따라 가격 차이가 큽니다.',
-      '다이아는 4C 등급과 감정서에 따라 가격대가 폭넓게 나뉘어요.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/wedding', label: '예물 안내', description: '예물 세트 구성 보기' },
-      { to: '/custom', label: '주문제작 안내', description: '메인스톤 맞춤 상담' },
-      { to: '/contact', label: '문의하기', description: '스톤·예산 상담' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>
