@@ -1,5 +1,6 @@
 import { siteConfig } from './config/site'
 import { galleryItems } from './data/gallery-items'
+import { guidePosts } from './data/guide-posts'
 import { readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
@@ -40,6 +41,22 @@ const buildPrerenderRoutes = (): string[] => [
   ...galleryItems.map((item) => `/gallery/${item.slug}`),
 ]
 
+const seoUpdatedAt = '2026-08-25'
+const sitemapUrls = [
+  ...guidePosts.map((guide) => ({
+    loc: guide.path,
+    lastmod: guide.updatedAt || guide.publishedAt,
+  })),
+  ...galleryItems.map((item) => ({
+    loc: `/gallery/${item.slug}`,
+    lastmod: seoUpdatedAt,
+  })),
+  { loc: '/guide', lastmod: seoUpdatedAt },
+  { loc: '/gallery', lastmod: seoUpdatedAt },
+  { loc: '/wedding', lastmod: seoUpdatedAt },
+  { loc: '/buy-gold', lastmod: seoUpdatedAt },
+]
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
@@ -77,6 +94,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     strictNuxtContentPaths: true,
+    urls: sitemapUrls,
   },
 
   app: {

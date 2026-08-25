@@ -17,6 +17,18 @@ const decodeXml = (value) => value
 const extractLocations = (xml) => [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
   .map((match) => decodeXml(match[1].trim()))
 
+const extractSitemapEntries = (xml) => [...xml.matchAll(/<url>([\s\S]*?)<\/url>/gi)]
+  .map((match) => {
+    const block = match[1]
+    const loc = block.match(/<loc>([\s\S]*?)<\/loc>/i)?.[1]
+    const lastmod = block.match(/<lastmod>([\s\S]*?)<\/lastmod>/i)?.[1]
+    return {
+      loc: loc ? decodeXml(loc.trim()) : '',
+      lastmod: lastmod ? decodeXml(lastmod.trim()) : '',
+    }
+  })
+  .filter((entry) => entry.loc)
+
 const extractAttribute = (tag, name) => {
   const match = tag.match(new RegExp(`${name}=["']([^"']+)["']`, 'i'))
   return match?.[1]
@@ -73,6 +85,63 @@ const extractJsonLdNodes = (html) => {
 const hasSchemaType = (node, type) => {
   const nodeType = node?.['@type']
   return Array.isArray(nodeType) ? nodeType.includes(type) : nodeType === type
+}
+
+const verifyCommonSeoDocument = (html, pageUrl, sitemapEntry, failures) => {
+  const title = extractTitle(html)
+  const h1 = extractH1(html)
+  const description = extractMetaContent(html, 'name', 'description')
+  const robots = extractMetaContent(html, 'name', 'robots') || ''
+  const ogTitle = extractMetaContent(html, 'property', 'og:title')
+  const ogDescription = extractMetaContent(html, 'property', 'og:description')
+  const jsonLdNodes = extractJsonLdNodes(html)
+
+  if (!title) failures.push(`${pageUrl.pathname}: title missing`)
+  if (!h1) failures.push(`${pageUrl.pathname}: H1 missing`)
+  if (!description) failures.push(`${pageUrl.pathname}: description missing`)
+  if (!ogTitle) failures.push(`${pageUrl.pathname}: og:title missing`)
+  if (!ogDescription) failures.push(`${pageUrl.pathname}: og:description missing`)
+  if (/\bnoindex\b/i.test(robots)) failures.push(`${pageUrl.pathname}: robots noindex`)
+  if (jsonLdNodes.some((node) => hasSchemaType(node, 'InvalidJsonLd'))) {
+    failures.push(`${pageUrl.pathname}: invalid JSON-LD`)
+  }
+
+  if (pageUrl.pathname.startsWith('/guide/')) {
+    const article = jsonLdNodes.find((node) => hasSchemaType(node, 'Article'))
+    const breadcrumb = jsonLdNodes.find((node) => hasSchemaType(node, 'BreadcrumbList'))
+    if (!article) failures.push(`${pageUrl.pathname}: Article JSON-LD missing`)
+    if (!breadcrumb) failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
+    if (!sitemapEntry?.lastmod) failures.push(`${pageUrl.pathname}: sitemap lastmod missing`)
+
+    const dateModified = String(article?.dateModified || '').slice(0, 10)
+    const sitemapLastmod = String(sitemapEntry?.lastmod || '').slice(0, 10)
+    if (!dateModified) {
+      failures.push(`${pageUrl.pathname}: Article dateModified missing`)
+    } else {
+      if (sitemapLastmod && sitemapLastmod !== dateModified) {
+        failures.push(`${pageUrl.pathname}: sitemap lastmod ${sitemapLastmod} != Article dateModified ${dateModified}`)
+      }
+      const visibleHtml = html
+        .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+        .replace(/<style\b[\s\S]*?<\/style>/gi, '')
+      if (!visibleHtml.includes(dateModified)) {
+        failures.push(`${pageUrl.pathname}: visible modified date ${dateModified} missing`)
+      }
+    }
+  }
+
+  if (['/wedding', '/buy-gold'].includes(pageUrl.pathname)) {
+    if (!jsonLdNodes.some((node) => hasSchemaType(node, 'WebPage'))) {
+      failures.push(`${pageUrl.pathname}: WebPage JSON-LD missing`)
+    }
+    if (!jsonLdNodes.some((node) => hasSchemaType(node, 'BreadcrumbList'))) {
+      failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
+    }
+    if (jsonLdNodes.some((node) => hasSchemaType(node, 'Article'))) {
+      failures.push(`${pageUrl.pathname}: commercial page must not use Article JSON-LD`)
+    }
+    if (!sitemapEntry?.lastmod) failures.push(`${pageUrl.pathname}: sitemap lastmod missing`)
+  }
 }
 
 const verifyGallerySeoDocument = (html, pageUrl, failures) => {
@@ -187,8 +256,14 @@ const verifyLive = async () => {
     throw new Error(`sitemap status ${sitemapResponse.status}: ${sitemapUrl}`)
   }
 
-  const locations = extractLocations(await sitemapResponse.text())
+  const sitemapXml = await sitemapResponse.text()
+  const sitemapEntries = extractSitemapEntries(sitemapXml)
+  const locations = sitemapEntries.map((entry) => entry.loc)
+  const sitemapByPath = new Map(sitemapEntries.map((entry) => [new URL(entry.loc).pathname, entry]))
   const failures = []
+  const mobileHeaders = {
+    'user-agent': 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/127.0 Mobile Safari/537.36',
+  }
 
   await runPool(locations, async (location) => {
     const canonicalUrl = new URL(location)
@@ -199,14 +274,17 @@ const verifyLive = async () => {
     }
 
     const html = await response.text()
+    const xRobotsTag = response.headers.get('x-robots-tag') || ''
     const canonical = extractCanonical(html)
     const ogUrl = extractOgUrl(html)
+    if (/\bnoindex\b/i.test(xRobotsTag)) failures.push(`${canonicalUrl.pathname}: X-Robots-Tag noindex`)
     if (!canonical || normalizeUrl(canonical) !== normalizeUrl(canonicalUrl.href)) {
       failures.push(`${canonicalUrl.pathname}: canonical ${canonical || 'missing'}`)
     }
     if (!ogUrl || normalizeUrl(ogUrl) !== normalizeUrl(canonicalUrl.href)) {
       failures.push(`${canonicalUrl.pathname}: og:url ${ogUrl || 'missing'}`)
     }
+    verifyCommonSeoDocument(html, canonicalUrl, sitemapByPath.get(canonicalUrl.pathname), failures)
 
     const galleryImage = verifyGallerySeoDocument(html, canonicalUrl, failures)
     if (galleryImage) {
@@ -229,6 +307,28 @@ const verifyLive = async () => {
     const redirectTarget = locationHeader ? new URL(locationHeader, opposite) : null
     if (!redirectTarget || normalizeUrl(redirectTarget.href) !== normalizeUrl(canonicalUrl.href)) {
       failures.push(`${opposite.pathname}: redirect target ${locationHeader || 'missing'}`)
+    }
+
+    if (canonicalUrl.pathname.startsWith('/guide/')) {
+      const mobileCanonical = await fetch(canonicalUrl, { redirect: 'manual', headers: mobileHeaders })
+      if (mobileCanonical.status !== 200) {
+        failures.push(`${canonicalUrl.pathname}: mobile canonical status ${mobileCanonical.status}`)
+      } else {
+        const mobileHtml = await mobileCanonical.text()
+        const mobileCanonicalHref = extractCanonical(mobileHtml)
+        if (!mobileCanonicalHref || normalizeUrl(mobileCanonicalHref) !== normalizeUrl(canonicalUrl.href)) {
+          failures.push(`${canonicalUrl.pathname}: mobile canonical ${mobileCanonicalHref || 'missing'}`)
+        }
+      }
+
+      const mobileRedirect = await fetch(opposite, { redirect: 'manual', headers: mobileHeaders })
+      const mobileLocation = mobileRedirect.headers.get('location')
+      const mobileTarget = mobileLocation ? new URL(mobileLocation, opposite) : null
+      if (![301, 302, 307, 308].includes(mobileRedirect.status)
+        || !mobileTarget
+        || normalizeUrl(mobileTarget.href) !== normalizeUrl(canonicalUrl.href)) {
+        failures.push(`${opposite.pathname}: mobile redirect ${mobileRedirect.status} ${mobileLocation || 'missing'}`)
+      }
     }
   })
 
@@ -280,10 +380,12 @@ const listHtmlFiles = async (dir) => {
 const verifyLocal = async () => {
   const publicDir = findPublicDir()
   const sitemap = await readFile(join(publicDir, 'sitemap.xml'), 'utf8')
-  const locations = extractLocations(sitemap)
+  const sitemapEntries = extractSitemapEntries(sitemap)
+  const locations = sitemapEntries.map((entry) => entry.loc)
   const failures = []
   const internalLinkFailures = new Set()
   const sitemapPaths = new Set(locations.map((location) => new URL(location).pathname))
+  const sitemapByPath = new Map(sitemapEntries.map((entry) => [new URL(entry.loc).pathname, entry]))
   const galleryDetailPaths = [...sitemapPaths].filter((pathname) => pathname.startsWith('/gallery/'))
 
   for (const location of locations) {
@@ -314,6 +416,7 @@ const verifyLocal = async () => {
     if (!ogUrl || normalizeUrl(ogUrl) !== normalizeUrl(location)) {
       failures.push(`${url.pathname}: og:url ${ogUrl || 'missing'}`)
     }
+    verifyCommonSeoDocument(html, url, sitemapByPath.get(url.pathname), failures)
 
     const galleryImage = verifyGallerySeoDocument(html, url, failures)
     if (galleryImage) {

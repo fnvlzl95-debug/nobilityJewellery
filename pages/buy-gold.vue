@@ -7,16 +7,16 @@ definePageMeta({
 })
 
 useHead({
-  title: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족',
+  title: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/buy-gold` }
   ],
   meta: [
-    { name: 'description', content: '종로 금 매입 전문 귀족. 금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K 매입. 은 매입, 백금 매입. 당일 현금 지급. 정확한 시세 적용, 투명한 거래. 종로3가 금은방.' },
+    { name: 'description', content: '종로 금·은 매입 상담 안내. 품목과 순도·각인, 중량을 확인한 뒤 당일 시세를 적용하고 최종 매입 금액을 안내합니다.' },
     { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
     // Open Graph
-    { property: 'og:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족' },
-    { property: 'og:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바, 순금, 18K, 14K 매입. 당일 현금 지급. 종로3가 금은방.' },
+    { property: 'og:title', content: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족' },
+    { property: 'og:description', content: '품목·순도·각인·중량을 확인하고 당일 시세를 적용하는 종로 금·은 매입 상담.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/buy-gold` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
@@ -24,8 +24,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 상담 | 귀족' },
-    { name: 'twitter:description', content: '종로 금 매입 전문. 금반지, 금목걸이, 골드바 매입. 당일 현금 지급.' },
+    { name: 'twitter:title', content: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족' },
+    { name: 'twitter:description', content: '품목·순도·각인·중량 확인 후 당일 시세를 적용하는 종로 매입 상담.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
   ],
   script: [
@@ -33,24 +33,26 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Service',
-        name: '금·은 귀금속 매입',
-        description: '금반지, 금목걸이, 금팔찌, 골드바, 순금, 18K, 14K, 은 귀금속 매입 서비스',
-        provider: {
-          '@type': 'LocalBusiness',
-          name: siteConfig.name,
-          telephone: siteConfig.phoneFormatted,
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: siteConfig.address.street,
-            addressLocality: siteConfig.address.city,
-            addressRegion: siteConfig.address.region,
-            addressCountry: siteConfig.address.country
-          }
-        },
-        areaServed: {
-          '@type': 'City',
-          name: '서울'
+        '@type': 'WebPage',
+        name: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족',
+        description: '품목과 순도·각인, 중량을 확인한 뒤 당일 시세를 적용하는 금·은 매입 상담 안내 페이지입니다.',
+        url: `${siteConfig.url}/buy-gold`,
+        mainEntity: {
+          '@type': 'Service',
+          name: '금·은 귀금속 매입',
+          provider: {
+            '@type': 'LocalBusiness',
+            name: siteConfig.name,
+            telephone: siteConfig.phoneFormatted,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: siteConfig.address.street,
+              addressLocality: siteConfig.address.city,
+              addressRegion: siteConfig.address.region,
+              addressCountry: siteConfig.address.country
+            }
+          },
+          areaServed: { '@type': 'City', name: '서울' }
         }
       })
     }
@@ -71,39 +73,39 @@ useHead({
 
 const highlights = [
   {
-    title: '정확한 시세 적용',
-    description: '당일 국제 금 시세를 기준으로 정확하게 계산합니다. 투명한 거래를 약속드립니다.',
+    title: '당일 시세 기준',
+    description: '순도와 중량을 확인한 뒤 상담 당일의 금 시세를 기준으로 매입 금액을 계산합니다.',
     icon: 'chart'
   },
   {
-    title: '당일 현금 지급',
-    description: '감정 후 바로 현금으로 지급해드립니다.',
+    title: '확인 후 당일 지급',
+    description: '감정 결과와 최종 금액을 확인한 뒤 당일 지급해드립니다.',
     icon: 'cash'
   }
 ]
 
 const buyItems = [
-  { category: '금 (Gold)', items: ['순금 (24K)', '18K', '14K', '10K', '골드바', '금괴'] },
-  { category: '은 (Silver)', items: ['순은', '실버바', '은화', '은 장신구'] },
+  { category: '금', items: ['순금(24K)', '18K', '14K', '10K', '골드바', '금괴'] },
+  { category: '은', items: ['순은', '실버바', '은화', '은 장신구'] },
   { category: '장신구', items: ['반지', '목걸이', '팔찌', '귀걸이', '브로치'] },
   { category: '기타', items: ['백금', '금니', '금시계', '부서진 귀금속'] },
 ]
 
 const relatedGuides = [
   {
-    to: '/guide/silver-buying',
-    title: '은매입 체크리스트',
-    description: '은매입 시 순도·무게·시세 확인 방법',
+    to: '/guide/gold-one-don-gram',
+    title: '금 1돈·2돈·3돈 무게 환산표',
+    description: '1돈 3.75g 기준과 중량 환산 방법',
   },
   {
-    to: '/guide/gold-ring-repair-cost',
-    title: '금반지 수리 비용 기준',
-    description: '보관/수리 후 매입 상담 시 참고',
+    to: '/guide/jewelry-hallmark-numbers-meaning',
+    title: '585·750·925 각인 뜻',
+    description: '14K·18K·은 순도 표기를 읽는 기준',
   },
   {
-    to: '/guide',
-    title: '귀금속 가이드 전체 보기',
-    description: '가격·비용·기간 문의 콘텐츠 모음',
+    to: '/guide/gold-price-how-to-check',
+    title: '당일 금 시세 확인 방법',
+    description: '고시가와 실제 매입가를 구분하는 기준',
   },
 ]
 </script>
@@ -112,10 +114,10 @@ const relatedGuides = [
   <div class="container">
     <!-- Header -->
         <div class="buy-header">
-          <span class="label">Gold & Silver</span>
-          <h1 class="title">금·은 매입</h1>
+          <span class="label">귀금속 매입 상담</span>
+          <h1 class="title">종로 금·은 매입</h1>
           <p class="desc">
-            사용하지 않는 귀금속, 정당한 가격으로 매입합니다.<br>
+            사용하지 않는 귀금속의 순도와 중량을 확인해 매입가를 안내합니다.<br>
             종로3가 금은방 귀족이 30년 경력의 신뢰할 수 있는 거래를 약속드립니다.
           </p>
         </div>
@@ -149,7 +151,7 @@ const relatedGuides = [
         <!-- Buy Items -->
         <div class="items-section">
           <h2 class="section-title">매입 품목</h2>
-          <p class="section-desc">상태와 관계없이 모든 귀금속 매입 가능</p>
+          <p class="section-desc">품목·순도·상태를 확인한 뒤 매입 가능 여부와 금액을 안내합니다</p>
           <div class="items-grid">
             <div
               v-for="(item, index) in buyItems"
@@ -173,8 +175,8 @@ const relatedGuides = [
           <div class="process-steps">
             <div class="step">
               <span class="step-num">01</span>
-              <h3 class="step-title">방문 / 상담</h3>
-              <p class="step-desc">매입 희망 품목을 가지고 방문해주세요</p>
+              <h3 class="step-title">품목 확인</h3>
+              <p class="step-desc">매입할 귀금속의 종류와 상태를 확인합니다</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -183,8 +185,8 @@ const relatedGuides = [
             </div>
             <div class="step">
               <span class="step-num">02</span>
-              <h3 class="step-title">감정 / 계량</h3>
-              <p class="step-desc">순도 확인 및 정밀 계량</p>
+              <h3 class="step-title">순도·각인 확인</h3>
+              <p class="step-desc">각인과 감정을 통해 순도를 확인합니다</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -193,8 +195,8 @@ const relatedGuides = [
             </div>
             <div class="step">
               <span class="step-num">03</span>
-              <h3 class="step-title">시세 적용</h3>
-              <p class="step-desc">당일 시세 기준 가격 산정</p>
+              <h3 class="step-title">중량 측정</h3>
+              <p class="step-desc">확인된 품목의 중량을 측정합니다</p>
             </div>
             <div class="step-arrow">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -203,8 +205,18 @@ const relatedGuides = [
             </div>
             <div class="step">
               <span class="step-num">04</span>
-              <h3 class="step-title">즉시 지급</h3>
-              <p class="step-desc">현금 즉시 지급</p>
+              <h3 class="step-title">당일 시세 적용</h3>
+              <p class="step-desc">순도와 중량에 상담 당일 시세를 적용합니다</p>
+            </div>
+            <div class="step-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+            <div class="step">
+              <span class="step-num">05</span>
+              <h3 class="step-title">최종 금액 안내</h3>
+              <p class="step-desc">실물 확인 결과를 반영해 최종 매입 금액을 안내합니다</p>
             </div>
           </div>
         </div>
@@ -241,6 +253,7 @@ const relatedGuides = [
             <li>매입 시세는 당일 국제 금 시세에 따라 변동됩니다</li>
             <li>순도에 따라 매입가가 달라집니다 (24K, 18K, 14K 등)</li>
             <li>방문 전 전화 문의 시 대략적인 시세 안내 가능합니다</li>
+            <li>최종 매입가는 순도·중량·제품 상태를 실물로 확인한 뒤 결정됩니다</li>
           </ul>
         </div>
 
@@ -263,7 +276,7 @@ const relatedGuides = [
         <!-- CTA -->
         <LandingCTA
           title="매입 상담 문의"
-          description="전화 또는 방문해주시면 친절히 안내해드립니다."
+          description="전화 또는 카카오톡으로 순도·중량 확인 기준을 안내해드립니다."
         />
 
     <!-- Location Info -->

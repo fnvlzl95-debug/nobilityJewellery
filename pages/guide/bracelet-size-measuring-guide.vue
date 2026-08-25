@@ -137,9 +137,9 @@ const cautions = [
 
 const relatedLinks = [
   {
-    "to": "/guide/ring-size-measuring-method",
-    "label": "반지 사이즈 재는 법, 커플링·결혼반지 주문 전 실수 줄이는 기준",
-    "description": "손가락은 손목과 다른 측정 기준을 사용하므로 반지 치수 측정 순서와 확인 사항을 정리했습니다."
+    "to": "/custom",
+    "label": "손목 치수와 구조에 맞춘 팔찌 주문 상담",
+    "description": "체인형·뱅글·커프 중 원하는 구조와 실제 측정값을 함께 전달하세요."
   },
   {
     "to": "/guide/gold-anklet-size-guide",
@@ -153,7 +153,7 @@ const relatedLinks = [
   }
 ]
 
-const updatedAt = '2026-08-07'
+const updatedAt = '2026-08-25'
 // guide-manager:data:start
 const gmArticleTitle = '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정'
 const gmArticleLead = '팔찌 사이즈는 손목 둘레에 일정한 숫자만 더해서 정하기 어렵습니다. 체인형 팔찌는 손목 둘레와 실제 체결 길이를 따로 살펴봐야 하며, 폐쇄형 뱅글은 손을 통과하는 가장 넓은 부분과 제품 안쪽 치수를 확인해야 합니다.'

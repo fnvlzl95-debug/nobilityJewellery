@@ -11,6 +11,13 @@ export const useGtag = () => {
     topic?: string
     destination?: string
   }
+  type GuideServiceLinkParams = {
+    sourcePath: string
+    targetPath: string
+    anchorText: string
+    placement: string
+    topicCluster?: string
+  }
 
   const trackMeta = (
     method: 'track' | 'trackCustom',
@@ -154,6 +161,16 @@ export const useGtag = () => {
     trackMetaEvent('Lead', leadParams)
   }
 
+  const trackGuideToServiceClick = (params: GuideServiceLinkParams) => {
+    trackEvent('guide_to_service_click', withOptionalParams({
+      source_path: params.sourcePath,
+      target_path: params.targetPath,
+      anchor_text: params.anchorText,
+      placement: params.placement,
+      topic_cluster: params.topicCluster,
+    }))
+  }
+
   const trackFormError = (pageName: string, errorMessage: string, errorType = 'submission') => {
     trackEvent('contact_form_error', {
       page_name: pageName,
@@ -172,6 +189,7 @@ export const useGtag = () => {
     trackKakaoClick,
     trackMapClick,
     trackPageInquiryClick,
+    trackGuideToServiceClick,
     trackLeadSubmitted,
     trackFormError,
   }

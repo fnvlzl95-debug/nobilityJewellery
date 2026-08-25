@@ -7,7 +7,7 @@ const pageTitle = '결혼 패물과 예물의 차이, 준비 범위는 이렇게
 const pageDescription = '결혼 예물과 패물의 의미를 구분하고, 오늘날 준비 범위를 양가 합의와 귀금속·장신구 중심으로 정리한 안내입니다.'
 const ogImage = `${siteConfig.url}/Image/guide/wedding-paemul-yesul-difference-hero.webp`
 const publishedAt = '2026-08-15'
-const updatedAt = ''
+const updatedAt = '2026-08-25'
 const faqItems = [
   {
     "question": "패물과 예물은 같은 뜻인가요?",
@@ -103,6 +103,11 @@ const cautions = [
   "전통 혼례의 물목을 오늘날 반드시 준비해야 하는 목록으로 해석하지 말고, 두 사람과 양가의 합의를 기준으로 결정하세요."
 ]
 const relatedLinks = [
+  {
+    "to": "/guide/wedding-jewelry-set-composition",
+    "label": "실제 품목별 결혼예물 세트 구성 가이드",
+    "description": "신부·신랑·혼주 예물을 어떤 순서로 정할지 품목별로 확인하세요."
+  },
   {
     "to": "/guide/platinum-vs-white-gold-difference",
     "label": "화이트골드·백금 차이: 가격·무게·변색·예물 선택",

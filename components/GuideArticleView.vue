@@ -55,9 +55,10 @@ const props = withDefaults(defineProps<{
   sources: () => [],
 })
 
-const { trackPhoneClick, trackKakaoClick, trackInquiryClick } = useGtag()
+const { trackPhoneClick, trackKakaoClick, trackInquiryClick, trackGuideToServiceClick } = useGtag()
 const route = useRoute()
 const guideCluster = computed(() => findGuideClusterForPath(route.path))
+const servicePaths = new Set(['/wedding', '/buy-gold', '/repair', '/custom', '/couple-ring', '/baby-gold'])
 
 const sectionAnchor = (index: number) => `sec-${index + 1}`
 const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
@@ -102,10 +103,37 @@ const handleInquiryClick = () => {
     topic: props.inquiryTopic || props.keyword,
   })
 }
+
+const handleGuideLinkClick = (event: MouseEvent) => {
+  const target = event.target
+  if (!(target instanceof Element)) return
+
+  const link = target.closest<HTMLAnchorElement>('a[href]')
+  if (!link) return
+
+  const url = new URL(link.href, window.location.origin)
+  if (url.origin !== window.location.origin || !servicePaths.has(url.pathname)) return
+
+  const placement = link.closest('.related-card')
+    ? 'related_links'
+    : link.closest('.guide-cluster-links')
+      ? 'topic_cluster'
+      : link.closest('.guide-article')
+        ? 'article_body'
+        : 'guide_navigation'
+
+  trackGuideToServiceClick({
+    sourcePath: route.path,
+    targetPath: url.pathname,
+    anchorText: link.textContent?.trim().replace(/\s+/g, ' ').slice(0, 100) || url.pathname,
+    placement,
+    topicCluster: guideCluster.value?.id,
+  })
+}
 </script>
 
 <template>
-  <div class="guide-page">
+  <div class="guide-page" @click="handleGuideLinkClick">
 
     <div class="guide-wrap">
       <NuxtLink to="/guide" class="guide-back">

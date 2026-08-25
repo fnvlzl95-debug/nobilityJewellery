@@ -3,11 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/necklace-bracelet-chain-repair'
-const pageTitle = '목걸이 끊어짐과 팔찌 잠금장식 수리 전 확인할 것 | 귀족'
-const pageDescription = '목걸이나 팔찌가 끊어졌다면 체인 중간인지 잠금장식 연결부인지 먼저 구분하고, 제품 전체와 손상 부위를 함께 확인해야 합니다. 사진 상담 준비부터 실물 확인 전 주의할 점까지 정리했습니다.'
+const pageTitle = '목걸이 끊어짐 수리: 체인·잠금장식 확인 기준 | 귀족'
+const pageDescription = '목걸이가 끊어졌다면 체인 중간, 연결 고리, 잠금장식 중 손상 위치를 먼저 구분하세요. 사진 상담 준비와 실물 확인 전 주의점을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/necklace-bracelet-chain-repair-hero.webp`
 const publishedAt = '2026-05-28'
-const updatedAt = '2026-08-13'
+const updatedAt = '2026-08-25'
 const faqItems = [
   {
     "question": "목걸이가 끊어졌는데 사진만으로 상담할 수 있나요?",
@@ -119,9 +119,9 @@ const cautions = [
 
 const relatedLinks = [
   {
-    "to": "/guide/silver-necklace-repair-possible",
-    "label": "은목걸이 수리 가능 여부, 끊어짐·잠금장식·변색별로 정리",
-    "description": "은 소재 목걸이의 끊어짐, 잠금장식 문제와 변색 상태를 상담 전에 확인하는 방법을 정리했습니다."
+    "to": "/repair",
+    "label": "체인·잠금장식 상태를 확인한 뒤 수리 상담받기",
+    "description": "제품 전체와 끊어진 부속을 준비해 실물 기준으로 작업 가능 여부를 확인하세요."
   },
   {
     "to": "/guide/pearl-necklace-restringing",
@@ -136,7 +136,7 @@ const relatedLinks = [
 ]
 
 // guide-manager:data:start
-const gmArticleTitle = '목걸이 끊어짐과 팔찌 잠금장식 수리 전 확인할 것'
+const gmArticleTitle = '목걸이 끊어짐 수리: 체인·잠금장식 확인 기준'
 const gmArticleLead = '목걸이와 팔찌의 수리 방식은 끊어진 위치, 체인 구조, 잠금장식과 연결 고리 상태, 분실된 부속 여부에 따라 달라질 수 있습니다. 사진은 1차 상담에 활용하고, 최종 작업 범위와 가능 여부는 실물 확인 후 안내받으세요.'
 const gmArticleCategory = '수리'
 const gmArticleKeyword = '목걸이 끊어짐 팔찌 잠금장식 수리'

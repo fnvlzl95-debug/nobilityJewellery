@@ -3,11 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/platinum-vs-white-gold-difference'
-const pageTitle = '화이트골드·백금 차이: 가격·무게·변색·예물 선택 | 귀족'
+const pageTitle = '백금·화이트골드 차이: 가격·무게·변색·예물 선택 | 귀족'
 const pageDescription = '백금(플래티넘)과 화이트골드는 색·무게·관리·가격이 달라요. 소재 차이부터 재도금, 예물 반지를 고를 때 보면 좋은 기준까지 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/platinum-white-gold.webp`
 const publishedAt = '2026-06-03'
-const updatedAt = '2026-08-05'
+const updatedAt = '2026-08-25'
 const faqItems = [
   {
     question: '백금이 화이트골드보다 무조건 좋나요?',
@@ -87,7 +87,7 @@ useHead({
     keyword="백금 화이트골드 차이"
     inquiry-type="custom"
     inquiry-topic="예물 반지 소재 상담"
-    title="화이트골드·백금 차이: 가격·무게·변색 비교"
+    title="백금·화이트골드 차이: 가격·무게·변색·예물 선택"
     lead="둘 다 은백색이라 헷갈리지만, 백금(플래티넘)과 화이트골드는 소재 자체가 달라요. 색·무게·관리·가격이 달라서, 예물 반지를 고를 때 어떤 점을 보면 좋은지 정리했습니다."
     :published-at="publishedAt"
     :updated-at="updatedAt"
@@ -133,7 +133,7 @@ useHead({
       }
     ]"
     :related-links="[
-      { to: '/wedding', label: '예물 안내', description: '예물 반지 구성 보기' },
+      { to: '/wedding', label: '종로 결혼예물 상담·가격·맞춤제작', description: '예산과 일정에 맞춰 예물 반지 소재를 상담하세요' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금 기준 보기' },
       { to: '/contact', label: '문의하기', description: '소재·예물 상담' }
     ]"

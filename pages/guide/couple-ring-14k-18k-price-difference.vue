@@ -122,6 +122,11 @@ const cautions = [
 
 const relatedLinks = [
   {
+    "to": "/couple-ring",
+    "label": "같은 규격으로 14K·18K 커플링 견적 상담받기",
+    "description": "폭·두께·호수·완성 중량·세팅·각인·공임 조건을 맞춰 비교하세요."
+  },
+  {
     "to": "/guide/platinum-vs-white-gold-difference",
     "label": "화이트골드·백금 차이: 가격·무게·변색·예물 선택",
     "description": "백금과 화이트골드의 색·무게·관리·가격 차이를 비교하고 예물 반지 선택 기준을 확인할 수 있습니다."
@@ -143,7 +148,7 @@ const relatedLinks = [
   }
 ]
 
-const updatedAt = '2026-08-08'
+const updatedAt = '2026-08-25'
 // guide-manager:data:start
 const gmArticleTitle = '14K·18K 커플링 가격 차이: 금 함량·중량·공임 비교'
 const gmArticleLead = '14K·18K 커플링 가격 차이는 금 함량만으로 정해지지 않습니다. 같은 디자인도 완성 중량, 폭·두께, 세팅, 당일 금 시세와 공임 조건이 다르면 견적을 그대로 비교할 수 없습니다. 상담 전에는 두 소재의 견적을 같은 중량·규격·세팅 기준으로 요청하세요.'

@@ -3,11 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gold-one-don-gram'
-const pageTitle = '금 1돈 몇 g? 3.75g 환산·순도별 무게 계산 | 귀족'
-const pageDescription = '금 1돈은 3.75g입니다. 하지만 돌반지와 금목걸이 가격은 1돈 숫자만으로 정해지지 않아요. 순도, 공임, 구성까지 함께 보는 기준을 정리했습니다.'
+const pageTitle = '금 1돈은 몇 g? 3.75g·2돈·3돈 무게 환산표 | 귀족'
+const pageDescription = '금 1돈은 3.75g, 2돈은 7.5g, 3돈은 11.25g입니다. 돈·그램 환산표와 순도·공임까지 함께 비교하는 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0105.webp`
 const publishedAt = '2026-03-31'
-const updatedAt = '2026-08-05'
+const updatedAt = '2026-08-25'
 const faqItems = [
   {
     question: '금 1돈은 정확히 몇 g인가요?',
@@ -52,7 +52,7 @@ useHead({
       innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
         { name: '홈', path: '/' },
         { name: '귀금속 가이드', path: '/guide' },
-        { name: '금 1돈 몇 g', path: pagePath },
+        { name: '금 1돈 무게 환산표', path: pagePath },
       ])),
     },
     {
@@ -95,14 +95,14 @@ useHead({
     keyword="금 1돈 몇 g"
     inquiry-type="custom"
     inquiry-topic="금 1돈 몇 g"
-    title="금 1돈 몇 g? 3.75g 환산과 순도별 무게 계산"
+    title="금 1돈은 몇 g? 3.75g·2돈·3돈 무게 환산표"
     lead="금 상담을 하다 보면 “1돈이면 몇 그램이에요?”, “돌반지 1돈이면 어느 정도예요?” 같은 질문이 정말 많습니다. 결론부터 말하면 금 1돈은 3.75g이고, 실제 제품 가격은 무게에 순도와 공임, 구성까지 함께 봐야 정확합니다."
     :published-at="publishedAt"
     :updated-at="updatedAt"
     :hero-image="`${siteConfig.url}/Image/ring/SB0105.webp`"
     hero-alt="금반지와 돌반지 무게 상담"
     :quick-answers="[
-      '금 1돈은 3.75g입니다.',
+      '금 1돈은 3.75g, 2돈은 7.5g, 3돈은 11.25g입니다.',
       '같은 1돈이라도 14K·18K·24K와 공임에 따라 가격은 달라집니다.',
       '돌반지나 목걸이 상담 때는 무게만 말하지 말고 소재와 예산, 수령일도 같이 알려주세요.'
     ]"
@@ -193,9 +193,9 @@ useHead({
       }
     ]"
     :related-links="[
-      { to: '/guide/baby-ring-price', label: '돌반지 가격 가이드', description: '1돈 기준 상담 전에 함께 보면 좋아요' },
-      { to: '/guide/mother-necklace-price', label: '금목걸이 가격 가이드', description: '목걸이 가격이 어떻게 달라지는지 확인하세요' },
-      { to: '/contact', label: '문의하기', description: '무게와 예산을 기준으로 바로 상담받기' }
+      { to: '/buy-gold', label: '순도와 중량을 확인한 뒤 금·은 매입 상담받기', description: '실물 확인 후 당일 시세를 적용하는 매입 절차를 확인하세요' },
+      { to: '/baby-gold', label: '순금 돌반지 주문 상담', description: '1돈·반돈과 각인, 최소 제작 일정을 함께 확인하세요' },
+      { to: '/guide/jewelry-hallmark-numbers-meaning', label: '585·750·925 각인 뜻', description: '금·은 제품의 순도 표기를 읽는 기준을 확인하세요' }
     ]"
   >
     <template #hero-summary>

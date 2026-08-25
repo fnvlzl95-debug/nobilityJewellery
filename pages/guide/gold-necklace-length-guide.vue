@@ -7,7 +7,7 @@ const pageTitle = '남자·여자 목걸이 길이 추천: 42·45·50cm 비교 |
 const pageDescription = '금목걸이 길이 추천 기준을 42cm, 45cm, 50cm 중심으로 정리했습니다. 체형, 펜던트 크기, 체인 굵기, 선물용 상담 전 확인할 내용을 안내합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/necklace-length-guide-hero.webp`
 const publishedAt = '2026-07-07'
-const updatedAt = '2026-08-09'
+const updatedAt = '2026-08-25'
 
 const faqItems = [
   {
@@ -125,19 +125,19 @@ const cautions = [
 
 const relatedLinks = [
   {
-    "to": "/guide/gold-anklet-size-guide",
-    "label": "금발찌 길이 재는 법, 발목둘레와 여유 길이 주문 기준",
-    "description": "신체 둘레와 원하는 착용 여유를 기준으로 길이를 확인하는 방법을 정리했습니다."
+    "to": "/custom",
+    "label": "착용 위치와 펜던트에 맞춘 목걸이 주문 상담",
+    "description": "목둘레와 원하는 42·45·50cm 위치, 체인 굵기를 함께 전달하세요."
+  },
+  {
+    "to": "/repair",
+    "label": "기존 목걸이 길이 조절·수리 상담",
+    "description": "체인 구조와 잠금장치, 원하는 완성 길이를 실물로 확인하세요."
   },
   {
     "to": "/guide/gold-necklace-repair-time",
-    "label": "금목걸이 수리 기간, 맡기기 전에 꼭 확인할 것",
-    "description": "목걸이 수리 상담 전에 끊어진 위치와 잠금장치 상태를 확인하는 방법을 안내합니다."
-  },
-  {
-    "to": "/guide/mother-necklace-price",
-    "label": "어머니 금목걸이, 예산별 선택 방법",
-    "description": "소재와 체인 및 펜던트 구성을 비교해 선물용 금목걸이를 고르는 방법을 정리했습니다."
+    "label": "금목걸이 수리 기간 확인 기준",
+    "description": "목걸이 수리 전 끊어진 위치와 잠금장치 상태를 확인하는 방법입니다."
   }
 ]
 

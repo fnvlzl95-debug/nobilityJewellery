@@ -3,11 +3,11 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gemstone-mohs-hardness-guide'
-const pageTitle = '보석 모스 경도 순위: 다이아 10·루비·사파이어 9 비교 | 귀족'
+const pageTitle = '보석 모스 경도 순위: 다이아 10·루비·사파이어 9 | 귀족'
 const pageDescription = '보석 모스 경도는 긁힘 저항을 나타내는 상대 척도입니다. 다이아몬드 10, 루비·사파이어가 속하는 강옥 9, 수정 계열 7을 비교하고 충격과 보관 기준을 확인하세요.'
 const ogImage = `${siteConfig.url}/Image/guide/gemstone-mohs-hardness-guide-hero.webp`
 const publishedAt = '2026-07-11'
-const updatedAt = '2026-08-09'
+const updatedAt = '2026-08-25'
 
 const faqItems = [
   {
@@ -133,24 +133,24 @@ const cautions = [
 
 const relatedLinks = [
   {
+    "to": "/guide/gemstone-durability-for-ring-selection",
+    "label": "반지용 보석 내구성 선택 기준",
+    "description": "경도뿐 아니라 인성·안정성·세팅을 함께 보고 일상 착용 가능성을 비교하세요."
+  },
+  {
     "to": "/guide/gemstone-grading-vs-identification-report",
-    "label": "보석 감정서·감별서 차이, 다이아·유색보석 보고서 읽는 법",
-    "description": "보석 종류와 처리 여부를 확인할 때 감정서와 감별서의 검사 범위를 살펴봅니다."
+    "label": "보석 감정서·감별서 차이",
+    "description": "보석 종류와 처리 여부를 확인할 때 보고서의 검사 범위를 살펴봅니다."
   },
   {
-    "to": "/guide/thin-necklace-breakage-causes",
-    "label": "목걸이가 자주 끊어질 때는 끊어진 위치와 착용·보관 환경부터 점검하세요",
-    "description": "주얼리의 착용 환경과 보관 중 발생할 수 있는 접촉·걸림 문제를 점검합니다."
-  },
-  {
-    "to": "/guide/jongno-ring-polishing-cost",
-    "label": "종로 반지 광택 비용, 잔기스 제거와 새제품 마감 견적 기준",
-    "description": "반지 표면의 잔기스와 마감 상태를 점검할 때 참고할 수 있는 관리 가이드입니다."
+    "to": "/custom",
+    "label": "착용 환경에 맞춘 보석 반지 주문 상담",
+    "description": "원하는 보석과 착용 빈도, 세팅 보호 범위를 함께 상담하세요."
   }
 ]
 
 // guide-manager:data:start
-const gmArticleTitle = '보석 모스 경도 순위: 다이아 10·루비·사파이어 9 비교'
+const gmArticleTitle = '보석 모스 경도 순위: 다이아 10·루비·사파이어 9'
 const gmArticleLead = '광물이 다른 물질에 의해 긁히는 정도를 비교하는 상대 척도가 보석 모스 경도입니다. 다이아몬드는 10이고 루비와 사파이어가 속하는 강옥은 9입니다. 다만 경도가 높더라도 충격에 반드시 강한 것은 아니므로 인성·안정성·세팅을 함께 살펴야 합니다.'
 const gmArticleCategory = '관리'
 const gmArticleKeyword = '보석 모스 경도'

@@ -7,16 +7,16 @@ definePageMeta({
 })
 
 useHead({
-  title: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족',
+  title: '종로 결혼예물 상담·가격·맞춤제작 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/wedding` }
   ],
   meta: [
-    { name: 'description', content: '결혼예물 주문제작 전문 귀족. 결혼반지, 예물 세트, 시댁예물, 처가예물. 18K 골드, 다이아몬드 예물. 30년 장인 직접 세공. 종로3가 금은방 도매가. 신부예물, 신랑예물 맞춤 구성.' },
+    { name: 'description', content: '종로 결혼예물 상담과 맞춤제작 안내. 예산, 원하는 품목, 제작 일정을 함께 확인하고 커플링과 웨딩 주얼리의 가격 범위를 상담합니다.' },
     { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
-    { property: 'og:title', content: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족' },
-    { property: 'og:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공. 종로 도매가.' },
+    { property: 'og:title', content: '종로 결혼예물 상담·가격·맞춤제작 | 귀족' },
+    { property: 'og:description', content: '예산과 일정에 맞춘 종로 결혼예물 상담과 맞춤제작 안내.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/wedding` },
     { property: 'og:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
@@ -24,8 +24,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족' },
-    { name: 'twitter:description', content: '결혼예물 주문제작. 예물 세트, 시댁예물, 처가예물. 30년 장인 직접 세공.' },
+    { name: 'twitter:title', content: '종로 결혼예물 상담·가격·맞춤제작 | 귀족' },
+    { name: 'twitter:description', content: '예산과 일정에 맞춘 종로 결혼예물 상담과 맞춤제작 안내.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
   ],
   script: [
@@ -33,12 +33,12 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: '종로 결혼예물·예물세트 | 커플링 맞춤제작 | 귀족',
-        description: '결혼예물 세트, 결혼반지, 시댁예물, 처가예물 주문제작 안내 페이지입니다.',
+        '@type': 'WebPage',
+        name: '종로 결혼예물 상담·가격·맞춤제작 | 귀족',
+        description: '예산과 일정에 맞춘 결혼예물 상담, 가격 범위 확인, 맞춤제작 안내 페이지입니다.',
         url: `${siteConfig.url}/wedding`,
         image: `${siteConfig.url}/Image/set/set0101.webp`,
-        about: {
+        mainEntity: {
           '@type': 'Service',
           name: '결혼예물 맞춤 상담',
           serviceType: '결혼예물 주문제작',
@@ -110,7 +110,7 @@ const materials = [
 const processSteps = [
   { num: '01', title: '상담', desc: '예산, 스타일, 세트 구성 상담' },
   { num: '02', title: '디자인 확정', desc: '샘플 확인 후 세부사항 결정' },
-  { num: '03', title: '제작', desc: '장인이 직접 세공 (2-3주)' },
+  { num: '03', title: '제작', desc: '최소 2주, 사양에 따라 추가 기간 안내' },
   { num: '04', title: '전달', desc: '품질 검수 후 케이스와 함께 전달' }
 ]
 </script>
@@ -119,8 +119,8 @@ const processSteps = [
   <div class="container">
     <!-- Header -->
         <div class="page-header">
-          <span class="label">Wedding Gifts</span>
-          <h1 class="title">결혼예물</h1>
+          <span class="label">결혼예물 맞춤 상담</span>
+          <h1 class="title">예산과 일정에 맞춘 종로 결혼예물 상담</h1>
           <p class="desc">
             결혼을 준비하는 두 분을 위한 특별한 예물.<br>
             종로3가 귀금속 거리의 금은방 귀족이 예산과 스타일에 맞게 맞춤 구성해드립니다.<br>
@@ -132,18 +132,18 @@ const processSteps = [
           <h2 id="wedding-overview-title">예물 상담 전에 세 가지만 정하세요</h2>
           <div class="wedding-overview-grid">
             <div>
-              <strong>세트 구성</strong>
+              <strong>구성 상담</strong>
               <p>커플링을 중심으로 목걸이·귀걸이·양가 선물 중 필요한 품목만 고릅니다.</p>
               <NuxtLink to="/guide/wedding-jewelry-set-composition">구성 기준 보기</NuxtLink>
             </div>
             <div>
-              <strong>예산</strong>
+              <strong>예산 상담</strong>
               <p>전체 상한선을 먼저 정하고 커플링, 신부·신랑, 양가 예물로 나누면 비교가 쉬워집니다.</p>
               <NuxtLink to="/contact?type=custom&source=wedding_overview&topic=예물%20예산">예산 상담 남기기</NuxtLink>
             </div>
             <div>
-              <strong>제작기간</strong>
-              <p>기본 제작은 2–3주를 기준으로 보되 촬영일과 예식일에서 역산해 여유 있게 확정합니다.</p>
+              <strong>제작 일정 상담</strong>
+              <p>제작은 최소 2주가 필요하며, 선택 사양과 촬영일·예식일을 함께 확인해 수령 일정을 정합니다.</p>
               <NuxtLink to="/guide/wedding-ring-production-time">일정 기준 보기</NuxtLink>
             </div>
           </div>
@@ -170,7 +170,7 @@ const processSteps = [
 
         <!-- Gift Sets -->
         <div class="sets-section">
-          <h2 class="section-title">예물 구성</h2>
+          <h2 class="section-title">상담 가능한 예물 범위</h2>
           <div class="sets-grid">
             <div
               v-for="(set, index) in giftSets"
@@ -305,7 +305,7 @@ const processSteps = [
         <!-- CTA -->
         <LandingCTA
           title="예물 상담"
-          description="결혼을 준비하시는 두 분을 위한 맞춤 예물 상담.<br>전화 또는 방문하시면 상세히 안내해드립니다."
+          description="결혼을 준비하시는 두 분을 위한 맞춤 예물 상담.<br>전화 또는 카카오톡으로 상세히 안내해드립니다."
         />
 
     <!-- Location -->

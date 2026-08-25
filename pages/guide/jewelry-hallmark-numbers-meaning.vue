@@ -3,8 +3,8 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/jewelry-hallmark-numbers-meaning'
-const pageTitle = '금 585 뜻: 14K·750·925 귀금속 각인 읽는 법 | 귀족'
-const pageDescription = '585는 금 58.5%를 뜻하는 천분율 표기로 보통 14K와 연결해 읽습니다. 750·925·Pt950의 뜻과 도금 표기, 각인만으로 진위를 확정할 수 없는 이유를 정리했습니다.'
+const pageTitle = '금 585·750 뜻은? 14K·18K·925 각인표 | 귀족'
+const pageDescription = '585는 금 58.5%로 보통 14K, 750은 금 75.0%로 18K, 925는 은 92.5%를 뜻합니다. 각인만으로 진위를 확정할 수 없는 이유도 확인하세요.'
 const ogImage = `${siteConfig.url}/Image/guide/jewelry-hallmark-numbers-meaning-hero.webp`
 const publishedAt = '2026-07-13'
 
@@ -130,26 +130,26 @@ const cautions = [
 
 const relatedLinks = [
   {
-    "to": "/guide/couple-ring-engraving-guide",
-    "label": "커플링 각인, 문구·위치·서체 정하는 법",
-    "description": "커플링에 새기는 문구와 각인 위치·서체를 정할 때 확인할 기준을 정리했습니다."
+    "to": "/buy-gold",
+    "label": "순도와 중량을 확인한 뒤 금·은 매입 상담받기",
+    "description": "각인만으로 확정하지 않고 실물의 순도와 중량을 확인하는 매입 절차입니다."
   },
   {
-    "to": "/guide/jongno-ring-polishing-cost",
-    "label": "종로 반지 광택 비용, 잔기스 제거와 새제품 마감 견적 기준",
-    "description": "각인이 닳거나 표면 상태를 확인해야 할 때 광택과 표면 재마감의 차이를 살펴봅니다."
+    "to": "/guide/gold-magnet-test-limitations",
+    "label": "금 자석 테스트의 한계",
+    "description": "자석 반응과 각인만으로 금의 진위나 순도를 확정할 수 없는 이유를 확인하세요."
   },
   {
-    "to": "/guide/custom-gold-bracelet-order",
-    "label": "금팔찌 주문제작, 길이·굵기·체인·잠금장치 정하는 법",
-    "description": "금팔찌 제작 전 소재와 부품, 잠금장치와 보증서 확인 항목을 정리했습니다."
+    "to": "/guide/gold-one-don-gram",
+    "label": "금 1돈·2돈·3돈 무게 환산표",
+    "description": "각인으로 순도를 확인한 뒤 돈과 그램 단위의 중량을 비교하세요."
   }
 ]
 
-const updatedAt = '2026-08-06'
+const updatedAt = '2026-08-25'
 // guide-manager:data:start
-const gmArticleTitle = '금 585 뜻: 14K·750·925 귀금속 각인 읽는 법'
-const gmArticleLead = '제품의 무게나 가격을 뜻하는 것이 아니라, 반지 안쪽이나 목걸이 잠금장치에 보이는 585·750·925·Pt950은 합금의 품위와 중심 귀금속을 확인하는 단서입니다. 다만 각인만으로 실제 순도와 진위를 확정하기는 어려우므로 판매 서류와 제품 상태도 함께 확인해야 합니다.'
+const gmArticleTitle = '금 585·750 뜻은? 14K·18K·925 각인표'
+const gmArticleLead = '585는 금 58.5%로 보통 14K, 750은 금 75.0%로 18K, 925는 은 92.5%를 뜻하는 표기로 사용됩니다. 다만 각인만으로 실제 순도와 진위를 확정하기는 어려우므로 판매 서류와 제품 상태도 함께 확인해야 합니다.'
 const gmArticleCategory = '소재·보석'
 const gmArticleKeyword = '귀금속 각인 숫자 뜻'
 const gmInquiryType = 'custom' as const

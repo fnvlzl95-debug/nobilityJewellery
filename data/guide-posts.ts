@@ -103,6 +103,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '결혼 패물 예물 차이',
       image: '/Image/guide/wedding-paemul-yesul-difference-hero.webp',
       publishedAt: '2026-08-15',
+      updatedAt: '2026-08-25',
       category: '선택',
     },
   {
@@ -444,7 +445,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '팔찌 사이즈 재는 법',
     image: '/Image/guide/bracelet-size-measurement-hero.webp',
     publishedAt: '2026-07-22',
-    updatedAt: '2026-08-07',
+    updatedAt: '2026-08-25',
     category: '선택',
   },
   {
@@ -574,12 +575,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'jewelry-hallmark-numbers-meaning',
     path: '/guide/jewelry-hallmark-numbers-meaning',
-    title: '금 585 뜻: 14K·750·925 귀금속 각인 읽는 법',
-    description: '585는 금 58.5%를 뜻하는 천분율 표기로 보통 14K와 연결해 읽습니다. 750·925·Pt950의 뜻과 도금 표기, 각인만으로 진위를 확정할 수 없는 이유를 정리했습니다.',
+    title: '금 585·750 뜻은? 14K·18K·925 각인표',
+    description: '585는 금 58.5%로 보통 14K, 750은 금 75.0%로 18K, 925는 은 92.5%를 뜻합니다. 각인만으로 진위를 확정할 수 없는 이유도 확인하세요.',
     keyword: '귀금속 각인 숫자 뜻',
     image: '/Image/guide/jewelry-hallmark-numbers-meaning-hero.webp',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-08-06',
+    updatedAt: '2026-08-25',
     category: '소재·보석',
   },
   {
@@ -615,12 +616,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gemstone-mohs-hardness-guide',
     path: '/guide/gemstone-mohs-hardness-guide',
-    title: '보석 모스 경도 순위: 다이아 10·루비·사파이어 9 비교',
+    title: '보석 모스 경도 순위: 다이아 10·루비·사파이어 9',
     description: '보석 모스 경도는 긁힘 저항을 나타내는 상대 척도입니다. 다이아몬드 10, 루비·사파이어가 속하는 강옥 9, 수정 계열 7을 비교하고 충격과 보관 기준을 확인하세요.',
     keyword: '보석 모스 경도',
     image: '/Image/guide/gemstone-mohs-hardness-guide-hero.webp',
     publishedAt: '2026-07-11',
-    updatedAt: '2026-08-09',
+    updatedAt: '2026-08-25',
     category: '관리',
   },
   {
@@ -671,7 +672,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금목걸이 길이 추천',
     image: '/Image/guide/necklace-length-guide-hero.webp',
     publishedAt: '2026-07-07',
-    updatedAt: '2026-08-09',
+    updatedAt: '2026-08-25',
     category: '선택',
   },
   {
@@ -699,12 +700,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'platinum-vs-white-gold-difference',
     path: '/guide/platinum-vs-white-gold-difference',
-    title: '화이트골드·백금 차이: 가격·무게·변색·예물 선택',
+    title: '백금·화이트골드 차이: 가격·무게·변색·예물 선택',
     description: '백금(플래티넘)과 화이트골드는 색·무게·관리·가격이 달라요. 소재 차이와 재도금, 예물 반지 고를 때 기준을 정리했습니다.',
     keyword: '백금 화이트골드 차이',
     image: '/Image/guide/platinum-white-gold.webp',
     publishedAt: '2026-06-03',
-    updatedAt: '2026-08-05',
+    updatedAt: '2026-08-25',
     category: '선택',
   },
   {
@@ -760,12 +761,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'necklace-bracelet-chain-repair',
     path: '/guide/necklace-bracelet-chain-repair',
-    title: '목걸이 끊어짐과 팔찌 잠금장식 수리 전 확인할 것',
-    description: '목걸이나 팔찌가 끊어졌다면 체인 중간인지 잠금장식 연결부인지 먼저 구분하고, 제품 전체와 손상 부위를 함께 확인해야 합니다. 사진 상담 준비부터 실물 확인 전 주의할 점까지 정리했습니다.',
+    title: '목걸이 끊어짐 수리: 체인·잠금장식 확인 기준',
+    description: '목걸이가 끊어졌다면 체인 중간, 연결 고리, 잠금장식 중 손상 위치를 먼저 구분하세요. 사진 상담 준비와 실물 확인 전 주의점을 정리했습니다.',
     keyword: '목걸이 끊어짐 팔찌 잠금장식 수리',
     image: '/Image/guide/necklace-bracelet-chain-repair-hero.webp',
     publishedAt: '2026-05-28',
-    updatedAt: '2026-08-13',
+    updatedAt: '2026-08-25',
     category: '수리',
   },
   {
@@ -836,7 +837,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '결혼예물 세트 구성',
     image: '/Image/guide/wedding-jewelry-set-box.webp',
     publishedAt: '2026-05-18',
-    updatedAt: '2026-08-14',
+    updatedAt: '2026-08-25',
     category: '선택',
   },
   {
@@ -847,7 +848,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '14K 18K 커플링 가격 차이',
     image: '/Image/guide/couple-ring-14k-18k-comparison.webp',
     publishedAt: '2026-05-18',
-    updatedAt: '2026-08-08',
+    updatedAt: '2026-08-25',
     category: '가격',
   },
   {
@@ -977,12 +978,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gold-one-don-gram',
     path: '/guide/gold-one-don-gram',
-    title: '금 1돈 몇 g? 3.75g 환산·순도별 무게 계산',
-    description: '금 1돈은 3.75g입니다. 하지만 가격은 순도, 공임, 구성까지 함께 봐야 정확해요. 상담 전에 꼭 알아둘 기준을 정리했습니다.',
+    title: '금 1돈은 몇 g? 3.75g·2돈·3돈 무게 환산표',
+    description: '금 1돈은 3.75g, 2돈은 7.5g, 3돈은 11.25g입니다. 돈·그램 환산표와 순도·공임까지 함께 비교하는 기준을 정리했습니다.',
     keyword: '금 1돈 몇 g',
     image: '/Image/ring/SB0105.webp',
     publishedAt: '2026-03-31',
-    updatedAt: '2026-08-05',
+    updatedAt: '2026-08-25',
     category: '가격',
   },
 ]

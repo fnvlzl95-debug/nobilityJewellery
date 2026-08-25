@@ -132,6 +132,11 @@ const cautions = [
 
 const relatedLinks = [
   {
+    "to": "/wedding",
+    "label": "원하는 구성과 예산을 정한 뒤 결혼예물 상담받기",
+    "description": "방문 전에 예산과 제작 일정을 기준으로 맞춤제작 범위를 확인하세요."
+  },
+  {
     "to": "/guide/jongno-wedding-jewelry-consultation-checklist",
     "label": "결혼예물 상담 전 확인할 체크리스트",
     "description": "상담 전 예산, 금속과 보석 정보, 반지 치수, 계약 조건을 확인하는 방법입니다."
@@ -148,7 +153,7 @@ const relatedLinks = [
   }
 ]
 
-const updatedAt = '2026-08-14'
+const updatedAt = '2026-08-25'
 // guide-manager:data:start
 const gmArticleTitle = '결혼예물 세트 구성 가이드｜신부·신랑·혼주 예물 준비 기준'
 const gmArticleLead = '결혼예물 세트에 반드시 포함해야 하는 품목은 정해져 있지 않습니다. 상담 전에 선택 기준을 세우려면 먼저 보다 실제 착용할 반지를 정한 뒤, 다이아 반지와 데일리 주얼리, 혼주 예물을 추가할지 순서대로 합의하면 됩니다.'
