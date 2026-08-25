@@ -21,10 +21,10 @@ export interface GalleryItem {
 }
 
 export const galleryProductDefaults = {
-  material: '14K·18K 골드',
-  colorOptions: ['옐로우골드', '로즈골드', '화이트골드'],
+  material: '문의 필요',
+  colorOptions: ['화이트골드', '로즈골드', '옐로우골드'],
   workType: '주문제작',
-  delivery: '약 1~2주',
+  delivery: '최소 2주',
 } as const
 
 type GalleryItemSource = Omit<GalleryItem, 'colorOptions'>
@@ -807,7 +807,7 @@ const galleryItemSource: GalleryItemSource[] = [
   },
 ]
 
-// 색상·소재·제작 조건은 모든 제품에 공통으로 적용한다.
+// 색상·소재 안내·제작 조건은 모든 제품에 공통으로 적용한다.
 // 새 제품을 추가해도 표기가 흔들리지 않도록 출력 단계에서 기본값을 정규화한다.
 export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => ({
   ...item,

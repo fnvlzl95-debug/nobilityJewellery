@@ -14,6 +14,7 @@ const normalizedPath = computed(() => {
 
 const pathSegments = computed(() => normalizedPath.value.split('/').filter(Boolean))
 const isGuideDetail = computed(() => pathSegments.value[0] === 'guide' && pathSegments.value.length === 2)
+const isGalleryDetail = computed(() => pathSegments.value[0] === 'gallery' && pathSegments.value.length === 2)
 const hasKakaoLink = computed(() => Boolean(siteConfig.social.kakaoOpenChat))
 
 const pageName = computed(() => {
@@ -78,7 +79,12 @@ const handleNaverMapClick = () => {
 </script>
 
 <template>
-  <div class="mobile-conversion-bar" role="navigation" aria-label="빠른 상담">
+  <div
+    class="mobile-conversion-bar"
+    :class="{ 'is-gallery-detail': isGalleryDetail }"
+    role="navigation"
+    aria-label="빠른 상담"
+  >
     <a
       v-if="hasKakaoLink"
       :href="siteConfig.social.kakaoOpenChat"
@@ -90,7 +96,7 @@ const handleNaverMapClick = () => {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.67 6.75l-.95 3.53c-.08.31.26.56.52.38l4.16-2.76c.52.05 1.06.1 1.6.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
       </svg>
-      <span class="kakao-mobile-label">카톡상담</span>
+      <span class="kakao-mobile-label">{{ isGalleryDetail ? '카톡 문의' : '카톡상담' }}</span>
       <span class="kakao-desktop-copy">
         <small>사진으로 빠른 상담</small>
         <strong>카톡 문의</strong>
@@ -106,10 +112,11 @@ const handleNaverMapClick = () => {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
       </svg>
-      <span>전화</span>
+      <span>{{ isGalleryDetail ? '전화 문의' : '전화' }}</span>
     </a>
 
     <a
+      v-if="!isGalleryDetail"
       :href="naverMapUrl"
       target="_blank"
       rel="noopener"
@@ -140,6 +147,10 @@ const handleNaverMapClick = () => {
   border-top: 1px solid rgba(250, 250, 250, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px);
+}
+
+.mobile-conversion-bar.is-gallery-detail {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .conversion-action {

@@ -95,13 +95,15 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
   if (!breadcrumb) failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
 
   if (product) {
-    if (product.material !== '14K·18K 골드') {
+    if (product.material !== '문의 필요') {
       failures.push(`${pageUrl.pathname}: Product material ${product.material || 'missing'}`)
     }
     const color = String(product.color || '')
-    for (const expectedColor of ['옐로우골드', '로즈골드', '화이트골드']) {
+    for (const expectedColor of ['화이트골드', '로즈골드', '옐로우골드']) {
       if (!color.includes(expectedColor)) failures.push(`${pageUrl.pathname}: Product color missing ${expectedColor}`)
     }
+    const delivery = product.additionalProperty?.find((property) => property?.name === '예상 제작 기간')?.value
+    if (delivery !== '최소 2주') failures.push(`${pageUrl.pathname}: Product delivery ${delivery || 'missing'}`)
   }
 
   return ogImage ? new URL(ogImage, pageUrl) : null

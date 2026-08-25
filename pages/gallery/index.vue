@@ -104,6 +104,7 @@ useHead({
             description: item.description,
             image: `${siteConfig.url}${item.images[0]}`,
             material: item.material,
+            color: item.colorOptions.join(', '),
             url: `${siteConfig.url}/gallery/${item.slug}`,
             brand: { '@type': 'Brand', name: siteConfig.name },
           }
@@ -278,7 +279,7 @@ onUnmounted(() => {
                 <div class="card-body">
                   <div class="card-info">
                     <span class="card-title">{{ item.title }}</span>
-                    <span class="card-material">{{ item.material }}</span>
+                    <span class="card-material">{{ item.colorOptions.join(' · ') }}</span>
                   </div>
                   <p class="card-description">{{ item.description }}</p>
                   <dl class="card-meta-list">

@@ -21,12 +21,12 @@ const category = categories.find((c) => c.id === product.category)
 const categoryLabel = category?.label ?? '컬렉션'
 const relatedItems = getRelatedItems(product, 3)
 
-const { trackPageInquiryClick, trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag()
+const { trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag()
 
 const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
 const heroImageUrl = `${siteConfig.url}${product.images[0]}`
 const colorOptionsText = product.colorOptions.join(', ')
-const metaDescription = `${product.title}. ${product.description} ${product.material}로 ${colorOptionsText} 세 가지 색상을 주문제작할 수 있습니다. 종로 귀금속 도매 귀족에서 상담해 보세요.`
+const metaDescription = `${product.title}. ${product.description} ${colorOptionsText} 세 가지 색상으로 주문제작할 수 있습니다. 소재 세부 사양은 상담으로 안내하며 제작 기간은 ${product.delivery}입니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
@@ -125,17 +125,9 @@ useHead({
   ],
 })
 
-const inquiryLink = {
-  path: '/contact',
-  query: { type: 'custom', source: 'gallery_detail', topic: product.title },
-}
-
 const handleKakao = () => {
   trackKakaoClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
   trackMetaEvent('Contact', { content_name: product.title, content_category: `gallery_${product.category}` })
-}
-const handleInquiry = (placement: string) => {
-  trackPageInquiryClick('gallery_detail', { placement, intent: 'custom', topic: product.title })
 }
 const handlePhone = () => {
   trackPhoneClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
@@ -322,17 +314,14 @@ onUnmounted(() => {
               class="cta-primary"
               @click="handleKakao"
             >
-              <span>카카오톡으로 상담하기</span>
+              <span>카톡 문의</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </a>
-            <div class="cta-secondary-row">
-              <NuxtLink :to="inquiryLink" class="cta-secondary" @click="handleInquiry('product_cta')">
-                문의 남기기
-              </NuxtLink>
+            <div class="cta-actions">
               <a :href="`tel:${siteConfig.phone}`" class="cta-secondary" @click="handlePhone">
-                {{ siteConfig.phone }}
+                전화 문의
               </a>
             </div>
             <p class="cta-note">
@@ -359,7 +348,7 @@ onUnmounted(() => {
             </div>
             <div class="related-body">
               <span class="related-name">{{ related.title }}</span>
-              <span class="related-material">세 가지 골드 색상 주문 가능</span>
+              <span class="related-material">{{ related.colorOptions.join(' · ') }}</span>
             </div>
           </NuxtLink>
         </div>
@@ -442,11 +431,9 @@ onUnmounted(() => {
 }
 
 .breadcrumb li + li::before {
-  width: 18px;
-  height: 1px;
   margin: 0 12px;
-  background: rgba(250, 250, 250, 0.2);
-  content: '';
+  color: rgba(250, 250, 250, 0.32);
+  content: '/';
 }
 
 .breadcrumb a {
@@ -696,10 +683,9 @@ onUnmounted(() => {
   transform: translateX(4px);
 }
 
-.cta-secondary-row {
+.cta-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: 10px;
 }
 
@@ -707,10 +693,11 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
+  height: 56px;
   border: 1px solid rgba(201, 162, 39, 0.35);
   color: var(--gold);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
   text-decoration: none;
   transition: background-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
 }
@@ -965,10 +952,6 @@ onUnmounted(() => {
   .spec {
     grid-template-columns: 90px minmax(0, 1fr);
     gap: 12px;
-  }
-
-  .cta-secondary-row {
-    grid-template-columns: 1fr;
   }
 
   .related {
