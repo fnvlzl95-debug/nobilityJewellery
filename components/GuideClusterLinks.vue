@@ -65,7 +65,7 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
 .guide-cluster h2 {
   margin: 0 0 8px;
   color: #fafafa;
-  font-size: clamp(20px, 3vw, 25px);
+  font-size: clamp(20px, 3vw, 24px);
 }
 
 .guide-cluster-heading p {

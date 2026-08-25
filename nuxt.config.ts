@@ -1,4 +1,5 @@
 import { siteConfig } from './config/site'
+import { galleryItems } from './data/gallery-items'
 import { readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
@@ -17,6 +18,12 @@ const getPrerenderRoutes = (dir = pagesDir): string[] => {
       return []
     }
 
+    // 동적 라우트(pages/gallery/[slug].vue)는 파일명 그대로 프리렌더하면 안 된다.
+    // 실제 slug 목록은 아래 buildPrerenderRoutes()에서 주입한다.
+    if (entry.includes('[')) {
+      return []
+    }
+
     const route = `/${relative(pagesDir, fullPath)
       .replace(/\\/g, '/')
       .replace(/\.vue$/, '')
@@ -26,6 +33,12 @@ const getPrerenderRoutes = (dir = pagesDir): string[] => {
     return route === '/' ? '/' : route
   })
 }
+
+// 정적 라우트 + 제품 상세 라우트
+const buildPrerenderRoutes = (): string[] => [
+  ...getPrerenderRoutes(),
+  ...galleryItems.map((item) => `/gallery/${item.slug}`),
+]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -144,6 +157,7 @@ export default defineNuxtConfig({
             '/_ipx/*',
             '/Image/*',
             '/guide/*',
+            '/gallery/*',
             '/favicon.svg',
             '/favicon.ico',
             '/robots.txt',
@@ -157,7 +171,7 @@ export default defineNuxtConfig({
       // /buy-gold/index.html 대신 /buy-gold.html을 생성해 /buy-gold를 200으로 제공한다.
       autoSubfolderIndex: false,
       crawlLinks: true,
-      routes: getPrerenderRoutes(),
+      routes: buildPrerenderRoutes(),
     },
     routeRules: {
       // 정적 자산 캐시 (1년)

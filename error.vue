@@ -94,10 +94,7 @@ const handleError = () => {
   font-size: clamp(120px, 25vw, 200px);
   font-weight: 300;
   line-height: 1;
-  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--gold);
   opacity: 0.3;
   margin-bottom: -20px;
 }

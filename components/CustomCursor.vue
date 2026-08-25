@@ -99,8 +99,8 @@ onUnmounted(() => {
   height: 8px;
   background: #c9a227;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.2s var(--ease-out-quart);
 }
 
 .cursor-ring {
@@ -111,19 +111,17 @@ onUnmounted(() => {
   height: 40px;
   border: 1px solid #c9a227;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
   opacity: 0.4;
-  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  transition: transform 0.3s var(--ease-out-quart), opacity 0.3s;
 }
 
 .cursor-hover .cursor-dot {
-  width: 12px;
-  height: 12px;
+  transform: translate(-50%, -50%) scale(1.5);
 }
 
 .cursor-hover .cursor-ring {
-  width: 72px;
-  height: 72px;
+  transform: translate(-50%, -50%) scale(1.8);
   opacity: 0.2;
 }
 

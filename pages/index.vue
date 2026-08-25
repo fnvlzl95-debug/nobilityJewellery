@@ -1156,7 +1156,7 @@ const handleNaverMapClick = () => {
   font-weight: 300;
   line-height: 1;
   color: #fafafa;
-  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 40px rgba(10, 10, 10, 0.3);
   opacity: 0;
   transform: translateY(60px);
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1329,7 +1329,7 @@ const handleNaverMapClick = () => {
 }
 
 .scroll-text {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1944,7 +1944,7 @@ const handleNaverMapClick = () => {
 }
 
 .item-category {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -2249,7 +2249,7 @@ const handleNaverMapClick = () => {
 
 .info-label {
   min-width: 60px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -2373,7 +2373,7 @@ const handleNaverMapClick = () => {
 }
 
 .cta-desc {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.9;
   color: rgba(250, 250, 250, 0.5);
@@ -2507,7 +2507,7 @@ const handleNaverMapClick = () => {
   }
 
   .cta-title {
-    font-size: clamp(36px, 8vw, 60px);
+    font-size: clamp(36px, 8vw, 56px);
   }
 }
 

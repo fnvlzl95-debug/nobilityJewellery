@@ -353,7 +353,7 @@ const handleInquiryClick = () => {
 }
 
 .quick-answer h2 {
-  font-size: 19px;
+  font-size: 20px;
   margin: 0 0 12px;
 }
 
@@ -468,7 +468,7 @@ const handleInquiryClick = () => {
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(201, 162, 39, 0.28);
   color: #fafafa;
-  font-size: clamp(21px, 3.5vw, 27px);
+  font-size: clamp(20px, 3.5vw, 28px);
   line-height: 1.4;
 }
 
@@ -534,7 +534,7 @@ const handleInquiryClick = () => {
 }
 
 .guide-caution h2 {
-  font-size: 19px;
+  font-size: 20px;
   margin: 0 0 12px;
 }
 
@@ -724,7 +724,7 @@ const handleInquiryClick = () => {
 
   .guide-title {
     margin-bottom: 14px;
-    font-size: clamp(27px, 7.6vw, 32px);
+    font-size: clamp(28px, 7.6vw, 32px);
     line-height: 1.28;
     letter-spacing: -0.025em;
   }
@@ -807,7 +807,7 @@ const handleInquiryClick = () => {
     gap: 8px;
     margin-bottom: 16px;
     padding-bottom: 10px;
-    font-size: 21px;
+    font-size: 20px;
     line-height: 1.45;
     text-wrap: pretty;
   }

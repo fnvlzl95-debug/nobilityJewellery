@@ -99,10 +99,13 @@ useHead({
           '@type': 'ListItem',
           position: index + 1,
           item: {
-            '@type': 'Thing',
+            '@type': 'Product',
             name: item.title,
             description: item.description,
             image: `${siteConfig.url}${item.images[0]}`,
+            material: item.material,
+            url: `${siteConfig.url}/gallery/${item.slug}`,
+            brand: { '@type': 'Brand', name: siteConfig.name },
           }
         }))
       })
@@ -136,16 +139,8 @@ const categorySections = computed(() => availableCategories.value.map((category)
 })))
 const categorySectionId = (categoryId: string) => `category-${categoryId}`
 
-const activeItem = ref<GalleryItem>(galleryItems[0])
-const currentImageIndex = ref(0)
-
-const setActiveItem = (item: GalleryItem) => {
-  activeItem.value = item
-  currentImageIndex.value = 0
-}
-
+// 카드는 /gallery/<slug> 상세 페이지로 이동한다. 이미지 확대·문의는 상세 페이지가 담당.
 const handleCardClick = (item: GalleryItem) => {
-  setActiveItem(item)
   trackEvent('gallery_item_view', {
     item_id: String(item.id),
     item_name: item.title,
@@ -156,62 +151,7 @@ const handleCardClick = (item: GalleryItem) => {
     content_category: `gallery_${item.category}`,
     content_id: String(item.id),
   })
-  openLightbox()
 }
-
-// 이미지 슬라이드 함수
-const nextImage = () => {
-  if (activeItem.value.images.length > 1) {
-    currentImageIndex.value = (currentImageIndex.value + 1) % activeItem.value.images.length
-  }
-}
-
-const prevImage = () => {
-  if (activeItem.value.images.length > 1) {
-    currentImageIndex.value = currentImageIndex.value === 0
-      ? activeItem.value.images.length - 1
-      : currentImageIndex.value - 1
-  }
-}
-
-const goToImage = (index: number) => {
-  currentImageIndex.value = index
-}
-
-// 라이트박스
-const isLightboxOpen = ref(false)
-
-let lastFocusedElement: HTMLElement | null = null
-
-const openLightbox = () => {
-  lastFocusedElement = document.activeElement as HTMLElement | null
-  isLightboxOpen.value = true
-  document.body.style.overflow = 'hidden'
-  lenis?.stop()
-  nextTick(() => {
-    document.querySelector<HTMLElement>('.lightbox-close')?.focus()
-  })
-}
-
-const closeLightbox = () => {
-  isLightboxOpen.value = false
-  document.body.style.overflow = ''
-  lenis?.start()
-  lastFocusedElement?.focus()
-  lastFocusedElement = null
-}
-
-// 라이트박스 열림 상태에서만 키보드 내비게이션 동작
-const handleKeydown = (e: KeyboardEvent) => {
-  if (!isLightboxOpen.value) return
-  if (e.key === 'Escape') closeLightbox()
-  if (e.key === 'ArrowRight') nextImage()
-  if (e.key === 'ArrowLeft') prevImage()
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeydown)
-})
 
 onMounted(() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -263,8 +203,6 @@ onUnmounted(() => {
     window.removeEventListener('scroll', fallbackScrollHandler)
     fallbackScrollHandler = null
   }
-  window.removeEventListener('keydown', handleKeydown)
-  document.body.style.overflow = ''
 })
 </script>
 
@@ -325,15 +263,15 @@ onUnmounted(() => {
               :key="item.id"
               class="product-card"
             >
-              <button
-                type="button"
+              <NuxtLink
                 class="product-card-button"
+                :to="`/gallery/${item.slug}`"
                 @click="handleCardClick(item)"
               >
                 <div class="card-image">
                   <img
                     :src="item.images[0]"
-                    :alt="item.title"
+                    :alt="item.imageAlts[0] ?? item.title"
                     loading="lazy"
                   />
                   <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
@@ -355,7 +293,7 @@ onUnmounted(() => {
                     </div>
                   </dl>
                 </div>
-              </button>
+              </NuxtLink>
             </article>
           </div>
 
@@ -403,78 +341,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Lightbox -->
-    <Teleport to="body">
-      <Transition name="lightbox-fade">
-        <div
-          v-if="isLightboxOpen"
-          class="lightbox"
-          role="dialog"
-          aria-modal="true"
-          :aria-label="`${activeItem.title} 이미지 보기`"
-          @click.self="closeLightbox"
-        >
-          <button class="lightbox-close" aria-label="닫기" @click="closeLightbox">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
-
-          <div class="lightbox-content">
-            <Transition name="image-fade" mode="out-in">
-              <img
-                :src="activeItem.images[currentImageIndex]"
-                :alt="activeItem.title"
-                :key="`lightbox-${activeItem.id}-${currentImageIndex}`"
-                class="lightbox-img"
-              />
-            </Transition>
-          </div>
-
-          <template v-if="activeItem.images.length > 1">
-            <button class="lightbox-arrow lightbox-prev" aria-label="이전 이미지" @click="prevImage">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                <path d="M15 18l-6-6 6-6"/>
-              </svg>
-            </button>
-            <button class="lightbox-arrow lightbox-next" aria-label="다음 이미지" @click="nextImage">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                <path d="M9 18l6-6-6-6"/>
-              </svg>
-            </button>
-          </template>
-
-          <div v-if="activeItem.images.length > 1" class="lightbox-indicators">
-            <button
-              v-for="(img, idx) in activeItem.images"
-              :key="idx"
-              class="lightbox-dot"
-              :class="{ active: currentImageIndex === idx }"
-              :aria-label="`${idx + 1}번째 이미지 보기`"
-              :aria-current="currentImageIndex === idx ? 'true' : undefined"
-              @click="goToImage(idx)"
-            ></button>
-          </div>
-
-          <div class="lightbox-info">
-            <span class="lightbox-counter">{{ currentImageIndex + 1 }} / {{ activeItem.images.length }}</span>
-            <h3 class="lightbox-title">{{ activeItem.title }}</h3>
-            <span class="lightbox-material">{{ activeItem.material }}</span>
-            <div class="lightbox-actions">
-              <a
-                :href="siteConfig.social.kakaoOpenChat"
-                target="_blank"
-                rel="noopener"
-                class="lightbox-contact"
-                @click="handleKakaoInquiryAction('lightbox', activeItem.title)"
-              >
-                이 스타일로 카톡 문의
-              </a>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
   </div>
 </template>
 
@@ -746,9 +612,9 @@ onUnmounted(() => {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(10, 10, 10, 0.62); /* scrim — --black 기반, 상세 페이지 .media-zoom과 동일 */
   color: rgba(250, 250, 250, 0.8);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 300;
   padding: 3px 7px;
   letter-spacing: 0.05em;
@@ -765,7 +631,7 @@ onUnmounted(() => {
   overflow: hidden;
   min-height: calc(1.35em * 2); /* 1~2줄 제목 모두 같은 높이 확보 */
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;             /* 제목을 굵게 — 아래 텍스트와 위계 분리 */
   line-height: 1.35;
   color: #fafafa;               /* 가장 밝게 */
@@ -838,7 +704,7 @@ onUnmounted(() => {
 
 .gallery-help-card h2 {
   margin: 0 0 12px;
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .gallery-help-card p,
@@ -999,12 +865,14 @@ onUnmounted(() => {
     font-size: 14px;
   }
 
+  /* 모바일에서도 12px(fine) 아래로 내려가지 않게 한다.
+     크기가 같아져도 위계는 순서와 명도(0.5 vs 0.7)가 계속 지탱한다. */
   .card-material {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .card-description {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .card-meta-list {
@@ -1015,159 +883,6 @@ onUnmounted(() => {
 
 <style>
 /* ===== Lightbox (Global styles for Teleport) ===== */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: rgba(5, 5, 5, 0.95);
-  backdrop-filter: blur(20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
-  background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.15);
-  color: rgba(250, 250, 250, 0.7);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  z-index: 10;
-}
-
-.lightbox-close:hover {
-  border-color: #c9a227;
-  color: #c9a227;
-}
-
-.lightbox-content {
-  max-width: 90vw;
-  max-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.lightbox-img {
-  max-width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-}
-
-.lightbox-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  background: none;
-  border: none;
-  color: #fafafa;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
-}
-
-.lightbox-arrow:hover {
-  color: #c9a227;
-}
-
-.lightbox-prev {
-  left: 24px;
-}
-
-.lightbox-next {
-  right: 24px;
-}
-
-.lightbox-indicators {
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 16px;
-}
-
-.lightbox-dot {
-  width: 24px;
-  height: 1px;
-  background: rgba(250, 250, 250, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  padding: 0;
-}
-
-.lightbox-dot:hover {
-  background: rgba(250, 250, 250, 0.6);
-}
-
-.lightbox-dot.active {
-  background: #c9a227;
-  width: 40px;
-}
-
-.lightbox-info {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
-.lightbox-counter {
-  display: block;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.15em;
-  color: rgba(250, 250, 250, 0.6);
-  margin-bottom: 8px;
-}
-
-.lightbox-title {
-  font-family: var(--font-body);
-  font-size: 18px;
-  font-weight: 300;
-  color: #fafafa;
-  margin-bottom: 4px;
-}
-
-.lightbox-material {
-  font-size: 12px;
-  font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
-}
-
-.lightbox-actions {
-  margin-top: 18px;
-}
-
-.lightbox-contact {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 46px;
-  padding: 0 16px;
-  color: #0a0a0a;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  background: #c9a227;
-  border: 1px solid #c9a227;
-}
-
 /* Image Transition */
 .image-fade-enter-active {
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1186,52 +901,7 @@ onUnmounted(() => {
 }
 
 /* Lightbox Transition */
-.lightbox-fade-enter-active {
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.lightbox-fade-leave-active {
-  transition: opacity 0.3s ease-out;
-}
-
-.lightbox-fade-enter-from,
-.lightbox-fade-leave-to {
-  opacity: 0;
-}
-
 /* Mobile Lightbox */
 @media (max-width: 768px) {
-  .lightbox-close {
-    top: 16px;
-    right: 16px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .lightbox-arrow {
-    width: 44px;
-    height: 44px;
-  }
-
-  .lightbox-arrow svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .lightbox-prev {
-    left: 8px;
-  }
-
-  .lightbox-next {
-    right: 8px;
-  }
-
-  .lightbox-info {
-    bottom: 20px;
-  }
-
-  .lightbox-indicators {
-    bottom: 85px;
-  }
 }
 </style>

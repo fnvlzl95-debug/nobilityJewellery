@@ -170,9 +170,9 @@ const handleNaverMapClick = () => {
 }
 
 .conversion-action-kakao {
-  color: #2f1b12;
-  background: #fee500;
-  border-color: #fee500;
+  color: #3C1E1E;
+  background: #FEE500;
+  border-color: #FEE500;
 }
 
 .conversion-action-kakao svg {

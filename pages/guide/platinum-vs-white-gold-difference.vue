@@ -198,7 +198,7 @@ useHead({
 .metal-summary h2 {
   margin: 0 0 10px;
   color: #d4b44a;
-  font-size: clamp(21px, 4vw, 28px);
+  font-size: clamp(20px, 4vw, 28px);
   line-height: 1.4;
 }
 

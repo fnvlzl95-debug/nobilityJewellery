@@ -1,0 +1,905 @@
+<script setup lang="ts">
+import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { getItemBySlug, getRelatedItems, categories } from '~/data/gallery-items'
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const route = useRoute()
+const slug = computed(() => String(route.params.slug ?? ''))
+
+const item = getItemBySlug(slug.value)
+if (!item) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: '요청하신 제품을 찾을 수 없습니다.',
+    fatal: true,
+  })
+}
+
+const product = item
+const category = categories.find((c) => c.id === product.category)
+const categoryLabel = category?.label ?? '컬렉션'
+const relatedItems = getRelatedItems(product, 3)
+
+const { trackPageInquiryClick, trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag()
+
+const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
+const heroImageUrl = `${siteConfig.url}${product.images[0]}`
+const metaDescription = `${product.title} - ${product.description} ${product.material} 소재로 ${product.workType}, 제작 기간 ${product.delivery}. 종로 귀금속 도매 귀족에서 상담받으세요.`
+
+const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
+
+useHead({
+  title: `${product.title} | 귀금속 갤러리 | 귀족`,
+  link: [{ rel: 'canonical', href: pageUrl }],
+  meta: [
+    { name: 'description', content: metaDescription },
+    ...(product.keywords?.length ? [{ name: 'keywords', content: product.keywords.join(', ') }] : []),
+    { property: 'og:title', content: `${product.title} | 귀족` },
+    { property: 'og:description', content: product.description },
+    { property: 'og:type', content: 'product' },
+    { property: 'og:url', content: pageUrl },
+    { property: 'og:image', content: heroImageUrl },
+    { property: 'og:locale', content: 'ko_KR' },
+    { property: 'og:site_name', content: '귀족' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: `${product.title} | 귀족` },
+    { name: 'twitter:description', content: product.description },
+    { name: 'twitter:image', content: heroImageUrl },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      // 가격은 금시세 연동이라 공개하지 않으므로 offers를 넣지 않는다.
+      // 가격 없는 Offer는 Search Console에서 오류로 잡힌다.
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: product.title,
+        alternateName: product.titleEn,
+        description: product.description,
+        image: product.images.map((src) => `${siteConfig.url}${src}`),
+        material: product.material,
+        category: categoryLabel,
+        url: pageUrl,
+        brand: { '@type': 'Brand', name: siteConfig.name },
+        ...(product.specs?.length
+          ? {
+              additionalProperty: product.specs.map((spec) => ({
+                '@type': 'PropertyValue',
+                name: spec.label,
+                value: spec.value,
+              })),
+            }
+          : {}),
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(
+        buildBreadcrumbJsonLd([
+          { name: '홈', path: '/' },
+          { name: '갤러리', path: '/gallery' },
+          { name: product.title, path: `/gallery/${product.slug}` },
+        ])
+      ),
+    },
+  ],
+})
+
+const inquiryLink = {
+  path: '/contact',
+  query: { type: 'custom', source: 'gallery_detail', topic: product.title },
+}
+
+const handleKakao = () => {
+  trackKakaoClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
+  trackMetaEvent('Contact', { content_name: product.title, content_category: `gallery_${product.category}` })
+}
+const handleInquiry = (placement: string) => {
+  trackPageInquiryClick('gallery_detail', { placement, intent: 'custom', topic: product.title })
+}
+const handlePhone = () => {
+  trackPhoneClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
+}
+const handleRelated = (target: { id: number; title: string; category: string }) => {
+  trackEvent('gallery_related_click', {
+    item_id: String(target.id),
+    item_name: target.title,
+    item_category: target.category,
+    from_item: product.title,
+  })
+}
+
+// ── 이미지 뷰어 ────────────────────────────────────────────────────
+const activeIndex = ref(0)
+const hasMultiple = product.images.length > 1
+
+const selectImage = (index: number) => {
+  activeIndex.value = index
+}
+const nextImage = () => {
+  if (hasMultiple) activeIndex.value = (activeIndex.value + 1) % product.images.length
+}
+const prevImage = () => {
+  if (hasMultiple) {
+    activeIndex.value = activeIndex.value === 0 ? product.images.length - 1 : activeIndex.value - 1
+  }
+}
+
+const isLightboxOpen = ref(false)
+let lastFocusedElement: HTMLElement | null = null
+
+const openLightbox = () => {
+  lastFocusedElement = document.activeElement as HTMLElement | null
+  isLightboxOpen.value = true
+  document.body.style.overflow = 'hidden'
+  trackEvent('gallery_detail_zoom', { item_name: product.title, image_index: activeIndex.value + 1 })
+  nextTick(() => {
+    document.querySelector<HTMLElement>('.lightbox-close')?.focus()
+  })
+}
+const closeLightbox = () => {
+  isLightboxOpen.value = false
+  document.body.style.overflow = ''
+  lastFocusedElement?.focus()
+  lastFocusedElement = null
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!isLightboxOpen.value) return
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowRight') nextImage()
+  if (e.key === 'ArrowLeft') prevImage()
+}
+
+let revealObserver: IntersectionObserver | null = null
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+
+  trackEvent('gallery_detail_view', {
+    item_id: String(product.id),
+    item_name: product.title,
+    item_category: product.category,
+  })
+  trackMetaEvent('ViewContent', {
+    content_name: product.title,
+    content_category: `gallery_${product.category}`,
+    content_id: String(product.id),
+  })
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('revealed')
+      })
+    },
+    { threshold: 0.1 }
+  )
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver!.observe(el))
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  revealObserver?.disconnect()
+  document.body.style.overflow = ''
+})
+</script>
+
+<template>
+  <div class="page">
+    <div class="detail-container">
+      <nav class="breadcrumb" aria-label="현재 위치">
+        <NuxtLink to="/">홈</NuxtLink>
+        <span aria-hidden="true">/</span>
+        <NuxtLink to="/gallery">갤러리</NuxtLink>
+        <span aria-hidden="true">/</span>
+        <NuxtLink :to="`/gallery#category-${product.category}`">{{ categoryLabel }}</NuxtLink>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ product.title }}</span>
+      </nav>
+
+      <div class="detail-layout">
+        <!-- 이미지 -->
+        <section class="media" aria-label="제품 이미지">
+          <button
+            type="button"
+            class="media-stage"
+            :aria-label="`${product.title} 이미지 확대해서 보기`"
+            @click="openLightbox"
+          >
+            <img
+              :src="product.images[activeIndex]"
+              :alt="altFor(activeIndex)"
+              width="1024"
+              height="1024"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <span class="media-zoom" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5M11 8v6M8 11h6" />
+              </svg>
+            </span>
+          </button>
+
+          <div v-if="hasMultiple" class="thumbs" role="tablist" aria-label="제품 이미지 선택">
+            <button
+              v-for="(image, index) in product.images"
+              :key="image"
+              type="button"
+              role="tab"
+              class="thumb"
+              :class="{ 'thumb-active': index === activeIndex }"
+              :aria-selected="index === activeIndex"
+              :aria-label="altFor(index)"
+              @click="selectImage(index)"
+            >
+              <img :src="image" :alt="''" width="200" height="200" loading="lazy" />
+            </button>
+          </div>
+        </section>
+
+        <!-- 정보 -->
+        <section class="info">
+          <h1 class="product-title">{{ product.title }}</h1>
+          <p class="product-title-en">{{ product.titleEn }}</p>
+          <p class="product-description">{{ product.description }}</p>
+
+          <dl class="facts">
+            <div class="fact">
+              <dt>소재</dt>
+              <dd>{{ product.material }}</dd>
+            </div>
+            <div class="fact">
+              <dt>제작</dt>
+              <dd>{{ product.workType }}</dd>
+            </div>
+            <div class="fact">
+              <dt>기간</dt>
+              <dd>{{ product.delivery }}</dd>
+            </div>
+          </dl>
+
+          <div v-if="product.specs?.length" class="specs">
+            <h2 class="specs-title">디자인 상세</h2>
+            <dl class="specs-list">
+              <div v-for="spec in product.specs" :key="spec.label" class="spec">
+                <dt>{{ spec.label }}</dt>
+                <dd>{{ spec.value }}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="cta">
+            <a
+              :href="siteConfig.social.kakaoOpenChat"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cta-primary"
+              @click="handleKakao"
+            >
+              <span>카카오톡으로 상담하기</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <div class="cta-secondary-row">
+              <NuxtLink :to="inquiryLink" class="cta-secondary" @click="handleInquiry('product_cta')">
+                문의 남기기
+              </NuxtLink>
+              <a :href="`tel:${siteConfig.phone}`" class="cta-secondary" @click="handlePhone">
+                {{ siteConfig.phone }}
+              </a>
+            </div>
+            <p class="cta-note">
+              가격은 금시세에 따라 달라져 상담으로 안내드립니다.<br>
+              원하시는 사이즈·소재·각인을 함께 알려주시면 더 빠릅니다.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- 관련 제품 -->
+      <section v-if="relatedItems.length" class="related reveal" aria-labelledby="related-title">
+        <h2 id="related-title" class="related-title">같은 {{ categoryLabel }} 다른 디자인</h2>
+        <div class="related-grid">
+          <NuxtLink
+            v-for="related in relatedItems"
+            :key="related.id"
+            :to="`/gallery/${related.slug}`"
+            class="related-card"
+            @click="handleRelated(related)"
+          >
+            <div class="related-image">
+              <img :src="related.images[0]" :alt="related.imageAlts[0] ?? related.title" width="400" height="400" loading="lazy" />
+            </div>
+            <div class="related-body">
+              <span class="related-name">{{ related.title }}</span>
+              <span class="related-material">{{ related.material }}</span>
+            </div>
+          </NuxtLink>
+        </div>
+        <NuxtLink to="/gallery" class="related-all">갤러리 전체 보기</NuxtLink>
+      </section>
+    </div>
+
+    <!-- Lightbox -->
+    <Teleport to="body">
+      <Transition name="lightbox-fade">
+        <div
+          v-if="isLightboxOpen"
+          class="lightbox"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="`${product.title} 이미지 보기`"
+          @click.self="closeLightbox"
+        >
+          <button class="lightbox-close" aria-label="닫기" @click="closeLightbox">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div class="lightbox-content">
+            <img :src="product.images[activeIndex]" :alt="altFor(activeIndex)" class="lightbox-img" />
+          </div>
+
+          <template v-if="hasMultiple">
+            <button class="lightbox-arrow lightbox-prev" aria-label="이전 이미지" @click="prevImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button class="lightbox-arrow lightbox-next" aria-label="다음 이미지" @click="nextImage">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </template>
+        </div>
+      </Transition>
+    </Teleport>
+  </div>
+</template>
+
+<style scoped>
+.page {
+  background: var(--black);
+  min-height: 100vh;
+}
+
+.detail-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  /* 상단 여백은 고정 네비게이션(.nav-luxury) 높이를 비켜간다 — 갤러리 인덱스의 .main과 동일 기준 */
+  padding: 140px 40px 120px;
+}
+
+/* ── Breadcrumb ─────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 40px;
+}
+
+.breadcrumb a {
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out-quart);
+}
+
+.breadcrumb a:hover {
+  color: var(--gold);
+}
+
+.breadcrumb span[aria-current] {
+  color: var(--white);
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+/* 그리드 자식의 기본 min-width:auto를 풀어야 긴 한글 어절이 컨테이너를 밀지 않는다 */
+.media,
+.info {
+  min-width: 0;
+}
+
+/* ── Media ──────────────────────────────────────────────────── */
+.media-stage {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: var(--black-light);
+  cursor: zoom-in;
+  transition: border-color 0.3s var(--ease-out-quart);
+}
+
+.media-stage:hover {
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.media-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.media-stage:hover img {
+  transform: scale(1.03);
+}
+
+.media-zoom {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--white);
+  background: rgba(10, 10, 10, 0.62);
+  border: 1px solid rgba(250, 250, 250, 0.14);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+}
+
+.media-stage:hover .media-zoom,
+.media-stage:focus-visible .media-zoom {
+  opacity: 1;
+  transform: none;
+}
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.thumb {
+  width: 84px;
+  height: 84px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: var(--black-light);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease-out-quart), opacity 0.25s var(--ease-out-quart);
+  opacity: 0.6;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb:hover {
+  opacity: 1;
+  border-color: rgba(250, 250, 250, 0.24);
+}
+
+.thumb-active {
+  opacity: 1;
+  border-color: var(--gold);
+}
+
+/* ── Info ───────────────────────────────────────────────────── */
+.product-title {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin: 0;
+}
+
+.product-title-en {
+  margin: 10px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.product-description {
+  margin: 24px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.78);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 32px 0 0;
+  background: rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.fact {
+  padding: 16px;
+  background: var(--black);
+}
+
+.fact dt {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+}
+
+.fact dd {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--white);
+}
+
+.specs {
+  margin-top: 32px;
+}
+
+.specs-title {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--gray);
+  margin: 0 0 12px;
+}
+
+.specs-list {
+  margin: 0;
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.spec {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.spec dt {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.spec dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--white);
+}
+
+/* ── CTA ────────────────────────────────────────────────────── */
+.cta {
+  margin-top: 40px;
+}
+
+.cta-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 56px;
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  color: var(--black);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.25s var(--ease-out-quart), border-color 0.25s var(--ease-out-quart);
+}
+
+.cta-primary:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+.cta-primary svg {
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.cta-primary:hover svg {
+  transform: translateX(4px);
+}
+
+.cta-secondary-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cta-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--gold);
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
+}
+
+.cta-secondary:hover {
+  background: rgba(201, 162, 39, 0.1);
+  color: var(--gold-light);
+}
+
+.cta-note {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--gray);
+}
+
+/* ── Related ────────────────────────────────────────────────── */
+.related {
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.related-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin: 0 0 24px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(250, 250, 250, 0.02);
+  text-decoration: none;
+  transition: border-color 0.3s var(--ease-out-quart);
+}
+
+.related-card:hover {
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.related-image {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--black-light);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+}
+
+.related-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.related-card:hover .related-image img {
+  transform: scale(1.05);
+}
+
+.related-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+}
+
+.related-name {
+  font-size: 15px;
+  color: var(--white);
+}
+
+.related-material {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+}
+
+.related-all {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 24px;
+  padding: 10px 14px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--gold);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background-color 0.25s var(--ease-out-quart);
+}
+
+.related-all:hover {
+  background: rgba(201, 162, 39, 0.1);
+}
+
+/* ── Lightbox ───────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background: rgba(10, 10, 10, 0.94);
+}
+
+.lightbox-content {
+  max-width: min(1100px, 92vw);
+  max-height: 86vh;
+}
+
+.lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 86vh;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.14);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
+}
+
+.lightbox-close:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: var(--white);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out-quart);
+}
+
+.lightbox-arrow:hover {
+  color: var(--gold);
+}
+
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+
+.lightbox-fade-enter-active,
+.lightbox-fade-leave-active {
+  transition: opacity 0.3s var(--ease-out-quart);
+}
+
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to {
+  opacity: 0;
+}
+
+/* ── Reveal ─────────────────────────────────────────────────── */
+.js-enabled .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+}
+
+.js-enabled .reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-enabled .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .media-stage img,
+  .related-image img,
+  .cta-primary svg {
+    transition: none;
+  }
+
+  .media-stage:hover img,
+  .related-card:hover .related-image img,
+  .cta-primary:hover svg {
+    transform: none;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-container {
+    padding: 104px 20px 100px;
+  }
+
+  .breadcrumb {
+    margin-bottom: 24px;
+    font-size: 12px;
+  }
+
+  .facts {
+    grid-template-columns: 1fr;
+  }
+
+  .spec {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .cta-secondary-row {
+    grid-template-columns: 1fr;
+  }
+
+  .related {
+    margin-top: 80px;
+  }
+
+  .related-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lightbox {
+    padding: 20px;
+  }
+
+  .lightbox-arrow {
+    width: 44px;
+    height: 44px;
+  }
+}
+</style>

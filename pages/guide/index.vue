@@ -728,10 +728,6 @@ useHead(() => ({
     font-size: 14px;
   }
 
-  .guide-category-link small {
-    font-size: 10px;
-  }
-
   .guide-pagination {
     justify-content: space-between;
     gap: 8px;

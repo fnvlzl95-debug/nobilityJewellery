@@ -503,9 +503,9 @@ const handleSubmit = async () => {
   align-items: center;
   gap: 16px;
   padding: 20px 24px;
-  background: #fee500;
-  border: 1px solid #fee500;
-  color: #2f1b12;
+  background: #FEE500;
+  border: 1px solid #FEE500;
+  color: #3C1E1E;
   text-decoration: none;
   margin-bottom: 14px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -513,7 +513,7 @@ const handleSubmit = async () => {
 
 .kakao-cta:hover {
   transform: translateX(4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 12px 32px rgba(10, 10, 10, 0.3);
 }
 
 .kakao-icon {
@@ -522,7 +522,7 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(47, 27, 18, 0.1);
+  background: rgba(60, 30, 30, 0.1);
 }
 
 .kakao-text {
@@ -586,7 +586,7 @@ const handleSubmit = async () => {
 }
 
 .info-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -793,7 +793,7 @@ const handleSubmit = async () => {
 }
 
 .type-label-en {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
