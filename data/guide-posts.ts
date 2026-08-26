@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'wedding-ring-vs-couple-ring-choice',
+      path: '/guide/wedding-ring-vs-couple-ring-choice',
+      title: '예물반지와 커플링 차이, 결혼 준비 구매 순서 정하기',
+      description: '예물반지와 커플링은 정해진 국제 분류라기보다 결혼 준비 목적과 착용 관계를 설명하는 관습적 표현에 가깝습니다. 두 반지의 역할을 나누고, 결혼식과 혼인 후 착용 계획에 맞춰 구매 순서를 정하는 기준을 안내합니다.',
+      keyword: '예물반지 커플링 차이',
+      image: '/Image/guide/wedding-ring-vs-couple-ring-choice-hero.webp',
+      publishedAt: '2026-08-26',
+      category: '선택',
+    },
+  {
       slug: 'pearl-hardness-daily-wear-guide',
       path: '/guide/pearl-hardness-daily-wear-guide',
       title: '진주 경도 2.5에서 4.5, 일상 착용 중 표면 손상 줄이는 기준',
