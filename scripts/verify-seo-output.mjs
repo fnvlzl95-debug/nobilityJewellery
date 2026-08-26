@@ -62,7 +62,7 @@ const extractH1 = (html) => decodeXml(
     .trim()
 )
 
-const seenGalleryProductNames = new Map()
+const seenGalleryPageNames = new Map()
 const forbiddenProductNamePattern = /(?:14|18|24)\s*K|순금|로즈골드|화이트골드|옐로우골드/i
 
 const extractJsonLdNodes = (html) => {
@@ -85,6 +85,13 @@ const extractJsonLdNodes = (html) => {
 const hasSchemaType = (node, type) => {
   const nodeType = node?.['@type']
   return Array.isArray(nodeType) ? nodeType.includes(type) : nodeType === type
+}
+
+const containsSchemaType = (value, type) => {
+  if (Array.isArray(value)) return value.some((item) => containsSchemaType(item, type))
+  if (!value || typeof value !== 'object') return false
+  if (hasSchemaType(value, type)) return true
+  return Object.values(value).some((item) => containsSchemaType(item, type))
 }
 
 const verifyCommonSeoDocument = (html, pageUrl, sitemapEntry, failures) => {
@@ -149,6 +156,16 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
     if (extractMetaContent(html, 'name', 'keywords')) {
       failures.push('/gallery: obsolete meta keywords present')
     }
+    const jsonLdNodes = extractJsonLdNodes(html)
+    if (!jsonLdNodes.some((node) => hasSchemaType(node, 'CollectionPage'))) {
+      failures.push('/gallery: CollectionPage JSON-LD missing')
+    }
+    if (!jsonLdNodes.some((node) => hasSchemaType(node, 'ItemList'))) {
+      failures.push('/gallery: ItemList JSON-LD missing')
+    }
+    if (jsonLdNodes.some((node) => containsSchemaType(node, 'Product'))) {
+      failures.push('/gallery: Product JSON-LD must be omitted without real offers or reviews')
+    }
     return null
   }
   if (!pageUrl.pathname.startsWith('/gallery/')) return null
@@ -162,8 +179,8 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
   const ogImage = extractMetaContent(html, 'property', 'og:image')
   const ogImageAlt = extractMetaContent(html, 'property', 'og:image:alt')
   const jsonLdNodes = extractJsonLdNodes(html)
-  const product = jsonLdNodes.find((node) => hasSchemaType(node, 'Product'))
   const webPage = jsonLdNodes.find((node) => hasSchemaType(node, 'WebPage'))
+  const pageEntity = webPage?.mainEntity
   const breadcrumb = jsonLdNodes.find((node) => hasSchemaType(node, 'BreadcrumbList'))
 
   if (!title || !title.endsWith('| 귀족')) failures.push(`${pageUrl.pathname}: gallery title ${title || 'missing'}`)
@@ -177,41 +194,42 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
   if (ogType !== 'product') failures.push(`${pageUrl.pathname}: og:type ${ogType || 'missing'}`)
   if (!ogImage) failures.push(`${pageUrl.pathname}: og:image missing`)
   if (!ogImageAlt) failures.push(`${pageUrl.pathname}: og:image:alt missing`)
-  if (!product) failures.push(`${pageUrl.pathname}: Product JSON-LD missing`)
   if (!webPage) failures.push(`${pageUrl.pathname}: WebPage JSON-LD missing`)
   if (!breadcrumb) failures.push(`${pageUrl.pathname}: BreadcrumbList JSON-LD missing`)
+  if (jsonLdNodes.some((node) => containsSchemaType(node, 'Product'))) {
+    failures.push(`${pageUrl.pathname}: Product JSON-LD must be omitted without real offers or reviews`)
+  }
+  if (!hasSchemaType(pageEntity, 'Thing')) {
+    failures.push(`${pageUrl.pathname}: WebPage mainEntity Thing missing`)
+  }
 
-  if (product) {
-    const productName = String(product.name || '').trim()
-    if (!productName) {
-      failures.push(`${pageUrl.pathname}: Product name missing`)
+  if (pageEntity) {
+    const pageName = String(pageEntity.name || '').trim()
+    if (!pageName) {
+      failures.push(`${pageUrl.pathname}: gallery entity name missing`)
     } else {
-      if (forbiddenProductNamePattern.test(productName)) {
-        failures.push(`${pageUrl.pathname}: fixed color or purity in Product name ${productName}`)
+      if (forbiddenProductNamePattern.test(pageName)) {
+        failures.push(`${pageUrl.pathname}: fixed color or purity in gallery entity name ${pageName}`)
       }
-      if (h1 !== productName) failures.push(`${pageUrl.pathname}: H1 and Product name mismatch`)
-      if (!title.startsWith(`${productName} 주문제작 |`)) {
-        failures.push(`${pageUrl.pathname}: title does not lead with Product name`)
+      if (h1 !== pageName) failures.push(`${pageUrl.pathname}: H1 and gallery entity name mismatch`)
+      if (!title.startsWith(`${pageName} 주문제작 |`)) {
+        failures.push(`${pageUrl.pathname}: title does not lead with gallery entity name`)
       }
-      const existingPath = seenGalleryProductNames.get(productName)
+      const existingPath = seenGalleryPageNames.get(pageName)
       if (existingPath && existingPath !== pageUrl.pathname) {
-        failures.push(`${pageUrl.pathname}: duplicate Product name with ${existingPath}`)
+        failures.push(`${pageUrl.pathname}: duplicate gallery entity name with ${existingPath}`)
       } else {
-        seenGalleryProductNames.set(productName, pageUrl.pathname)
+        seenGalleryPageNames.set(pageName, pageUrl.pathname)
       }
     }
     if (forbiddenProductNamePattern.test(String(ogImageAlt || ''))) {
       failures.push(`${pageUrl.pathname}: fixed color or purity in hero image alt`)
     }
-    if (product.material !== '문의 필요') {
-      failures.push(`${pageUrl.pathname}: Product material ${product.material || 'missing'}`)
-    }
-    const color = String(product.color || '')
+    if (!html.includes('문의 필요')) failures.push(`${pageUrl.pathname}: material inquiry text missing`)
     for (const expectedColor of ['화이트골드', '로즈골드', '옐로우골드']) {
-      if (!color.includes(expectedColor)) failures.push(`${pageUrl.pathname}: Product color missing ${expectedColor}`)
+      if (!html.includes(expectedColor)) failures.push(`${pageUrl.pathname}: visible color missing ${expectedColor}`)
     }
-    const delivery = product.additionalProperty?.find((property) => property?.name === '예상 제작 기간')?.value
-    if (delivery !== '최소 2주') failures.push(`${pageUrl.pathname}: Product delivery ${delivery || 'missing'}`)
+    if (!html.includes('최소 2주')) failures.push(`${pageUrl.pathname}: visible delivery minimum missing`)
   }
 
   return ogImage ? new URL(ogImage, pageUrl) : null

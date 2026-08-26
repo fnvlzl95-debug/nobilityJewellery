@@ -98,14 +98,16 @@ useHead({
           '@type': 'ListItem',
           position: index + 1,
           item: {
-            '@type': 'Product',
+            '@type': 'WebPage',
+            '@id': `${siteConfig.url}/gallery/${item.slug}#webpage`,
             name: item.title,
             description: item.description,
-            image: `${siteConfig.url}${item.images[0]}`,
-            material: item.material,
-            color: item.colorOptions.join(', '),
             url: `${siteConfig.url}/gallery/${item.slug}`,
-            brand: { '@type': 'Brand', name: siteConfig.name },
+            primaryImageOfPage: {
+              '@type': 'ImageObject',
+              url: `${siteConfig.url}${item.images[0]}`,
+              caption: item.imageAlts[0] ?? item.title,
+            },
           }
         }))
       })

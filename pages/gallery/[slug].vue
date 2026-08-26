@@ -66,48 +66,16 @@ useHead({
           url: heroImageUrl,
           caption: altFor(0),
         },
-        mainEntity: { '@id': `${pageUrl}#product` },
-      }),
-    },
-    {
-      type: 'application/ld+json',
-      // 가격은 금시세 연동이라 공개하지 않으므로 offers를 넣지 않는다.
-      // 가격 없는 Offer는 Search Console에서 오류로 잡힌다.
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Product',
-        '@id': `${pageUrl}#product`,
-        name: product.title,
-        description: product.description,
-        image: product.images.map((src) => `${siteConfig.url}${src}`),
-        material: product.material,
-        color: colorOptionsText,
-        category: categoryLabel,
-        url: pageUrl,
-        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
-        brand: { '@type': 'Brand', name: siteConfig.name },
-        additionalProperty: [
-          {
-            '@type': 'PropertyValue',
-            name: '주문 가능 색상',
-            value: colorOptionsText,
-          },
-          {
-            '@type': 'PropertyValue',
-            name: '제작 방식',
-            value: product.workType,
-          },
-          {
-            '@type': 'PropertyValue',
-            name: '예상 제작 기간',
-            value: product.delivery,
-          },
-          ...(product.specs ?? []).map((spec) => ({
-            '@type': 'PropertyValue',
-            name: spec.label,
-            value: spec.value,
-          })),
-        ],
+        // 공개 판매가나 실제 리뷰가 없는 작품 안내 페이지이므로 Product 리치결과를 선언하지 않는다.
+        // 가격·소재·색상·제작 기간은 화면에 보이는 상담 정보로 제공한다.
+        mainEntity: {
+          '@type': 'Thing',
+          '@id': `${pageUrl}#design`,
+          name: product.title,
+          description: product.description,
+          image: product.images.map((src) => `${siteConfig.url}${src}`),
+          url: pageUrl,
+        },
       }),
     },
     {
