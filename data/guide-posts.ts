@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-14k-couple-ring-quote-checklist',
+      path: '/guide/jongno-14k-couple-ring-quote-checklist',
+      title: '종로 14K 커플링 견적은 중량·디자인·공임을 나눠 비교하세요',
+      description: '종로에서 14K 커플링 견적을 비교할 때 금속 중량, 디자인 사양, 공임, 보석과 장식 비용, 세금과 기타 조건을 같은 기준으로 확인하는 방법을 정리했습니다.',
+      keyword: '종로 14K 커플링 견적 비교',
+      image: '/Image/guide/jongno-14k-couple-ring-quote-checklist-hero.webp',
+      publishedAt: '2026-08-27',
+      category: '가격',
+    },
+  {
       slug: 'wedding-ring-vs-couple-ring-choice',
       path: '/guide/wedding-ring-vs-couple-ring-choice',
       title: '예물반지와 커플링 차이, 결혼 준비 구매 순서 정하기',
