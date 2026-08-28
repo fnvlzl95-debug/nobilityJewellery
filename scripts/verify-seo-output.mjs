@@ -225,9 +225,15 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
     if (forbiddenProductNamePattern.test(String(ogImageAlt || ''))) {
       failures.push(`${pageUrl.pathname}: fixed color or purity in hero image alt`)
     }
-    if (!html.includes('문의 필요')) failures.push(`${pageUrl.pathname}: material inquiry text missing`)
-    for (const expectedColor of ['화이트골드', '로즈골드', '옐로우골드']) {
-      if (!html.includes(expectedColor)) failures.push(`${pageUrl.pathname}: visible color missing ${expectedColor}`)
+    // 공통 옵션 제품(14K·18K)은 3색 옵션과 '사진 제품 기준' 샘플 사양을 함께 노출해야 하고,
+    // 소재가 명시된 예외 제품(순금·다이아 등)은 색상 옵션을 노출하면 안 된다.
+    if (html.includes('14K·18K')) {
+      if (!html.includes('사진 제품 기준')) failures.push(`${pageUrl.pathname}: sample spec line missing`)
+      for (const expectedColor of ['화이트골드', '로즈골드', '옐로우골드']) {
+        if (!html.includes(expectedColor)) failures.push(`${pageUrl.pathname}: visible color missing ${expectedColor}`)
+      }
+    } else if (html.includes('주문 가능 색상')) {
+      failures.push(`${pageUrl.pathname}: explicit-material page must not list color options`)
     }
     if (!html.includes('최소 2주')) failures.push(`${pageUrl.pathname}: visible delivery minimum missing`)
   }

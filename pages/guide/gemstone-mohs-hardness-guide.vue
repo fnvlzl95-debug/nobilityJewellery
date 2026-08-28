@@ -113,7 +113,7 @@ const sections = [
     "title": "보관·세척 및 상담 전 체크리스트",
     "paragraphs": [
       "보석은 개별 파우치나 칸막이에 넣어 서로 닿지 않게 보관하는 편이 좋습니다. 경도가 다른 보석과 금속이 함께 움직일 때 표면 손상이 생길 수 있으므로 분리 보관이 유리합니다.",
-      "처리된 보석은 초음파 세척이 맞지 않을 수 있습니다. 처리 방식과 제조사 관리 지침을 확인할 수 없으면 초음파·스팀 세척을 피하세요. 관리 기준을 확인하려면 [감정서·감별서 차이](/guide/gemstone-grading-vs-identification-report)를 함께 살펴볼 수 있습니다."
+      "처리된 보석은 초음파 세척이 맞지 않을 수 있습니다. 처리 방식과 제조사 관리 지침을 확인할 수 없으면 초음파·스팀 세척을 피하세요. 처리 여부는 아래 관련 페이지의 감정서·감별서 차이 글에서 확인 기준을 살펴볼 수 있습니다."
     ],
     "bullets": [
       "보석 종류와 처리 여부를 확인한 뒤 세척 방법을 정합니다.",
@@ -152,7 +152,7 @@ const relatedLinks = [
 // guide-manager:data:start
 const gmArticleTitle = '보석 모스 경도 순위: 다이아 10·루비·사파이어 9'
 const gmArticleLead = '광물이 다른 물질에 의해 긁히는 정도를 비교하는 상대 척도가 보석 모스 경도입니다. 다이아몬드는 10이고 루비와 사파이어가 속하는 강옥은 9입니다. 다만 경도가 높더라도 충격에 반드시 강한 것은 아니므로 인성·안정성·세팅을 함께 살펴야 합니다.'
-const gmArticleCategory = '관리'
+const gmArticleCategory = '소재·보석'
 const gmArticleKeyword = '보석 모스 경도'
 const gmInquiryType = 'custom' as const
 const gmInquiryTopic = '유색 보석 주얼리 상담'

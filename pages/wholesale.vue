@@ -79,7 +79,7 @@ useHead({
 const highlights = [
   {
     title: '도매가 직거래',
-    description: '종로 귀금속 도매상가에서 30년 이상 직접 운영. 중간 마진 없이 최저가로 공급합니다.',
+    description: '30년 세공 경력 장인이 종로 귀금속 도매상가에서 직접 운영. 중간 마진 없이 최저가로 공급합니다.',
     icon: 'price'
   },
   {
@@ -106,7 +106,7 @@ const products = [
           <span class="label">Wholesale</span>
           <h1 class="title">도매 안내</h1>
           <p class="desc">
-            30년 전통 종로 귀금속 도매 전문점 귀족입니다.<br>
+            30년 세공 경력의 종로 귀금속 도매 전문점 귀족입니다.<br>
             소매상, 온라인 셀러, 기업 납품 모두 환영합니다.
           </p>
         </div>

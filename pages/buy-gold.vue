@@ -14,15 +14,15 @@ definePageMeta({
 })
 
 useHead({
-  title: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족',
+  title: '종로 금매입·은매입 | 당일 시세·순도·중량 확인 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/buy-gold` }
   ],
   meta: [
-    { name: 'description', content: '종로 금·은 매입 상담 안내. 품목과 순도·각인, 중량을 확인한 뒤 당일 시세를 적용하고 최종 매입 금액을 안내합니다.' },
+    { name: 'description', content: '종로 금매입·은매입 상담 안내. 순금(24K)·18K·14K·골드바와 은 제품의 순도·각인·중량을 확인한 뒤 당일 시세를 적용해 금액을 안내하고 당일 지급합니다.' },
     { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
     // Open Graph
-    { property: 'og:title', content: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족' },
+    { property: 'og:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 확인 | 귀족' },
     { property: 'og:description', content: '품목·순도·각인·중량을 확인하고 당일 시세를 적용하는 종로 금·은 매입 상담.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/buy-gold` },
@@ -31,7 +31,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족' },
+    { name: 'twitter:title', content: '종로 금매입·은매입 | 당일 시세·순도·중량 확인 | 귀족' },
     { name: 'twitter:description', content: '품목·순도·각인·중량 확인 후 당일 시세를 적용하는 종로 매입 상담.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
   ],
@@ -41,7 +41,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: '종로 금·은 매입 | 당일 시세·순도·중량 확인 | 귀족',
+        name: '종로 금매입·은매입 | 당일 시세·순도·중량 확인 | 귀족',
         description: '품목과 순도·각인, 중량을 확인한 뒤 당일 시세를 적용하는 금·은 매입 상담 안내 페이지입니다.',
         url: `${siteConfig.url}/buy-gold`,
         mainEntity: {
@@ -122,7 +122,7 @@ const relatedGuides = [
     <!-- Header -->
         <div class="buy-header">
           <span class="label">귀금속 매입 상담</span>
-          <h1 class="title">종로 금·은 매입</h1>
+          <h1 class="title">종로 금매입·은매입</h1>
           <p class="desc">
             사용하지 않는 귀금속의 순도와 중량을 확인해 매입가를 안내합니다.<br>
             종로3가 금은방 귀족이 30년 경력의 신뢰할 수 있는 거래를 약속드립니다.

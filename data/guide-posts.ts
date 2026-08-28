@@ -825,6 +825,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '화이트골드 변색',
     image: '/Image/guide/white-gold-discoloration-comparison.webp',
     publishedAt: '2026-05-19',
+    updatedAt: '2026-08-28',
     category: '관리',
   },
   {

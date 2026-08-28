@@ -12,7 +12,7 @@ useHead({
     { rel: 'canonical', href: `${siteConfig.url}/baby-gold` }
   ],
   meta: [
-    { name: 'description', content: '순금 돌반지 주문제작 전문 귀족. 24K 순금 돌반지, 백일반지, 아기반지. 띠별 디자인(말띠, 용띠, 뱀띠) 맞춤제작. 이름 각인 가능. 종로3가 금은방 도매가 제공. 돌잔치 선물 추천.' },
+    { name: 'description', content: '종로3가 금은방 귀족의 24K 순금 돌반지 주문제작 안내. 1돈·반돈 중량과 이름 각인, 제작기간을 당일 시세 기준으로 상담합니다. 2026년 말띠 등 띠별 디자인과 백일반지도 도매가로 제작합니다.' },
     { name: 'keywords', content: '돌반지, 순금 돌반지, 돌반지 주문제작, 백일반지, 아기반지, 돌잔치 반지, 24K 돌반지, 순금 아기반지, 띠별 돌반지, 말띠 돌반지, 용띠 돌반지, 종로 돌반지, 금은방 돌반지' },
     // Open Graph
     { property: 'og:title', content: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인·제작기간 | 귀족' },
@@ -107,23 +107,6 @@ const processSteps = [
   { num: '04', title: '전달', desc: '보관함과 품질보증서 함께 제공' }
 ]
 
-const relatedGuides = [
-  {
-    to: '/guide/baby-ring-price',
-    title: '돌반지 가격 문의 전 체크',
-    description: '가격이 달라지는 핵심 요소를 먼저 확인하세요.',
-  },
-  {
-    to: '/guide/baby-ring-production-time',
-    title: '돌반지 주문제작 기간',
-    description: '행사 일정에 맞추는 방법을 정리했습니다.',
-  },
-  {
-    to: '/guide',
-    title: '귀금속 가이드 전체 보기',
-    description: '실제 상담 질문 중심 콘텐츠 모음',
-  },
-]
 </script>
 
 <template>
@@ -245,21 +228,8 @@ const relatedGuides = [
           </div>
         </div>
 
-        <section class="guide-links-section">
-          <h2 class="section-title">관련 가이드</h2>
-          <p class="section-desc">돌반지 상담 전에 보면 도움이 되는 글입니다.</p>
-          <div class="guide-links-grid">
-            <NuxtLink
-              v-for="guide in relatedGuides"
-              :key="guide.to"
-              :to="guide.to"
-              class="guide-link-card"
-            >
-              <strong>{{ guide.title }}</strong>
-              <span>{{ guide.description }}</span>
-            </NuxtLink>
-          </div>
-        </section>
+        <!-- 돌반지 가이드 클러스터 -->
+        <GuideClusterLinks cluster-id="baby-gold" />
 
         <!-- CTA -->
         <LandingCTA

@@ -424,14 +424,14 @@ const handleNaverMapClick = () => {
           <div class="about-content">
             <span class="section-label reveal">About Us</span>
             <h2 class="section-title reveal reveal-delay-1">
-              30년간 한 자리에서<br>
+              세공 경력 30년,<br>
               <em>신뢰</em>를 쌓아왔습니다
             </h2>
             <p class="section-desc reveal reveal-delay-2">
               귀족은 서울 종로3가 귀금속 거리,
-              종묘귀금속백화점에서 30년째 운영 중인 금은방입니다.
-              정확한 납기, 일관된 품질, 투명한 가격을 지키며
-              500개 이상의 파트너사와 거래하고 있습니다.
+              종묘귀금속백화점에서 2004년부터 운영 중인 금은방입니다.
+              세공 경력 30년의 장인이
+              정확한 납기, 일관된 품질, 투명한 가격을 지키며 직접 제작합니다.
             </p>
             <p class="section-desc reveal reveal-delay-2">
               돌반지·커플링·결혼예물 주문제작부터
@@ -443,7 +443,7 @@ const handleNaverMapClick = () => {
             <div class="stats-row reveal reveal-delay-3">
               <div class="stat-item">
                 <span class="stat-number">30<sup>+</sup></span>
-                <span class="stat-label">Years</span>
+                <span class="stat-label">Years of Craft</span>
               </div>
               <div class="stat-divider"></div>
               <div class="stat-item">

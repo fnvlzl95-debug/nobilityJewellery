@@ -20,7 +20,7 @@ export interface GalleryItem {
 }
 
 export const galleryProductDefaults = {
-  material: '문의 필요',
+  material: '14K·18K',
   colorOptions: ['화이트골드', '로즈골드', '옐로우골드'],
   workType: '주문제작',
   delivery: '최소 2주',
@@ -83,9 +83,13 @@ const galleryItemSource: GalleryItemSource[] = [
     title: '말띠 아기 돌반지',
     titleEn: 'Signet Ring',
     description: '말 모티브를 새겨 돌·백일 선물로 제작하는 아기 반지입니다.',
-    material: '순금',
+    material: '24K 순금',
     workType: '주문제작 가능',
     delivery: '1-2주',
+    specs: [
+      { label: '중량 옵션', value: '1돈 · 반돈 (기타 중량 상담)' },
+      { label: '각인', value: '이름·날짜 각인 가능' },
+    ],
     images: ['/Image/ring/SB0101.webp',
       '/Image/ring/SB0102.webp',
       '/Image/ring/SB0103.webp',
@@ -791,15 +795,39 @@ const galleryItemSource: GalleryItemSource[] = [
   },
 ]
 
-// 색상·소재 안내·제작 조건은 모든 제품에 공통으로 적용한다.
-// 새 제품을 추가해도 표기가 흔들리지 않도록 출력 단계에서 기본값을 정규화한다.
-export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => ({
-  ...item,
-  material: galleryProductDefaults.material,
-  colorOptions: [...galleryProductDefaults.colorOptions],
-  workType: galleryProductDefaults.workType,
-  delivery: galleryProductDefaults.delivery,
-}))
+// 갤러리 공통 기준: 대부분의 디자인은 14K·18K, 세 가지 골드 색상으로 주문제작하며 제작 기간은 최소 2주다.
+// 소스의 material은 촬영된 샘플의 사양이므로 '사진 제품 기준'으로 노출하고, 주문 옵션은 공통 기준으로 표기한다.
+// 순금·다이아몬드처럼 소재가 명시된 예외 제품(material이 '14K'로 시작하지 않음)은 소스 값을 그대로 쓰고 색상 옵션을 걸지 않는다.
+const SAMPLE_MATERIAL_LABELS: Record<string, string> = {
+  '14K Rose Gold': '14K 로즈골드',
+  '14K White Gold': '14K 화이트골드',
+  '14K Gold': '14K 옐로우골드',
+  '14K White / Rose / Gold': '14K 화이트·로즈·옐로우골드',
+  '14K Yellow / Rose / White Gold': '14K 옐로우·로즈·화이트골드',
+  '14K Rose / White Gold': '14K 로즈·화이트골드',
+  '14K Rose / Yellow Gold': '14K 로즈·옐로우골드',
+  '14K Yellow / Rose Gold': '14K 옐로우·로즈골드',
+  '14K Gold / Rose Gold': '14K 옐로우·로즈골드',
+}
+
+export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => {
+  if (!item.material.startsWith('14K')) {
+    return {
+      ...item,
+      colorOptions: [],
+      delivery: galleryProductDefaults.delivery,
+    }
+  }
+  const sampleLabel = SAMPLE_MATERIAL_LABELS[item.material] ?? item.material
+  return {
+    ...item,
+    material: galleryProductDefaults.material,
+    colorOptions: [...galleryProductDefaults.colorOptions],
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    specs: [{ label: '사진 제품 기준', value: sampleLabel }, ...(item.specs ?? [])],
+  }
+})
 
 export const categories: Category[] = [
   {

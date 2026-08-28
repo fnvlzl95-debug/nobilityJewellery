@@ -181,6 +181,8 @@ useHead(() => ({
     ...(currentPage.value < totalPages.value ? [{ rel: 'next', href: guideUrl(currentPage.value + 1) }] : []),
   ],
   meta: [
+    // 2페이지 이후는 목록 이동용이므로 색인에서 제외해 /guide 1페이지로 검색 신호를 모은다.
+    { name: 'robots', content: currentPage.value > 1 ? 'noindex, follow' : 'index, follow' },
     { name: 'description', content: pageDescription },
     { property: 'og:title', content: contextualPageTitle.value },
     { property: 'og:description', content: pageDescription },

@@ -5,7 +5,7 @@ import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackPageInquiryClick, trackKakaoClick, trackEvent, trackMetaEvent } = useGtag()
+const { trackPageInquiryClick, trackEvent, trackMetaEvent } = useGtag()
 
 const categoryLinkMap: Record<string, { to: string; label: string }> = {
   ring: { to: '/couple-ring', label: '커플링/반지 안내' },
@@ -34,14 +34,6 @@ const buildGalleryInquiryLink = (topic?: string) => ({
 
 const handleInquiryAction = (placement = 'section_cta', topic?: string) => {
   trackPageInquiryClick('gallery', {
-    placement,
-    intent: 'custom',
-    topic,
-  })
-}
-
-const handleKakaoInquiryAction = (placement: string, topic: string) => {
-  trackKakaoClick('gallery', {
     placement,
     intent: 'custom',
     topic,
@@ -280,7 +272,7 @@ onUnmounted(() => {
                 <div class="card-body">
                   <div class="card-info">
                     <span class="card-title">{{ item.title }}</span>
-                    <span class="card-material">{{ item.colorOptions.join(' · ') }}</span>
+                    <span class="card-material">{{ item.colorOptions.length ? item.colorOptions.join(' · ') : item.material }}</span>
                   </div>
                   <p class="card-description">{{ item.description }}</p>
                   <dl class="card-meta-list">

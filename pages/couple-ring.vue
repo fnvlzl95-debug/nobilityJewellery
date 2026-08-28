@@ -12,7 +12,7 @@ useHead({
     { rel: 'canonical', href: `${siteConfig.url}/couple-ring` }
   ],
   meta: [
-    { name: 'description', content: '커플링 주문제작 전문 귀족. 14K 18K 커플링, 이니셜 각인, 기념일 각인. 화이트골드, 로즈골드, 옐로우골드. 30년 장인 직접 세공. 종로3가 금은방 도매가. 약혼반지, 우정반지.' },
+    { name: 'description', content: '종로3가 금은방 귀족의 커플링 맞춤제작 안내. 14K·18K 가격 차이와 화이트·로즈·옐로우골드 색상, 이니셜·기념일 각인, 제작기간(최소 2주)을 상담 전에 확인할 수 있습니다. 30년 세공 경력 장인이 도매가로 직접 제작합니다.' },
     { name: 'keywords', content: '커플링, 커플링 주문제작, 14K 커플링, 18K 커플링, 이니셜 커플링, 각인 커플링, 약혼반지, 우정반지, 기념일 반지, 화이트골드 커플링, 로즈골드 커플링, 종로 커플링' },
     // Open Graph
     { property: 'og:title', content: '종로 커플링 맞춤제작 | 14K·18K 가격차·각인·제작기간 | 귀족' },
@@ -116,10 +116,10 @@ const engravingOptions = [
     <!-- Header -->
         <div class="page-header">
           <span class="label">Couple Rings</span>
-          <h1 class="title">커플링</h1>
+          <h1 class="title">종로 커플링 맞춤제작</h1>
           <p class="desc">
             두 분만의 특별한 반지.<br>
-            이니셜, 기념일을 새겨 세상에 하나뿐인 커플링을 만들어드립니다.
+            14K·18K, 세 가지 골드 색상에 이니셜과 기념일을 새겨 세상에 하나뿐인 커플링을 만들어드립니다.
           </p>
         </div>
 
@@ -237,6 +237,9 @@ const engravingOptions = [
             </NuxtLink>
           </div>
         </div>
+
+        <!-- 커플링 가이드 클러스터 -->
+        <GuideClusterLinks cluster-id="couple-ring" />
 
         <!-- CTA -->
         <LandingCTA

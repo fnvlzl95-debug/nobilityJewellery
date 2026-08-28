@@ -1,4 +1,4 @@
-export type GuideClusterId = 'repair' | 'wedding' | 'gold-weight' | 'gemstone'
+export type GuideClusterId = 'repair' | 'wedding' | 'gold-weight' | 'gemstone' | 'couple-ring' | 'baby-gold' | 'custom'
 
 export interface GuideClusterLink {
   to: string
@@ -31,6 +31,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/earring-post-bent-repair', label: '귀걸이 침 수리', description: '휘어짐·부러짐 점검' },
       { to: '/guide/pearl-necklace-restringing', label: '진주 목걸이 줄 교체', description: '매듭과 잠금장식 확인' },
       { to: '/guide/jongno-ring-polishing-cost', label: '반지 광택·마감', description: '세척과 폴리싱 차이' },
+      { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금 전 확인 기준' },
     ],
   },
   {
@@ -81,6 +82,59 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/pearl-value-factors', label: '진주 품질 7요소', description: '광택·표면·매칭 확인' },
       { to: '/guide/emerald-oil-treatment-care', label: '에메랄드 오일 처리', description: '처리와 세척 주의' },
       { to: '/guide/sapphire-quality-factors', label: '사파이어 등급', description: '색·투명도·컷·처리' },
+    ],
+  },
+  // 아래 3개 클러스터는 기존 클러스터보다 뒤에 있어야 한다 —
+  // findGuideClusterForPath는 첫 매칭을 반환하므로, 중복 등재된 글(14K·18K 가격 차이 등)은 기존 클러스터 블록을 유지한다.
+  {
+    id: 'couple-ring',
+    title: '커플링 준비 가이드',
+    description: '가격 차이·각인·사이즈·주문 과정을 상담 전에 순서대로 확인하세요.',
+    hubPath: '/couple-ring',
+    hubLabel: '커플링 맞춤제작 안내',
+    links: [
+      { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K·18K 가격 차이', description: '금 함량·중량·공임 비교' },
+      { to: '/guide/jongno-14k-couple-ring-quote-checklist', label: '14K 커플링 견적 체크리스트', description: '견적 요청 전 확인 항목' },
+      { to: '/guide/couple-ring-engraving-guide', label: '커플링 각인 가이드', description: '문구·위치·서체 선택' },
+      { to: '/guide/jongno-custom-couple-ring-order', label: '종로 커플링 주문 과정', description: '상담부터 수령까지' },
+      { to: '/guide/rose-gold-couple-ring-selection-guide', label: '로즈골드 커플링 선택', description: '피부톤·도금·관리 기준' },
+      { to: '/guide/wedding-ring-vs-couple-ring-choice', label: '결혼반지·커플링 선택', description: '용도별 차이 비교' },
+      { to: '/guide/find-girlfriend-ring-size-guide', label: '몰래 반지 사이즈 재기', description: '선물 준비 전 확인' },
+      { to: '/gallery', label: '커플링 디자인 갤러리', description: '실제 제작 디자인 보기' },
+    ],
+  },
+  {
+    id: 'baby-gold',
+    title: '돌반지 준비 가이드',
+    description: '중량·각인·제작기간·가격 기준을 돌잔치 일정에 맞춰 확인하세요.',
+    hubPath: '/baby-gold',
+    hubLabel: '순금 돌반지 전체 안내',
+    links: [
+      { to: '/guide/baby-ring-price', label: '돌반지 가격 기준', description: '중량·순도·공임 확인' },
+      { to: '/guide/baby-ring-half-don-one-don-selection', label: '반돈·1돈 선택 기준', description: '예산과 용도 비교' },
+      { to: '/guide/baby-ring-engraving-cost', label: '돌반지 각인 비용', description: '이름·날짜 각인 기준' },
+      { to: '/guide/baby-ring-order-method', label: '돌반지 주문 방법', description: '문의 전 준비 사항' },
+      { to: '/guide/baby-ring-production-time', label: '돌반지 제작기간', description: '돌잔치 일정 역산' },
+      { to: '/guide/jongno-baby-gold-ring-purchase-checklist', label: '구매 전 체크리스트', description: '종로 방문 전 확인' },
+      { to: '/guide/gold-one-don-gram', label: '금 1돈 무게 환산', description: '돈·그램 계산 기준' },
+      { to: '/gallery/pure-gold-horse-baby-ring', label: '말띠 돌반지 디자인', description: '2026 말띠 제작 안내' },
+    ],
+  },
+  {
+    id: 'custom',
+    title: '주문제작 준비 가이드',
+    description: '품목별 주문 방법과 사이즈·체인·제작기간을 상담 전에 확인하세요.',
+    hubPath: '/custom',
+    hubLabel: '주문제작 전체 안내',
+    links: [
+      { to: '/guide/custom-ring-consultation-checklist', label: '반지 주문 체크리스트', description: '상담 전 준비 항목' },
+      { to: '/guide/custom-gold-bracelet-order', label: '금팔찌 주문제작', description: '길이·굵기·잠금 선택' },
+      { to: '/guide/custom-earrings-production-time', label: '귀걸이 제작기간', description: '디자인 확정부터 수령까지' },
+      { to: '/guide/gold-necklace-length-guide', label: '목걸이 길이 추천', description: '42·45·50cm 비교' },
+      { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '베네치안·커브·로프 차이' },
+      { to: '/guide/bracelet-size-measuring-guide', label: '팔찌 사이즈 재는 법', description: '손목 둘레 측정 기준' },
+      { to: '/guide/mother-necklace-design-consulting', label: '어머니 목걸이 상담', description: '선물용 디자인 기준' },
+      { to: '/gallery', label: '주문제작 갤러리', description: '실제 제작 디자인 보기' },
     ],
   },
 ]

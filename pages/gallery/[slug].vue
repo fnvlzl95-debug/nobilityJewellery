@@ -25,8 +25,11 @@ const { trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag
 
 const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
 const heroImageUrl = `${siteConfig.url}${product.images[0]}`
-const colorOptionsText = product.colorOptions.join(', ')
-const metaDescription = `${product.title}. ${product.description} ${colorOptionsText} 세 가지 색상으로 주문제작할 수 있습니다. 소재 세부 사양은 상담으로 안내하며 제작 기간은 ${product.delivery}입니다.`
+const sampleSpec = product.specs?.find((spec) => spec.label === '사진 제품 기준')?.value
+const orderText = product.colorOptions.length
+  ? `${product.material} 소재, ${product.colorOptions.join('·')} 색상으로 주문제작할 수 있습니다.`
+  : `${product.material} 소재로 주문제작합니다.`
+const metaDescription = `${product.title}. ${product.description} ${orderText}${sampleSpec ? ` 사진 제품은 ${sampleSpec} 기준입니다.` : ''} 제작 기간은 ${product.delivery}입니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
@@ -256,7 +259,7 @@ onUnmounted(() => {
               <dt>기간</dt>
               <dd>{{ product.delivery }}</dd>
             </div>
-            <div class="fact fact-colors">
+            <div v-if="product.colorOptions.length" class="fact fact-colors">
               <dt>주문 가능 색상</dt>
               <dd class="color-options">
                 <span v-for="color in product.colorOptions" :key="color" class="color-option">{{ color }}</span>
@@ -316,7 +319,7 @@ onUnmounted(() => {
             </div>
             <div class="related-body">
               <span class="related-name">{{ related.title }}</span>
-              <span class="related-material">{{ related.colorOptions.join(' · ') }}</span>
+              <span class="related-material">{{ related.colorOptions.length ? related.colorOptions.join(' · ') : related.material }}</span>
             </div>
           </NuxtLink>
         </div>

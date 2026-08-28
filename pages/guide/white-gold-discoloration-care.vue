@@ -7,6 +7,7 @@ const pageTitle = '화이트골드 변색 원인과 도금 관리, 반지·목�
 const pageDescription = '화이트골드 변색은 로듐 도금 마모, 생활 스크래치, 세제·땀·화장품 접촉으로 생길 수 있습니다. 반지·목걸이 재도금과 관리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/white-gold-discoloration-comparison.webp`
 const publishedAt = '2026-05-19'
+const updatedAt = '2026-08-28'
 
 const faqItems = [
   {
@@ -165,7 +166,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -199,6 +200,7 @@ useHead({
     title="화이트골드 변색 원인과 도금 관리, 반지·목걸이 맡기기 전 기준"
     lead="화이트골드 변색은 반지와 목걸이를 오래 착용했을 때 자주 생기는 관리 고민입니다. 실제 금이 녹슨 것이라기보다 로듐 도금 마모, 생활 스크래치, 화장품·세제·땀 접촉 때문에 누렇게 보이는 경우가 많아 세척과 재도금 기준을 나눠 확인해야 합니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="ogImage"
     hero-alt="화이트골드 변색 원인과 도금 관리"
     :quick-answers="quickAnswers"
