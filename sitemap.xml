@@ -6,25 +6,28 @@
             <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/main/home-trust-jewelry-still-life.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_1280&amp;amp;f_webp&amp;amp;q_95/Image/main/home-trust-jewelry-still-life.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/ring/NN0103.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/ring/NS0102.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/ring/SB0101.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/set/set0101.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/set/set0201.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/main/home-repair-tools-still-life.webp</image:loc>
+            <image:loc>https://noblessegold.com/_ipx/w_800&amp;amp;f_webp&amp;amp;q_95/Image/set/set0302.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/_ipx/w_1280&amp;amp;f_webp&amp;amp;q_95/Image/main/home-repair-tools-still-life.webp</image:loc>
         </image:image>
     </url>
     <url>
@@ -44,6 +47,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/buy-gold</loc>
+        <lastmod>2026-08-25</lastmod>
     </url>
     <url>
         <loc>https://noblessegold.com/contact</loc>
@@ -83,6 +87,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/gallery</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
         </image:image>
@@ -132,6 +137,21 @@
             <image:loc>https://noblessegold.com/Image/ring/NN1401.webp</image:loc>
         </image:image>
         <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/rose-gold-fish-motif-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/two-tone-tension-solitaire-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/rose-gold-heart-pave-eternity-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/fancy-yellow-diamond-solitaire-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/two-tone-lattice-tension-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
         </image:image>
         <image:image>
@@ -141,7 +161,34 @@
             <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
         </image:image>
         <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/white-gold-pave-rondelle-pendant-necklace-01.webp</image:loc>
+        </image:image>
+        <image:image>
             <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-knot-pave-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-cross-pave-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-compass-star-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/gold-layered-chain-bracelet-trio-01.webp</image:loc>
         </image:image>
         <image:image>
             <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
@@ -161,38 +208,42 @@
         <image:image>
             <image:loc>https://noblessegold.com/Image/set/set0601.webp</image:loc>
         </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/rose-gold-chain-necklace-bracelet-set-01.webp</image:loc>
+        </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/jongno-ring-polishing-cost-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-14k-couple-ring-quote-checklist-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/gold-anklet-size-guide-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-ring-vs-couple-ring-choice-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/custom-earrings-production-time-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/pearl-hardness-daily-wear-guide-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/diamond-ring-cleaning-care-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/earring-closure-selection-guide-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/single-earring-reproduction-cost-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-hardness-vs-toughness-guide-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/custom-gold-bracelet-order-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-baby-gold-ring-purchase-checklist-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/gold-jewelry-remodeling-time-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gold-585-vs-750-selection-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/pearl-necklace-care-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/custom-ring-consultation-checklist-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/jongno-custom-couple-ring-order-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-durability-for-ring-selection-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/diamond-ring-resetting-cost-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-half-don-one-don-selection-hero.webp</image:loc>
         </image:image>
     </url>
     <url>
@@ -203,6 +254,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/wedding</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
         </image:image>
@@ -220,31 +272,799 @@
         <loc>https://noblessegold.com/wholesale</loc>
     </url>
     <url>
-        <loc>https://noblessegold.com/guide/baby-ring-engraving-cost</loc>
+        <loc>https://noblessegold.com/gallery/bridge-solitaire-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/ring/SB0103.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/ring/NN0401.webp</image:loc>
         </image:image>
-    </url>
-    <url>
-        <loc>https://noblessegold.com/guide/baby-ring-order-method</loc>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/ring/SB0104.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/ring/NN0402.webp</image:loc>
         </image:image>
-    </url>
-    <url>
-        <loc>https://noblessegold.com/guide/baby-ring-price</loc>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/gallery/circle-link-pave-rose-gold-jewelry-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0501.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/classic-milgrain-solitaire-combi-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN1201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/diagonal-wave-point-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0802.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0801.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/diamond-solitaire-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0201.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/fancy-yellow-diamond-solitaire-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/fancy-yellow-diamond-solitaire-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/flower-motif-rose-gold-jewelry-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0401.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/gold-layered-chain-bracelet-trio</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/gold-layered-chain-bracelet-trio-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/lock-chain-gold-jewelry-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0601.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/lovely-heart-layered-combi-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0602.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0601.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/lucky-horseshoe-number-pendant-necklace</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/milgrain-band-daily-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN1301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/milgrain-line-one-point-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0202.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/modern-dual-chain-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0401.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/moonlight-circle-drop-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0401.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/promise-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0104.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0201.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/pure-gold-horse-baby-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0104.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0105.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0106.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0201.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-black-onyx-clover-bangle</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-02.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-buckle-cubic-pendant-necklace</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-chain-necklace-bracelet-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/rose-gold-chain-necklace-bracelet-set-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-chunky-chain-pave-lock-necklace</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-02.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-clover-initial-chain-bracelet</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-compass-star-bangle</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-compass-star-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-compass-star-bangle-02.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-cross-pave-bangle</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-cross-pave-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-cross-pave-bangle-02.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-double-chain-solitaire-bracelet</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-fish-motif-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/rose-gold-fish-motif-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-heart-pave-eternity-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/rose-gold-heart-pave-eternity-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-knot-pave-bangle</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-knot-pave-bangle-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-mesh-chain-slider-bracelet</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/BR0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/rose-gold-silver-ball-bead-necklace</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/satin-matte-diagonal-cut-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0901.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/tri-color-gold-twist-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN1101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/two-line-solitaire-pave-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN1001.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/two-tone-combi-satin-point-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0301.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0302.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/two-tone-lattice-tension-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/two-tone-lattice-tension-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/two-tone-tension-solitaire-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/two-tone-tension-solitaire-couple-ring-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/u-link-lettering-signature-set</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0202.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0302.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/set/set0401.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/v-line-layered-combi-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0501.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0502.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/vintage-pattern-wide-band-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN1401.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/white-gold-pave-rondelle-pendant-necklace</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/white-gold-pave-rondelle-pendant-necklace-01.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/white-gold-pave-rondelle-pendant-necklace-02.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/gallery/yellow-gold-step-edge-couple-ring</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0701.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0702.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NN0103.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/NS0102.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/anniversary-ring-gift-selection</loc>
+        <lastmod>2026-08-10</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/anniversary-ring-gift-selection-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/anniversary-ring-gift-selection-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/anniversary-ring-gift-selection-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/baby-ring-engraving-cost</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0103.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/baby-ring-half-don-one-don-selection</loc>
+        <lastmod>2026-08-17</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-half-don-one-don-selection-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-half-don-one-don-selection-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-half-don-one-don-selection-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/baby-ring-order-method</loc>
+        <lastmod>2026-08-14</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-order-method-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-order-method-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-order-method-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/baby-ring-price</loc>
+        <lastmod>2026-08-09</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/ring/SB0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/baby-ring-price-section-2.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/baby-ring-production-time</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/SB0102.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/birthstone-necklace-gift-guide</loc>
+        <lastmod>2026-07-09</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/birthstone-necklace-gift-hero.webp</image:loc>
         </image:image>
@@ -254,39 +1074,47 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/bracelet-size-measuring-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/bracelet-size-measurement-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/bracelet-length-measurement.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/bracelet-size-measuring-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/bracelet-size-measuring-guide-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/couple-ring-14k-18k-price-difference</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/couple-ring-14k-18k-comparison.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/couple-ring-14k-18k-lifestyle.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/couple-ring-14k-18k-price-difference-section-2.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/couple-ring-14k-18k-order.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/couple-ring-14k-18k-price-difference-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/couple-ring-engraving-guide</loc>
+        <lastmod>2026-06-03</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/couple-ring-engraving.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/cubic-moissanite-diamond-difference</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gemstone-comparison.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/custom-earrings-production-time</loc>
+        <lastmod>2026-08-04</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/custom-earrings-production-time-hero.webp</image:loc>
         </image:image>
@@ -296,6 +1124,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/custom-gold-bracelet-order</loc>
+        <lastmod>2026-08-03</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/custom-gold-bracelet-order-hero.webp</image:loc>
         </image:image>
@@ -304,7 +1133,18 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/custom-ring-consultation-checklist</loc>
+        <lastmod>2026-08-18</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/custom-ring-consultation-checklist-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/custom-ring-consultation-checklist-section-2.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/diamond-3bu-5bu-difference</loc>
+        <lastmod>2026-05-19</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-3bu-5bu-comparison.webp</image:loc>
         </image:image>
@@ -317,24 +1157,27 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-clarity-grades</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-clarity-grades-hero.webp</image:loc>
-        </image:image>
-        <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/diamond-clarity-microscope-inspection.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-color-grades</loc>
+        <lastmod>2026-08-15</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-color-grades-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/diamond-color-masterstone-grading.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-color-grades-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-color-grades-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-cut-grades</loc>
+        <lastmod>2026-07-20</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-cut-grades-hero.webp</image:loc>
         </image:image>
@@ -344,6 +1187,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-cut-shapes-guide</loc>
+        <lastmod>2026-07-12</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-cut-shapes-hero.webp</image:loc>
         </image:image>
@@ -353,6 +1197,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-fluorescence-grades</loc>
+        <lastmod>2026-07-14</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-fluorescence-grades-hero.webp</image:loc>
         </image:image>
@@ -361,7 +1206,21 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/diamond-hardness-vs-toughness-guide</loc>
+        <lastmod>2026-08-21</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-hardness-vs-toughness-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-hardness-vs-toughness-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/diamond-hardness-vs-toughness-guide-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/diamond-ring-cleaning-care</loc>
+        <lastmod>2026-08-04</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-ring-cleaning-care-hero.webp</image:loc>
         </image:image>
@@ -371,6 +1230,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-ring-resetting-cost</loc>
+        <lastmod>2026-07-31</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-ring-resetting-cost-hero.webp</image:loc>
         </image:image>
@@ -380,15 +1240,14 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/diamond-ring-setting-types</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/diamond-ring-setting-types-comparison.webp</image:loc>
-        </image:image>
-        <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/diamond-ring-setting-types-inspection.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/earring-back-lost-types</loc>
+        <lastmod>2026-07-09</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/earring-back-types-hero.webp</image:loc>
         </image:image>
@@ -397,16 +1256,34 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/earring-closure-selection-guide</loc>
+        <lastmod>2026-08-22</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/earring-closure-selection-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/earring-closure-selection-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/earring-closure-selection-guide-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/earring-post-bent-repair</loc>
+        <lastmod>2026-08-10</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/earring-post-repair-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/earring-post-repair-inspection.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/earring-post-bent-repair-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/earring-post-bent-repair-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/earring-types-guide</loc>
+        <lastmod>2026-07-23</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/earring-types-hero.webp</image:loc>
         </image:image>
@@ -416,6 +1293,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/emerald-oil-treatment-care</loc>
+        <lastmod>2026-07-29</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/emerald-oil-treatment-hero.webp</image:loc>
         </image:image>
@@ -424,7 +1302,21 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/find-girlfriend-ring-size-guide</loc>
+        <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/find-girlfriend-ring-size-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/find-girlfriend-ring-size-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/find-girlfriend-ring-size-guide-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/garnet-types-guide</loc>
+        <lastmod>2026-07-24</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/garnet-types-hero.webp</image:loc>
         </image:image>
@@ -433,7 +1325,18 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/gemstone-durability-for-ring-selection</loc>
+        <lastmod>2026-08-16</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-durability-for-ring-selection-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-durability-for-ring-selection-section-2.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/gemstone-grading-vs-identification-report</loc>
+        <lastmod>2026-07-27</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/grading-vs-identification-report-hero.webp</image:loc>
         </image:image>
@@ -443,15 +1346,30 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gemstone-mohs-hardness-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/gemstone-mohs-hardness-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-mohs-hardness-guide-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/gemstone-durability-inspection.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-mohs-hardness-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gemstone-mohs-hardness-guide-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/gold-585-vs-750-selection</loc>
+        <lastmod>2026-08-19</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gold-585-vs-750-selection-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gold-585-vs-750-selection-section-2.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-anklet-size-guide</loc>
+        <lastmod>2026-08-05</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gold-anklet-size-guide-hero.webp</image:loc>
         </image:image>
@@ -461,6 +1379,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-filled-vermeil-plated-difference</loc>
+        <lastmod>2026-07-26</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gold-filled-vermeil-plated-hero.webp</image:loc>
         </image:image>
@@ -470,6 +1389,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-jewelry-remodeling-cost</loc>
+        <lastmod>2026-05-18</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gold-jewelry-remodeling-cost.webp</image:loc>
         </image:image>
@@ -482,6 +1402,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-jewelry-remodeling-time</loc>
+        <lastmod>2026-08-02</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gold-jewelry-remodeling-time-hero.webp</image:loc>
         </image:image>
@@ -491,6 +1412,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-magnet-test-limitations</loc>
+        <lastmod>2026-07-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/gold-magnet-test-hero.webp</image:loc>
         </image:image>
@@ -500,45 +1422,61 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-necklace-length-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/necklace-length-guide-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/necklace-length-guide-comparison.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gold-necklace-length-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gold-necklace-length-guide-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-necklace-repair-time</loc>
+        <lastmod>2026-03-30</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-one-don-gram</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/SB0105.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-plating-repair</loc>
+        <lastmod>2026-05-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/white-gold-rhodium-plating.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-price-how-to-check</loc>
+        <lastmod>2026-08-15</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/gold-price-check.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/gold-price-how-to-check-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gold-price-how-to-check-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/gold-price-how-to-check-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/gold-ring-repair-cost</loc>
+        <lastmod>2026-02-14</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/NN1301.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/hollow-vs-solid-gold-jewelry</loc>
+        <lastmod>2026-07-27</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/hollow-vs-solid-gold-jewelry-hero.webp</image:loc>
         </image:image>
@@ -548,21 +1486,56 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jewelry-cleaning-care-at-home</loc>
+        <lastmod>2026-06-03</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/jewelry-cleaning-care.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jewelry-hallmark-numbers-meaning</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-numbers-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-numbers-meaning-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-inspection.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-numbers-meaning-section-1.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-numbers-meaning-section-3.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jewelry-hallmark-numbers-meaning-section-5.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/jongno-14k-couple-ring-quote-checklist</loc>
+        <lastmod>2026-08-27</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-14k-couple-ring-quote-checklist-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-14k-couple-ring-quote-checklist-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-14k-couple-ring-quote-checklist-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/jongno-baby-gold-ring-purchase-checklist</loc>
+        <lastmod>2026-08-20</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-baby-gold-ring-purchase-checklist-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-baby-gold-ring-purchase-checklist-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-baby-gold-ring-purchase-checklist-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jongno-custom-couple-ring-order</loc>
+        <lastmod>2026-07-31</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/jongno-custom-couple-ring-order-hero.webp</image:loc>
         </image:image>
@@ -572,6 +1545,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jongno-jewelry-store-visit-guide</loc>
+        <lastmod>2026-07-08</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/jongno-jewelry-visit-consultation.webp</image:loc>
         </image:image>
@@ -581,12 +1555,14 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jongno-jewelry-wholesale-method</loc>
+        <lastmod>2026-05-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/pexels-pixabay-248077.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jongno-ring-polishing-cost</loc>
+        <lastmod>2026-08-05</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/jongno-ring-polishing-cost-hero.webp</image:loc>
         </image:image>
@@ -596,45 +1572,105 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/jongno-ring-size-repair</loc>
+        <lastmod>2026-05-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-size-measuring-method.webp</image:loc>
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/jongno-wedding-jewelry-consultation-checklist</loc>
+        <lastmod>2026-08-06</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-wedding-jewelry-consultation-checklist-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-wedding-jewelry-consultation-checklist-section-1.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-wedding-jewelry-consultation-checklist-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-wedding-jewelry-consultation-checklist-section-3.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/jongno-wedding-jewelry-consultation-checklist-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/lab-grown-diamond-natural-difference</loc>
+        <lastmod>2026-08-10</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/lab-grown-diamond-ring-guide.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/lab-grown-diamond-4c-check.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/lab-grown-diamond-natural-difference-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/lab-grown-diamond-natural-difference-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/mother-necklace-design-consulting</loc>
+        <lastmod>2026-08-17</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/necklace/pexels-mlkbnl-12194265.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/mother-necklace-design-consulting-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/mother-necklace-design-consulting-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/mother-necklace-design-consulting-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/mother-necklace-price</loc>
+        <lastmod>2026-08-10</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/NC0101.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/mother-necklace-price-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/mother-necklace-price-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/mother-necklace-production-time</loc>
+        <lastmod>2026-03-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/NC0201.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/necklace-bracelet-chain-repair</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/necklace/NC0301.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-bracelet-chain-repair-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-bracelet-chain-repair-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-bracelet-chain-repair-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/necklace-breakage-meaning-and-causes</loc>
+        <lastmod>2026-08-11</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-breakage-meaning-and-causes-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-breakage-meaning-and-causes-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/necklace-breakage-meaning-and-causes-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/necklace-chain-types-guide</loc>
+        <lastmod>2026-07-19</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/necklace-chain-types-hero.webp</image:loc>
         </image:image>
@@ -644,6 +1680,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/necklace-clasp-types</loc>
+        <lastmod>2026-07-20</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/necklace-clasp-types-hero.webp</image:loc>
         </image:image>
@@ -653,24 +1690,44 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/necklace-untangling-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/necklace-untangling-hero.webp</image:loc>
         </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/opal-hardness-daily-wear-care</loc>
+        <lastmod>2026-08-09</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/necklace-knot-loosening.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/opal-hardness-daily-wear-care-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/opal-hardness-daily-wear-care-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/opal-hardness-daily-wear-care-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/opal-types-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/opal-types-hero.webp</image:loc>
         </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/pearl-hardness-daily-wear-guide</loc>
+        <lastmod>2026-08-23</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/opal-inspection-comparison.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/pearl-hardness-daily-wear-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/pearl-hardness-daily-wear-guide-section-2.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/pearl-necklace-cleaning-storage</loc>
+        <lastmod>2026-08-02</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/pearl-necklace-care-hero.webp</image:loc>
         </image:image>
@@ -680,6 +1737,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/pearl-necklace-restringing</loc>
+        <lastmod>2026-07-11</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/pearl-necklace-restringing-hero.webp</image:loc>
         </image:image>
@@ -689,6 +1747,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/pearl-real-vs-fake-identification</loc>
+        <lastmod>2026-07-29</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/pearl-real-imitation-hero.webp</image:loc>
         </image:image>
@@ -698,6 +1757,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/pearl-value-factors</loc>
+        <lastmod>2026-07-21</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/pearl-value-factors-hero.webp</image:loc>
         </image:image>
@@ -706,37 +1766,55 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/platinum-ring-drawbacks-wear-guide</loc>
+        <lastmod>2026-08-14</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/platinum-ring-drawbacks-wear-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/platinum-ring-drawbacks-wear-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/platinum-ring-drawbacks-wear-guide-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/platinum-vs-white-gold-difference</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/platinum-white-gold.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-cubic-stone-repair</loc>
+        <lastmod>2026-08-10</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-cubic-stone-repair-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/ring-cubic-stone-resetting.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/ring-cubic-stone-repair-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/ring-cubic-stone-repair-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-finger-meaning-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-finger-meaning-hero.webp</image:loc>
-        </image:image>
-        <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/ring-finger-position-fitting.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-metal-allergy-guide</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-metal-allergy.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-resizing-repair-time</loc>
+        <lastmod>2026-07-30</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-resizing-repair-time-hero.webp</image:loc>
         </image:image>
@@ -746,6 +1824,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-size-measuring-method</loc>
+        <lastmod>2026-05-18</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ring-size-measuring-method.webp</image:loc>
         </image:image>
@@ -758,15 +1837,33 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ring-stuck-finger-removal</loc>
+        <lastmod>2026-08-18</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/ring-stuck-finger-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/ring-stuck-finger-removal-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/ring-removal-lubricant.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/ring-stuck-finger-removal-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/ring-stuck-finger-removal-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/rose-gold-couple-ring-selection-guide</loc>
+        <lastmod>2026-08-09</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/rose-gold-couple-ring-selection-guide-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/rose-gold-couple-ring-selection-guide-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/rose-gold-couple-ring-selection-guide-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/ruby-vs-pink-sapphire-difference</loc>
+        <lastmod>2026-07-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/ruby-vs-pink-sapphire-hero.webp</image:loc>
         </image:image>
@@ -776,6 +1873,7 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/sapphire-quality-factors</loc>
+        <lastmod>2026-07-22</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/sapphire-quality-factors-hero.webp</image:loc>
         </image:image>
@@ -785,24 +1883,28 @@
     </url>
     <url>
         <loc>https://noblessegold.com/guide/silver-buying</loc>
+        <lastmod>2026-02-14</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/NN0801.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/silver-necklace-repair-possible</loc>
+        <lastmod>2026-04-08</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/necklace/pexels-coppertist-wu-16124724.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/silver-ring-repair-cost</loc>
+        <lastmod>2026-03-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/ring/NN0401.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/single-earring-reproduction-cost</loc>
+        <lastmod>2026-08-03</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/single-earring-reproduction-cost-hero.webp</image:loc>
         </image:image>
@@ -811,37 +1913,67 @@
         </image:image>
     </url>
     <url>
-        <loc>https://noblessegold.com/guide/wedding-band-guard-ring-guide</loc>
+        <loc>https://noblessegold.com/guide/thin-necklace-breakage-causes</loc>
+        <lastmod>2026-08-08</lastmod>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/wedding-band-guard-ring-hero.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/thin-necklace-breakage-causes-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/wedding-band-guard-ring-fitting.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/thin-necklace-breakage-causes-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/thin-necklace-breakage-causes-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/wedding-band-guard-ring-guide</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-band-guard-ring-hero.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/wedding-band-matte-gloss</loc>
+        <lastmod>2026-08-08</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/wedding-band-matte-gloss-hero.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/wedding-band-surface-finish.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-band-matte-gloss-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-band-matte-gloss-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/wedding-jewelry-set-composition</loc>
+        <lastmod>2026-08-25</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/wedding-jewelry-set-box.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/wedding-jewelry-diamond-ring.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-jewelry-set-composition-section-2.webp</image:loc>
         </image:image>
         <image:image>
-            <image:loc>https://noblessegold.com/Image/guide/wedding-jewelry-parents-gift.webp</image:loc>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-jewelry-set-composition-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://noblessegold.com/guide/wedding-paemul-yesul-difference</loc>
+        <lastmod>2026-08-25</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-paemul-yesul-difference-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-paemul-yesul-difference-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-paemul-yesul-difference-section-4.webp</image:loc>
         </image:image>
     </url>
     <url>
         <loc>https://noblessegold.com/guide/wedding-ring-production-time</loc>
+        <lastmod>2026-07-30</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/wedding-ring-production-time-hero.webp</image:loc>
         </image:image>
@@ -850,7 +1982,21 @@
         </image:image>
     </url>
     <url>
+        <loc>https://noblessegold.com/guide/wedding-ring-vs-couple-ring-choice</loc>
+        <lastmod>2026-08-26</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-ring-vs-couple-ring-choice-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-ring-vs-couple-ring-choice-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/wedding-ring-vs-couple-ring-choice-section-4.webp</image:loc>
+        </image:image>
+    </url>
+    <url>
         <loc>https://noblessegold.com/guide/white-gold-discoloration-care</loc>
+        <lastmod>2026-08-28</lastmod>
         <image:image>
             <image:loc>https://noblessegold.com/Image/guide/white-gold-discoloration-comparison.webp</image:loc>
         </image:image>
@@ -861,5 +2007,18 @@
             <image:loc>https://noblessegold.com/Image/guide/white-gold-care-storage.webp</image:loc>
         </image:image>
     </url>
+    <url>
+        <loc>https://noblessegold.com/guide/yellow-gold-ring-discoloration-causes</loc>
+        <lastmod>2026-08-13</lastmod>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/yellow-gold-ring-discoloration-causes-hero.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/yellow-gold-ring-discoloration-causes-section-2.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://noblessegold.com/Image/guide/yellow-gold-ring-discoloration-causes-section-4.webp</image:loc>
+        </image:image>
+    </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v7.5.0 at 2026-08-05T07:58:04.315Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v7.5.0 at 2026-08-28T14:34:04.375Z -->

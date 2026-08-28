@@ -1,2 +1,0 @@
-globalThis.__timing__.logStart("Load chunks/build/seo-osyWe2xM");import{s as t}from"./server.mjs";const buildBreadcrumbJsonLd=s=>({"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:s.map((s,e)=>({"@type":"ListItem",position:e+1,name:s.name,item:`${t.url}${s.path}`}))});export{buildBreadcrumbJsonLd as b};globalThis.__timing__.logEnd("Load chunks/build/seo-osyWe2xM");
-//# sourceMappingURL=seo-osyWe2xM.mjs.map

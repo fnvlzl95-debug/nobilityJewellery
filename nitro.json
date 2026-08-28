@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-05T07:58:41.266Z",
+  "date": "2026-08-28T14:34:06.794Z",
   "preset": "cloudflare-pages",
   "framework": {
     "name": "nuxt",
@@ -21,6 +21,7 @@
             "/_ipx/*",
             "/Image/*",
             "/guide/*",
+            "/gallery/*",
             "/favicon.svg",
             "/favicon.ico",
             "/robots.txt",
