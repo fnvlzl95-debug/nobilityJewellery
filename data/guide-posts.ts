@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'wedding-jewelry-budget-allocation',
+      path: '/guide/wedding-jewelry-budget-allocation',
+      title: '결혼예물 예산 배분 순서: 반지·다이아·혼주 품목부터 정하세요',
+      description: '결혼예물 예산을 정할 때 전체 한도를 먼저 확인하고, 반지와 다이아몬드, 혼주 품목을 어떤 순서로 나눌지 정리한 가이드입니다.',
+      keyword: '결혼예물 예산 배분',
+      image: '/Image/guide/wedding-jewelry-budget-allocation-hero.webp',
+      publishedAt: '2026-08-28',
+      category: '선택',
+    },
+  {
       slug: 'jongno-14k-couple-ring-quote-checklist',
       path: '/guide/jongno-14k-couple-ring-quote-checklist',
       title: '종로 14K 커플링 견적은 중량·디자인·공임을 나눠 비교하세요',

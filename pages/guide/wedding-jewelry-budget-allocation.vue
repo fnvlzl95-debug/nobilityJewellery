@@ -1,0 +1,248 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/wedding-jewelry-budget-allocation'
+const pageTitle = '결혼예물 예산 배분 순서: 반지·다이아·혼주 품목부터 정하세요 | 귀족'
+const pageDescription = '결혼예물 예산을 정할 때 전체 한도를 먼저 확인하고, 반지와 다이아몬드, 혼주 품목을 어떤 순서로 나눌지 정리한 가이드입니다.'
+const ogImage = `${siteConfig.url}/Image/guide/wedding-jewelry-budget-allocation-hero.webp`
+const publishedAt = '2026-08-28'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "결혼예물 예산은 무엇부터 정해야 하나요?",
+    "answer": "먼저 결혼 관련 전체 지출 한도와 결혼 후 생활비, 저축, 부채 상환, 비상자금 같은 재정 목표를 확인하세요. 그다음 예물에 사용할 수 있는 상한선을 정하는 순서가 좋습니다."
+  },
+  {
+    "question": "반지와 다이아몬드 중 어느 것을 먼저 골라야 하나요?",
+    "answer": "반지의 착용 목적, 금속, 디자인, 세팅 조건을 먼저 정한 뒤 다이아몬드의 4C와 감정 정보를 비교하는 방식이 실무적으로 편합니다. 다만 개인의 우선순위에 따라 상담 순서는 달라질 수 있습니다."
+  },
+  {
+    "question": "다이아몬드 예산을 캐럿 중량만으로 정해도 되나요?",
+    "answer": "캐럿 중량만으로 정하기보다 컷, 색상, 투명도, 캐럿 중량을 함께 비교해야 합니다. 특히 컷은 다이아몬드의 광채와 외관에 영향을 주는 요소로 설명되므로 감정 또는 등급 보고서와 함께 확인하세요."
+  },
+  {
+    "question": "혼주 품목에는 보통 얼마를 배정하나요?",
+    "answer": "모든 가정에 적용할 수 있는 공식 금액이나 보편적인 비율은 확인되지 않았습니다. 양가의 합의된 범위와 실제 필요한 품목을 먼저 확인한 뒤 별도 한도로 정하세요."
+  }
+]
+const quickAnswers = [
+  "먼저 결혼예물에 사용할 수 있는 전체 한도와 결혼 후 생활비·저축·부채 상환 계획을 확인하세요.",
+  "반지는 착용 빈도와 디자인을 먼저 정하고, 다이아몬드는 컷·색상·투명도·캐럿 중량과 감정서를 함께 비교하세요.",
+  "혼주 품목은 보편적인 금액을 적용하기보다 양가의 합의 범위와 실제 필요를 별도 한도로 정하세요."
+]
+const sections = [
+  {
+    "title": "전체 예산과 재정 목표를 먼저 확인하세요",
+    "paragraphs": [
+      "예물 예산을 정하기 전에는 결혼식과 신혼 생활에 필요한 지출을 함께 살펴봐야 하며, 그 뒤 예물에 사용할 수 있는 상한선을 정해야 합니다. 같은 계획 안에서 예물 외의 재정 목표도 확인하는 것이 좋으며, 여기에는 결혼 후 생활비, 저축 목표, 부채 상환, 비상자금이 포함됩니다.",
+      "예물비를 먼저 정한 뒤 나머지 지출을 맞추기보다, 전체 지출 계획에서 선택 지출의 한도를 정하는 방식이 적합합니다. 이 글에서 제안하는 배분 순서는 정해진 업계 표준 비율이 아니며, 예산 우선순위와 다이아몬드 평가 기준을 함께 고려한 실무적 접근입니다."
+    ],
+    "bullets": [
+      "전체 결혼 관련 지출 한도를 확인합니다.",
+      "결혼 후 생활비와 저축 목표를 따로 남겨 둡니다.",
+      "예물 예산은 초과하지 않을 상한선으로 정합니다."
+    ]
+  },
+  {
+    "title": "반지의 착용 목적과 기본 조건을 정하세요",
+    "paragraphs": [
+      "전체 한도를 정한 뒤에는 웨딩밴드나 예물 반지에서 우선할 요소를 정합니다. 상담 범위는 매일 착용할지, 디자인 통일을 중시할지, 금속과 세팅의 느낌을 중요하게 볼지에 따라 달라질 수 있습니다.",
+      "반지의 기본 조건을 먼저 정하면 다이아몬드에 사용할 수 있는 금액도 자연스럽게 좁혀집니다. 반지와 다이아몬드 예산을 한꺼번에 비교하기보다 금속, 디자인, 착용감, 세팅 조건을 먼저 확인하는 방식이 적합합니다."
+    ],
+    "bullets": [
+      "매일 착용 여부와 생활 환경을 먼저 생각합니다.",
+      "금속과 디자인, 반지 폭과 착용감을 비교합니다.",
+      "다이아몬드 예산과 반지 제작 조건을 분리해 기록합니다."
+    ],
+    "image": {
+      "src": "/Image/guide/wedding-jewelry-budget-allocation-section-2.webp",
+      "alt": "웨딩밴드의 금속과 디자인을 비교하는 상담 장면",
+      "caption": "반지의 착용 목적과 디자인 조건을 먼저 정하면 예산 비교가 쉬워집니다."
+    }
+  },
+  {
+    "title": "다이아몬드는 4C와 감정 정보를 함께 비교하세요",
+    "paragraphs": [
+      "다이아몬드 예산을 정할 때는 캐럿 중량 하나만 기준으로 삼지 않는 것이 좋습니다. GIA가 설명하는 4C에는 컷, 색상, 투명도, 캐럿 중량이 포함됩니다. 네 요소를 함께 비교해야 같은 중량에서도 보이는 차이와 선택 기준을 파악할 수 있습니다.",
+      "다이아몬드의 광채와 반짝임, 불꽃 효과는 특히 컷과 관련이 있는 요소로 설명됩니다. 판매자가 사용하는 표현만 보고 결정하기보다는, 독립적인 감정 또는 등급 보고서의 내용과 4C 정보가 실제 제품과 일치하는지 확인하는 것이 좋습니다.",
+      "먼저 원하는 반지 디자인과 착용 목적을 정하고, 그다음 다이아몬드의 4C와 보고서를 비교하는 것이 좋습니다. 이렇게 하면 중량만 높이는 방식에서 벗어나 자신에게 중요한 기준에 맞춰 예산을 조정할 수 있습니다."
+    ],
+    "bullets": [
+      "컷·색상·투명도·캐럿 중량을 함께 비교합니다.",
+      "감정 또는 등급 보고서의 발행 기관과 내용을 확인합니다.",
+      "판매 설명과 보고서의 품질 표현이 일치하는지 살펴봅니다."
+    ]
+  },
+  {
+    "title": "혼주 품목은 양가 합의 범위로 별도 배정하세요",
+    "paragraphs": [
+      "혼주 품목에는 모든 가정에 적용할 수 있는 공식 금액이나 보편적인 비율이 확인된 것은 아닙니다. 양가 부모님의 선호와 실제 착용 여부를 먼저 살펴보고, 필요한 품목과 제외할 품목을 정한 뒤 별도 한도를 두는 편이 좋습니다.",
+      "혼주 품목 비용을 신랑·신부 반지 예산에서 임의로 빼기보다는 전체 예물 예산 안에서 별도 항목으로 표시하는 것이 좋습니다. 그러면 상담과 합의 과정이 명확해집니다. 양가에 동일한 기준을 적용할지, 필요한 품목에 따라 다르게 정할지도 사전에 대화해야 합니다."
+    ],
+    "bullets": [
+      "양가의 선호와 실제 필요한 품목을 확인합니다.",
+      "혼주 품목 예산을 반지와 별도 항목으로 기록합니다.",
+      "양가에 적용할 기준과 범위를 결혼 당사자가 먼저 합의합니다."
+    ],
+    "image": {
+      "src": "/Image/guide/wedding-jewelry-budget-allocation-section-4.webp",
+      "alt": "혼주 귀금속 품목과 예산 항목을 함께 확인하는 모습",
+      "caption": "혼주 품목은 양가의 합의와 실제 필요를 기준으로 별도 배정하세요."
+    }
+  },
+  {
+    "title": "상담 전 예산표에 남길 항목",
+    "paragraphs": [
+      "상담 전에는 전체 예산, 반지 예산, 다이아몬드 예산, 혼주 품목 예산을 나누어 적습니다. 상담에서 확인할 각 항목의 우선순위도 함께 표시합니다. 예산을 한 금액으로만 적기보다 반드시 지키려는 상한선과 상담 과정에서 조정 가능한 범위를 구분해 두면 선택이 쉬워집니다.",
+      "확인 항목은 상담 종류에 따라 나누어 두는 것이 좋습니다. 다이아몬드 상담에서는 4C와 감정 보고서를, 반지 상담에서는 금속과 디자인을, 혼주 상담에서는 품목과 양가 합의 여부를 확인 항목으로 둡니다. 실제 상담에서는 제품 상태와 선택 조건에 따라 확인할 내용이 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "전체 예물 상한선과 조정 가능 범위를 구분합니다.",
+      "반지·다이아몬드·혼주 품목별 우선순위를 적습니다.",
+      "품질 표현, 감정 정보, 선택 조건을 상담 기록에 남깁니다."
+    ]
+  }
+]
+const cautions = [
+  "이 글의 배분 순서는 정해진 업계 표준 비율이 아니며, 예산과 선호, 양가 합의에 따라 달라질 수 있습니다.",
+  "혼주 품목에 적용할 수 있는 공식적인 보편 금액이나 비율은 확인되지 않았으므로 관행만으로 예산을 단정하지 마세요.",
+  "다이아몬드의 품질과 가격은 4C, 감정 정보, 제품 조건에 따라 달라질 수 있으므로 판매자의 표현만으로 판단하지 마세요."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/wedding-jewelry-set-composition",
+    "label": "결혼예물 세트 구성 가이드｜신부·신랑·혼주 예물 준비 기준",
+    "description": "신부·신랑·혼주 예물의 범위를 정하고 상담 전 확인할 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/diamond-ring-setting-types",
+    "label": "다이아 반지 세팅 종류｜프롱·베젤·파베·채널, 예물 선택 기준",
+    "description": "다이아 반지 세팅별 반짝임, 걸림, 안정성, 관리 조건을 비교합니다."
+  },
+  {
+    "to": "/guide/diamond-3bu-5bu-difference",
+    "label": "다이아 3부 5부 차이, 예물 반지 고를 때 가격·크기 기준",
+    "description": "다이아몬드 중량과 지름, 세팅 높이, 4C를 함께 비교할 때 확인할 기준을 안내합니다."
+  },
+  {
+    "to": "/guide/lab-grown-diamond-natural-difference",
+    "label": "랩그로운 다이아몬드 천연 다이아 차이, 예물 반지 선택 기준",
+    "description": "생성 방식, 감정서, 4C와 예물 선택 조건을 비교해 상담 전 확인할 내용을 정리했습니다."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '결혼예물 예산 배분 순서: 반지·다이아·혼주 품목부터 정하세요'
+const gmArticleLead = '결혼예물 예산은 품목별 비율부터 정하기보다, 전체 지출 한도와 결혼 후 재정 목표를 먼저 확인한 다음 배분하는 편이 안전합니다. 실무 상담은 전체 예산을 확정하고 반지의 착용 목적과 디자인을 결정한 뒤, 다이아몬드의 4C와 감정서를 확인하고 혼주 품목을 양가와 합의하는 순서로 진행할 수 있습니다.'
+const gmArticleCategory = '선택'
+const gmArticleKeyword = '결혼예물 예산 배분'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '반지·다이아·혼주 품목 예산 배분 상담'
+const gmHeroAlt = '결혼예물 반지와 다이아몬드, 혼주 품목을 예산표와 함께 비교하는 모습'
+const gmSourceNote = '예산 배분에 관한 내용은 미국 소비자금융보호국의 예산 안내를 참고했고, 다이아몬드 기준은 미국 보석학회의 4C 자료와 미국 연방거래위원회의 보석 표시 기준을 참고했습니다. 품목별 배분 순서는 해당 근거를 결합한 실무적 제안이며, 혼주 품목의 보편 금액이나 비율을 의미하지 않습니다.'
+const gmSources = [
+  {
+    "label": "Consumer Financial Protection Bureau — Budgeting for needs and wants",
+    "url": "https://www.consumerfinance.gov/consumer-tools/educator-tools/youth-financial-education/teach/activities/budgeting-needs-and-wants/",
+    "note": "예산을 지출 계획으로 보고, 필요와 선택 지출을 구분해 의사결정하도록 안내합니다."
+  },
+  {
+    "label": "Consumer Financial Protection Bureau — Assess your spending",
+    "url": "https://www.consumerfinance.gov/owning-a-home/prepare/assess-your-spending/",
+    "note": "예산을 세울 때 정기 지출, 비정기 지출, 저축 목표와 비상자금을 함께 고려하도록 안내합니다."
+  },
+  {
+    "label": "Gemological Institute of America — How to Buy a Diamond",
+    "url": "https://4cs.gia.edu/en-us/how-to-buy-a-diamond/",
+    "note": "다이아몬드의 4C인 컷, 색상, 투명도, 중량의 의미를 설명합니다."
+  },
+  {
+    "label": "Gemological Institute of America — GIA 4Cs Cut",
+    "url": "https://www.gia.edu/4cs-cut",
+    "note": "컷 품질이 다이아몬드의 광채와 외관에 미치는 영향 및 감정 기준을 설명합니다."
+  },
+  {
+    "label": "Federal Trade Commission — Jewelry Guides: Summary of Basis and Purpose",
+    "url": "https://www.ftc.gov/system/files/documents/public_statements/1393857/g711001_jewelry_guides_statement_of_basis_and_purpose_for_final_jewelry__.pdf",
+    "note": "다이아몬드와 보석의 품질 표현이 오해를 일으키지 않아야 한다는 소비자 보호 기준을 제시합니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: ogImage,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', name: siteConfig.name },
+        publisher: { '@type': 'Organization', name: siteConfig.name },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>
