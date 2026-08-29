@@ -42,6 +42,7 @@ const buildPrerenderRoutes = (): string[] => [
 ]
 
 const seoUpdatedAt = '2026-08-25'
+const consultationPagesUpdatedAt = '2026-08-29'
 const sitemapUrls = [
   ...guidePosts.map((guide) => ({
     loc: guide.path,
@@ -53,8 +54,10 @@ const sitemapUrls = [
   })),
   { loc: '/guide', lastmod: seoUpdatedAt },
   { loc: '/gallery', lastmod: seoUpdatedAt },
-  { loc: '/wedding', lastmod: seoUpdatedAt },
+  { loc: '/wedding', lastmod: consultationPagesUpdatedAt },
   { loc: '/buy-gold', lastmod: seoUpdatedAt },
+  { loc: '/contact', lastmod: consultationPagesUpdatedAt },
+  { loc: '/wholesale', lastmod: consultationPagesUpdatedAt },
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
