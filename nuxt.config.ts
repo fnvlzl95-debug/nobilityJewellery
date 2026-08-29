@@ -76,7 +76,7 @@ export default defineNuxtConfig({
 
   image: {
     format: ['webp', 'png', 'jpg'],
-    quality: 95,  // 고화질 유지
+    quality: 85,  // 모바일 전송량 절감 — 갤러리 상세 원본(raw img)은 영향 없음
     screens: {
       xs: 320,
       sm: 640,

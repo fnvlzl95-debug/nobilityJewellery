@@ -95,8 +95,8 @@ useHead({
 })
 
 const handleKakao = () => {
+  // trackKakaoClick이 내부에서 Meta 표준 Contact를 전송하므로 여기서 다시 보내지 않는다 (중복 학습 방지)
   trackKakaoClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
-  trackMetaEvent('Contact', { content_name: product.title, content_category: `gallery_${product.category}` })
 }
 const handlePhone = () => {
   trackPhoneClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })

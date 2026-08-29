@@ -292,10 +292,18 @@ const handleSubmit = async () => {
             <div class="prep-block">
               <h2 class="prep-title">상담 전에 준비하시면 좋아요</h2>
               <ul class="prep-list">
-                <li><strong>원하시는 디자인 사진</strong><span>비슷한 스타일 캡처도 좋습니다</span></li>
-                <li><strong>희망 소재와 색상</strong><span>14K·18K, 화이트·로즈·옐로우골드</span></li>
-                <li><strong>착용 목적</strong><span>선물용인지 데일리용인지</span></li>
-                <li><strong>희망 수령일과 예산</strong><span>주문제작은 보통 최소 2주 걸립니다</span></li>
+                <li>
+                  <span class="prep-copy"><strong>원하시는 디자인 사진</strong><span>비슷한 스타일의 캡처 이미지도 좋습니다</span></span>
+                </li>
+                <li>
+                  <span class="prep-copy"><strong>희망 소재와 색상</strong><span>화이트골드·로즈골드·옐로우골드 중 원하시는 색상</span></span>
+                </li>
+                <li>
+                  <span class="prep-copy"><strong>착용 목적</strong><span>선물용·데일리용 등 착용하실 상황</span></span>
+                </li>
+                <li>
+                  <span class="prep-copy"><strong>희망 수령일과 예산</strong><span>주문제작 기간은 최소 2주가 필요합니다</span></span>
+                </li>
               </ul>
               <p class="prep-links">
                 자주 묻는 내용은 <NuxtLink to="/faq">FAQ</NuxtLink>와
@@ -332,6 +340,12 @@ const handleSubmit = async () => {
 
           <!-- Form -->
           <form v-else class="contact-form" @submit.prevent="handleSubmit">
+            <div class="form-heading">
+              <span>Inquiry Form</span>
+              <h2>문의 내용을 남겨주세요</h2>
+              <p>확인 후 영업시간 내 순서대로 연락드립니다.</p>
+            </div>
+
             <div v-if="inquiryContext" class="inquiry-context">
               <span class="inquiry-context-label">현재 상담 흐름</span>
               <strong>{{ inquiryContext.topic || inquiryContext.sourceLabel }}</strong>
@@ -416,11 +430,11 @@ const handleSubmit = async () => {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </span>
-                <span class="check-label">개인정보처리방침에 동의합니다</span>
+                <span class="check-label"><NuxtLink to="/privacy">개인정보처리방침</NuxtLink>에 동의합니다</span>
               </label>
 
               <button type="submit" class="btn-submit" :disabled="isSubmitting">
-                <span v-if="isSubmitting">전송중...</span>
+                <span v-if="isSubmitting">전송 중...</span>
                 <template v-else>
                   <span>문의 보내기</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -455,8 +469,8 @@ const handleSubmit = async () => {
 .main {
   flex: 1;
   display: flex;
-  align-items: center;
-  padding: 100px clamp(20px, 5vw, 60px) 40px;
+  align-items: flex-start;
+  padding: clamp(112px, 10vw, 144px) clamp(20px, 5vw, 60px) clamp(72px, 8vw, 112px);
 }
 
 .contact-wrapper {
@@ -470,9 +484,9 @@ const handleSubmit = async () => {
 
 @media (min-width: 900px) {
   .contact-wrapper {
-    grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
-    align-items: center;
+    grid-template-columns: minmax(0, 0.92fr) minmax(520px, 1.08fr);
+    gap: clamp(56px, 7vw, 88px);
+    align-items: start;
   }
 }
 
@@ -480,6 +494,7 @@ const handleSubmit = async () => {
 .info-side {
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 
 .info-content {
@@ -636,36 +651,48 @@ const handleSubmit = async () => {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 0;
 }
 
 .prep-list li {
   display: grid;
-  grid-template-columns: 16px minmax(0, 1fr);
-  gap: 10px;
-  align-items: baseline;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
 }
 
 .prep-list li::before {
   content: '';
   width: 6px;
   height: 6px;
-  margin-top: 4px;
+  margin-top: 7px;
   background: #c9a227;
   justify-self: center;
 }
 
-.prep-list strong {
+.prep-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prep-copy strong {
   display: block;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.5;
   color: rgba(250, 250, 250, 0.9);
 }
 
-.prep-list span {
+.prep-copy > span {
   display: block;
-  font-size: 12.5px;
-  color: rgba(250, 250, 250, 0.5);
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(250, 250, 250, 0.58);
+  word-break: keep-all;
 }
 
 .prep-links {
@@ -729,12 +756,47 @@ const handleSubmit = async () => {
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
   padding: clamp(24px, 4vw, 40px);
+  min-width: 0;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.form-heading {
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.form-heading > span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a227;
+}
+
+.form-heading h2 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  color: #fafafa;
+  word-break: keep-all;
+}
+
+.form-heading p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(250, 250, 250, 0.56);
+  word-break: keep-all;
 }
 
 .inquiry-context {
@@ -783,10 +845,9 @@ const handleSubmit = async () => {
 }
 
 .form-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: rgba(250, 250, 250, 0.85);
 }
 
@@ -847,6 +908,12 @@ const handleSubmit = async () => {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.type-option:active,
+.btn-submit:active:not(:disabled),
+.kakao-cta:active {
+  transform: scale(0.98);
+}
+
 .type-option input {
   position: absolute;
   opacity: 0;
@@ -894,6 +961,8 @@ const handleSubmit = async () => {
 }
 
 .form-input {
+  width: 100%;
+  min-height: 54px;
   padding: 16px 18px;
   font-size: 15px;
   font-family: inherit;
@@ -915,6 +984,7 @@ const handleSubmit = async () => {
 }
 
 .form-textarea {
+  width: 100%;
   padding: 16px 18px;
   font-size: 15px;
   font-family: inherit;
@@ -994,7 +1064,13 @@ const handleSubmit = async () => {
 
 .check-label {
   font-size: 13px;
+  line-height: 1.6;
   color: #fafafa;
+}
+
+.check-label a {
+  color: #d4b44a;
+  text-underline-offset: 3px;
 }
 
 .btn-submit {
@@ -1105,12 +1181,92 @@ const handleSubmit = async () => {
 /* ===== Mobile Responsive ===== */
 @media (max-width: 900px) {
   .main {
-    padding-top: 120px;
+    padding-top: 112px;
+    padding-bottom: 120px;
     align-items: flex-start;
+  }
+
+  .contact-wrapper {
+    gap: 56px;
   }
 
   .info-decor {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 100px 20px 120px;
+  }
+
+  .contact-wrapper {
+    gap: 44px;
+  }
+
+  .title {
+    font-size: 38px;
+  }
+
+  .desc {
+    margin-bottom: 26px;
+    font-size: 14px;
+  }
+
+  .kakao-cta {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .kakao-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .kakao-copy {
+    font-size: 15px;
+    word-break: keep-all;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .prep-block {
+    margin-top: 32px;
+    padding-top: 26px;
+  }
+
+  .prep-links {
+    word-break: keep-all;
+  }
+
+  .form-side {
+    padding: 24px 18px;
+  }
+
+  .contact-form {
+    gap: 22px;
+  }
+
+  .form-footer {
+    align-items: stretch;
+  }
+
+  .consent-check {
+    align-items: flex-start;
+  }
+
+  .check-box {
+    flex: 0 0 22px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 52px;
+    justify-content: center;
   }
 }
 

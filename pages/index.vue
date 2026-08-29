@@ -390,11 +390,18 @@ const handleNaverMapClick = () => {
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
-        <img
+        <NuxtImg
           src="/Image/ring/NS0102.webp"
           alt="14K 다이아몬드 솔리테어 반지 - 귀족 종로 귀금속 대표 상품"
           class="hero-image"
+          width="1536"
+          height="1024"
+          format="webp"
+          quality="80"
+          sizes="sm:100vw md:100vw lg:1536px"
+          loading="eager"
           fetchpriority="high"
+          preload
         />
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>

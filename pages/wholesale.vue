@@ -79,7 +79,7 @@ useHead({
 const highlights = [
   {
     title: '도매가 직거래',
-    description: '30년 세공 경력 장인이 종로 귀금속 도매상가에서 직접 운영. 중간 마진 없이 최저가로 공급합니다.',
+    description: '30년 세공 경력 장인이 종로 귀금속 도매상가에서 직접 운영. 중간 마진 없이 도매가로 공급합니다.',
     icon: 'price'
   },
   {
