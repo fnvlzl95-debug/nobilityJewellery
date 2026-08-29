@@ -10,6 +10,8 @@ interface ArticleSection {
     src: string
     alt: string
     caption: string
+    width?: number
+    height?: number
   }
 }
 
@@ -41,6 +43,9 @@ const props = withDefaults(defineProps<{
   updatedAt?: string
   heroImage: string
   heroAlt: string
+  heroWidth?: number
+  heroHeight?: number
+  reviewedBy?: string
   quickAnswers: string[]
   sections: ArticleSection[]
   cautions?: string[]
@@ -51,6 +56,9 @@ const props = withDefaults(defineProps<{
 }>(), {
   inquiryType: 'custom',
   inquiryTopic: '',
+  heroWidth: 1536,
+  heroHeight: 1024,
+  reviewedBy: '귀족 주얼리 상담팀',
   sourceNote: '귀족 매장 상담과 제작·수리 실무를 바탕으로 작성했으며, 제품 상태·시세·작업 가능 여부는 상담 시점에 다시 확인합니다.',
   sources: () => [],
 })
@@ -147,9 +155,20 @@ const handleGuideLinkClick = (event: MouseEvent) => {
         <div class="guide-meta">
           <span>{{ props.publishedAt }} 최초 작성</span>
           <span>{{ props.updatedAt || props.publishedAt }} 최종 검토</span>
+          <span>{{ props.reviewedBy }} 검토</span>
         </div>
         <slot name="hero-summary" />
-        <img :src="props.heroImage" :alt="props.heroAlt" class="guide-hero-image" loading="eager">
+        <NuxtImg
+          :src="props.heroImage"
+          :alt="props.heroAlt"
+          :width="props.heroWidth"
+          :height="props.heroHeight"
+          sizes="sm:100vw md:100vw lg:960px"
+          class="guide-hero-image"
+          loading="eager"
+          fetchpriority="high"
+          preload
+        />
       </header>
 
       <section class="quick-answer">
@@ -199,7 +218,14 @@ const handleGuideLinkClick = (event: MouseEvent) => {
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
           <figure v-if="section.image" class="article-image">
-            <img :src="section.image.src" :alt="section.image.alt" loading="lazy">
+            <NuxtImg
+              :src="section.image.src"
+              :alt="section.image.alt"
+              :width="section.image.width || 1536"
+              :height="section.image.height || 1024"
+              sizes="sm:100vw md:100vw lg:960px"
+              loading="lazy"
+            />
             <figcaption>{{ section.image.caption }}</figcaption>
           </figure>
         </section>
@@ -273,7 +299,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 <style scoped>
 .guide-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: #0a0a0a;
   color: #fafafa;
   padding: 120px 20px 80px;
@@ -540,7 +566,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .article-image img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: auto;
   object-fit: cover;
   border: 1px solid rgba(201, 162, 39, 0.3);
 }

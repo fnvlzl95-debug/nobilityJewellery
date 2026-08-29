@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'birthstone-price-factors-guide',
+      path: '/guide/birthstone-price-factors-guide',
+      title: '탄생석 가격 순위가 달라지는 주요 기준',
+      description: '탄생석은 종류만으로 가격이 정해지지 않습니다. 색상, 투명도, 크기, 연마 품질, 천연 여부와 처리 여부를 비교하는 기준을 정리했습니다.',
+      keyword: '탄생석 가격 순위',
+      image: '/Image/guide/birthstone-price-factors-guide-hero-5b488aaf.webp',
+      publishedAt: '2026-08-29',
+      category: '선택',
+    },
+  {
       slug: 'wedding-jewelry-budget-allocation',
       path: '/guide/wedding-jewelry-budget-allocation',
       title: '결혼예물 예산 배분 순서: 반지·다이아·혼주 품목부터 정하세요',

@@ -82,7 +82,8 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/pearl-value-factors', label: '진주 품질 7요소', description: '광택·표면·매칭 확인' },
       { to: '/guide/emerald-oil-treatment-care', label: '에메랄드 오일 처리', description: '처리와 세척 주의' },
       { to: '/guide/sapphire-quality-factors', label: '사파이어 등급', description: '색·투명도·컷·처리' },
-    ],
+          { to: '/guide/birthstone-price-factors-guide', label: '탄생석 가격 순위가 달라지는 주요 기준', description: '탄생석은 종류만으로 가격이 정해지지 않습니다' },
+],
   },
   // 아래 3개 클러스터는 기존 클러스터보다 뒤에 있어야 한다 —
   // findGuideClusterForPath는 첫 매칭을 반환하므로, 중복 등재된 글(14K·18K 가격 차이 등)은 기존 클러스터 블록을 유지한다.
