@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
-import { getPreviewItems, categories } from '~/data/gallery-items'
+import { galleryItems, categories } from '~/data/gallery-items'
+import { faqItems } from '~/data/faq-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
-const { trackPhoneClick, trackKakaoClick, trackMapClick } = useGtag()
+const { trackPhoneClick, trackKakaoClick, trackMapClick, trackEvent } = useGtag()
+
+const handleQuickStartClick = (label: string, to: string) => {
+  trackEvent('home_quick_start_click', { item_name: label, destination: to })
+}
+
+const handleCategoryClick = (title: string, to: string) => {
+  trackEvent('home_category_click', { item_name: title, destination: to })
+}
+
+const handleGalleryPreviewClick = (title: string, slug: string) => {
+  trackEvent('home_gallery_preview_click', { item_name: title, destination: `/gallery/${slug}` })
+}
 
 const handlePhoneClick = () => {
   trackPhoneClick('home', {
@@ -47,44 +60,89 @@ const handleCtaKakaoClick = () => {
   })
 }
 
-const previewItems = getPreviewItems(6)
+const iconPaths: Record<string, string> = {
+  custom: '<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+  repair: '<path d="M14 6a4 4 0 105.5 5.5L21 13l-8 8-2-2 8-8 1.5-1.5A4 4 0 0014 6z"/><path d="M6 6l4 4"/>',
+  buy: '<rect x="3" y="7" width="18" height="12" rx="1"/><path d="M7 7V5h10v2M3 11h18"/>',
+  wedding: '<path d="M4 8h16l-1.5 11h-13z"/><path d="M8 8V6a4 4 0 018 0v2"/>',
+  wholesale: '<path d="M3 9l9-5 9 5v10l-9 5-9-5z"/><path d="M3 9l9 5 9-5M12 14v10"/>',
+  chat: '<path d="M21 12a8 8 0 01-8 8H5l-2 2V12a8 8 0 018-8h2a8 8 0 018 8z"/>',
+  doc: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+  craft: '<path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l7 4 7-4"/>',
+  check: '<path d="M4 12l5 5L20 6"/>',
+}
+
 const categoryLabels = Object.fromEntries(categories.map((category) => [category.id, category.label]))
-const intentRoutes = [
-  {
-    to: '/gallery',
-    eyebrow: 'Design',
-    title: '디자인부터 보고 싶어요',
-    description: '반지, 목걸이, 팔찌, 세트 스타일을 먼저 고르고 상담으로 넘어가세요.',
-  },
-  {
-    to: '/repair',
-    eyebrow: 'Repair',
-    title: '수리부터 맡기고 싶어요',
-    description: '반지 사이즈, 체인 끊어짐, 도금과 광택까지 바로 확인할 수 있습니다.',
-  },
-  {
-    to: '/guide',
-    eyebrow: 'Guide',
-    title: '가격·제작기간이 먼저 궁금해요',
-    description: '실제 문의가 많았던 비용, 기간, 주문 흐름 가이드를 먼저 보실 수 있습니다.',
-  },
+
+// 서비스 바로가기 (기존 Quick Start 섹션)
+const serviceTiles = [
+  { to: '/custom', label: '주문제작', eng: 'CUSTOM MADE', icon: 'custom' },
+  { to: '/repair', label: '수리·AS', eng: 'REPAIR SERVICE', icon: 'repair' },
+  { to: '/buy-gold', label: '금매입', eng: 'GOLD PURCHASE', icon: 'buy' },
+  { to: '/wedding', label: '결혼예물', eng: 'WEDDING', icon: 'wedding' },
+  { to: '/wholesale', label: '도매', eng: 'WHOLESALE', icon: 'wholesale' },
 ]
+
+// 품목·서비스 카테고리 (기존 인기 카테고리 + 서비스 카드 통합)
+const categoryCards = [
+  { to: '/couple-ring', title: '커플링', eng: 'COUPLE RING', image: '/Image/ring/NN0103.webp', alt: '14K 커플링 주문제작 디자인' },
+  { to: '/baby-gold', title: '순금 돌반지', eng: 'BABY GOLD', image: '/Image/ring/SB0101.webp', alt: '24K 순금 돌반지 주문제작' },
+  { to: '/wedding', title: '결혼예물', eng: 'WEDDING SET', image: '/Image/set/set0101.webp', alt: '결혼예물 세트 구성' },
+  { to: '/custom', title: '목걸이 · 팔찌', eng: 'NECKLACE', image: '/Image/necklace/NC0101.webp', alt: '금목걸이 주문제작 디자인' },
+  { to: '/repair', title: '수리 · 리폼', eng: 'REPAIR', image: '/Image/ring/NN0104.webp', alt: '수리·리폼 상담 대상 14K 반지' },
+  { to: '/buy-gold', title: '금 · 은 매입', eng: 'GOLD PURCHASE', image: '/Image/set/set0201.webp', alt: '금 매입 상담을 위한 귀금속 확인' },
+]
+
+// 갤러리 미리보기 — 분류가 고르게 퍼지도록 선별 (카테고리 카드와 사진 중복 없음)
+const previewSlugs = [
+  'two-tone-lattice-tension-couple-ring',
+  'rose-gold-chunky-chain-pave-lock-necklace',
+  'flower-motif-rose-gold-jewelry-set',
+  'gold-layered-chain-bracelet-trio',
+  'lucky-horseshoe-number-pendant-necklace',
+  'fancy-yellow-diamond-solitaire-ring',
+]
+const previewItems = previewSlugs
+  .map((slug) => galleryItems.find((item) => item.slug === slug))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+
+// 제작·수리 진행 순서
+const processSteps = [
+  { num: '01', title: '상담', desc: '원하시는 디자인과 예산·수령일 상담', icon: 'chat' },
+  { num: '02', title: '견적 확인', desc: '중량·공임과 당일 시세 기준 견적 안내', icon: 'doc' },
+  { num: '03', title: '제작 · 수리', desc: '숙련된 장인이 매장에서 직접 세공', icon: 'craft' },
+  { num: '04', title: '검수 · 전달', desc: '마감·사이즈 검수 후 안전하게 전달', icon: 'check' },
+]
+
+const repairChecks = [
+  { title: '반지 사이즈 조절', desc: '늘리기·줄이기 당일 접수' },
+  { title: '세척 · 광택 복원', desc: '금·은 세척과 폴리싱' },
+  { title: '화이트골드 재도금', desc: '변색·광택 기준 안내' },
+  { title: '체인 수리', desc: '끊어짐·잠금장치 교체' },
+  { title: '보석 재세팅', desc: '큐빅 빠짐·발 보강' },
+  { title: '귀걸이 침 수리', desc: '휘어짐·부러짐 점검' },
+]
+
+const buyItems = [
+  { title: '금', desc: '순금(24K), 18K, 14K, 골드바' },
+  { title: '은', desc: '순은, 실버바, 은 장신구' },
+  { title: '기타', desc: '백금, 금니, 부서진 귀금속' },
+  { title: '확인 후 당일 지급', desc: '순도·중량 측정 후 최종 금액 안내' },
+]
+
+// 홈 노출 FAQ — 상담 전 반복 질문. /faq 전체로 연결하고 FAQPage 구조화 데이터로도 내보낸다
+const homeFaqIds = [1, 20, 12, 41, 50, 2]
+const homeFaqs = homeFaqIds
+  .map((id) => faqItems.find((item) => item.id === id))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+
 const featuredGuides = [
-  {
-    to: '/guide/baby-ring-price',
-    title: '돌반지 가격 문의 전 체크',
-    description: '순금 시세, 무게, 각인 기준을 먼저 확인하세요.',
-  },
-  {
-    to: '/guide/gold-ring-repair-cost',
-    title: '금반지 수리 비용 기준',
-    description: '작업별 비용 차이와 상담 포인트 정리',
-  },
-  {
-    to: '/guide/silver-buying',
-    title: '은매입 방문 전 체크리스트',
-    description: '순도·중량·당일 시세 기준을 안내합니다.',
-  },
+  { to: '/guide/white-gold-discoloration-care', category: '관리', title: '화이트골드 변색, 재도금이 필요한 기준', description: '누렇게 보이는 이유와 세척·도금 구분' },
+  { to: '/guide/couple-ring-14k-18k-price-difference', category: '가격', title: '14K·18K 커플링 가격 차이', description: '금 함량·중량·공임을 같은 기준으로 비교' },
+  { to: '/guide/gold-one-don-gram', category: '소재', title: '금 1돈은 몇 g? 3.75g 환산', description: '돈·그램 계산과 순도별 실제 금 함량' },
+  { to: '/guide/baby-ring-price', category: '가격', title: '돌반지 가격, 문의 전 확인할 3가지', description: '중량·순도·공임이 가격을 가르는 지점' },
+  { to: '/guide/gold-necklace-length-guide', category: '선택', title: '목걸이 길이 추천: 42·45·50cm', description: '목둘레·펜던트·체인 굵기 기준 비교' },
+  { to: '/guide/platinum-vs-white-gold-difference', category: '소재', title: '백금과 화이트골드 차이', description: '무게·변색·관리·가격으로 나눠 정리' },
 ]
 
 useHead({
@@ -167,6 +225,18 @@ useHead({
       innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
         { name: '홈', path: '/' },
       ]))
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: homeFaqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      })
     }
   ]
 })
@@ -317,8 +387,6 @@ const handleNaverMapClick = () => {
 
 <template>
   <div class="page">
-    <!-- Custom Cursor -->
-
     <!-- Hero Section -->
     <section class="hero" :class="{ loaded: heroLoaded }">
       <div class="hero-bg">
@@ -377,387 +445,292 @@ const handleNaverMapClick = () => {
       <div class="hero-float hero-float-2"></div>
     </section>
 
-    <section class="section-intent-router">
-      <div class="container-lg">
-        <div class="intent-router-shell reveal">
-          <div class="intent-router-header">
-            <span class="section-label">Quick Start</span>
-            <h2 class="section-title">무엇을 먼저 찾고 계신가요?</h2>
-            <p class="section-desc">가장 가까운 목적지로 바로 이동해서 상담 준비 시간을 줄이실 수 있습니다.</p>
-          </div>
-
-          <div class="intent-router-grid">
-            <NuxtLink
-              v-for="route in intentRoutes"
-              :key="route.to"
-              :to="route.to"
-              class="intent-router-card"
-            >
-              <span class="intent-router-eyebrow">{{ route.eyebrow }}</span>
-              <strong>{{ route.title }}</strong>
-              <p>{{ route.description }}</p>
-            </NuxtLink>
-          </div>
+    <!-- Quick Start: 서비스 바로가기 -->
+    <section id="quick-start" class="section-block">
+      <div class="container-lg quick-row">
+        <div class="quick-head reveal">
+          <span class="sec-eyebrow">Quick Start</span>
+          <h2 class="block-title">무엇이 필요하세요?</h2>
         </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section-about">
-      <div class="container-lg">
-        <div class="about-grid">
-          <div class="about-visual">
-            <div class="visual-frame reveal reveal-left">
-              <NuxtImg
-                src="/Image/main/home-trust-jewelry-still-life.webp"
-                alt="정밀 검수된 금반지와 주얼리 도구 - 30년 경력 종로 금은방 신뢰 상담"
-                format="webp"
-                quality="95"
-                sizes="sm:100vw md:50vw lg:600px"
-                loading="lazy"
-              />
-              <div class="frame-border"></div>
-            </div>
-            <div class="visual-accent"></div>
-          </div>
-
-          <div class="about-content">
-            <span class="section-label reveal">About Us</span>
-            <h2 class="section-title reveal reveal-delay-1">
-              세공 경력 30년,<br>
-              <em>신뢰</em>를 쌓아왔습니다
-            </h2>
-            <p class="section-desc reveal reveal-delay-2">
-              귀족은 서울 종로3가 귀금속 거리,
-              종묘귀금속백화점에서 2004년부터 운영 중인 금은방입니다.
-              세공 경력 30년의 장인이
-              정확한 납기, 일관된 품질, 투명한 가격을 지키며 직접 제작합니다.
-            </p>
-            <p class="section-desc reveal reveal-delay-2">
-              돌반지·커플링·결혼예물 주문제작부터
-              14K·18K·24K 순금 도매, 금·은 매입,
-              반지 사이즈 조절과 세공 수리까지
-              필요한 모든 일을 한 자리에서 해결하실 수 있습니다.
-            </p>
-
-            <div class="stats-row reveal reveal-delay-3">
-              <div class="stat-item">
-                <span class="stat-number">30<sup>+</sup></span>
-                <span class="stat-label">Years of Craft</span>
-              </div>
-              <div class="stat-divider"></div>
-              <div class="stat-item">
-                <span class="stat-number">도매</span>
-                <span class="stat-label">Wholesale</span>
-              </div>
-              <div class="stat-divider"></div>
-              <div class="stat-item">
-                <span class="stat-number">주문제작</span>
-                <span class="stat-label">Custom</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section-services">
-      <div class="services-bg">
-        <div class="gradient-orb gradient-orb-1"></div>
-        <div class="gradient-orb gradient-orb-2"></div>
-      </div>
-
-      <div class="container-lg">
-        <div class="services-header">
-          <span class="section-label reveal">Our Services</span>
-          <h2 class="section-title-light reveal reveal-delay-1">취급 품목</h2>
-          <p class="section-desc-light reveal reveal-delay-2">최고급 소재와 장인의 손길로 완성되는 귀금속</p>
-        </div>
-
-        <div class="services-grid">
-          <NuxtLink to="/baby-gold" class="service-card tilt-card reveal reveal-delay-1">
-            <div class="card-inner">
-              <div class="card-icon">
-                <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <circle cx="30" cy="30" r="16"/>
-                  <circle cx="30" cy="30" r="8"/>
-                  <path d="M30 14v4M30 42v4"/>
-                </svg>
-              </div>
-              <h3 class="card-title">돌반지</h3>
-              <p class="card-desc">24K 순금 돌반지, 백일반지<br>띠별 아기반지 주문제작</p>
-              <span class="card-link">자세히 보기 →</span>
-              <div class="card-glow"></div>
-            </div>
-          </NuxtLink>
-
-          <NuxtLink to="/couple-ring" class="service-card tilt-card reveal reveal-delay-2">
-            <div class="card-inner">
-              <div class="card-icon">
-                <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <circle cx="22" cy="30" r="14"/>
-                  <circle cx="38" cy="30" r="14"/>
-                </svg>
-              </div>
-              <h3 class="card-title">커플링</h3>
-              <p class="card-desc">14K 18K 커플링<br>이니셜 각인, 기념일 반지</p>
-              <span class="card-link">자세히 보기 →</span>
-              <div class="card-glow"></div>
-            </div>
-          </NuxtLink>
-
-          <NuxtLink to="/wedding" class="service-card tilt-card reveal reveal-delay-3">
-            <div class="card-inner">
-              <div class="card-icon">
-                <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <path d="M30 15l-15 25h30z"/>
-                  <circle cx="30" cy="42" r="6"/>
-                </svg>
-              </div>
-              <h3 class="card-title">결혼예물</h3>
-              <p class="card-desc">예물 세트, 결혼반지<br>시댁/처가 예물 맞춤 구성</p>
-              <span class="card-link">자세히 보기 →</span>
-              <div class="card-glow"></div>
-            </div>
-          </NuxtLink>
-
-          <NuxtLink to="/custom" class="service-card tilt-card reveal reveal-delay-4">
-            <div class="card-inner">
-              <div class="card-icon">
-                <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
-                  <path d="M20 45l-8-8 20-20 8 8z"/>
-                  <path d="M32 17l8 8"/>
-                  <circle cx="44" cy="16" r="4"/>
-                </svg>
-              </div>
-              <h3 class="card-title">주문제작</h3>
-              <p class="card-desc">원하는 디자인 맞춤 세공<br>30년 장인이 직접 제작</p>
-              <span class="card-link">자세히 보기 →</span>
-              <div class="card-glow"></div>
-            </div>
-          </NuxtLink>
-        </div>
-
-        <div class="services-cta reveal reveal-delay-5">
-          <NuxtLink to="/gallery" class="btn-gold">
-            <span>전체 갤러리 보기</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
-
-    <!-- Gallery Preview -->
-    <section class="section-gallery">
-      <div class="container-lg">
-        <div class="gallery-header">
-          <div class="gallery-title-wrap">
-            <span class="section-label reveal">Gallery</span>
-            <h2 class="section-title reveal reveal-delay-1">귀금속 컬렉션</h2>
-          </div>
-          <NuxtLink to="/gallery" class="btn-text reveal reveal-delay-2" aria-label="갤러리 전체 보기">
-            <span>전체 보기</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </NuxtLink>
-        </div>
-
-        <div class="gallery-showcase">
-          <div
-            v-for="(item, index) in previewItems"
-            :key="item.id"
-            class="gallery-item reveal"
-            :class="`reveal-delay-${index + 1}`"
+        <nav class="service-tiles" aria-label="서비스 바로가기">
+          <NuxtLink
+            v-for="(tile, index) in serviceTiles"
+            :key="tile.to"
+            :to="tile.to"
+            class="service-tile reveal"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+            @click="handleQuickStartClick(tile.label, tile.to)"
           >
-            <div class="item-image">
+            <span class="tile-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" v-html="iconPaths[tile.icon]"></svg>
+            </span>
+            <span class="tile-label">
+              <b>{{ tile.label }}</b>
+              <span class="tile-eng">{{ tile.eng }}</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">›</span>
+          </NuxtLink>
+        </nav>
+      </div>
+    </section>
+
+    <!-- About: 브랜드 소개 -->
+    <section id="about" class="section-block">
+      <div class="container-lg">
+        <div class="about-panel reveal">
+          <div class="about-visual">
+            <NuxtImg
+              src="/Image/main/home-trust-jewelry-still-life.webp"
+              alt="정밀 검수된 금반지와 주얼리 도구 - 세공 경력 30년 종로 금은방"
+              width="800"
+              height="600"
+              format="webp"
+              quality="90"
+              loading="lazy"
+              sizes="sm:100vw md:50vw lg:520px"
+            />
+          </div>
+          <div class="about-content">
+            <span class="sec-eyebrow">About Us</span>
+            <h2 class="block-title">세공 경력 30년,<br><em>신뢰</em>를 쌓아왔습니다</h2>
+            <p class="about-text">
+              귀족은 서울 종로3가 귀금속 거리, 종묘귀금속백화점에서 2004년부터 운영 중인 금은방입니다.
+              세공 경력 30년의 장인이 정확한 납기와 일관된 품질, 투명한 가격을 지키며 직접 제작합니다.
+            </p>
+            <p class="about-text">
+              돌반지·커플링·결혼예물 주문제작부터 14K·18K·24K 순금과 백금·은 도매,
+              금·은 매입, 반지 사이즈 조절과 세공 수리까지 한자리에서 해결하실 수 있습니다.
+            </p>
+            <div class="about-stats">
+              <div class="about-stat"><strong>30<sup>+</sup></strong><span>Years of Craft</span></div>
+              <div class="about-stat"><strong>도매</strong><span>Wholesale</span></div>
+              <div class="about-stat"><strong>주문제작</strong><span>Custom</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category: 품목·서비스별 안내 -->
+    <section class="section-block">
+      <div class="container-lg">
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">Category</span>
+            <h2 class="block-title">품목·서비스별 안내</h2>
+            <p class="block-desc">찾으시는 항목을 고르시면 소재·제작 기간·상담 기준을 함께 보실 수 있습니다</p>
+          </div>
+          <NuxtLink to="/gallery" class="block-more">갤러리 전체 보기 ›</NuxtLink>
+        </div>
+        <div class="cat-grid">
+          <NuxtLink
+            v-for="card in categoryCards"
+            :key="card.title"
+            :to="card.to"
+            class="cat-card reveal"
+            @click="handleCategoryClick(card.title, card.to)"
+          >
+            <span class="cat-media">
+              <NuxtImg
+                :src="card.image"
+                :alt="card.alt"
+                width="400"
+                height="533"
+                format="webp"
+                quality="88"
+                loading="lazy"
+                sizes="sm:56vw md:33vw lg:190px"
+              />
+              <span class="cat-frame" aria-hidden="true"></span>
+            </span>
+            <div class="cat-body">
+              <b>{{ card.title }}</b>
+              <span>{{ card.eng }}</span>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery: 제작 디자인 미리보기 -->
+    <section class="section-block">
+      <div class="container-lg">
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">Gallery</span>
+            <h2 class="block-title">귀족의 제품을 둘러보세요</h2>
+            <p class="block-desc">마음에 드는 제품을 기준으로 소재와 사이즈를 바꿔 주문하실 수 있습니다</p>
+          </div>
+          <NuxtLink to="/gallery" class="block-more">갤러리 전체 보기 ›</NuxtLink>
+        </div>
+        <div class="preview-grid">
+          <NuxtLink
+            v-for="item in previewItems"
+            :key="item.slug"
+            :to="`/gallery/${item.slug}`"
+            class="preview-card reveal"
+            @click="handleGalleryPreviewClick(item.title, item.slug)"
+          >
+            <span class="preview-media">
               <NuxtImg
                 :src="item.images[0]"
-                :alt="item.title"
+                :alt="item.imageAlts[0] ?? item.title"
+                width="400"
+                height="533"
                 format="webp"
-                quality="95"
-                sizes="sm:50vw md:33vw lg:400px"
+                quality="88"
                 loading="lazy"
+                sizes="sm:56vw md:33vw lg:190px"
               />
+              <span class="cat-frame" aria-hidden="true"></span>
+            </span>
+            <div class="preview-caption">
+              <span class="preview-name">
+                <b>{{ item.title }}</b>
+                <span>{{ categoryLabels[item.category] }}</span>
+              </span>
+              <span class="preview-plus" aria-hidden="true">+</span>
             </div>
-            <div class="item-overlay">
-              <span class="item-category">{{ categoryLabels[item.category] ?? '제품' }}</span>
-              <h3 class="item-title">{{ item.title }}</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-guide-links">
-      <div class="container-lg">
-        <div class="guide-links-header">
-          <span class="section-label reveal">Guide</span>
-          <h2 class="section-title reveal reveal-delay-1">상담 전에 읽어보세요</h2>
-          <p class="section-desc reveal reveal-delay-2">실제 문의가 많았던 질문을 정리한 가이드입니다.</p>
-        </div>
-        <div class="guide-links-grid">
-          <NuxtLink
-            v-for="(guide, index) in featuredGuides"
-            :key="guide.to"
-            :to="guide.to"
-            class="guide-link-card reveal"
-            :class="`reveal-delay-${index + 1}`"
-          >
-            <strong>{{ guide.title }}</strong>
-            <span>{{ guide.description }}</span>
           </NuxtLink>
         </div>
-        <div class="guide-links-footer reveal reveal-delay-4">
-          <NuxtLink to="/guide" class="btn-text">가이드 전체 보기</NuxtLink>
+      </div>
+    </section>
+
+    <!-- Guide: 상담 전 가이드 -->
+    <section class="section-block section-guide">
+      <div class="container-lg">
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">Guide</span>
+            <h2 class="block-title">상담 전에 보면 좋은 가이드</h2>
+            <p class="block-desc">실제 문의에서 가장 많이 나온 질문을 기준으로 정리했습니다</p>
+          </div>
+          <NuxtLink to="/guide" class="block-more">가이드 전체 보기 ›</NuxtLink>
+        </div>
+        <div class="guide-grid">
+          <NuxtLink
+            v-for="guide in featuredGuides"
+            :key="guide.to"
+            :to="guide.to"
+            class="guide-card reveal"
+          >
+            <span class="guide-cat">{{ guide.category }}</span>
+            <b>{{ guide.title }}</b>
+            <span class="guide-desc">{{ guide.description }}</span>
+          </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- Repair Section -->
-    <section id="repair" class="section-repair">
+    <!-- Process: 제작·수리 과정 -->
+    <section class="section-block">
       <div class="container-lg">
-        <div class="repair-grid">
-          <div class="repair-content">
-            <span class="section-label reveal">Repair & Service</span>
-            <h2 class="section-title reveal reveal-delay-1">수리/AS 안내</h2>
-            <p class="section-desc reveal reveal-delay-2">
-              30년 경력의 장인이 직접 수리합니다.<br>
-              반지 사이즈 조절부터 체인 수리까지, 모든 귀금속 수리가 가능합니다.
-            </p>
-
-            <div class="repair-list reveal reveal-delay-3">
-              <div class="repair-item">
-                <div class="repair-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="M12 8v4l2 2"/>
-                  </svg>
-                </div>
-                <div class="repair-info">
-                  <h3>반지 사이즈 조절</h3>
-                  <p>늘리기/줄이기 당일 가능</p>
-                </div>
-              </div>
-
-              <div class="repair-item">
-                <div class="repair-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                  </svg>
-                </div>
-                <div class="repair-info">
-                  <h3>세척 및 광택</h3>
-                  <p>금/은 세척, 광택 복원</p>
-                </div>
-              </div>
-
-              <div class="repair-item">
-                <div class="repair-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                  </svg>
-                </div>
-                <div class="repair-info">
-                  <h3>체인 수리</h3>
-                  <p>목걸이/팔찌 끊어짐 수리</p>
-                </div>
-              </div>
-
-              <div class="repair-item">
-                <div class="repair-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                  </svg>
-                </div>
-                <div class="repair-info">
-                  <h3>기타 수리</h3>
-                  <p>귀걸이 침 교체, 보석 재세팅</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="repair-cta reveal reveal-delay-4">
-              <NuxtLink to="/repair" class="btn-outline-gold">
-                <span>수리 안내 자세히 보기</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </NuxtLink>
-            </div>
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">Process</span>
+            <h2 class="block-title">제작 · 수리 과정</h2>
+            <p class="block-desc">상담부터 수령까지, 정확하고 투명하게 진행됩니다</p>
           </div>
+        </div>
+        <div class="process">
+          <div v-for="step in processSteps" :key="step.num" class="process-step reveal">
+            <span class="process-node">
+              <svg viewBox="0 0 24 24" aria-hidden="true" v-html="iconPaths[step.icon]"></svg>
+            </span>
+            <b><i>{{ step.num }}</i>{{ step.title }}</b>
+            <span>{{ step.desc }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="repair-visual reveal reveal-right">
-            <div class="repair-image-wrap">
-              <NuxtImg
-                src="/Image/main/home-repair-tools-still-life.webp"
-                alt="반지 사이즈 조절과 귀금속 수리를 위한 전문 도구와 금반지"
-                format="webp"
-                quality="95"
-                sizes="sm:100vw md:50vw lg:500px"
-                loading="lazy"
-              />
-              <div class="repair-image-border"></div>
+    <!-- Repair: 수리·AS -->
+    <section id="repair" class="section-block">
+      <div class="container-lg">
+        <div class="repair-panel reveal">
+          <div class="repair-body">
+            <span class="sec-eyebrow">Repair</span>
+            <h2 class="block-title">수리 · AS 서비스</h2>
+            <p class="block-desc repair-desc">소중한 주얼리, 새것처럼 — 30년 경력의 장인이 직접 수리합니다</p>
+            <div class="repair-checks">
+              <div v-for="check in repairChecks" :key="check.title" class="repair-check">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>
+                <span>{{ check.title }}<small>{{ check.desc }}</small></span>
+              </div>
+            </div>
+            <NuxtLink to="/repair" class="panel-link">수리 안내 자세히 보기 ›</NuxtLink>
+          </div>
+          <div class="repair-media">
+            <NuxtImg
+              src="/Image/main/home-repair-tools-still-life.webp"
+              alt="귀금속 수리 작업 도구 - 종로 금은방 반지 사이즈 조절"
+              width="720"
+              height="540"
+              format="webp"
+              quality="88"
+              loading="lazy"
+              sizes="sm:100vw md:50vw lg:560px"
+            />
+            <div class="repair-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              <span><b>당일 접수</b><span>반지 사이즈 조절은 당일 접수 가능합니다</span></span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Buy Gold Section -->
-    <section id="buy-gold" class="section-buy-gold">
+    <!-- Buy Gold + Calculator -->
+    <section id="buy-gold" class="section-block">
       <div class="container-lg">
-        <div class="buy-gold-inner">
-          <span class="section-label reveal">Gold & Silver</span>
-          <h2 class="section-title reveal reveal-delay-1">금/은 매입</h2>
-          <p class="section-desc reveal reveal-delay-2">
-            사용하지 않는 귀금속을 정당한 가격으로 매입합니다.<br>
-            당일 시세 적용, 현금 즉시 지급.
-          </p>
-
-          <div class="buy-gold-items reveal reveal-delay-3">
-            <div class="buy-item">
-              <span class="buy-item-title">금 (Gold)</span>
-              <span class="buy-item-desc">순금, 18K, 14K, 골드바</span>
-            </div>
-            <div class="buy-item">
-              <span class="buy-item-title">은 (Silver)</span>
-              <span class="buy-item-desc">순은, 실버바, 은 장신구</span>
-            </div>
-            <div class="buy-item">
-              <span class="buy-item-title">기타</span>
-              <span class="buy-item-desc">백금, 금니, 부서진 귀금속</span>
-            </div>
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">Gold Purchase</span>
+            <h2 class="block-title">금 · 은 매입과 돈수 계산</h2>
+            <p class="block-desc">순도와 중량을 확인해 당일 시세로 안내합니다</p>
+          </div>
+        </div>
+        <div class="buy-row">
+          <div class="buy-panel reveal">
+            <h3 class="panel-title">매입 품목</h3>
+            <p class="panel-desc">감정 결과와 최종 금액 확인 후 당일 지급합니다</p>
+            <ul class="buy-list">
+              <li v-for="item in buyItems" :key="item.title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>
+                <div><b>{{ item.title }}</b><span>{{ item.desc }}</span></div>
+              </li>
+            </ul>
+            <NuxtLink to="/buy-gold" class="panel-link">매입 안내 자세히 보기 ›</NuxtLink>
           </div>
 
-          <div class="buy-gold-cta reveal reveal-delay-4">
-            <NuxtLink to="/buy-gold" class="btn-outline-gold">
-              <span>매입 안내 자세히 보기</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </NuxtLink>
+          <div class="calc-panel reveal reveal-delay-1">
+            <h3 class="panel-title">금 돈수 계산기</h3>
+            <p class="panel-desc">돈·그램을 환산하고 순도별 실제 금 함량을 확인하세요</p>
+            <GoldWeightCalculator id-prefix="home-gold-weight" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Weight Calculator Section -->
-    <section id="calculator" class="section-calc">
+    <!-- FAQ: 상담 전 자주 묻는 질문 -->
+    <section class="section-block section-faq">
       <div class="container-lg">
-        <div class="calc-inner">
-          <span class="section-label reveal">Calculator</span>
-          <h2 class="section-title reveal reveal-delay-1">금 무게 환산 계산기</h2>
-          <p class="section-desc reveal reveal-delay-2">
-            가지고 계신 귀금속의 무게를 돈·그램으로 환산하고
-            순도별 순금 함량을 바로 확인해보세요.
-          </p>
-
-          <GoldWeightCalculator id-prefix="home-gold-weight" class="reveal reveal-delay-3" />
+        <div class="block-head reveal">
+          <div>
+            <span class="sec-eyebrow">FAQ</span>
+            <h2 class="block-title">자주 묻는 질문</h2>
+            <p class="block-desc">상담 전에 가장 많이 물어보시는 내용을 모았습니다</p>
+          </div>
+          <NuxtLink to="/faq" class="block-more">질문 전체 보기 ›</NuxtLink>
+        </div>
+        <div class="faq-grid">
+          <details v-for="faq in homeFaqs" :key="faq.id" class="faq-item reveal">
+            <summary>
+              <span>{{ faq.question }}</span>
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <p>{{ faq.answer }}</p>
+          </details>
         </div>
       </div>
     </section>
@@ -823,20 +796,29 @@ const handleNaverMapClick = () => {
     <!-- CTA Section -->
     <section class="section-cta">
       <div class="cta-bg">
+        <NuxtImg
+          src="/Image/main/home-cta-jewelry-banner.webp"
+          alt=""
+          aria-hidden="true"
+          width="1536"
+          height="640"
+          format="webp"
+          quality="82"
+          loading="lazy"
+          sizes="sm:100vw md:100vw lg:1600px"
+        />
         <div class="cta-gradient"></div>
+        <span class="cta-frame" aria-hidden="true"></span>
       </div>
       <div class="container-lg">
         <div class="cta-content">
-          <h2 class="cta-title reveal">
-            <span>지금</span>
-            <em>문의</em>
-            <span>하세요</span>
-          </h2>
-          <p class="cta-desc reveal reveal-delay-1">
-            도매 상담, 주문 제작, 수리 문의 등<br>
-            무엇이든 편하게 연락주세요.
+          <p class="cta-kicker reveal">Consultation</p>
+          <h2 class="cta-title reveal reveal-delay-1">소중한 순간을 위한 <em>단 하나</em>의 주얼리</h2>
+          <p class="cta-desc reveal reveal-delay-2">
+            원하시는 디자인 사진과 소재·사이즈·희망일을 보내주시면<br>
+            제작 가능 여부와 견적을 빠르게 안내해드립니다.
           </p>
-          <div class="cta-actions reveal reveal-delay-2">
+          <div class="cta-actions reveal reveal-delay-3">
             <a
               :href="siteConfig.social.kakaoOpenChat"
               target="_blank"
@@ -844,7 +826,7 @@ const handleNaverMapClick = () => {
               class="cta-btn cta-btn-kakao"
               @click="handleCtaKakaoClick"
             >
-              카카오톡 문의
+              카카오톡 상담
             </a>
             <a
               :href="`tel:${siteConfig.phone}`"
@@ -890,154 +872,6 @@ const handleNaverMapClick = () => {
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 60px);
 }
-
-/* ===== Navigation ===== */
-.nav-luxury {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px clamp(20px, 5vw, 60px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(20px);
-  padding: 16px clamp(20px, 5vw, 60px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-}
-
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  gap: 2px;
-}
-
-.logo-text {
-  font-family: var(--font-body);
-  font-size: 28px;
-  font-weight: 700;
-  color: #fafafa;
-  letter-spacing: 0.15em;
-}
-
-
-.nav-links.desktop-nav {
-  display: none;
-  align-items: center;
-  gap: 40px;
-}
-
-@media (min-width: 900px) {
-  .nav-links.desktop-nav {
-    display: flex;
-  }
-}
-
-.nav-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.7);
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  transition: color 0.3s;
-  position: relative;
-  padding: 0 4px;
-  z-index: 10;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: #c9a227;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-link:hover {
-  color: #fafafa;
-}
-
-.nav-link:hover::after {
-  transform: scaleX(1);
-}
-
-.nav-cta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #0a0a0a;
-  background: #c9a227;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-cta:hover {
-  background: #fafafa;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
-}
-
-.nav-toggle {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  z-index: 1002;
-}
-
-@media (min-width: 900px) {
-  .nav-toggle {
-    display: none;
-  }
-}
-
-.nav-toggle span {
-  width: 28px;
-  height: 2px;
-  background: #fafafa;
-  transition: all 0.3s;
-}
-
-.nav-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.nav-toggle.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
-
-
 /* ===== Hero Section ===== */
 .hero {
   position: relative;
@@ -1391,138 +1225,6 @@ const handleNaverMapClick = () => {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(20px, -20px); }
 }
-
-/* ===== Intent Router ===== */
-.section-intent-router {
-  padding: 48px 0 0;
-  background: #0a0a0a;
-}
-
-.intent-router-shell {
-  padding: 28px;
-  border: 1px solid rgba(201, 162, 39, 0.18);
-  background:
-    radial-gradient(circle at top right, rgba(201, 162, 39, 0.1), transparent 36%),
-    linear-gradient(180deg, rgba(250, 250, 250, 0.02), rgba(250, 250, 250, 0.01));
-}
-
-.intent-router-header {
-  max-width: 760px;
-  margin-bottom: 24px;
-}
-
-.intent-router-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.intent-router-card {
-  display: block;
-  min-height: 220px;
-  padding: 24px;
-  text-decoration: none;
-  color: #fafafa;
-  border: 1px solid rgba(250, 250, 250, 0.08);
-  background: rgba(250, 250, 250, 0.02);
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-}
-
-.intent-router-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201, 162, 39, 0.45);
-  background: rgba(201, 162, 39, 0.06);
-}
-
-.intent-router-eyebrow {
-  display: inline-block;
-  margin-bottom: 16px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #c9a227;
-}
-
-.intent-router-card strong {
-  display: block;
-  margin-bottom: 12px;
-  font-size: 24px;
-  font-weight: 300;
-  line-height: 1.45;
-}
-
-.intent-router-card p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.85;
-  color: rgba(250, 250, 250, 0.72);
-}
-
-/* ===== About Section ===== */
-.section-about {
-  padding: 160px 0;
-  background: #0a0a0a;
-  overflow: hidden;
-}
-
-.about-grid {
-  display: grid;
-  gap: 80px;
-  align-items: center;
-}
-
-@media (min-width: 900px) {
-  .about-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.about-visual {
-  position: relative;
-}
-
-.visual-frame {
-  position: relative;
-  aspect-ratio: 4/5;
-  overflow: hidden;
-}
-
-.visual-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.frame-border {
-  position: absolute;
-  inset: 20px;
-  border: 1px solid rgba(201, 162, 39, 0.3);
-  pointer-events: none;
-}
-
-.visual-accent {
-  position: absolute;
-  bottom: -40px;
-  right: 0;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .visual-accent {
-    right: -40px;
-    width: 200px;
-    height: 200px;
-  }
-}
-
-.about-content {
-  max-width: 560px;
-}
-
 .section-label {
   display: inline-block;
   font-size: 11px;
@@ -1554,649 +1256,745 @@ const handleNaverMapClick = () => {
   line-height: 1.9;
   color: rgba(250, 250, 250, 0.6);
 }
-
-/* About 문단: 줄 길이 균형 + 문단 간격 */
-.about-content .section-desc {
-  text-wrap: balance;
-  margin-bottom: 18px;
+/* ═══════════════════════════════════════════════════════════
+   섹션 공통 — 목업(mocks/home-redesign.html) 기준
+   간격은 6/10/16/20/24/40 스케일, 색은 main.css 토큰만 사용
+   ═══════════════════════════════════════════════════════════ */
+.section-block {
+  padding: clamp(52px, 7vw, 84px) 0;
 }
 
-.about-content .section-desc:last-of-type {
-  margin-bottom: 0;
+/* 카드 경계 — 기본 hairline(0.08)은 #0a0a0a 배경에서 거의 보이지 않아 한 단계 밝게 잡는다 */
+.section-block {
+  --card-line: rgba(245, 230, 204, 0.16);
+  --card-line-hover: rgba(201, 162, 39, 0.5);
 }
 
-.stats-row {
-  display: flex;
-  gap: 40px;
-  margin-top: 48px;
-  padding-top: 48px;
-  border-top: 1px solid rgba(250, 250, 250, 0.1);
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.stat-number {
-  font-family: var(--font-body);
-  font-size: clamp(36px, 4vw, 48px);
-  font-weight: 300;
-  color: #fafafa;
-}
-
-.stat-number sup {
-  font-size: 0.5em;
-  color: #c9a227;
-}
-
-.stat-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.6);
-}
-
-.stat-divider {
-  width: 1px;
-  background: rgba(250, 250, 250, 0.1);
-}
-
-/* ===== Services Section ===== */
-.section-services {
-  position: relative;
-  padding: 160px 0;
-  background: #0a0a0a;
-  overflow: hidden;
-}
-
-.services-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.gradient-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-}
-
-.gradient-orb-1 {
-  top: -100px;
-  left: -100px;
-  width: 300px;
-  height: 300px;
-  background: rgba(201, 162, 39, 0.08);
-}
-
-.gradient-orb-2 {
-  bottom: -100px;
-  right: -100px;
-  width: 250px;
-  height: 250px;
-  background: rgba(201, 162, 39, 0.06);
-}
-
-@media (min-width: 768px) {
-  .gradient-orb-1 {
-    top: -200px;
-    left: -200px;
-    width: 600px;
-    height: 600px;
-  }
-  .gradient-orb-2 {
-    bottom: -200px;
-    right: -200px;
-    width: 500px;
-    height: 500px;
-  }
-}
-
-.services-header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-
-.section-title-light {
-  font-family: var(--font-body);
-  font-size: clamp(36px, 6vw, 56px);
-  font-weight: 300;
-  color: #fafafa;
-  margin-bottom: 16px;
-}
-
-.section-desc-light {
-  font-size: 16px;
-  font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-@media (min-width: 900px) {
-  .services-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.service-card {
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card-inner {
-  position: relative;
-  padding: 48px 28px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
-  text-align: center;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.service-card:hover .card-inner {
-  background: rgba(250, 250, 250, 0.05);
-  border-color: rgba(201, 162, 39, 0.3);
-}
-
-.card-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 24px;
-  color: #c9a227;
-}
-
-.card-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.card-title {
-  font-family: var(--font-body);
-  font-size: 24px;
-  font-weight: 300;
-  color: #fafafa;
-  margin-bottom: 12px;
-}
-
-.card-desc {
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.7;
-  color: rgba(250, 250, 250, 0.5);
-}
-
-.card-link {
+.sec-eyebrow {
   display: inline-block;
   font-size: 12px;
   font-weight: 700;
-  color: #c9a227;
-  margin-top: 16px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
 }
 
-.service-card:hover .card-link {
-  opacity: 1;
-  transform: translateY(0);
+.block-title {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  text-wrap: balance;
 }
 
-@media (max-width: 1023px) {
-  .card-link {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.block-title em {
+  font-style: normal;
+  color: var(--gold);
 }
 
-.card-glow {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(50%);
-  width: 150px;
-  height: 100px;
-  background: radial-gradient(ellipse, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s;
+.block-desc {
+  font-size: 15px;
+  color: var(--gray);
+  margin-top: 6px;
 }
 
-.service-card:hover .card-glow {
-  opacity: 1;
-}
-
-.services-cta {
-  text-align: center;
-  margin-top: 60px;
-}
-
-.btn-gold {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #0a0a0a;
-  background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.25);
-  transition: all 0.3s;
-}
-
-.btn-gold::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #d4b44a 0%, #d4b44a 100%);
-  opacity: 0;
-  transition: opacity 0.4s;
-  z-index: 0;
-}
-
-.btn-gold:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(201, 162, 39, 0.35);
-}
-
-.btn-gold:hover::before {
-  opacity: 1;
-}
-
-.btn-gold span,
-.btn-gold svg {
-  position: relative;
-  z-index: 1;
-}
-
-.btn-kakao {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #3C1E1E;
-  background: #FEE500;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.btn-kakao:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(254, 229, 0, 0.3);
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fafafa;
-  background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.3);
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.btn-outline:hover {
-  border-color: #c9a227;
-  color: #c9a227;
-  transform: translateY(-2px);
-}
-
-/* ===== Gallery Section ===== */
-.section-gallery {
-  padding: 160px 0;
-  background: #0f0f0f;
-  overflow: hidden;
-}
-
-.gallery-header {
+.block-head {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 60px;
-  flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
-.btn-text {
+.block-more {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--gold);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out-quart);
+}
+
+.block-more:hover { color: var(--gold-light); }
+
+.panel-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.panel-desc {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: auto;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--gold);
   font-size: 14px;
   font-weight: 700;
-  color: #c9a227;
   text-decoration: none;
-  transition: gap 0.3s;
+  transition: background-color 0.25s var(--ease-out-quart);
 }
 
-.btn-text:hover {
-  gap: 12px;
-}
+.panel-link:hover { background: rgba(201, 162, 39, 0.1); }
 
-.gallery-showcase {
+/* ===== Quick Start ===== */
+.quick-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: minmax(200px, 0.62fr) minmax(0, 2.6fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: center;
 }
 
-@media (min-width: 900px) {
-  .gallery-showcase {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 280px);
-  }
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.item-image {
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-}
-
-.item-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gallery-item:hover .item-image img {
-  transform: scale(1.08);
-}
-
-.item-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10, 10, 10, 0.9) 0%, transparent 60%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 28px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gallery-item:hover .item-overlay {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.item-category {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #c9a227;
-  margin-bottom: 8px;
-}
-
-.item-title {
-  font-family: var(--font-body);
-  font-size: 20px;
-  font-weight: 300;
-  color: #fafafa;
-}
-
-/* ===== Guide Links Section ===== */
-.section-guide-links {
-  padding: 120px 0;
-  background: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%);
-}
-
-.guide-links-header {
-  max-width: 760px;
-  margin-bottom: 36px;
-}
-
-.guide-links-grid {
+.service-tiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.guide-link-card {
+.service-tile {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 150px;
+  padding: 16px;
+  background: var(--black-lighter);
+  border: 1px solid rgba(250, 250, 250, 0.08);
   text-decoration: none;
-  padding: 20px;
-  border: 1px solid rgba(201, 162, 39, 0.28);
-  background: rgba(201, 162, 39, 0.05);
-  transition: border-color 0.25s, transform 0.25s;
+  color: inherit;
+  transition: border-color 0.25s var(--ease-out-quart),
+              background-color 0.25s var(--ease-out-quart),
+              transform 0.25s var(--ease-out-quart);
 }
 
-.guide-link-card:hover {
-  border-color: #c9a227;
+.service-tile:hover {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.1);
   transform: translateY(-3px);
 }
 
-.guide-link-card strong {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fafafa;
-}
-
-.guide-link-card span {
-  font-size: 13px;
-  color: rgba(250, 250, 250, 0.7);
-  line-height: 1.7;
-}
-
-.guide-links-footer {
-  margin-top: 24px;
-}
-
-/* ===== Repair Section ===== */
-.section-repair {
-  padding: 160px 0;
-  background: #0a0a0a;
-  overflow: hidden;
-}
-
-.repair-grid {
+.tile-icon {
   display: grid;
-  gap: 60px;
-  align-items: center;
-}
-
-@media (min-width: 900px) {
-  .repair-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-  }
-}
-
-.repair-content {
-  max-width: 560px;
-}
-
-.repair-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 40px;
-}
-
-@media (max-width: 640px) {
-  .repair-list {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-.repair-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.repair-item:hover {
-  background: rgba(250, 250, 250, 0.04);
-  border-color: rgba(201, 162, 39, 0.3);
-}
-
-.repair-icon {
-  flex-shrink: 0;
+  place-items: center;
   width: 40px;
   height: 40px;
-  color: #c9a227;
+  border: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.repair-icon svg {
-  width: 100%;
-  height: 100%;
+.tile-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 1.4;
 }
 
-.repair-info h3 {
-  font-family: var(--font-body);
-  font-size: 16px;
+.tile-label { display: grid; gap: 2px; }
+.tile-label b { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.tile-eng { font-size: 12px; letter-spacing: 0.08em; color: var(--gray); }
+.tile-arrow { margin-top: auto; color: var(--gold); font-size: 16px; line-height: 1; }
+
+/* ===== About ===== */
+.about-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: var(--black-light);
+}
+
+.about-visual { position: relative; min-height: 300px; overflow: hidden; }
+.about-visual :deep(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-content { padding: clamp(24px, 4vw, 48px); }
+.about-content .block-title { margin-bottom: 16px; }
+
+.about-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.72);
+  margin-bottom: 10px;
+}
+
+.about-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.about-stat {
+  padding: 0 clamp(16px, 3vw, 40px);
+  border-left: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.about-stat:first-child { padding-left: 0; border-left: none; }
+
+.about-stat strong {
+  display: block;
+  font-size: clamp(22px, 4vw, 30px);
   font-weight: 700;
-  color: #fafafa;
-  margin-bottom: 6px;
+  color: var(--gold);
 }
 
-.repair-info p {
-  font-size: 13px;
-  font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
-}
+.about-stat strong sup { font-size: 0.5em; vertical-align: super; }
+.about-stat span { font-size: 12px; letter-spacing: 0.08em; color: var(--gray); }
 
-.repair-cta {
-  margin-top: 40px;
-}
+/* ===== Category ===== */
+.cat-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
 
-.repair-visual {
+/* 사진 위에 글자를 얹지 않는다 — 사진은 사진대로 보이고 캡션은 아래에서 읽힌다 */
+.cat-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--card-line);
+  background: var(--black-lighter);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.4s var(--ease-out-quart), background-color 0.4s var(--ease-out-quart);
 }
 
-.repair-image-wrap {
+.cat-card:hover { border-color: var(--card-line-hover); background: #201c14; }
+
+.cat-media {
+  display: block;
+  flex: 0 0 auto;
   position: relative;
-  aspect-ratio: 4/5;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
 }
 
-.repair-image-wrap img {
+.cat-card :deep(img) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease-out-expo);
 }
 
-.repair-image-border {
+.cat-card:hover :deep(img) { transform: scale(1.05); }
+
+/* 사진 안쪽 골드 헤어라인 — 호버 시에만 은은하게 */
+.cat-frame {
   position: absolute;
-  inset: 20px;
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  inset: 10px;
+  border: 1px solid rgba(245, 230, 204, 0);
+  pointer-events: none;
+  transition: border-color 0.5s var(--ease-out-quart);
+  z-index: 1;
+}
+
+.cat-card:hover .cat-frame,
+.preview-card:hover .cat-frame { border-color: rgba(245, 230, 204, 0.28); }
+
+.cat-body {
+  padding: 16px;
+  border-top: 1px solid var(--card-line);
+  background: transparent;
+  flex: 0 0 auto;
+}
+
+.cat-body b {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(15px * 1.45);
+  line-height: 1.45;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.cat-body span {
+  display: block;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  color: var(--gold-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Gallery Preview ===== */
+.preview-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+
+.preview-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--card-line);
+  background: var(--black-lighter);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.4s var(--ease-out-quart), background-color 0.4s var(--ease-out-quart);
+}
+
+.preview-card:hover { border-color: var(--card-line-hover); background: #201c14; }
+
+.preview-media {
+  display: block;
+  flex: 0 0 auto;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.preview-card :deep(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.preview-card:hover :deep(img) { transform: scale(1.05); }
+
+.preview-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--card-line);
+  background: transparent;
+  flex: 0 0 auto;
+}
+
+.preview-name { min-width: 0; }
+
+/* 제품명 길이와 무관하게 2줄 분량을 항상 확보해 카드 높이를 통일한다 */
+.preview-name b {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(14px * 1.45 * 2);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.preview-name span { display: block; font-size: 11px; line-height: 1.4; letter-spacing: 0.16em; color: var(--gold-dark); }
+
+.preview-plus {
+  flex: 0 0 auto;
+  color: var(--gold);
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 300;
+  transition: transform 0.4s var(--ease-out-quart);
+}
+
+.preview-card:hover .preview-plus { transform: rotate(90deg); }
+
+/* ===== Guide ===== */
+.section-guide {
+  background: var(--black-light);
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 132px;
+  padding: 20px;
+  background: var(--black);
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
+}
+
+.guide-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.guide-cat { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--gold); }
+.guide-card b { font-size: 17px; font-weight: 700; line-height: 1.45; letter-spacing: -0.01em; color: var(--white); }
+.guide-desc { font-size: 14px; color: var(--gray); line-height: 1.55; margin-top: auto; }
+
+/* ===== Process ===== */
+.process {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.process::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(201, 162, 39, 0.35) 0 6px, transparent 6px 14px);
+}
+
+.process-step { position: relative; text-align: center; padding: 0 6px; }
+
+.process-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  background: var(--black-light);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.process-node svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+.process-step b { display: block; font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--white); }
+.process-step b i { font-style: normal; color: var(--gold); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.process-step span { font-size: 13px; color: var(--gray); line-height: 1.55; }
+
+/* ===== Repair ===== */
+.repair-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: var(--black-light);
+}
+
+.repair-body { padding: clamp(24px, 4vw, 48px); display: flex; flex-direction: column; }
+.repair-desc { margin-bottom: 24px; }
+
+.repair-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.repair-check { display: flex; gap: 10px; align-items: start; font-size: 15px; line-height: 1.5; color: var(--white); }
+.repair-check svg { flex: 0 0 18px; width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; margin-top: 3px; }
+.repair-check small { display: block; font-size: 13px; color: var(--gray); }
+
+.repair-media { position: relative; min-height: 280px; overflow: hidden; }
+.repair-media :deep(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.repair-badge {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 16px;
+  max-width: 250px;
+  background: rgba(10, 10, 10, 0.62);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.repair-badge svg { flex: 0 0 22px; width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+.repair-badge b { display: block; font-size: 14px; font-weight: 700; color: var(--white); }
+.repair-badge span span { font-size: 13px; color: rgba(250, 250, 250, 0.72); line-height: 1.45; }
+
+/* ===== Buy Gold + Calculator ===== */
+.buy-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.buy-panel,
+.calc-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: var(--black-light);
+  padding: clamp(24px, 3vw, 32px);
+}
+
+.buy-list { list-style: none; display: grid; gap: 16px; margin: 0 0 20px; padding: 0; }
+.buy-list li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; }
+.buy-list svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; margin-top: 3px; }
+.buy-list b { display: block; font-size: 15px; font-weight: 600; color: var(--white); }
+.buy-list span { font-size: 13px; color: var(--gray); line-height: 1.5; }
+
+/* 계산기가 더 높을 때 남는 공간을 리스트 위아래로 분배 */
+.buy-panel .buy-list { margin-block: auto; }
+
+/* ===== FAQ ===== */
+.section-faq {
+  background: var(--black-light);
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faq-item {
+  border: 1px solid var(--card-line);
+  background: var(--black);
+  transition: border-color 0.3s var(--ease-out-quart);
+}
+
+.faq-item:hover { border-color: var(--card-line-hover); }
+.faq-item[open] { border-color: rgba(201, 162, 39, 0.35); }
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 60px;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-mark {
+  position: relative;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+}
+
+.faq-mark::before,
+.faq-mark::after {
+  content: '';
+  position: absolute;
+  background: var(--gold);
+  transition: transform 0.3s var(--ease-out-quart);
+}
+
+.faq-mark::before { top: 5px; left: 0; width: 12px; height: 1px; }
+.faq-mark::after { top: 0; left: 5px; width: 1px; height: 12px; }
+.faq-item[open] .faq-mark::after { transform: rotate(90deg); }
+
+.faq-item p {
+  padding: 0 20px 20px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--gray);
+}
+
+/* ===== CTA Section ===== */
+.section-cta {
+  position: relative;
+  padding: clamp(72px, 10vw, 128px) 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cta-bg :deep(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+}
+
+/* 가운데는 살짝 열어 제품이 비치고, 가장자리로 갈수록 깊게 잠기는 비네트 */
+/* 배너 자체가 좌측에 어두운 여백을 갖고 있어 오버레이는 가볍게만 얹는다 */
+.cta-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.72) 45%, rgba(10, 10, 10, 0.5) 100%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.35) 0%, rgba(10, 10, 10, 0.15) 45%, rgba(10, 10, 10, 0.55) 100%);
+}
+
+/* 샴페인 헤어라인 액자 */
+.cta-frame {
+  position: absolute;
+  inset: clamp(16px, 3vw, 40px);
+  border: 1px solid rgba(245, 230, 204, 0.18);
   pointer-events: none;
 }
 
-@media (max-width: 899px) {
-  .repair-visual {
-    order: -1;
-  }
-
-  .repair-image-wrap {
-    aspect-ratio: 16/9;
-  }
-}
-
-/* ===== Buy Gold Section ===== */
-.section-buy-gold {
-  padding: 160px 0;
-  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+.cta-content {
+  position: relative;
+  z-index: 1;
   text-align: center;
 }
 
-.buy-gold-inner {
-  max-width: 800px;
-  margin: 0 auto;
+.cta-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
 }
 
-.buy-gold-items {
+.cta-title em { font-style: normal; color: var(--gold); }
+
+.cta-title {
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 10px;
+  text-wrap: balance;
+}
+
+.cta-desc {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--gray);
+  margin-bottom: 24px;
+}
+
+.cta-actions {
   display: flex;
+  gap: 10px;
   justify-content: center;
-  gap: 40px;
-  margin: 48px 0;
   flex-wrap: wrap;
 }
 
-.buy-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 24px 32px;
-  background: rgba(201, 162, 39, 0.05);
-  border: 1px solid rgba(201, 162, 39, 0.2);
-  min-width: 180px;
-  transition: all 0.3s;
-}
-
-.buy-item:hover {
-  border-color: rgba(201, 162, 39, 0.4);
-  transform: translateY(-4px);
-}
-
-.buy-item-title {
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 28px;
   font-size: 16px;
   font-weight: 700;
-  color: #c9a227;
+  text-decoration: none;
+  transition: background-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
 }
 
-.buy-item-desc {
-  font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+.cta-btn-kakao {
+  background: var(--gold);
+  color: var(--black);
+  border: 1px solid var(--gold);
 }
 
-.buy-gold-cta {
-  margin-top: 16px;
+.cta-btn-kakao:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+.cta-btn-phone {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 600px) {
-  .buy-gold-items {
-    flex-direction: column;
-    gap: 16px;
+.cta-btn-phone:hover { background: rgba(201, 162, 39, 0.1); }
+
+/* ═══════════ 반응형 ═══════════ */
+@media (max-width: 1023px) {
+  .quick-row { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .service-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .about-panel { grid-template-columns: minmax(0, 1fr); }
+  .about-visual { min-height: 0; aspect-ratio: 16 / 9; }
+  .cat-grid,
+  .preview-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faq-grid { grid-template-columns: minmax(0, 1fr); }
+  .repair-panel { grid-template-columns: minmax(0, 1fr); }
+  .repair-media { min-height: 0; aspect-ratio: 16 / 9; order: -1; }
+  .buy-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  /* 카드 줄 → 가로 스와이프. 다음 카드가 걸쳐 보이게 해 스와이프를 암시한다 */
+  .service-tiles,
+  .cat-grid,
+  .preview-grid {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    margin-inline: calc(-1 * clamp(20px, 5vw, 60px));
+    padding-inline: clamp(20px, 5vw, 60px);
+    padding-bottom: 10px;
+    scroll-padding-inline: clamp(20px, 5vw, 60px);
+    scrollbar-width: none;
   }
 
-  .buy-item {
-    min-width: auto;
+  .service-tiles::-webkit-scrollbar,
+  .cat-grid::-webkit-scrollbar,
+  .preview-grid::-webkit-scrollbar { display: none; }
+
+  .service-tile { flex: 0 0 148px; scroll-snap-align: start; }
+  .cat-card,
+  .preview-card { flex: 0 0 56vw; scroll-snap-align: start; }
+  .cat-media,
+  .preview-media { aspect-ratio: 1 / 1; }
+
+  /* 가이드는 훑어 찾는 콘텐츠 — 스와이프 대신 전부 노출 */
+  .guide-grid { grid-template-columns: minmax(0, 1fr); }
+  .guide-card { min-height: 0; padding: 16px 20px; }
+
+  /* 과정은 흐름이 보이도록 세로 일렬 + 세로 점선 */
+  .process { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .process::before { display: none; }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    column-gap: 16px;
+    row-gap: 2px;
+    text-align: left;
+    padding: 0 0 24px;
+    position: relative;
   }
-}
 
-/* ===== Weight Calculator Section ===== */
-.section-calc {
-  padding: 120px 0 160px;
-  background: #0f0f0f;
-  text-align: center;
-}
+  .process-step:last-child { padding-bottom: 0; }
+  .process-node { grid-row: 1 / 3; margin: 0; }
 
-.calc-inner {
-  max-width: 640px;
-  margin: 0 auto;
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 48px;
+    bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(180deg, rgba(201, 162, 39, 0.35) 0 6px, transparent 6px 14px);
+  }
+
+  .process-step b { margin-bottom: 0; align-self: end; }
+
+  .block-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .repair-checks { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ===== Location Section ===== */
@@ -2334,92 +2132,6 @@ const handleNaverMapClick = () => {
   color: rgba(250, 250, 250, 0.5);
   font-size: 14px;
 }
-
-/* ===== CTA Section ===== */
-.section-cta {
-  position: relative;
-  padding: 160px 0;
-  overflow: hidden;
-}
-
-.cta-bg {
-  position: absolute;
-  inset: 0;
-}
-
-.cta-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #0a0a0a 100%);
-}
-
-.cta-content {
-  position: relative;
-  text-align: center;
-}
-
-.cta-title {
-  font-family: var(--font-body);
-  font-size: clamp(48px, 8vw, 80px);
-  font-weight: 300;
-  color: #fafafa;
-  margin-bottom: 24px;
-  line-height: 1.2;
-}
-
-.cta-title em {
-  font-style: normal;
-  font-weight: 700;
-  color: #c9a227;
-}
-
-.cta-desc {
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.9;
-  color: rgba(250, 250, 250, 0.5);
-  margin-bottom: 48px;
-}
-
-.cta-actions {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 200px;
-  padding: 18px 36px;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.cta-btn-kakao {
-  color: #0a0a0a;
-  background: #c9a227;
-}
-
-.cta-btn-kakao:hover {
-  background: #d4b44a;
-  transform: translateY(-2px);
-}
-
-.cta-btn-phone {
-  color: #fafafa;
-  border: 1px solid rgba(250, 250, 250, 0.3);
-}
-
-.cta-btn-phone:hover {
-  border-color: #c9a227;
-  color: #c9a227;
-}
-
 /* ===== Reveal Animations ===== */
 .reveal {
   opacity: 0;
@@ -2454,134 +2166,6 @@ const handleNaverMapClick = () => {
 .reveal-delay-3 { transition-delay: 0.24s; }
 .reveal-delay-4 { transition-delay: 0.32s; }
 .reveal-delay-5 { transition-delay: 0.4s; }
-
-/* ===== Mobile Responsive ===== */
-@media (max-width: 1023px) {
-  .section-intent-router,
-  .section-about,
-  .section-services,
-  .section-gallery,
-  .section-guide-links,
-  .section-location {
-    padding: 80px 0;
-  }
-
-  .section-cta {
-    padding: 100px 0;
-  }
-
-  .about-grid,
-  .location-grid {
-    gap: 40px;
-  }
-
-  .services-grid {
-    gap: 16px;
-  }
-
-  .intent-router-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .guide-links-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .gallery-header {
-    margin-bottom: 32px;
-  }
-
-  .section-title {
-    font-size: clamp(28px, 5vw, 40px);
-  }
-
-  .section-desc {
-    font-size: 14px;
-  }
-
-  .stats-row {
-    gap: 24px;
-  }
-
-  .stat-number {
-    font-size: 36px;
-  }
-
-  .cta-title {
-    font-size: clamp(36px, 8vw, 56px);
-  }
-}
-
-@media (max-width: 640px) {
-  .section-intent-router,
-  .section-about,
-  .section-services,
-  .section-gallery,
-  .section-guide-links,
-  .section-location {
-    padding: 60px 0;
-  }
-
-  .section-cta {
-    padding: 80px 0;
-  }
-
-  .container-lg {
-    padding: 0 20px;
-  }
-
-  .hero-cta {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .btn-magnetic,
-  .btn-outline-gold {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .intent-router-shell {
-    padding: 20px;
-  }
-
-  .intent-router-card {
-    min-height: auto;
-    padding: 20px;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .gallery-showcase {
-    gap: 12px;
-  }
-
-  .guide-links-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .stats-row {
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .stat-divider {
-    display: none;
-  }
-
-  .footer-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-  }
-
-  .footer-nav {
-    gap: 16px;
-  }
-}
 </style>
 
 <style>

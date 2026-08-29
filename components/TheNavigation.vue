@@ -57,6 +57,7 @@ onUnmounted(() => {
 
 const navLinks = [
   { to: '/', label: '홈', key: 'home' },
+  { to: '/custom', label: '주문제작', key: 'custom' },
   { to: '/gallery', label: '갤러리', key: 'gallery' },
   { to: '/guide', label: '가이드', key: 'guide' },
   { to: '/buy-gold', label: '금 매입', key: 'buy-gold' },

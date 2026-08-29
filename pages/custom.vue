@@ -192,6 +192,14 @@ const advantages = [
               <span class="material-name">로즈골드</span>
               <span class="material-desc">핑크빛 골드. 여성스러운 느낌</span>
             </div>
+            <div class="material">
+              <span class="material-name">백금(플래티넘)</span>
+              <span class="material-desc">변색이 적고 묵직한 착용감. 예물 반지에 적합</span>
+            </div>
+            <div class="material">
+              <span class="material-name">은(실버)</span>
+              <span class="material-desc">가벼운 착용감. 데일리·선물용 주얼리에 적합</span>
+            </div>
           </div>
         </div>
 

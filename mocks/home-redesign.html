@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>귀족 메인 개편 목업</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  /* === 프로덕션 토큰 (assets/css/main.css와 동일) === */
+  :root {
+    --black: #0a0a0a;
+    --black-light: #111111;
+    --black-lighter: #1a1a1a;
+    --gold: #c9a227;
+    --gold-light: #d4b44a;
+    --white: #fafafa;
+    --gray: #888888;
+    --font-body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+      'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    /* === DESIGN.md 타입 램프 (typography.*) === */
+    --fs-hero-title: clamp(100px, 20vw, 200px);   /* numeral-watermark */
+    --fs-title: clamp(30px, 4vw, 44px);           /* display */
+    --fs-display-section: clamp(26px, 3vw, 38px); /* title */
+    --fs-title-sub: clamp(22px, 4vw, 30px);       /* title-guide */
+    --fs-section: 24px;                           /* subheading */
+    --fs-section-sm: 22px;                        /* section */
+    --fs-lead: 20px;                              /* section-sm */
+    --fs-reading: 18px;                           /* lead */
+    --fs-body-lg: 17px;                           /* reading */
+    --fs-body: 16px;                              /* body-lg */
+    --fs-ui: 15px;                                /* body */
+    --fs-meta: 14px;                              /* ui */
+    --fs-fine: 13px;                              /* meta */
+    --fs-eyebrow: 12px;                           /* fine */
+    /* === 표면·경계 (DESIGN.md colors.*) === */
+    --hairline: rgba(250, 250, 250, 0.08);
+    --gold-hairline: rgba(201, 162, 39, 0.35);
+    --gold-wash: rgba(201, 162, 39, 0.1);
+    --scrim: rgba(10, 10, 10, 0.62);
+    --text-secondary: rgba(250, 250, 250, 0.72);
+    /* === 간격 스케일 (DESIGN.md spacing.* 6/10/20/40/80 + 보간) === */
+    --sp-1: 6px;
+    --sp-2: 10px;
+    --sp-3: 16px;
+    --sp-4: 20px;
+    --sp-5: 24px;
+    --sp-6: 40px;
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --gutter: clamp(20px, 5vw, 60px);
+    --wrap: 1200px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { max-width: 100%; overflow-x: clip; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    word-break: keep-all;          /* 프로덕션 main.css와 동일 — 한글 어절 단위 줄바꿈 */
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* 이동(transform)만 없애고 색·경계 변화는 남겨 상태 피드백을 보존한다 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+    .service-tile, .guide-card, .service-tile:hover, .guide-card:hover { transform: none !important; }
+    .cat-card img, .preview-card img { transition: none; }
+    .cat-card:hover img, .preview-card:hover img { transform: none !important; }
+  }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* === 목업 안내 배너 === */
+  .mock-note {
+    background: var(--gold); color: var(--black);
+    font-size: var(--fs-meta); font-weight: 700; text-align: center;
+    padding: var(--sp-1) var(--sp-3); letter-spacing: -0.01em;
+  }
+
+  /* === 헤더 === */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter);
+  }
+  .brand { font-size: var(--fs-section); font-weight: 700; letter-spacing: 0.08em; color: var(--gold); }
+  .site-nav ul { display: flex; gap: var(--sp-5); list-style: none; }
+  .site-nav a {
+    display: inline-flex; align-items: center; min-height: 44px;
+    font-size: var(--fs-ui); color: var(--text-secondary);
+    transition: color 0.2s var(--ease-out-quart);
+  }
+  .site-nav a:hover { color: var(--gold); }
+  .header-cta {
+    display: inline-flex; align-items: center; min-height: 44px;
+    padding: 0 var(--sp-3); background: var(--gold); color: var(--black);
+    font-size: var(--fs-ui); font-weight: 700;
+  }
+  @media (max-width: 900px) { .site-nav { display: none; } }
+
+  /* === 히어로 (현재 사이트 그대로 유지) === */
+  .hero {
+    position: relative; height: 100vh; min-height: 700px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.8) 40%, rgba(10,10,10,0.75) 100%);
+  }
+  .hero-content { position: relative; z-index: 1; text-align: center; padding: 0 var(--gutter); }
+  .hero-tag {
+    display: flex; align-items: center; justify-content: center;
+    gap: var(--sp-3); margin-bottom: var(--sp-5);
+  }
+  .tag-line { width: 40px; height: 1px; background: var(--gold); }
+  .tag-text { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; color: var(--gold); }
+  .hero-title { display: flex; justify-content: center; gap: 0.1em; margin-bottom: var(--sp-3); }
+  .title-line {
+    font-size: var(--fs-hero-title); font-weight: 300; line-height: 1; color: var(--white);
+  }
+  .hero-subtitle {
+    font-size: var(--fs-title-sub); font-weight: 300; letter-spacing: 0.2em;
+    color: var(--text-secondary); margin-bottom: var(--sp-6);
+  }
+  .hero-cta { display: flex; gap: var(--sp-2); justify-content: center; flex-wrap: wrap; }
+  .scroll-indicator {
+    position: absolute; bottom: var(--sp-6); left: 50%; transform: translateX(-50%);
+    display: grid; gap: var(--sp-2); justify-items: center;
+    background: transparent; border: none; cursor: pointer;
+    font: inherit; font-size: var(--fs-eyebrow); letter-spacing: 0.2em; color: var(--gray);
+  }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* === 섹션 공통 === */
+  section.block { padding: clamp(52px, 7vw, 84px) 0; }
+  .sec-eyebrow {
+    display: inline-block; font-size: var(--fs-eyebrow); font-weight: 700;
+    letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--sp-2);
+  }
+  .block-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--sp-4); margin-bottom: var(--sp-5);
+  }
+  .block-head h2 {
+    font-size: var(--fs-display-section); font-weight: 600;
+    letter-spacing: -0.01em; text-wrap: balance;
+  }
+  .block-head p { font-size: var(--fs-ui); color: var(--gray); margin-top: var(--sp-1); }
+  .block-more {
+    display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 44px;
+    font-size: var(--fs-meta); color: var(--gold); white-space: nowrap;
+  }
+  .block-more:hover { color: var(--gold-light); }
+
+  /* === 2. 서비스 바로가기 — 좌측 제목 + 우측 타일 5 (레퍼런스 참고) === */
+  .quick-row {
+    display: grid; grid-template-columns: minmax(200px, 0.62fr) minmax(0, 2.6fr);
+    gap: clamp(20px, 3vw, 40px); align-items: center;
+  }
+  .quick-head h2 {
+    font-size: var(--fs-display-section); font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.35; text-wrap: balance;
+  }
+  .service-tiles { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--sp-2); }
+  .service-tile {
+    display: flex; flex-direction: column; gap: var(--sp-2);
+    min-height: 150px; padding: var(--sp-3);
+    background: var(--black-lighter);
+    border: 1px solid var(--hairline);
+    transition: border-color 0.25s var(--ease-out-quart), background-color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
+  }
+  .service-tile:hover { border-color: var(--gold); background: var(--gold-wash); transform: translateY(-3px); }
+  .tile-icon {
+    display: grid; place-items: center; width: 40px; height: 40px;
+    border: 1px solid var(--hairline);
+  }
+  .tile-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+  .tile-label { display: grid; gap: 2px; }
+  .tile-label b { font-size: var(--fs-ui); font-weight: 700; letter-spacing: -0.01em; }
+  .tile-eng { font-size: var(--fs-eyebrow); letter-spacing: 0.08em; color: var(--gray); }
+  .tile-arrow { margin-top: auto; color: var(--gold); font-size: var(--fs-body); line-height: 1; }
+  @media (max-width: 900px) {
+    .quick-row { grid-template-columns: minmax(0,1fr); align-items: start; }
+    .service-tiles { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  }
+
+  /* === 3. 브랜드 소개 — 테두리 패널 + 구분선 스탯 (레퍼런스 참고) === */
+  .about-panel {
+    display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
+    border: 1px solid var(--hairline); background: var(--black-light);
+  }
+  .about-visual { position: relative; min-height: 300px; }
+  .about-content { padding: clamp(24px, 4vw, 48px); }
+  .about-content h2 {
+    font-size: var(--fs-display-section); font-weight: 600;
+    letter-spacing: -0.01em; margin-bottom: var(--sp-3); text-wrap: balance;
+  }
+  .about-content h2 em { font-style: normal; color: var(--gold); }
+  .about-content p { font-size: var(--fs-ui); color: var(--text-secondary); margin-bottom: var(--sp-2); max-width: 40em; }
+  .about-stats {
+    display: flex; flex-wrap: wrap;
+    margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--hairline);
+  }
+  .about-stat { padding: 0 clamp(16px, 3vw, 40px); border-left: 1px solid var(--hairline); }
+  .about-stat:first-child { padding-left: 0; border-left: none; }
+  .about-stat strong { display: block; font-size: var(--fs-title-sub); font-weight: 700; color: var(--gold); }
+  .about-stat span { font-size: var(--fs-eyebrow); letter-spacing: 0.08em; color: var(--gray); }
+  @media (max-width: 900px) {
+    .about-panel { grid-template-columns: minmax(0,1fr); }
+    .about-visual { min-height: 0; aspect-ratio: 16 / 9; }
+  }
+
+  /* === 4. 카테고리 — 한 줄 6장, 캡션 내장 (레퍼런스 '인기 카테고리') === */
+  .cat-grid { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: var(--sp-2); }
+  .cat-card {
+    position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden;
+    border: 1px solid var(--hairline); background: var(--black-lighter);
+  }
+  .cat-card img { transition: transform 0.6s var(--ease-out-quart); }
+  .cat-card:hover img { transform: scale(1.06); }
+  .cat-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.9) 8%, rgba(10,10,10,0.15) 55%, transparent 100%);
+  }
+  .cat-body { position: absolute; left: var(--sp-3); right: var(--sp-3); bottom: var(--sp-3); z-index: 1; }
+  .cat-body b { display: block; font-size: var(--fs-ui); font-weight: 700; }
+  .cat-body span { font-size: var(--fs-eyebrow); letter-spacing: 0.08em; color: var(--gray); }
+  @media (max-width: 900px) { .cat-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+  /* === 5. 갤러리 미리보기 — 한 줄 6장 + '+' (레퍼런스 '추천 컬렉션') === */
+  .preview-grid { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: var(--sp-2); }
+  .preview-card {
+    position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden;
+    border: 1px solid var(--hairline); background: var(--black-lighter);
+  }
+  .preview-card img { transition: transform 0.6s var(--ease-out-quart); }
+  .preview-card:hover img { transform: scale(1.06); }
+  .preview-card figcaption {
+    position: absolute; inset: auto 0 0 0; z-index: 1;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: var(--sp-2);
+    padding: var(--sp-5) var(--sp-3) var(--sp-3);
+    background: linear-gradient(to top, rgba(10,10,10,0.9) 10%, transparent 100%);
+  }
+  .preview-name b { display: block; font-size: var(--fs-meta); font-weight: 700; line-height: 1.4; }
+  .preview-name span { font-size: var(--fs-eyebrow); color: var(--gray); }
+  .preview-plus { color: var(--gold); font-size: var(--fs-reading); line-height: 1; font-weight: 300; }
+  @media (max-width: 900px) { .preview-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+  /* === 6. 가이드 바로가기 === */
+  .guide-block { background: var(--black-light); border-block: 1px solid var(--hairline); }
+  .guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--sp-2); }
+  .guide-card {
+    display: flex; flex-direction: column; gap: var(--sp-1); min-height: 132px; padding: var(--sp-4);
+    background: var(--black); border: 1px solid var(--hairline);
+    transition: border-color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
+  }
+  .guide-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .guide-cat { font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: 0.06em; color: var(--gold); }
+  .guide-card b { font-size: var(--fs-body-lg); font-weight: 700; line-height: 1.45; letter-spacing: -0.01em; }
+  .guide-card span { font-size: var(--fs-meta); color: var(--gray); line-height: 1.55; margin-top: auto; }
+  @media (max-width: 900px) { .guide-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+  /* === 7. 제작·수리 과정 — 가로 타임라인 (레퍼런스 참고) === */
+  .process { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--sp-3); }
+  .process::before {
+    content: ''; position: absolute; top: 24px; left: 12.5%; right: 12.5%; height: 1px;
+    background: repeating-linear-gradient(90deg, var(--gold-hairline) 0 6px, transparent 6px 14px);
+  }
+  .process-step { position: relative; text-align: center; padding: 0 var(--sp-1); }
+  .process-node {
+    position: relative; z-index: 1;
+    display: grid; place-items: center; width: 48px; height: 48px;
+    margin: 0 auto var(--sp-3);
+    background: var(--black-light); border: 1px solid var(--gold-hairline);
+  }
+  .process-node svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+  .process-step b { display: block; font-size: var(--fs-body); font-weight: 700; margin-bottom: var(--sp-1); }
+  .process-step b i { font-style: normal; color: var(--gold); font-variant-numeric: tabular-nums; margin-right: var(--sp-1); }
+  .process-step span { font-size: var(--fs-fine); color: var(--gray); line-height: 1.55; }
+  @media (max-width: 640px) {
+    /* 순서 흐름이 보이도록 세로 일렬 + 노드 사이 세로 점선 */
+    .process { grid-template-columns: minmax(0,1fr); gap: 0; }
+    .process::before { display: none; }
+    .process-step {
+      display: grid; grid-template-columns: 48px minmax(0,1fr);
+      column-gap: var(--sp-3); row-gap: 2px;
+      text-align: left; padding: 0 0 var(--sp-5); position: relative;
+    }
+    .process-step:last-child { padding-bottom: 0; }
+    .process-node { grid-row: 1 / 3; margin: 0; }
+    .process-step:not(:last-child)::after {
+      content: ''; position: absolute; left: 24px; top: 48px; bottom: 0; width: 1px;
+      background: repeating-linear-gradient(180deg, var(--gold-hairline) 0 6px, transparent 6px 14px);
+    }
+    .process-step b { margin-bottom: 0; align-self: end; }
+  }
+
+  /* === 8. 수리·AS — 체크리스트 + 이미지 + 플로팅 배지 (레퍼런스 참고) === */
+  .repair-panel {
+    display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,0.95fr);
+    border: 1px solid var(--hairline); background: var(--black-light);
+  }
+  .repair-body { padding: clamp(24px, 4vw, 48px); display: flex; flex-direction: column; }
+  .repair-title { font-size: var(--fs-display-section); font-weight: 600; letter-spacing: -0.01em; }
+  .repair-desc { font-size: var(--fs-ui); color: var(--gray); margin-top: var(--sp-1); margin-bottom: var(--sp-5); }
+  .repair-checks {
+    display: grid; grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: var(--sp-3) var(--sp-5); margin-bottom: var(--sp-5);
+  }
+  .repair-check { display: flex; gap: var(--sp-2); align-items: start; font-size: var(--fs-ui); line-height: 1.5; }
+  .repair-check svg { flex: 0 0 18px; width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; margin-top: 3px; }
+  .repair-check small { display: block; font-size: var(--fs-fine); color: var(--gray); }
+  .repair-media { position: relative; min-height: 280px; }
+  .repair-badge {
+    position: absolute; right: 16px; bottom: 16px; z-index: 1;
+    display: flex; gap: var(--sp-2); align-items: center;
+    padding: var(--sp-3) var(--sp-3); max-width: 250px;
+    background: var(--scrim); border: 1px solid var(--gold-hairline);
+    backdrop-filter: blur(4px);
+  }
+  .repair-badge svg { flex: 0 0 22px; width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+  .repair-badge b { display: block; font-size: var(--fs-meta); font-weight: 700; }
+  .repair-badge span span { font-size: var(--fs-fine); color: var(--text-secondary); line-height: 1.45; }
+  .duo-link {
+    display: inline-flex; align-items: center; gap: var(--sp-1); align-self: flex-start; margin-top: auto;
+    min-height: 48px; padding: 0 var(--sp-4); border: 1px solid var(--gold-hairline);
+    color: var(--gold); font-size: var(--fs-meta); font-weight: 700;
+    transition: background-color 0.25s var(--ease-out-quart);
+  }
+  .duo-link:hover { background: var(--gold-wash); }
+  @media (max-width: 900px) {
+    .repair-panel { grid-template-columns: minmax(0,1fr); }
+    .repair-media { min-height: 0; aspect-ratio: 16 / 9; order: -1; }
+  }
+
+  /* === 9. 금·은 매입 + 돈수 계산기 (레퍼런스 '금 매입·시세 확인' 구도) === */
+  .buy-row {
+    display: grid; grid-template-columns: minmax(0,0.95fr) minmax(0,1.05fr);
+    gap: var(--sp-3); align-items: stretch;
+  }
+  .buy-panel {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--hairline); background: var(--black-light);
+    padding: clamp(24px, 3vw, 32px);
+  }
+  .panel-title { font-size: var(--fs-section-sm); font-weight: 600; letter-spacing: -0.01em; margin-bottom: var(--sp-1); }
+  .panel-desc { font-size: var(--fs-fine); color: var(--gray); margin-bottom: var(--sp-4); }
+  .duo-list { list-style: none; display: grid; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+  .duo-list li { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: var(--sp-2); align-items: start; }
+  .duo-list svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; margin-top: 3px; }
+  .duo-list b { display: block; font-size: var(--fs-ui); font-weight: 600; }
+  .duo-list span { font-size: var(--fs-fine); color: var(--gray); line-height: 1.5; }
+  /* 계산기 쪽이 더 높을 때 남는 공간을 리스트 위아래로 분배해 한쪽에 몰린 빈칸을 없앤다 */
+  .buy-panel .duo-list { margin-block: auto; }
+  .buy-panel .duo-link { margin-top: var(--sp-4); }
+  @media (max-width: 900px) { .buy-row { grid-template-columns: minmax(0,1fr); } }
+
+  .calc {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--hairline); background: var(--black-light);
+    padding: clamp(24px, 3vw, 32px);
+  }
+  .calc-field { margin-bottom: var(--sp-3); }
+  .calc-label {
+    display: block; font-size: var(--fs-fine); font-weight: 700; letter-spacing: 0.04em;
+    color: var(--gray); margin-bottom: var(--sp-1);
+  }
+  .calc-input-row { display: flex; gap: var(--sp-1); }
+  .calc-input-row input {
+    flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--sp-3);
+    background: var(--black); color: var(--white);
+    border: 1px solid var(--hairline); font: inherit; font-size: var(--fs-body-lg);
+  }
+  .calc-input-row input:focus-visible { border-color: var(--gold); }
+  .calc-toggle { display: flex; border: 1px solid var(--hairline); }
+  .calc-toggle button {
+    min-width: 56px; min-height: 48px; padding: 0 var(--sp-3);
+    background: transparent; color: var(--gray);
+    border: none; font: inherit; font-size: var(--fs-ui); font-weight: 600; cursor: pointer;
+    transition: background-color 0.2s var(--ease-out-quart), color 0.2s var(--ease-out-quart);
+  }
+  .calc-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--black); }
+  .calc-purity { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .calc-purity button { width: 100%; }
+  .calc-results {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    margin-top: auto; padding-top: var(--sp-4); border-top: 1px solid var(--hairline);
+  }
+  .calc-result-label { display: block; font-size: var(--fs-fine); color: var(--gray); margin-bottom: var(--sp-1); }
+  .calc-result-value { font-size: var(--fs-title-sub); font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .calc-divider { width: 1px; height: 40px; background: var(--hairline); margin: 0 var(--sp-3); }
+  .calc-foot { margin-top: var(--sp-3); font-size: var(--fs-fine); color: var(--gray); line-height: 1.6; }
+  .calc-foot a { color: var(--gold); border-bottom: 1px solid var(--gold-hairline); }
+
+  /* === 10. 방문 안내 — 패널 + 아이콘 행 (레퍼런스 참고) === */
+  .visit-panel {
+    display: grid; grid-template-columns: minmax(0,0.9fr) minmax(0,1.1fr);
+    border: 1px solid var(--hairline); background: var(--black-light);
+  }
+  .visit-body { padding: clamp(24px, 4vw, 48px); display: flex; flex-direction: column; }
+  .visit-items { display: grid; gap: var(--sp-3); margin-bottom: var(--sp-5); }
+  .visit-item { display: grid; grid-template-columns: 20px 76px minmax(0,1fr); gap: var(--sp-2); align-items: baseline; }
+  .visit-item svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.4; align-self: start; margin-top: 3px; }
+  .visit-item dt { font-size: var(--fs-meta); color: var(--gold); font-weight: 700; }
+  .visit-item dd { font-size: var(--fs-ui); color: var(--white); }
+  .visit-map {
+    position: relative; min-height: 300px;
+    background: var(--black); display: grid; place-items: center; color: var(--gray); font-size: var(--fs-meta);
+    background-image: repeating-linear-gradient(45deg, rgba(250,250,250,0.025) 0 12px, transparent 12px 24px);
+    border-left: 1px solid var(--hairline);
+  }
+  @media (max-width: 900px) {
+    .visit-panel { grid-template-columns: minmax(0,1fr); }
+    .visit-map { min-height: 0; aspect-ratio: 16 / 9; border-left: none; border-top: 1px solid var(--hairline); }
+    .visit-item { grid-template-columns: 20px 64px minmax(0,1fr); }
+  }
+
+  /* === 11. 최종 CTA — 배경 이미지 (레퍼런스 참고) === */
+  .final-cta {
+    position: relative; overflow: hidden;
+    padding: clamp(64px, 9vw, 112px) 0; text-align: center;
+    border-top: 1px solid var(--hairline);
+  }
+  .final-cta-bg { position: absolute; inset: 0; }
+  .final-cta-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.92) 55%, rgba(10,10,10,0.96) 100%);
+  }
+  .final-cta .wrap { position: relative; z-index: 1; }
+  .cta-kicker { font-size: var(--fs-ui); color: var(--text-secondary); margin-bottom: var(--sp-2); }
+  .final-cta h2 { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-2); text-wrap: balance; }
+  .cta-sub { font-size: var(--fs-body); color: var(--gray); margin-bottom: var(--sp-5); }
+  .cta-buttons { display: flex; gap: var(--sp-2); justify-content: center; flex-wrap: wrap; }
+  .btn-primary, .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-1);
+    min-height: 54px; padding: 0 var(--sp-5); font-size: var(--fs-body-lg); font-weight: 700;
+    transition: background-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
+  }
+  .btn-primary { background: var(--gold); color: var(--black); border: 1px solid var(--gold); }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold-hairline); }
+  .btn-secondary:hover { background: var(--gold-wash); }
+
+  /* === 푸터 — 4단 링크 (레퍼런스 참고) === */
+  .site-footer { border-top: 1px solid var(--hairline); background: var(--black-light); }
+  .footer-grid {
+    display: grid; grid-template-columns: minmax(0,1.3fr) repeat(3, minmax(0,1fr));
+    gap: clamp(24px, 4vw, 56px);
+    padding: clamp(40px, 6vw, 64px) 0;
+  }
+  .footer-brand strong { display: block; font-size: var(--fs-section); font-weight: 700; letter-spacing: 0.08em; color: var(--gold); margin-bottom: var(--sp-2); }
+  .footer-brand p { font-size: var(--fs-fine); color: var(--gray); line-height: 1.7; max-width: 22em; }
+  .footer-col h3 { font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: 0.16em; color: var(--gray); margin-bottom: var(--sp-3); }
+  .footer-col ul { list-style: none; display: grid; gap: var(--sp-1); }
+  .footer-col a {
+    display: inline-flex; align-items: center; min-height: 32px;
+    font-size: var(--fs-meta); color: var(--text-secondary);
+    transition: color 0.2s var(--ease-out-quart);
+  }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-tel { font-size: var(--fs-lead); font-weight: 700; color: var(--white) !important; }
+  .footer-hours { font-size: var(--fs-fine); color: var(--gray); line-height: 1.7; margin: var(--sp-1) 0 var(--sp-3); }
+  .footer-kakao {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 0 var(--sp-4);
+    border: 1px solid var(--gold-hairline); color: var(--gold);
+    font-size: var(--fs-meta); font-weight: 700;
+    transition: background-color 0.25s var(--ease-out-quart);
+  }
+  .footer-kakao:hover { background: var(--gold-wash); }
+  .footer-bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-2);
+    padding: var(--sp-4) 0; border-top: 1px solid var(--hairline);
+    font-size: var(--fs-fine); color: var(--gray);
+  }
+  .footer-bottom a { color: var(--gray); min-height: 44px; display: inline-flex; align-items: center; }
+  .footer-bottom a:hover { color: var(--gold); }
+  @media (max-width: 900px) { .footer-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 640px) { .footer-grid { grid-template-columns: minmax(0,1fr); gap: var(--sp-5); } }
+
+  /* === 모바일: 카드 그리드 → 가로 스와이프 캐러셀 ===
+     세로 스크롤을 줄이기 위해 카테고리·갤러리·가이드·바로가기를 한 줄 스와이프로 전환.
+     다음 카드가 화면 끝에 걸쳐 보이게 폭을 잡아 스와이프 가능함을 암시한다. */
+  @media (max-width: 640px) {
+    .service-tiles, .cat-grid, .preview-grid {
+      display: flex; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      gap: var(--sp-2);
+      margin-inline: calc(-1 * var(--gutter));
+      padding-inline: var(--gutter);
+      padding-bottom: var(--sp-2);
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .service-tiles::-webkit-scrollbar, .cat-grid::-webkit-scrollbar,
+    .preview-grid::-webkit-scrollbar { display: none; }
+
+    .service-tile { flex: 0 0 148px; scroll-snap-align: start; }
+    .cat-card { flex: 0 0 56vw; scroll-snap-align: start; }
+    .preview-card { flex: 0 0 56vw; scroll-snap-align: start; }
+    /* 가이드: 스와이프 대신 전부 노출 — 목록으로 훑는 편이 효과적 */
+    .guide-grid { grid-template-columns: minmax(0,1fr); }
+    .guide-card { min-height: 0; padding: var(--sp-3) var(--sp-4); }
+
+    /* 히어로 CTA: 카톡을 첫 줄 전체로, 보조 둘을 반반으로 */
+    .hero-cta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+    .hero-cta .btn-primary { grid-column: 1 / -1; }
+
+    /* 섹션 헤더: 제목과 '전체 보기'가 좁은 화면에서 겹치지 않게 세로로 */
+    .block-head { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+
+    /* 수리 체크리스트 1열 */
+    .repair-checks { grid-template-columns: minmax(0,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<p class="mock-note">목업 — 실제 사이트 토큰(#0a0a0a / #c9a227 / Pretendard) 적용. 계산기는 동작합니다.</p>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">귀족</a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <ul>
+        <li><a href="/custom">주문제작</a></li>
+        <li><a href="/repair">수리·AS</a></li>
+        <li><a href="/wedding">결혼예물</a></li>
+        <li><a href="/buy-gold">금매입</a></li>
+        <li><a href="/wholesale">도매</a></li>
+        <li><a href="/guide">가이드</a></li>
+      </ul>
+    </nav>
+    <a class="header-cta" href="https://open.kakao.com/o/sc8gQx8h" data-track="trackKakaoClick('home', { placement: 'header_cta', intent: 'general' })">카톡 상담</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- 1. 히어로 (현재 사이트 그대로 유지) -->
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="../public/Image/ring/NS0102.webp" alt="14K 다이아몬드 솔리테어 반지 - 귀족 종로 귀금속 대표 상품" loading="eager" fetchpriority="high">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="tag-line"></span>
+        <span class="tag-text">Since 2004 · Jongro Jewelry District</span>
+        <span class="tag-line"></span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="sr-only">종로 귀금속 도매 전문 귀족</span>
+        <span class="title-line" aria-hidden="true">귀</span>
+        <span class="title-line" aria-hidden="true">족</span>
+      </h1>
+
+      <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
+
+      <div class="hero-cta">
+        <a class="btn-primary" href="https://open.kakao.com/o/sc8gQx8h" data-track="trackKakaoClick('home', { placement: 'hero', intent: 'general' })">카톡 문의</a>
+        <a class="btn-secondary" href="tel:02-766-4789" data-track="trackPhoneClick('home', { placement: 'hero' })">전화 상담</a>
+        <a class="btn-secondary" href="/gallery">갤러리 보기</a>
+      </div>
+    </div>
+
+    <a class="scroll-indicator" href="#quick-start" aria-label="아래 콘텐츠로 이동">
+      <span>Scroll</span>
+      <span class="scroll-line" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <!-- 2. 서비스 바로가기 (기존 Quick Start 섹션 확장, 레퍼런스 레이아웃) -->
+  <section class="block" id="quick-start">
+    <div class="wrap quick-row">
+      <div class="quick-head">
+        <span class="sec-eyebrow">QUICK START</span>
+        <h2>무엇이 필요하세요?</h2>
+      </div>
+      <nav class="service-tiles" aria-label="서비스 바로가기">
+        <a class="service-tile" href="/custom">
+          <span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></span>
+          <span class="tile-label"><b>주문제작</b><span class="tile-eng">CUSTOM MADE</span></span>
+          <span class="tile-arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="service-tile" href="/repair">
+          <span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6a4 4 0 105.5 5.5L21 13l-8 8-2-2 8-8 1.5-1.5A4 4 0 0014 6z"/><path d="M6 6l4 4"/></svg></span>
+          <span class="tile-label"><b>수리·AS</b><span class="tile-eng">REPAIR SERVICE</span></span>
+          <span class="tile-arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="service-tile" href="/buy-gold">
+          <span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="1"/><path d="M7 7V5h10v2M3 11h18"/></svg></span>
+          <span class="tile-label"><b>금매입</b><span class="tile-eng">GOLD PURCHASE</span></span>
+          <span class="tile-arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="service-tile" href="/wedding">
+          <span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16l-1.5 11h-13z"/><path d="M8 8V6a4 4 0 018 0v2"/></svg></span>
+          <span class="tile-label"><b>결혼예물</b><span class="tile-eng">WEDDING</span></span>
+          <span class="tile-arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="service-tile" href="/wholesale">
+          <span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5v10l-9 5-9-5z"/><path d="M3 9l9 5 9-5M12 14v10"/></svg></span>
+          <span class="tile-label"><b>도매</b><span class="tile-eng">WHOLESALE</span></span>
+          <span class="tile-arrow" aria-hidden="true">›</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 3. 브랜드 소개 (기존 About 섹션, 레퍼런스 패널형) -->
+  <section class="block" id="about">
+    <div class="wrap">
+      <div class="about-panel">
+        <div class="about-visual">
+          <img src="../public/Image/main/home-trust-jewelry-still-life.webp" alt="정밀 검수된 금반지와 세공 도구" loading="lazy">
+        </div>
+        <div class="about-content">
+          <span class="sec-eyebrow">ABOUT US</span>
+          <h2>세공 경력 30년,<br><em>신뢰</em>를 쌓아왔습니다</h2>
+          <p>귀족은 서울 종로3가 귀금속 거리, 종묘귀금속백화점에서 2004년부터 운영 중인 금은방입니다. 세공 경력 30년의 장인이 정확한 납기와 일관된 품질, 투명한 가격을 지키며 직접 제작합니다.</p>
+          <p>돌반지·커플링·결혼예물 주문제작부터 14K·18K·24K 순금 도매, 금·은 매입, 반지 사이즈 조절과 세공 수리까지 한자리에서 해결하실 수 있습니다.</p>
+          <div class="about-stats">
+            <div class="about-stat"><strong>30+</strong><span>YEARS OF CRAFT</span></div>
+            <div class="about-stat"><strong>도매</strong><span>WHOLESALE</span></div>
+            <div class="about-stat"><strong>주문제작</strong><span>CUSTOM</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 카테고리 (인기 카테고리 + 추천 컬렉션 통합, 한 줄 6장) -->
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">CATEGORY</span>
+          <h2>품목·서비스별 안내</h2>
+          <p>찾으시는 항목을 고르시면 소재·제작 기간·상담 기준을 함께 보실 수 있습니다</p>
+        </div>
+        <a class="block-more" href="/gallery">갤러리 전체 보기 ›</a>
+      </div>
+
+      <div class="cat-grid">
+        <a class="cat-card" href="/couple-ring">
+          <img src="../public/Image/ring/NN0103.webp" alt="14K 커플링 주문제작 디자인" loading="lazy">
+          <div class="cat-body"><b>커플링</b><span>COUPLE RING</span></div>
+        </a>
+        <a class="cat-card" href="/baby-gold">
+          <img src="../public/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작" loading="lazy">
+          <div class="cat-body"><b>순금 돌반지</b><span>BABY GOLD</span></div>
+        </a>
+        <a class="cat-card" href="/wedding">
+          <img src="../public/Image/set/set0101.webp" alt="결혼예물 세트 구성" loading="lazy">
+          <div class="cat-body"><b>결혼예물</b><span>WEDDING SET</span></div>
+        </a>
+        <a class="cat-card" href="/custom">
+          <img src="../public/Image/necklace/NC0101.webp" alt="금목걸이 주문제작 디자인" loading="lazy">
+          <div class="cat-body"><b>목걸이 · 팔찌</b><span>NECKLACE</span></div>
+        </a>
+        <a class="cat-card" href="/repair">
+          <img src="../public/Image/ring/NN0104.webp" alt="수리·리폼 상담 대상 14K 반지" loading="lazy">
+          <div class="cat-body"><b>수리 · 리폼</b><span>REPAIR</span></div>
+        </a>
+        <a class="cat-card" href="/buy-gold">
+          <img src="../public/Image/set/set0201.webp" alt="금 매입 상담을 위한 귀금속 확인" loading="lazy">
+          <div class="cat-body"><b>금 · 은 매입</b><span>GOLD PURCHASE</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 갤러리 미리보기 (기존 section-gallery, 레퍼런스 '추천 컬렉션' 스타일) -->
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">GALLERY</span>
+          <h2>직접 만든 디자인을 보세요</h2>
+          <p>사진 속 디자인을 기준으로 소재·사이즈를 바꿔 주문하실 수 있습니다</p>
+        </div>
+        <a class="block-more" href="/gallery">갤러리 41개 전체 보기 ›</a>
+      </div>
+      <div class="preview-grid">
+        <a class="preview-card" href="/gallery/two-tone-lattice-tension-couple-ring">
+          <img src="../public/Image/ring/two-tone-lattice-tension-couple-ring-01.webp" alt="투톤 래티스 텐션 커플링 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>투톤 래티스 텐션 커플링</b><span>커플링</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+        <a class="preview-card" href="/gallery/rose-gold-chunky-chain-pave-lock-necklace">
+          <img src="../public/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp" alt="청키 체인 파베 토글 목걸이 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>청키 체인 토글 목걸이</b><span>목걸이</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+        <a class="preview-card" href="/gallery/flower-motif-rose-gold-jewelry-set">
+          <img src="../public/Image/set/set0401.webp" alt="플라워 모티브 주얼리 세트 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>플라워 모티브 세트</b><span>세트</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+        <a class="preview-card" href="/gallery/gold-layered-chain-bracelet-trio">
+          <img src="../public/Image/bracelet/gold-layered-chain-bracelet-trio-01.webp" alt="레이어드 체인 팔찌 3종 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>레이어드 체인 팔찌 3종</b><span>팔찌</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+        <a class="preview-card" href="/gallery/lucky-horseshoe-number-pendant-necklace">
+          <img src="../public/Image/necklace/NC0201.webp" alt="말발굽 숫자 각인 목걸이 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>말발굽 숫자 각인 목걸이</b><span>목걸이</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+        <a class="preview-card" href="/gallery/fancy-yellow-diamond-solitaire-ring">
+          <img src="../public/Image/ring/fancy-yellow-diamond-solitaire-ring-01.webp" alt="팬시 옐로우 다이아몬드 솔리테어 반지 주문제작 디자인" loading="lazy">
+          <figcaption>
+            <span class="preview-name"><b>팬시 옐로우 다이아 반지</b><span>반지</span></span>
+            <span class="preview-plus" aria-hidden="true">+</span>
+          </figcaption>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 가이드 바로가기 (기존 '상담 전에 읽어보세요' 확장) -->
+  <section class="block guide-block">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">GUIDE</span>
+          <h2>상담 전에 보면 좋은 가이드</h2>
+          <p>실제 문의에서 가장 많이 나온 질문을 기준으로 정리했습니다</p>
+        </div>
+        <a class="block-more" href="/guide">가이드 97개 전체 보기 ›</a>
+      </div>
+
+      <div class="guide-grid">
+        <a class="guide-card" href="/guide/white-gold-discoloration-care">
+          <span class="guide-cat">관리</span>
+          <b>화이트골드 변색, 재도금이 필요한 기준</b>
+          <span>누렇게 보이는 이유와 세척·도금 구분</span>
+        </a>
+        <a class="guide-card" href="/guide/couple-ring-14k-18k-price-difference">
+          <span class="guide-cat">가격</span>
+          <b>14K·18K 커플링 가격 차이</b>
+          <span>금 함량·중량·공임을 같은 기준으로 비교</span>
+        </a>
+        <a class="guide-card" href="/guide/gold-one-don-gram">
+          <span class="guide-cat">소재</span>
+          <b>금 1돈은 몇 g? 3.75g 환산</b>
+          <span>돈·그램 계산과 순도별 실제 금 함량</span>
+        </a>
+        <a class="guide-card" href="/guide/baby-ring-price">
+          <span class="guide-cat">가격</span>
+          <b>돌반지 가격, 문의 전 확인할 3가지</b>
+          <span>중량·순도·공임이 가격을 가르는 지점</span>
+        </a>
+        <a class="guide-card" href="/guide/gold-necklace-length-guide">
+          <span class="guide-cat">선택</span>
+          <b>목걸이 길이 추천: 42·45·50cm</b>
+          <span>목둘레·펜던트·체인 굵기 기준 비교</span>
+        </a>
+        <a class="guide-card" href="/guide/platinum-vs-white-gold-difference">
+          <span class="guide-cat">소재</span>
+          <b>백금과 화이트골드 차이</b>
+          <span>무게·변색·관리·가격으로 나눠 정리</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 제작·수리 과정 — 가로 타임라인 (레퍼런스 참고) -->
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">PROCESS</span>
+          <h2>제작 · 수리 과정</h2>
+          <p>상담부터 수령까지, 정확하고 투명하게 진행됩니다</p>
+        </div>
+      </div>
+      <div class="process">
+        <div class="process-step">
+          <span class="process-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-8 8H5l-2 2V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg></span>
+          <b><i>01</i>상담</b>
+          <span>원하시는 디자인과 예산·수령일 상담</span>
+        </div>
+        <div class="process-step">
+          <span class="process-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+          <b><i>02</i>견적 확인</b>
+          <span>중량·공임과 당일 시세 기준 견적 안내</span>
+        </div>
+        <div class="process-step">
+          <span class="process-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l7 4 7-4"/></svg></span>
+          <b><i>03</i>제작 · 수리</b>
+          <span>숙련된 장인이 매장에서 직접 세공</span>
+        </div>
+        <div class="process-step">
+          <span class="process-node"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+          <b><i>04</i>검수 · 전달</b>
+          <span>마감·사이즈 검수 후 안전하게 전달</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 수리·AS — 체크리스트 + 이미지 패널 (레퍼런스 참고) -->
+  <section class="block" id="repair">
+    <div class="wrap">
+      <div class="repair-panel">
+        <div class="repair-body">
+          <span class="sec-eyebrow">REPAIR</span>
+          <h2 class="repair-title">수리 · AS 서비스</h2>
+          <p class="repair-desc">소중한 주얼리, 새것처럼 — 30년 경력의 장인이 직접 수리합니다</p>
+          <div class="repair-checks">
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>반지 사이즈 조절<small>늘리기·줄이기 당일 접수</small></span></div>
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>세척 · 광택 복원<small>금·은 세척과 폴리싱</small></span></div>
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>화이트골드 재도금<small>변색·광택 기준 안내</small></span></div>
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>체인 수리<small>끊어짐·잠금장치 교체</small></span></div>
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>보석 재세팅<small>큐빅 빠짐·발 보강</small></span></div>
+            <div class="repair-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><span>귀걸이 침 수리<small>휘어짐·부러짐 점검</small></span></div>
+          </div>
+          <a class="duo-link" href="/repair">수리 안내 자세히 보기 ›</a>
+        </div>
+        <div class="repair-media">
+          <img src="../public/Image/main/home-repair-tools-still-life.webp" alt="귀금속 수리 작업 도구" loading="lazy">
+          <div class="repair-badge">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <span><b>당일 접수</b><span>반지 사이즈 조절은 당일 접수 가능합니다</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 금·은 매입 + 돈수 계산기 (레퍼런스 구도, 계산기는 기존 돈수 측정기 유지) -->
+  <section class="block" id="buy-gold">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">GOLD PURCHASE</span>
+          <h2>금 · 은 매입과 돈수 계산</h2>
+          <p>순도와 중량을 확인해 당일 시세로 안내합니다</p>
+        </div>
+      </div>
+      <div class="buy-row">
+
+        <div class="buy-panel">
+          <h3 class="panel-title">매입 품목</h3>
+          <p class="panel-desc">감정 결과와 최종 금액 확인 후 당일 지급합니다</p>
+          <ul class="duo-list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><div><b>금</b><span>순금(24K), 18K, 14K, 골드바</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><div><b>은</b><span>순은, 실버바, 은 장신구</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><div><b>기타</b><span>백금, 금니, 부서진 귀금속</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg><div><b>확인 후 당일 지급</b><span>순도·중량 측정 후 최종 금액 안내</span></div></li>
+          </ul>
+          <a class="duo-link" href="/buy-gold">매입 안내 자세히 보기 ›</a>
+        </div>
+
+        <div class="calc">
+          <h3 class="panel-title">금 돈수 계산기</h3>
+          <p class="panel-desc">돈·그램을 환산하고 순도별 실제 금 함량을 확인하세요</p>
+
+          <div class="calc-field">
+            <label class="calc-label" for="calc-weight">무게</label>
+            <div class="calc-input-row">
+              <input id="calc-weight" type="number" min="0" step="0.01" value="1" inputmode="decimal">
+              <div class="calc-toggle" role="group" aria-label="무게 단위 선택">
+                <button type="button" data-unit="don" aria-pressed="true">돈</button>
+                <button type="button" data-unit="gram" aria-pressed="false">g</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-field">
+            <span class="calc-label" id="purity-label">순도</span>
+            <div class="calc-toggle calc-purity" role="group" aria-labelledby="purity-label">
+              <button type="button" data-purity="0.999" data-label="24K 순금" aria-pressed="true">24K 순금</button>
+              <button type="button" data-purity="0.75" data-label="18K" aria-pressed="false">18K</button>
+              <button type="button" data-purity="0.585" data-label="14K" aria-pressed="false">14K</button>
+            </div>
+          </div>
+
+          <div class="calc-results" aria-live="polite">
+            <div>
+              <span class="calc-result-label">환산 무게</span>
+              <strong class="calc-result-value" id="calc-conversion">—</strong>
+            </div>
+            <div class="calc-divider" aria-hidden="true"></div>
+            <div>
+              <span class="calc-result-label" id="calc-purity-caption">순금 함량 (24K 순금)</span>
+              <strong class="calc-result-value" id="calc-pure">—</strong>
+            </div>
+          </div>
+
+          <p class="calc-foot">
+            1돈 = 3.75g 기준입니다. 실제 견적은 당일 시세와 공임에 따라 달라지므로
+            <a href="/guide/gold-price-how-to-check">금 시세 보는 법</a> 가이드와 상담으로 안내해드립니다.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. 방문 안내 — 아이콘 패널 (레퍼런스 참고) -->
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <span class="sec-eyebrow">VISIT</span>
+          <h2>방문 안내</h2>
+          <p>언제든 편하게 방문해 주세요</p>
+        </div>
+      </div>
+      <div class="visit-panel">
+        <div class="visit-body">
+          <dl class="visit-items">
+            <div class="visit-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <dt>주소</dt><dd>서울 종로구 종로 173 종묘귀금속백화점 101호</dd>
+            </div>
+            <div class="visit-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              <dt>영업시간</dt><dd>매일 10:30 – 18:30 · 매달 셋째 주 화요일 휴무</dd>
+            </div>
+            <div class="visit-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
+              <dt>연락처</dt><dd>02-766-4789</dd>
+            </div>
+            <div class="visit-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-8 8H5l-2 2V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg>
+              <dt>상담</dt><dd>카카오톡 오픈채팅 · 전화 상담</dd>
+            </div>
+          </dl>
+          <a class="duo-link" href="https://map.naver.com/p/search/종묘귀금속백화점" target="_blank" rel="noopener">길찾기 / 내비게이션 ›</a>
+        </div>
+        <div class="visit-map">[ 지도 — 실제 페이지에서는 현재 LandingLocation 컴포넌트 사용 ]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 최종 CTA — 배경 이미지 (레퍼런스 참고) -->
+  <section class="final-cta">
+    <div class="final-cta-bg">
+      <img src="../public/Image/ring/NN0101.webp" alt="" aria-hidden="true" loading="lazy">
+    </div>
+    <div class="wrap">
+      <p class="cta-kicker">소중한 가치를 위한 첫걸음</p>
+      <h2>지금 상담을 시작하세요</h2>
+      <p class="cta-sub">사진과 소재·사이즈·희망일을 보내주시면 더 빠르게 안내해드립니다.</p>
+      <div class="cta-buttons">
+        <a class="btn-primary" href="https://open.kakao.com/o/sc8gQx8h" data-track="trackKakaoClick('home', { placement: 'footer_cta', intent: 'general' })">카카오톡 상담</a>
+        <a class="btn-secondary" href="tel:02-766-4789" data-track="trackPhoneClick('home', { placement: 'footer_cta' })">전화 문의 02-766-4789</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 푸터 — 4단 링크 (레퍼런스 참고) -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>귀족</strong>
+        <p>세공 경력 30년의 장인이 종로 종묘귀금속백화점에서 직접 제작합니다. 주문제작·수리·금매입·도매까지 한자리에서.</p>
+      </div>
+      <div class="footer-col">
+        <h3>서비스</h3>
+        <ul>
+          <li><a href="/custom">주문제작</a></li>
+          <li><a href="/repair">수리 · AS</a></li>
+          <li><a href="/buy-gold">금매입</a></li>
+          <li><a href="/wedding">결혼예물</a></li>
+          <li><a href="/wholesale">도매</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>정보</h3>
+        <ul>
+          <li><a href="/gallery">갤러리</a></li>
+          <li><a href="/guide">귀금속 가이드</a></li>
+          <li><a href="/faq">자주 묻는 질문</a></li>
+          <li><a href="/contact">문의하기</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>고객센터</h3>
+        <ul>
+          <li><a class="footer-tel" href="tel:02-766-4789">02-766-4789</a></li>
+        </ul>
+        <p class="footer-hours">매일 10:30 – 18:30<br>매달 셋째 주 화요일 휴무</p>
+        <a class="footer-kakao" href="https://open.kakao.com/o/sc8gQx8h" data-track="trackKakaoClick('home', { placement: 'footer_nav', intent: 'general' })">카카오톡 문의</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 귀족. All rights reserved.</span>
+      <a href="/privacy">개인정보처리방침</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var DON_TO_GRAM = 3.75;
+    var input = document.getElementById('calc-weight');
+    var unit = 'don';
+    var purity = 0.999;
+    var purityLabel = '24K 순금';
+
+    function fmt(n) { return n.toLocaleString('ko-KR', { maximumFractionDigits: 2 }); }
+
+    function render() {
+      var value = parseFloat(input.value);
+      var conversionEl = document.getElementById('calc-conversion');
+      var pureEl = document.getElementById('calc-pure');
+      document.getElementById('calc-purity-caption').textContent = '순금 함량 (' + purityLabel + ')';
+
+      if (!(value > 0)) { conversionEl.textContent = '—'; pureEl.textContent = '—'; return; }
+
+      var grams = unit === 'don' ? value * DON_TO_GRAM : value;
+      var don = grams / DON_TO_GRAM;
+      conversionEl.textContent = unit === 'don'
+        ? fmt(don) + '돈 = ' + fmt(grams) + 'g'
+        : fmt(grams) + 'g = ' + fmt(don) + '돈';
+      pureEl.textContent = '약 ' + fmt(grams * purity) + 'g';
+    }
+
+    function bindGroup(selector, onPick) {
+      var buttons = document.querySelectorAll(selector);
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          buttons.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+          btn.setAttribute('aria-pressed', 'true');
+          onPick(btn);
+          render();
+        });
+      });
+    }
+
+    bindGroup('[data-unit]', function (btn) { unit = btn.dataset.unit; });
+    bindGroup('[data-purity]', function (btn) {
+      purity = parseFloat(btn.dataset.purity);
+      purityLabel = btn.dataset.label;
+    });
+    input.addEventListener('input', render);
+    render();
+  })();
+</script>
+
+</body>
+</html>
