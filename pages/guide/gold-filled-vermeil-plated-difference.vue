@@ -3,138 +3,203 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gold-filled-vermeil-plated-difference'
-const pageTitle = '골드필드·골드버메일·금도금 차이, 함량·두께·표기 기준 | 귀족'
-const pageDescription = '골드필드 금도금 차이와 골드버메일의 특징을 바탕 금속, 금층을 붙이는 방식, 미국 FTC의 함량·두께 표기 예시와 마모·관리 기준으로 정리했습니다.'
+const pageTitle = '골드필드 뜻: 금도금·버메일 차이 | 귀족'
+const pageDescription = '골드필드는 바탕 금속에 금합금 층을 기계적으로 결합한 구조입니다. 금도금·골드버메일과 바탕 금속, 금층 두께·중량 비율, GF·1/20 표기 확인법을 비교합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/gold-filled-vermeil-plated-hero.webp`
 const publishedAt = '2026-07-26'
 
 const faqItems = [
   {
-    question: '골드필드는 14K 금제품과 같은 뜻인가요?',
-    answer: '아닙니다. 14K 금제품은 제품 자체가 14K 금합금으로 이루어진 반면 골드필드는 바탕 금속에 일정한 금합금 층을 기계적으로 결합한 제품입니다. 14K GF 표기의 14K는 바깥 금층의 순도를 가리키며 제품 전체가 14K라는 뜻이 아닙니다.',
+    "question": "골드필드는 14K 금제품과 같은 뜻인가요?",
+    "answer": "아닙니다. 14K 금제품은 제품 자체가 14K 금합금으로 이루어진 반면 골드필드는 바탕 금속에 금합금 층을 기계적으로 결합한 제품입니다. 14K GF의 14K는 바깥 금층의 순도를 가리키며 제품 전체가 14K라는 뜻이 아닙니다."
   },
   {
-    question: '골드버메일과 일반 금도금은 무엇이 다른가요?',
-    answer: '골드버메일은 기본적으로 스털링실버 바탕에 금을 입힌 유형입니다. 미국 FTC 기준에서는 주요 표면 전체에 10K 이상 금을 순금 환산 2.5마이크론 이상 입힌 제품을 버메일로 설명할 수 있습니다. 일반 금도금은 바탕 금속이 은으로 한정되지 않습니다.',
+    "question": "골드버메일과 일반 금도금은 무엇이 다른가요?",
+    "answer": "골드버메일은 스털링실버 바탕의 금 표면 처리 유형입니다. 일반 금도금은 바탕 금속이 은으로 한정되지 않으며, 금층을 적용한 공정과 두께도 제품별로 확인해야 합니다."
   },
   {
-    question: '골드필드가 금도금보다 무조건 오래가나요?',
-    answer: '기계적으로 결합된 금층과 규정된 중량 비율 때문에 일반적인 얇은 도금보다 마모 여유가 큰 경우가 많습니다. 그러나 착용 빈도, 마찰 위치, 땀과 화학제품, 실제 금층 사양과 제작 품질에 따라 수명이 달라지므로 명칭만으로 사용 기간을 보장할 수는 없습니다.',
+    "question": "골드필드가 금도금보다 오래가는 편인가요?",
+    "answer": "명칭만으로 사용 기간을 보장할 수는 없습니다. 결합 방식, 금층 사양, 착용 빈도, 마찰과 화학제품 노출에 따라 마모 정도가 달라질 수 있습니다."
   },
   {
-    question: '1/20 14K GF 표기는 무슨 뜻인가요?',
-    answer: '미국 FTC 표기 예시에서 14K는 결합된 금층의 순도, 1/20은 제품 전체 금속 중 해당 금층이 차지하는 중량 비율을 뜻합니다. 적용 국가와 판매처에 따라 표기 관행이 다를 수 있으므로 제품 설명에서 기준과 바탕 금속을 함께 확인하세요.',
+    "question": "1/20 14K GF 표기는 무슨 뜻인가요?",
+    "answer": "미국 Federal Trade Commission 표기 예시에서 14K는 결합된 금층의 순도, 1/20은 제품 전체 금속에서 해당 금층이 차지하는 중량 비율을 뜻합니다. 적용 국가와 판매처의 기준을 함께 확인하세요."
   },
   {
-    question: '색만 보고 골드필드와 금도금을 구별할 수 있나요?',
-    answer: '새 제품은 금색과 광택이 비슷해 육안만으로 구조를 확정하기 어렵습니다. 각인, 판매 명세, 바탕 금속, 금층 순도와 두께 또는 중량 비율을 확인하고 중요한 거래라면 판매자에게 사양 근거를 요청해야 합니다.',
-  },
+    "question": "색만 보고 골드필드와 금도금을 구별할 수 있나요?",
+    "answer": "새 제품의 색과 광택만으로 구조를 확정하기 어렵습니다. 각인, 판매 명세, 바탕 금속, 금층 순도와 두께 또는 중량 비율을 확인하세요."
+  }
 ]
 
 const quickAnswers = [
-  '골드필드 금도금 차이는 금층을 기계적으로 결합하는지 전해 방식 등으로 입히는지에 있으며, 골드버메일은 스털링실버 바탕의 금도금 유형입니다.',
-  '같은 금색이라도 제품 전체가 금합금인지, 표면에 금층만 있는지에 따라 가치·마모·수리와 알레르기 확인 기준이 달라집니다.',
-  'GF·RGP·GEP·Vermeil 표기는 적용 기준이 다를 수 있으므로 금층 순도, 두께 또는 중량 비율과 바탕 금속을 함께 확인해야 합니다.',
+  "골드필드는 제품 전체가 14K 금이라는 뜻이 아니라, 바탕 금속에 금합금 층을 기계적으로 결합한 구조를 말합니다.",
+  "골드버메일은 스털링실버 바탕의 금 표면 처리 유형이며, 일반 금도금은 바탕 금속이 은으로 한정되지 않습니다.",
+  "구매 전에는 색상명보다 바탕 금속, 금층 순도, 두께 또는 중량 비율, 적용 표기 기준을 함께 확인해야 합니다."
 ]
 
 const sections = [
   {
-    title: '먼저 제품 전체가 금인지 표면에 금층이 있는지 구분하세요',
-    paragraphs: [
-      '14K·18K 금제품은 제품 본체가 해당 순도의 금합금으로 만들어집니다. 반면 골드필드, 골드버메일과 금도금은 다른 금속으로 만든 바탕 위에 금 또는 금합금 층을 더한 구조입니다. 겉색이 비슷해도 제품 전체의 귀금속 함량과 마모 후 드러나는 소재가 다릅니다.',
-      'FTC 소비자 안내에서 솔리드 골드는 속이 비어 있지 않다는 뜻이며 순금이라는 뜻은 아닙니다. 14K나 18K 각인이 실제 금 순도를 설명합니다. 따라서 상품명의 골드, 골드 컬러 같은 표현만 보지 말고 본체 소재와 표면 처리 항목을 분리해 읽어야 합니다.',
+    "title": "제품 전체가 금인지 표면에 금층이 있는지 구분하세요",
+    "paragraphs": [
+      "14K·18K 금제품은 해당 순도의 금합금으로 제품 본체를 만듭니다. 반면 골드필드, 골드버메일과 금도금은 금속으로 만든 바탕 위에 금 또는 금합금 층을 더한 구조입니다. 따라서 겉색이 비슷하더라도 제품 전체의 귀금속 함량과 마모 후 드러나는 소재에는 차이가 있습니다.",
+      "상품명에 골드나 골드 컬러가 포함되어 있어도 그것만 보지 말고, 본체 소재와 표면 처리 항목을 나누어 읽어야 합니다. 금속 자체의 색과 관리 차이를 함께 비교하려면 백금·화이트골드 차이 가이드도 확인해야 합니다."
     ],
-    bullets: [
-      '본체 전체가 14K·18K 금합금인지',
-      '바탕 금속 위에 금층을 결합하거나 도금한 제품인지',
-      '금색이라는 색상 설명과 실제 소재 표기를 구분했는지',
-      '금층이 마모되면 어떤 바탕 금속이 드러나는지',
-    ],
+    "bullets": [
+      "본체 전체가 14K·18K 금합금인지",
+      "바탕 금속 위에 금층을 결합하거나 도금한 제품인지",
+      "금색이라는 색상 설명과 실제 소재 표기를 구분했는지",
+      "금층이 마모되면 어떤 바탕 금속이 드러나는지"
+    ]
   },
   {
-    title: '골드필드는 금층의 결합 방식과 중량 비율을 봅니다',
-    paragraphs: [
-      '골드필드, 골드 오버레이와 롤드 골드 플레이트는 10K 이상 금합금 층을 바탕 금속에 기계적으로 결합한 제품을 설명하는 용어입니다. 얇은 전기도금과 제작 방식이 다르며, 표면층의 순도와 제품 전체 금속에서 금층이 차지하는 비율이 표기의 핵심입니다.',
-      '미국 FTC 가이드에서는 결합된 금층이 제품 전체 금속 중량의 1/20 이상일 때 Gold Filled라는 용어를 사용할 수 있는 예시를 둡니다. 비율이 그보다 낮은 골드 오버레이나 RGP는 1/40 14K처럼 실제 분수를 표시하는 방식이 제시됩니다. 이 수치는 미국 기준이므로 국내외 상품에서는 어느 기준으로 표기했는지 판매 설명을 확인해야 합니다.',
+    "title": "골드필드·골드버메일·금도금 한눈에 비교",
+    "paragraphs": [
+      "세 유형은 모두 겉면에 금 또는 금합금 층이 보일 수 있습니다. 다만 바탕 금속과 금층을 적용하는 방식, 그리고 확인해야 할 표기는 서로 다릅니다. 아래 수치와 정의는 미국 Federal Trade Commission 자료에 근거한 설명이며, 국내외 상품에 그대로 적용되는 단일 기준은 아닙니다."
     ],
-    bullets: [
-      'GF·Gold Filled 표기와 금층 순도',
-      '1/20 등 금층의 중량 비율 표시',
-      '골드 오버레이·RGP와 골드필드 용어 구분',
-      '바탕 금속의 종류와 니켈 포함 여부',
+    "bullets": [
+      "골드필드: 바탕 금속에 금합금 층을 기계적으로 결합합니다. 미국 자료에서는 10K 이상 금합금과 금층 중량 비율을 확인하며, 1/20 이상인 경우 Gold Filled 표기 예시가 제시됩니다.",
+      "골드버메일: 스털링실버 바탕에 금을 입힌 유형입니다. 미국 자료에서는 주요 표면 전체에 10K 이상 금을 순금 환산 2.5마이크론 이상 입힌 경우를 설명합니다.",
+      "금도금: 기계 도금, 전기 도금 및 기타 공정으로 적용한 금층을 포괄하는 표현입니다. 바탕 금속은 은으로 한정되지 않습니다.",
+      "금 전기도금: 미국 소비자 안내에서는 최소 10K 금을 전해 공정으로 적용하고 금층 두께가 최소 0.175마이크론인 제품으로 설명합니다."
     ],
+    "image": {
+      "src": "/Image/guide/gold-filled-vermeil-plated-difference-section-2-59def09b.webp",
+      "alt": "금색 외층 아래 은색과 회색 바탕이 각각 보이는 세 가지 소재 단면 모형과 측정용 캘리퍼",
+      "caption": "유형을 비교할 때 바탕 금속, 금층 사양, 적용 방식을 함께 확인합니다.",
+      "width": 1024,
+      "height": 1024
+    }
   },
   {
-    title: '골드버메일은 스털링실버 바탕이 핵심입니다',
-    paragraphs: [
-      '골드버메일은 일반적으로 스털링실버에 금을 입힌 제품을 말합니다. 미국 FTC 기준에서는 스털링실버 바탕의 주요 표면 전체에 10K 이상 금 또는 금합금을 순금 환산 2.5마이크론 이상 입힌 경우 버메일로 설명할 수 있습니다.',
-      '은 위에 니켈 같은 다른 바탕 금속층을 먼저 입히고 다시 금도금했다면 그 구조를 공개해야 한다는 안내도 있습니다. 925 각인만으로 버메일 사양 전체가 확인되는 것은 아니므로 금층 순도와 두께, 중간층 사용 여부를 함께 물어보세요. 은이 바탕이라는 점은 일반 도금 제품과 가치·변색·재도금 판단을 달라지게 합니다.',
+    "title": "골드필드는 결합 방식과 중량 비율을 봅니다",
+    "paragraphs": [
+      "금합금 층을 바탕 금속에 기계적으로 결합한 제품을 설명할 때 골드필드, 골드 오버레이와 롤드 골드 플레이트라는 용어를 사용합니다. 여기서 14K GF의 14K는 결합된 금층의 순도를 뜻하며, 제품 전체가 14K라는 의미는 아닙니다.",
+      "미국 Federal Trade Commission 소비자 안내에서는 금층이 전체 금속 중량의 1/20보다 적은 골드필드·골드 오버레이 제품에 금의 중량 비율을 표시하는 방식을 제시합니다. 안내된 예시에는 1/40 14K gold overlay가 있습니다. 다만 국가와 판매처에 따라 표기 관행은 달라질 수 있습니다."
     ],
-    bullets: [
-      '스털링실버 또는 925 바탕인지',
-      '금층이 10K 이상인지',
-      '금층 두께가 어떤 기준으로 표시됐는지',
-      '은과 금 사이에 다른 금속층이 있는지',
-    ],
+    "bullets": [
+      "GF·Gold Filled 표기와 금층 순도",
+      "1/20 등 금층의 중량 비율",
+      "골드 오버레이·RGP와 골드필드 용어 구분",
+      "바탕 금속의 종류와 민감 반응 관련 소재"
+    ]
   },
   {
-    title: '금도금은 공정과 두께, 바탕 금속 범위가 넓습니다',
-    paragraphs: [
-      '일반 금도금은 황동, 구리, 스테인리스 등 여러 바탕 금속에 금층을 입힐 수 있습니다. FTC 소비자 안내는 Gold Electroplate를 10K 이상 금을 전해 공정으로 순금 환산 0.175마이크론 이상 입힌 제품으로 설명하며, Heavy Gold Electroplate 예시는 2.5마이크론 이상입니다.',
-      '골드 플래시나 골드 워시는 이보다 매우 얇은 금층을 뜻하는 표현으로 사용되어 마모가 더 빠를 수 있습니다. 그러나 마이크론 수치와 용어의 법적·상업적 기준은 판매 국가에 따라 다릅니다. 금도금이라는 한 단어만으로 내구성을 가정하지 말고 바탕 금속, 금층 순도, 실제 두께와 공정을 확인하세요.',
+    "title": "골드버메일은 스털링실버 바탕이 핵심입니다",
+    "paragraphs": [
+      "스털링실버에 금을 입힌 제품을 골드버메일이라고 합니다. 925 각인만으로는 금층 순도와 두께까지 확인되지 않으므로, 금층 사양과 중간층 사용 여부를 함께 문의하시기 바랍니다.",
+      "은 위에 다른 바탕 금속층을 먼저 입힌 뒤 다시 금도금을 한 구조라면 판매 명세에서 해당 구조를 확인해야 합니다. 또한 골드버메일이라고 표시된 제품도 국가별 기준과 판매 방식에 따라 다를 수 있습니다."
     ],
-    bullets: [
-      '전기도금인지 다른 표면 처리인지',
-      '금층 순도와 마이크론 두께',
-      'Heavy·Flash·Wash 표현의 판매자 정의',
-      '바탕 금속과 중간 도금층의 구성',
+    "bullets": [
+      "스털링실버 또는 925 바탕인지",
+      "금층이 어떤 순도로 표시됐는지",
+      "금층 두께가 어떤 기준으로 표시됐는지",
+      "은과 금 사이에 다른 금속층이 있는지"
     ],
-    image: {
-      src: '/Image/guide/gold-layer-cross-sections.webp',
-      alt: '금색 외층 아래 황동색·은색·회색 심재가 보이는 세 가지 도금 구조 단면과 루페',
-      caption: '겉면의 금색만으로 내부 구조를 구분하기 어렵기 때문에 금층 사양과 바탕 금속을 제품 설명에서 함께 확인해야 합니다.',
-    },
+    "image": {
+      "src": "/Image/guide/gold-filled-vermeil-plated-difference-section-4-08e0626c.webp",
+      "alt": "골드버메일은 스털링실버 바탕이 핵심입니다 예시 이미지",
+      "caption": "골드버메일은 스털링실버 바탕이 핵심입니다에서 확인할 부분을 보여주는 이미지입니다.",
+      "width": 1024,
+      "height": 1024
+    }
   },
   {
-    title: '마모와 알레르기는 금층 아래 소재까지 확인하세요',
-    paragraphs: [
-      '표면 금층은 착용 중 옷과 피부에 닿는 마찰, 땀, 향수·화장품, 세정제와 수영장 물에 반복 노출되면서 닳을 수 있습니다. 두께와 결합 방식이 내구성에 영향을 주지만 팔찌 바닥, 반지 손바닥 쪽과 목걸이 잠금장치처럼 마찰이 집중되는 부분은 먼저 색이 달라질 수 있습니다.',
-      '금층이 닳으면 바탕 금속이 피부에 닿으므로 금속 알레르기가 있다면 겉 금의 순도만 확인해서는 충분하지 않습니다. 니켈 등 민감 반응을 일으켰던 소재의 포함 여부와 중간층까지 확인하세요. 버메일도 은이나 첨가 합금에 민감한 사람에게 모든 경우 안전하다고 단정할 수는 없습니다.',
+    "title": "금도금은 공정과 두께, 바탕 금속을 확인하세요",
+    "paragraphs": [
+      "여러 바탕 금속에 금층을 입기는 하지만, 금도금은 이를 넓게 가리키는 표현입니다. 착용 방식과 도금 두께에 따라 금층이 시간이 지나면서 마모될 수 있으므로, 금도금이라는 명칭만으로 내구성을 판단하기는 어렵습니다.",
+      "골드 플래시나 골드 워시처럼 얇은 금층을 나타내는 표현은 판매처에 따라 사용될 수 있습니다. 판매 설명에서는 실제 금층 순도와 두께, 적용 공정, 바탕 금속을 확인하세요."
     ],
-    bullets: [
-      '매일 닿는 부위와 마찰이 집중되는 위치',
-      '땀·향수·로션·세정제 노출 빈도',
-      '바탕 금속과 니켈 등 중간층 구성',
-      '색 변화, 거칠어짐과 피부 반응 발생 여부',
-    ],
+    "bullets": [
+      "전기도금인지 다른 표면 처리인지",
+      "금층 순도와 마이크론 두께",
+      "Heavy·Flash·Wash 표현의 판매자 정의",
+      "바탕 금속과 중간 도금층의 구성"
+    ]
   },
   {
-    title: '구매표에는 표기·사양·수리 가능 여부를 적으세요',
-    paragraphs: [
-      '구매 전에는 제품명보다 본체 소재, 금층 순도, 두께 또는 중량 비율, 제작 방식, 알레르기 관련 구성과 보증 범위를 한 줄씩 확인하세요. 14K GF는 제품 전체가 14K라는 뜻이 아니며 925 Vermeil도 금층 두께까지 자동으로 증명하지 않습니다. 각인과 판매 명세가 서로 일치하는지 대조해야 합니다.',
-      '마모 후 재도금 가능 여부도 미리 물어보세요. 얇은 체인, 접착 보석, 특수 코팅과 조립 부품은 연마·세척·재도금 과정이 제한될 수 있습니다. 표면 금층 제품은 금합금 제품과 금 함량 및 매입 가치가 다르므로 가격을 비교할 때 디자인 비용과 바탕 소재, 예상 관리 비용을 별도로 보는 것이 좋습니다.',
+    "title": "구매표에 표기와 사양을 적으세요",
+    "paragraphs": [
+      "구매 전에는 제품명보다 본체 소재, 금층 순도, 두께 또는 중량 비율, 제작 방식, 알레르기 관련 구성과 보증 범위를 한 줄씩 확인하세요. 14K GF가 뜻하는 것은 제품 전체가 14K라는 사실이 아니며, 925 Vermeil도 금층 두께까지 자동으로 증명하지 않습니다.",
+      "체인·보석·코팅·조립 방식에 따라 재도금 가능 여부, 공정 제한, 보증 조건이 달라질 수 있으므로 판매 명세로 확인하세요. 판매 명세와 각인이 서로 일치하는지도 대조해야 합니다."
     ],
-    bullets: [
-      '본체 소재와 금층 순도',
-      '금층 두께 또는 중량 비율',
-      'GF·RGP·GEP·Vermeil 용어의 적용 기준',
-      '보증 기간과 재도금 가능 여부',
-      '수리·매입 시 금합금 제품과 구분',
-    ],
+    "bullets": [
+      "본체 소재와 금층 순도",
+      "금층 두께 또는 중량 비율",
+      "GF·RGP·GEP·Vermeil 용어의 적용 기준",
+      "보증 조건과 재도금 가능 여부",
+      "수리·매입 시 금합금 제품과 구분"
+    ]
   },
+  {
+    "title": "기준 확인 출처",
+    "paragraphs": [
+      "미국 Federal Trade Commission의 소비자 안내와 Jewelry Guides를 기준으로 골드필드와 금도금의 정의, 표시 방식, 금층 관련 수치를 확인했습니다. 국가별 표시 관행은 다를 수 있으므로 국내 판매 명세와 함께 대조하세요."
+    ],
+    "bullets": [
+      "Federal Trade Commission 소비자 안내: 골드필드, 금도금, 금 전기도금의 소비자용 정의와 표시 기준",
+      "Federal Trade Commission Jewelry Guides: 귀금속과 주얼리의 표시·광고 기준",
+      "Federal Trade Commission 개정 Jewelry Guides 해설: 골드필드와 도금 용어의 적용 조건"
+    ]
+  }
 ]
 
 const cautions = [
-  '이 글의 수치 예시는 미국 FTC Jewelry Guides 기준이며 국내외 모든 판매 표기에 자동으로 적용되는 단일 국제 기준은 아닙니다.',
-  '14K GF·925 Vermeil 같은 각인만으로 실제 금층 두께와 제작 품질을 확정하지 말고 판매 명세와 보증 내용을 함께 확인하세요.',
-  '표면 금층이 닳으면 바탕 금속이 피부에 닿을 수 있으므로 금속 알레르기가 있다면 중간층과 바탕 소재까지 확인하세요.',
+  "이 글의 수치 예시는 미국 Federal Trade Commission 기준이며 국내외 모든 판매 표기에 자동으로 적용되는 단일 국제 기준은 아닙니다.",
+  "14K GF·925 Vermeil 같은 각인만으로 실제 금층 두께와 제작 품질을 확정하지 말고 판매 명세와 보증 내용을 함께 확인하세요.",
+  "표면 금층이 닳으면 바탕 금속이 피부에 닿을 수 있으므로 금속 민감 반응이 있다면 중간층과 바탕 소재까지 확인하세요."
 ]
 
 const relatedLinks = [
-  { to: '/guide/jewelry-hallmark-numbers-meaning', label: '귀금속 각인 숫자 뜻', description: '585·750·925 소재 표기 확인' },
-  { to: '/guide/gold-plating-repair', label: '금반지·화이트골드 도금 수리', description: '도금 전 세척과 표면 점검 기준' },
-  { to: '/guide/gold-magnet-test-limitations', label: '금 자석 테스트 한계', description: '자석 반응과 전문 검사 구분' },
+  {
+    "to": "/guide/platinum-vs-white-gold-difference",
+    "label": "백금·화이트골드 차이: 가격·무게·변색·예물 선택",
+    "description": "제품 전체가 금속 합금인 소재와 표면 처리 제품을 비교할 때 참고할 수 있습니다."
+  },
+  {
+    "to": "/guide/hollow-vs-solid-gold-jewelry",
+    "label": "중공 금목걸이·솔리드 차이, 무게와 찌그러짐 확인법",
+    "description": "제품의 겉모습과 내부 구조가 다를 때 확인할 기준을 정리합니다."
+  },
+  {
+    "to": "/guide/gemstone-grading-vs-identification-report",
+    "label": "보석 감정서·감별서 차이, 다이아·유색보석 보고서 읽는 법",
+    "description": "보석이 함께 세팅된 제품의 문서와 표기 확인에 참고할 수 있습니다."
+  }
 ]
+
+const updatedAt = '2026-08-29'
+const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]
+
+// guide-manager:data:start
+const gmArticleTitle = '골드필드 뜻: 금도금·버메일 차이'
+const gmArticleLead = '골드필드는 바탕 금속에 금합금 층을 기계적으로 결합한 제품입니다. 일반 금도금은 여러 바탕 금속에 금층을 입히는 넓은 범주의 표면 처리입니다. 골드버메일은 스털링실버 바탕인지부터 확인해야 합니다. 구매 전에는 바탕 금속과 금층 순도뿐 아니라 두께 또는 중량 비율, 적용 표기 기준도 함께 확인해야 합니다.'
+const gmArticleCategory = '소재·보석'
+const gmArticleKeyword = '골드필드 금도금 차이'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '금제품 소재와 표면 처리 비교'
+const gmHeroAlt = '금색 체인과 반지 옆에 금층 단면 모형, 루페, 소재 표기 카드가 놓인 상담용 작업대'
+const gmHeroWidth = 1536
+const gmHeroHeight = 1024
+const gmReviewedBy = '귀족 주얼리 상담팀'
+const gmSourceNote = '본문의 정의와 수치 예시는 미국 Federal Trade Commission 공식 자료를 바탕으로 정리했으며, 국내외 판매 표기의 적용 여부는 제품별 명세를 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "Federal Trade Commission, Buying Platinum, Gold, and Silver Jewelry",
+    "url": "https://consumer.ftc.gov/articles/buying-platinum-gold-and-silver-jewelry",
+    "note": "골드필드, 금도금, 금 전기도금, 금 세척의 소비자용 정의와 표시 기준을 설명합니다."
+  },
+  {
+    "label": "Federal Trade Commission, Jewelry Guides",
+    "url": "https://www.ftc.gov/news-events/topics/tools-consumers/jewelry-guides",
+    "note": "귀금속 및 주얼리의 표시·광고 기준을 제공합니다."
+  },
+  {
+    "label": "Federal Trade Commission, Summary of Basis and Purpose for the Revised Jewelry Guides",
+    "url": "https://www.ftc.gov/system/files/documents/public_statements/1393857/g71001_jewelry_guides_statement_of_basis_and_purpose_final_8-8-18.pdf",
+    "note": "골드필드와 금도금 용어가 사용될 수 있는 조건과 기계적 도금·전기 도금의 구분을 설명합니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -168,12 +233,13 @@ useHead({
         '@type': 'Article',
         headline: pageTitle,
         description: pageDescription,
-        image: ogImage,
+        image: articleImages,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
-        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
-        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        author: { '@type': 'Organization', '@id': `${siteConfig.url}/#organization`, name: siteConfig.name, url: siteConfig.url },
+        reviewedBy: { '@type': 'Organization', '@id': `${siteConfig.url}/#organization`, name: gmReviewedBy, url: siteConfig.url },
+        publisher: { '@type': 'Organization', '@id': `${siteConfig.url}/#organization`, name: siteConfig.name, url: siteConfig.url, logo: { '@type': 'ImageObject', url: `${siteConfig.url}/favicon.svg` } },
       }),
     },
     {
@@ -194,19 +260,25 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="소재·보석"
-    keyword="골드필드 금도금 차이"
-    inquiry-type="custom"
-    inquiry-topic="금제품 소재와 표면 처리 비교"
-    title="골드필드·골드버메일·금도금 차이, 함량·두께·표기 기준"
-    lead="골드필드 금도금 차이는 겉색보다 바탕 금속과 금층을 붙이는 방식, 함량·두께 표기에 있습니다. 스털링실버 바탕의 골드버메일까지 구매 전 확인할 소재와 마모·관리 기준을 정리했습니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
     :hero-image="ogImage"
-    hero-alt="금층과 바탕 금속 노출 상태가 서로 다른 금색 체인 샘플 네 개 비교"
+    :hero-alt="gmHeroAlt"
+    :hero-width="gmHeroWidth"
+    :hero-height="gmHeroHeight"
+    :reviewed-by="gmReviewedBy"
     :quick-answers="quickAnswers"
     :sections="sections"
     :cautions="cautions"
     :faq-items="faqItems"
     :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>

@@ -430,11 +430,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'gold-filled-vermeil-plated-difference',
     path: '/guide/gold-filled-vermeil-plated-difference',
-    title: '골드필드·골드버메일·금도금 차이, 함량·두께·표기 기준',
-    description: '골드필드·골드버메일·금도금의 바탕 금속과 금층 결합 방식, 함량·두께 표기 및 마모·알레르기·관리 차이를 정리했습니다.',
+    title: '골드필드 뜻: 금도금·버메일 차이',
+    description: '골드필드는 바탕 금속에 금합금 층을 기계적으로 결합한 구조입니다. 금도금·골드버메일과 바탕 금속, 금층 두께·중량 비율, GF·1/20 표기 확인법을 비교합니다.',
     keyword: '골드필드 금도금 차이',
     image: '/Image/guide/gold-filled-vermeil-plated-hero.webp',
     publishedAt: '2026-07-26',
+    updatedAt: '2026-08-29',
     category: '소재·보석',
   },
   {
