@@ -9,18 +9,152 @@ const ogImage = `${siteConfig.url}/Image/necklace/NC0201.webp`
 const publishedAt = '2026-03-28'
 const faqItems = [
   {
-    question: '어머니 목걸이는 당일 구매도 가능한가요?',
-    answer: '재고가 있는 기성 제품은 가능하지만, 길이 조정이나 디자인 변경이 들어가면 별도 기간이 필요할 수 있습니다.',
+    "question": "어머니 목걸이는 당일 구매도 가능한가요?",
+    "answer": "재고가 있는 기성 제품이라면 당일 수령 가능 여부를 문의해 볼 수 있습니다. 다만 길이 조정, 펜던트 결합, 잠금장치 변경, 포장 준비가 포함되면 별도 작업이 필요할 수 있으므로 제품과 작업 범위를 확인해야 합니다."
   },
   {
-    question: '체인과 펜던트를 따로 골라도 제작 기간이 많이 늘어나나요?',
-    answer: '구성 방식에 따라 달라집니다. 재고 조합이면 비교적 빠르지만, 별도 맞춤 제작이나 세팅이 필요하면 일정이 더 늘어날 수 있어요.',
+    "question": "체인과 펜던트를 따로 골라도 제작 기간이 많이 늘어나나요?",
+    "answer": "구성 방식과 재고 여부에 따라 달라질 수 있습니다. 재고 제품을 조합하는 경우와 별도 맞춤 제작이나 세팅이 필요한 경우의 일정이 같다고 볼 수 없으므로 최종 구성으로 문의해 주세요."
   },
   {
-    question: '선물 날짜가 정해져 있으면 언제 문의하는 게 좋나요?',
-    answer: '희망 수령일이 정해져 있다면 가능한 한 먼저 상담을 주시는 것이 좋습니다. 일정이 촉박할수록 선택 가능한 디자인 범위가 달라질 수 있습니다.',
+    "question": "선물 날짜가 정해져 있으면 언제 문의하는 게 좋나요?",
+    "answer": "희망 수령일과 수령 방법을 정했다면 가능한 한 먼저 문의하는 것이 좋습니다. 일정이 촉박할수록 선택 가능한 재고와 변경 범위가 달라질 수 있으며, 정확한 가능 여부는 당시 작업 상황을 확인해야 합니다."
   },
+  {
+    "question": "상담에서 들은 예상 수령일을 확정된 날짜로 봐도 되나요?",
+    "answer": "제품과 작업 범위가 확정되기 전의 예상 일정은 확정된 수령 보장으로 보기 어렵습니다. 결제와 주문 확정 단계에서 완료 예정 시점, 포장 포함 여부, 수령 방법을 다시 확인하세요."
+  }
 ]
+
+const updatedAt = '2026-08-29'
+const quickAnswers = [
+  "선물 날짜가 정해졌다면 희망 수령일과 수령 방법을 먼저 전달한 뒤, 가능한 재고와 구성을 확인하세요.",
+  "기성 제품도 길이 조정, 펜던트 결합, 잠금장치 변경, 포장 준비가 포함되는지에 따라 일정이 달라질 수 있습니다.",
+  "정확한 수령 가능 여부는 선택한 제품과 당시 작업 및 재고 상황을 확인한 뒤 안내받아야 합니다."
+]
+
+const sections = [
+  {
+    "title": "제작 기간이 달라지는 핵심 요소",
+    "paragraphs": [
+      "같은 금목걸이라도 준비 방식에 따라 최종 수령 가능 시점이 달라질 수 있어요. 제품별로 재고 제품인지 먼저 확인하고, 길이 조정이 필요한지와 체인과 펜던트를 따로 구성하는지도 살펴봐야 해요.",
+      "디자인, 크기, 스타일, 제작 방식 같은 조건에 따라 주얼리 설계와 제조 과정에 영향을 줄 수 있어요. 선물용 체인과 펜던트 구성을 먼저 정리하고 싶다면 [어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준](/guide/mother-necklace-design-consulting)을 참고해 보세요."
+    ],
+    "bullets": [
+      "선택 제품이 바로 준비 가능한 재고인지 또는 주문제작인지",
+      "체인 길이와 굵기를 조정해야 하는지",
+      "펜던트 결합이나 별도 세팅이 필요한지",
+      "잠금장치 변경, 각인, 포장 같은 추가 작업이 포함되는지",
+      "각 항목이 최종 수령 가능 시점에 어떻게 반영되는지"
+    ]
+  },
+  {
+    "title": "선물 일정 맞출 때 상담 순서",
+    "paragraphs": [
+      "원하는 디자인을 정하기 전에 희망 수령일과 수령 방법부터 전달해야 일정을 맞추기 수월해요. 먼저 그 일정 안에서 가능한 구성과 변경 범위를 확인하고, 이후 세부 디자인을 좁혀 보세요.",
+      "제품과 작업 범위를 확정하기 전에는 상담 중 받은 예상 일정이 달라질 수 있어요. 그러니 결제와 주문 확정 단계에서 완료 예정 시점과 수령 방법을 다시 확인해 보세요."
+    ],
+    "bullets": [
+      "희망 수령일과 매장 방문 수령 또는 배송 여부 전달",
+      "평소 착용용인지 기념 선물인지 설명",
+      "원하는 스타일 사진과 체인 및 펜던트 선호도 공유",
+      "예산 안에서 체인 중심인지 펜던트 포함인지 결정",
+      "주문 확정 전 가능한 일정과 변경 가능 범위 재확인"
+    ],
+    "image": {
+      "src": "/Image/guide/mother-necklace-production-time-section-2.webp",
+      "alt": "선물 일정 맞출 때 상담 순서 예시 이미지",
+      "caption": "선물 일정 맞출 때 상담 순서에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  },
+  {
+    "title": "수령일 기준 확인 체크리스트",
+    "paragraphs": [
+      "선물 날짜를 맞추려면 상담 내용이 주문 확정 단계에서 같은 조건으로 유지되는지 확인하는 것이 중요합니다. 다음 항목을 순서대로 문의해 보세요."
+    ],
+    "bullets": [
+      "희망 수령일과 수령 방법",
+      "선택 제품이 재고인지 주문제작인지",
+      "체인 길이 조정 또는 펜던트 결합 필요 여부",
+      "잠금장치·각인·포장 등 추가 요청 포함 여부",
+      "최종 확정 전 가능한 일정과 불가능한 변경 범위"
+    ]
+  },
+  {
+    "title": "일정이 촉박할 때 확인할 것",
+    "paragraphs": [
+      "수령일이 가까우면 원하는 모든 디자인이나 변경 작업이 가능한지부터 가정하지 말고, 현재 가능한 재고와 변경 범위를 먼저 확인하세요. 변경을 줄인 구성이 선물 일정에 맞는지는 제품별로 상담이 필요합니다."
+    ],
+    "bullets": [
+      "비슷한 분위기의 재고 제품이 있는지",
+      "길이·펜던트·잠금장치 변경 없이 수령 가능한 구성이 있는지",
+      "포장 준비를 포함한 최종 수령 가능 시점이 언제인지",
+      "배송을 선택할 경우 배송에 필요한 별도 시간을 확인할 수 있는지"
+    ],
+    "image": {
+      "src": "/Image/guide/mother-necklace-production-time-section-4.webp",
+      "alt": "선물용 목걸이와 포장 준비 일정을 상담하는 모습",
+      "caption": "일정이 촉박할 때 확인할 것에서 확인할 부분을 보여주는 이미지입니다."
+    }
+  }
+]
+
+const cautions = [
+  "사업자 제공 일정과 재고 정보가 없으므로 특정 제작 일수나 특정 날짜 수령 가능 여부를 단정할 수 없습니다.",
+  "상담 중 안내받은 예상 일정은 제품, 작업 범위, 재고 상황이 확정되기 전까지 달라질 수 있으므로 결제와 주문 확정 단계에서 다시 확인하세요.",
+  "사진으로 본 디자인은 실제 제작 시 재료, 구조, 크기와 제작 방식에 따라 세부 형태가 달라질 수 있습니다."
+]
+
+const relatedLinks = [
+  {
+    "to": "/guide/mother-necklace-design-consulting",
+    "label": "어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준",
+    "description": "선물용 체인과 펜던트, 길이를 정하기 전에 착용 편의와 구성 선택 기준을 확인하세요."
+  },
+  {
+    "to": "/guide/wedding-ring-production-time",
+    "label": "결혼반지 제작 기간, 촬영·예식 날짜 맞추는 주문 시점",
+    "description": "맞춤 주얼리의 일정 확인과 주문 시점 관리 방법을 비교해 보세요."
+  },
+  {
+    "to": "/guide/gold-jewelry-remodeling-time",
+    "label": "금 리폼 기간, 디자인 확정부터 새 반지·목걸이 수령까지",
+    "description": "기존 금을 활용하는 리폼에서 디자인 확정과 수령 시점 확인 방법을 살펴보세요."
+  }
+]
+
+// guide-manager:data:start
+const gmArticleTitle = '어머니 목걸이 제작 기간, 선물 날짜 맞추려면'
+const gmArticleLead = '바로 구매 가능한 어머니께 드릴 목걸이도 있지만, 체인 길이와 굵기, 펜던트 조합, 잠금장치 선택까지 들어가면 제작 일정이 달라질 수 있어요. 선물 날짜가 정해져 있다면 상담 초반에 희망 수령일과 수령 방법을 먼저 공유해 주세요. 이후 선택한 제품과 작업 범위를 기준으로 가능 여부를 확인해 보세요.'
+const gmArticleCategory = '기간'
+const gmArticleKeyword = '어머니 목걸이 제작 기간'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '어머니 목걸이 제작 기간'
+const gmHeroAlt = '어머니께 드릴 목걸이의 체인과 펜던트를 상담하는 모습'
+const gmSourceNote = '맞춤 주얼리의 제작 일정에 영향을 줄 수 있는 일반 요소와 제작 흐름은 승인된 GIA 자료를 참고했습니다. 재고, 작업 가능 여부, 포장, 배송과 특정 날짜 수령 가능 여부는 외부 자료로 일반화하지 않고 실제 상담으로 확인해야 합니다. 기간을 안내하거나 약속할 때에는 합리적인 근거가 필요하다는 원칙은 Federal Trade Commission 자료를 참고했습니다.'
+const gmSources = [
+  {
+    "label": "GIA Jewelry Design & Technology Program",
+    "url": "https://dev.gia.edu/gem-education/program-jewelry-design-technology",
+    "note": "주얼리 설계와 제조에 영향을 주는 시간, 크기, 스타일, 제작 방식 등의 요소를 설명합니다."
+  },
+  {
+    "label": "GIA Bench Tip: Discover the Benefits of CAD/CAM",
+    "url": "https://www.gia.edu/articles/bench-tip-discover-benefits-cad-cam",
+    "note": "CAD 설계 완료 후 제조 단계로 이어지는 맞춤 주얼리 제작 흐름을 설명합니다."
+  },
+  {
+    "label": "Federal Trade Commission Jewelry Guides",
+    "url": "https://www.ftc.gov/news-events/topics/tools-consumers/jewelry-guides",
+    "note": "주얼리의 제작·제조·유통 관련 표시가 정확하고 오해를 일으키지 않아야 한다는 원칙을 제시합니다."
+  },
+  {
+    "label": "Federal Trade Commission: Rules of the Road",
+    "url": "https://www.ftc.gov/system/files/ftc_gov/pdf/bus28-rulesroad-012025_508.pdf",
+    "note": "판매자가 배송 또는 제공 시기를 표시하려면 해당 기간을 뒷받침할 합리적인 근거가 있어야 한다고 설명합니다."
+  }
+]
+// guide-manager:data:end
 
 useHead({
   title: pageTitle,
@@ -55,7 +189,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,46 +216,22 @@ useHead({
 
 <template>
   <GuideArticleView
-    category="기간"
-    keyword="어머니 목걸이 제작 기간"
-    inquiry-type="custom"
-    inquiry-topic="어머니 목걸이 제작 기간"
-    title="어머니 목걸이 제작 기간, 선물 날짜 맞추려면"
-    lead="어머니께 드릴 목걸이는 바로 구매 가능한 제품도 있지만, 체인 길이와 굵기, 펜던트 조합, 잠금장치 선택이 들어가면 제작 기간이 달라져요. 선물 날짜가 정해져 있다면 상담 초반에 일정부터 공유하시는 것이 가장 정확합니다."
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
     :published-at="publishedAt"
-    :hero-image="`${siteConfig.url}/Image/necklace/NC0201.webp`"
-    hero-alt="어머니 목걸이 제작 상담"
-    :quick-answers="[
-      '제작 기간은 기성 재고인지 주문제작인지에 따라 크게 달라져요.',
-      '체인 길이, 잠금장치, 펜던트 추가 여부가 일정에 영향을 줍니다.',
-      '선물 날짜가 정해졌다면 희망 수령일을 먼저 알려주시는 것이 가장 중요해요.'
-    ]"
-    :sections="[
-      {
-        title: '제작 기간이 달라지는 핵심 요소',
-        paragraphs: ['같은 금목걸이라도 준비 방식이 다르면 일정 차이가 큽니다. 단순 재고 출고인지, 길이 조정이 필요한지, 체인과 펜던트를 따로 맞추는지에 따라 기간이 달라져요.'],
-        bullets: ['재고 여부 — 바로 출고 가능한 제품인지', '체인 길이와 굵기 — 착용감에 맞춰 조정이 필요한지', '구성 변경 — 펜던트 추가, 잠금장치 변경, 별도 세팅이 필요한지']
-      },
-      {
-        title: '선물 일정 맞출 때 상담 순서',
-        paragraphs: ['일정을 맞추려면 디자인보다 수령일을 먼저 공유하는 것이 효율적이에요. 그 안에서 가능한 구성과 예산 범위를 빠르게 좁힐 수 있습니다.'],
-        bullets: ['언제까지 받아야 하는지', '평소 착용용인지, 기념 선물인지', '원하는 스타일 사진이 있는지', '예산 안에서 체인 중심인지, 펜던트 포함인지']
-      },
-      {
-        title: '일정이 촉박할 때 확인할 것',
-        paragraphs: ['수령일이 가까울수록 모든 디자인이 가능한 것은 아니에요. 이럴 때는 비슷한 스타일의 재고 제품이나 구성 조정을 함께 검토하는 것이 현실적입니다.'],
-        bullets: ['동일 디자인 대신 비슷한 분위기의 재고 제품이 있는지', '포장과 선물 세팅까지 함께 가능한지', '마감, 세척, 길이 조정이 포함된 일정인지']
-      }
-    ]"
-    :cautions="[
-      '정확한 제작 기간은 작업 일정과 재료 수급 상황에 따라 달라질 수 있어요.',
-      '사진 참고 디자인은 동일 복제가 아니라 유사한 분위기로 제안드리는 경우가 많습니다.'
-    ]"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
     :faq-items="faqItems"
-    :related-links="[
-      { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '예산별 선택 방법을 함께 확인하세요' },
-      { to: '/wedding', label: '예물 안내', description: '선물·예물 구성도 함께 보실 수 있어요' },
-      { to: '/contact', label: '문의하기', description: '희망 수령일 기준으로 상담받기' }
-    ]"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
   />
 </template>
