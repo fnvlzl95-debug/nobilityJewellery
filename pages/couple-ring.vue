@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: '종로 커플링 맞춤제작 | 14K·18K 가격차·각인·제작기간 | 귀족',
+  title: '종로 커플링 맞춤제작 | 14K·18K 가격·각인 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/couple-ring` }
   ],
@@ -15,7 +15,7 @@ useHead({
     { name: 'description', content: '종로3가 금은방 귀족의 커플링 맞춤제작 안내. 14K·18K 가격 차이와 화이트·로즈·옐로우골드 색상, 이니셜·기념일 각인, 제작기간(최소 2주)을 상담 전에 확인할 수 있습니다. 30년 세공 경력 장인이 도매가로 직접 제작합니다.' },
     { name: 'keywords', content: '커플링, 커플링 주문제작, 14K 커플링, 18K 커플링, 이니셜 커플링, 각인 커플링, 약혼반지, 우정반지, 기념일 반지, 화이트골드 커플링, 로즈골드 커플링, 종로 커플링' },
     // Open Graph
-    { property: 'og:title', content: '종로 커플링 맞춤제작 | 14K·18K 가격차·각인·제작기간 | 귀족' },
+    { property: 'og:title', content: '종로 커플링 맞춤제작 | 14K·18K 가격·각인 | 귀족' },
     { property: 'og:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공. 종로 도매가.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/couple-ring` },
@@ -24,7 +24,7 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 커플링 맞춤제작 | 14K·18K 가격차·각인·제작기간 | 귀족' },
+    { name: 'twitter:title', content: '종로 커플링 맞춤제작 | 14K·18K 가격·각인 | 귀족' },
     { name: 'twitter:description', content: '커플링 주문제작. 14K 18K 골드, 이니셜 각인. 30년 장인 직접 세공.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0103.webp` },
   ],
@@ -34,7 +34,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: '종로 커플링 맞춤제작 | 14K·18K 가격차·각인·제작기간 | 귀족',
+        name: '종로 커플링 맞춤제작 | 14K·18K 가격·각인 | 귀족',
         description: '14K, 18K 커플링 맞춤제작과 이니셜·기념일 각인 상담 안내 페이지입니다.',
         url: `${siteConfig.url}/couple-ring`,
         image: `${siteConfig.url}/Image/ring/NN0103.webp`,

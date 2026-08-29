@@ -316,6 +316,13 @@ onUnmounted(() => {
               <NuxtLink to="/wedding">예물 안내</NuxtLink>
               <NuxtLink :to="buildGalleryInquiryLink()" @click="handleInquiryAction('section_cta', '갤러리 상담')">문의하기</NuxtLink>
             </div>
+            <p class="gallery-help-guides">
+              가격과 기간이 궁금하시면
+              <NuxtLink to="/guide/couple-ring-14k-18k-price-difference">커플링 14K·18K 가격 차이</NuxtLink>,
+              <NuxtLink to="/guide/baby-ring-price">돌반지 가격 기준</NuxtLink>,
+              <NuxtLink to="/guide/wedding-ring-production-time">결혼반지 제작기간</NuxtLink>
+              가이드를 먼저 읽어보세요.
+            </p>
           </div>
         </section>
 
@@ -722,6 +729,24 @@ onUnmounted(() => {
 .gallery-help-links a:hover {
   border-color: #c9a227;
   background: rgba(201, 162, 39, 0.08);
+}
+
+.gallery-help-guides {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--gray);
+}
+
+.gallery-help-guides a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+  transition: color 0.2s var(--ease-out-quart);
+}
+
+.gallery-help-guides a:hover {
+  color: var(--gold-light);
 }
 
 /* ===== Footer ===== */

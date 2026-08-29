@@ -619,4 +619,72 @@ const repairServices = [
   color: #fafafa;
 }
 
+
+/* ===== 모바일 (유입 1위가 네이버 모바일 — 640px 이하 정밀 대응) ===== */
+@media (max-width: 640px) {
+  .main {
+    padding-top: 96px;
+    padding-bottom: 56px;
+  }
+
+  .repair-header {
+    margin-bottom: 40px;
+  }
+
+  .desc {
+    font-size: 15px;
+  }
+
+  /* 안내 배너: 아이콘·본문·전화를 세로로 */
+  .repair-notice {
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+
+  .notice-phone {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .services-grid {
+    gap: 12px;
+  }
+
+  .service-card {
+    padding: 20px;
+  }
+
+  .service-title {
+    font-size: 18px;
+  }
+
+  /* CTA: 버튼을 전체폭 세로 스택으로 */
+  .repair-cta {
+    padding: 40px 20px;
+  }
+
+  .repair-cta h3 {
+    font-size: 20px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .btn-gold,
+  .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .location-info {
+    padding: 24px 16px;
+  }
+}
 </style>

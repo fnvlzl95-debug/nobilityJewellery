@@ -171,6 +171,31 @@ const products = [
           </div>
         </div>
 
+        <!-- Trade Info: 거래 조건을 먼저 답해주는 섹션 -->
+        <div class="trade-section">
+          <h2 class="section-title">거래 안내</h2>
+          <div class="trade-grid">
+            <div class="trade-card">
+              <h3 class="trade-title">누가 거래하나요</h3>
+              <p class="trade-desc">소매점, 온라인 셀러, 공방, 기업 납품처와 거래합니다. 필요한 품목과 수량을 말씀해주시면 조건을 안내해드립니다.</p>
+            </div>
+            <div class="trade-card">
+              <h3 class="trade-title">최소 주문 수량</h3>
+              <p class="trade-desc">최소 주문 수량은 없습니다. 소량 도매도 가능하며, 대량 주문 시 추가 할인이 적용됩니다.</p>
+            </div>
+            <div class="trade-card">
+              <h3 class="trade-title">가격 기준</h3>
+              <p class="trade-desc">당일 금 시세에 공임을 더해 안내합니다. 시세가 매일 달라지므로 견적은 상담 시점 기준으로 확정됩니다.</p>
+            </div>
+          </div>
+          <p class="trade-guides">
+            처음 거래하신다면
+            <NuxtLink to="/guide/jongno-jewelry-wholesale-method">종로 귀금속 도매 거래 방법</NuxtLink>과
+            <NuxtLink to="/guide/jongno-jewelry-store-visit-guide">매장 방문 가이드</NuxtLink>,
+            <NuxtLink to="/guide/gold-price-how-to-check">금 시세 보는 법</NuxtLink>을 먼저 읽어보세요.
+          </p>
+        </div>
+
         <!-- Process -->
         <div class="process-section">
           <h2 class="section-title">거래 절차</h2>
@@ -524,6 +549,66 @@ const products = [
 
 .btn-text:hover {
   gap: 12px;
+}
+
+/* Trade Info */
+.trade-section {
+  margin-bottom: 80px;
+}
+
+.trade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.trade-card {
+  padding: 24px;
+  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(250, 250, 250, 0.06);
+}
+
+.trade-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #c9a227;
+  margin: 0 0 10px;
+}
+
+.trade-desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(250, 250, 250, 0.7);
+  margin: 0;
+}
+
+.trade-guides {
+  margin: 24px 0 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.55);
+}
+
+.trade-guides a {
+  color: #c9a227;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.trade-guides a:hover {
+  color: #d4b44a;
+}
+
+@media (max-width: 640px) {
+  .trade-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .trade-section {
+    margin-bottom: 56px;
+  }
 }
 
 /* Process */

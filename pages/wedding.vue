@@ -7,16 +7,16 @@ definePageMeta({
 })
 
 useHead({
-  title: '종로 결혼예물 상담·가격·맞춤제작 | 귀족',
+  title: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족',
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/wedding` }
   ],
   meta: [
-    { name: 'description', content: '종로 결혼예물 상담과 맞춤제작 안내. 예산, 원하는 품목, 제작 일정을 함께 확인하고 커플링과 웨딩 주얼리의 가격 범위를 상담합니다.' },
+    { name: 'description', content: '종로3가 종묘귀금속백화점의 결혼예물 전문 상담. 커플링·반지·목걸이 세트를 예산에 맞춰 구성하고, 촬영·예식 일정에 맞춘 제작 기간과 시댁·처가 예물까지 안내합니다.' },
     { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
-    { property: 'og:title', content: '종로 결혼예물 상담·가격·맞춤제작 | 귀족' },
-    { property: 'og:description', content: '예산과 일정에 맞춘 종로 결혼예물 상담과 맞춤제작 안내.' },
+    { property: 'og:title', content: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족' },
+    { property: 'og:description', content: '커플링·반지·목걸이 세트를 예산과 일정에 맞춰 구성하는 종로 결혼예물 상담.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/wedding` },
     { property: 'og:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
@@ -24,8 +24,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 결혼예물 상담·가격·맞춤제작 | 귀족' },
-    { name: 'twitter:description', content: '예산과 일정에 맞춘 종로 결혼예물 상담과 맞춤제작 안내.' },
+    { name: 'twitter:title', content: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족' },
+    { name: 'twitter:description', content: '커플링·반지·목걸이 세트를 예산과 일정에 맞춰 구성하는 종로 결혼예물 상담.' },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
   ],
   script: [
@@ -34,7 +34,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: '종로 결혼예물 상담·가격·맞춤제작 | 귀족',
+        name: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족',
         description: '예산과 일정에 맞춘 결혼예물 상담, 가격 범위 확인, 맞춤제작 안내 페이지입니다.',
         url: `${siteConfig.url}/wedding`,
         image: `${siteConfig.url}/Image/set/set0101.webp`,

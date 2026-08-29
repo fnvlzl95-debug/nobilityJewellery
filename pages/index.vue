@@ -407,11 +407,13 @@ const handleNaverMapClick = () => {
           <span class="tag-line"></span>
         </div>
 
-        <h1 class="hero-title">
-          <span class="sr-only">종로 귀금속 도매 전문 귀족</span>
-          <span class="title-line" aria-hidden="true">귀</span>
-          <span class="title-line" aria-hidden="true">족</span>
-        </h1>
+        <!-- H1은 검색·보조기기용 전체 문구 하나만 갖고, 장식 글자는 별도 요소로 분리한다
+             (같은 h1 안에 두면 텍스트 추출 시 "…귀족귀족"으로 중복 병합됨) -->
+        <h1 class="sr-only">종로 귀금속 도매 전문 귀족</h1>
+        <div class="hero-title" aria-hidden="true">
+          <span class="title-line">귀</span>
+          <span class="title-line">족</span>
+        </div>
 
         <p class="hero-subtitle">종로 귀금속 도매의 품격</p>
 
@@ -997,13 +999,13 @@ const handleNaverMapClick = () => {
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero.loaded .title-line:nth-child(2) {
+.hero.loaded .title-line:nth-child(1) {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.4s;
 }
 
-.hero.loaded .title-line:nth-child(3) {
+.hero.loaded .title-line:nth-child(2) {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.5s;
@@ -1931,6 +1933,7 @@ const handleNaverMapClick = () => {
   .repair-panel { grid-template-columns: minmax(0, 1fr); }
   .repair-media { min-height: 0; aspect-ratio: 16 / 9; order: -1; }
   .buy-row { grid-template-columns: minmax(0, 1fr); }
+  .location-grid { gap: 40px; }
 }
 
 @media (max-width: 640px) {
@@ -1995,11 +1998,43 @@ const handleNaverMapClick = () => {
 
   .block-head { flex-direction: column; align-items: flex-start; gap: 10px; }
   .repair-checks { grid-template-columns: minmax(0, 1fr); }
+
+  /* 히어로 버튼 3개는 모바일에서 세로 전체폭 — 손가락으로 누르기 쉽게 */
+  .hero-cta { flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+  .btn-magnetic,
+  .btn-outline-gold { width: 100%; justify-content: center; }
+
+  /* 히어로 여백 축소 — 첫 화면에 CTA까지 들어오게 */
+  .hero-subtitle { margin-bottom: 24px; }
+  .hero-tag { margin-bottom: 16px; }
+
+  /* 최종 CTA 버튼도 전체폭 */
+  .cta-actions { flex-direction: column; align-items: stretch; max-width: 320px; margin: 0 auto; }
+  .cta-btn { width: 100%; }
+  .cta-frame { inset: 12px; }
+
+  /* 패널 내부 여백 축소 */
+  .about-content,
+  .repair-body,
+  .visit-body { padding: 24px 20px; }
+  .buy-panel,
+  .calc-panel { padding: 24px 20px; }
+
+  /* 통계 3개가 줄바꿈될 때 구분선이 어색해지므로 정리 */
+  .about-stats { gap: 20px 0; }
+  .about-stat { padding: 0 20px; }
+  .about-stat:first-child { padding-left: 0; }
+
+  /* 지도 세로 축소 */
+  .map-wrapper { aspect-ratio: 4 / 3; }
+
+  /* 수리 배지: 사진 하단 전체폭으로 눕혀 가림을 줄인다 */
+  .repair-badge { left: 12px; right: 12px; bottom: 12px; max-width: none; padding: 12px 14px; }
 }
 
 /* ===== Location Section ===== */
 .section-location {
-  padding: 160px 0;
+  padding: clamp(52px, 7vw, 84px) 0;
   background: #0a0a0a;
   overflow: hidden;
 }

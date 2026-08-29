@@ -288,6 +288,22 @@ const handleSubmit = async () => {
                 <span class="info-value">{{ siteConfig.address.full }}</span>
               </div>
             </div>
+
+            <div class="prep-block">
+              <h2 class="prep-title">상담 전에 준비하시면 좋아요</h2>
+              <ul class="prep-list">
+                <li><strong>원하시는 디자인 사진</strong><span>비슷한 스타일 캡처도 좋습니다</span></li>
+                <li><strong>희망 소재와 색상</strong><span>14K·18K, 화이트·로즈·옐로우골드</span></li>
+                <li><strong>착용 목적</strong><span>선물용인지 데일리용인지</span></li>
+                <li><strong>희망 수령일과 예산</strong><span>주문제작은 보통 최소 2주 걸립니다</span></li>
+              </ul>
+              <p class="prep-links">
+                자주 묻는 내용은 <NuxtLink to="/faq">FAQ</NuxtLink>와
+                <NuxtLink to="/guide/couple-ring-14k-18k-price-difference">가격 가이드</NuxtLink>,
+                <NuxtLink to="/guide/wedding-ring-production-time">제작기간 가이드</NuxtLink>에서
+                미리 확인하실 수 있습니다.
+              </p>
+            </div>
           </div>
 
           <!-- Decorative elements -->
@@ -598,6 +614,75 @@ const handleSubmit = async () => {
   font-weight: 300;
   line-height: 1.6;
   color: rgba(250, 250, 250, 0.8);
+}
+
+/* 상담 전 준비 안내 */
+.prep-block {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(250, 250, 250, 0.08);
+}
+
+.prep-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fafafa;
+  margin: 0 0 16px;
+}
+
+.prep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.prep-list li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.prep-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-top: 4px;
+  background: #c9a227;
+  justify-self: center;
+}
+
+.prep-list strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(250, 250, 250, 0.9);
+}
+
+.prep-list span {
+  display: block;
+  font-size: 12.5px;
+  color: rgba(250, 250, 250, 0.5);
+}
+
+.prep-links {
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(250, 250, 250, 0.55);
+}
+
+.prep-links a {
+  color: #c9a227;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.prep-links a:hover {
+  color: #d4b44a;
 }
 
 .info-decor {
