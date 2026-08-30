@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'jongno-jewelry-quote-comparison-tips',
+    path: '/guide/jongno-jewelry-quote-comparison-tips',
+    title: '종로 금은방 견적 비교 기록법',
+    description: '종로 금은방에서 받은 견적을 같은 기준으로 기록하고 금속 정보, 비용 항목, 환불 조건을 비교하는 방법을 정리했습니다.',
+    keyword: '종로 금은방 견적 비교',
+    image: '/Image/guide/jongno-jewelry-quote-comparison-tips-hero-a87d6bab.webp',
+    publishedAt: '2026-08-30',
+    category: '선택',
+  },
+  {
       slug: 'birthstone-price-factors-guide',
       path: '/guide/birthstone-price-factors-guide',
       title: '탄생석 가격 순위가 달라지는 주요 기준',

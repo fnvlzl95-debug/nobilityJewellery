@@ -136,6 +136,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/bracelet-size-measuring-guide', label: '팔찌 사이즈 재는 법', description: '손목 둘레 측정 기준' },
       { to: '/guide/mother-necklace-design-consulting', label: '어머니 목걸이 상담', description: '선물용 디자인 기준' },
       { to: '/gallery', label: '주문제작 갤러리', description: '실제 제작 디자인 보기' },
+      { to: '/guide/jongno-jewelry-quote-comparison-tips', label: '종로 금은방 견적 비교 기록법', description: '금속 정보·비용 항목·환불 조건을 같은 기준으로 비교하는 방법' },
     ],
   },
 ]
