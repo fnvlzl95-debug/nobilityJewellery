@@ -1,0 +1,253 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/earring-style-by-face-shape'
+const pageTitle = '얼굴형별 귀걸이 고르는 법 | 귀족'
+const pageDescription = '얼굴형과 헤어스타일에 따라 스터드형, 후프형, 드롭형 귀걸이를 고르는 기준을 정리했습니다.'
+const ogImage = `${siteConfig.url}/Image/guide/earring-style-by-face-shape-hero-a6093f0d.webp`
+const publishedAt = '2026-08-31'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "둥근 얼굴에는 어떤 귀걸이가 어울리나요?",
+    "answer": "세로선이 강조된 드롭형이나 선형 귀걸이를 우선 비교할 수 있습니다. 넓은 후프나 큰 버튼형은 얼굴의 가로 폭을 더 강조할 수 있어 크기와 폭을 함께 살펴보세요."
+  },
+  {
+    "question": "긴 얼굴에 긴 드롭형을 착용해도 되나요?",
+    "answer": "착용할 수 있지만 길고 가느다란 형태는 얼굴의 세로 길이를 더 강조할 수 있습니다. 스터드형, 버튼형, 후프형처럼 옆 폭을 더하는 형태와 함께 비교해 보세요."
+  },
+  {
+    "question": "머리가 긴 경우 귀걸이는 어떻게 골라야 하나요?",
+    "answer": "귀걸이가 머리카락에 어느 정도 가려지는지 먼저 확인하세요. 귀를 드러내지 않는 스타일이라면 크기와 장식성을 조절하고, 머리를 묶었을 때의 노출도 함께 비교하는 것이 좋습니다."
+  },
+  {
+    "question": "큰 스터드형 귀걸이를 고를 때 무엇을 확인하나요?",
+    "answer": "장식의 크기뿐 아니라 무게와 뒷장식의 지지력을 확인해야 합니다. 큰 귀걸이는 상대적으로 무거울 수 있어 착용감과 처짐 여부를 상담하는 편이 좋습니다."
+  }
+]
+const quickAnswers = [
+  "둥근 얼굴에는 세로선이 살아 있는 드롭형이나 선형 귀걸이를 우선 살펴볼 수 있습니다.",
+  "긴 얼굴에는 스터드형, 버튼형, 후프형처럼 얼굴 옆 폭을 더하는 형태를 비교해 보세요.",
+  "귀를 드러내는 올림머리에는 장식성과 길이를 조절하고, 긴 머리에는 가려지는 정도를 함께 확인하세요."
+]
+const sections = [
+  {
+    "title": "얼굴형에 맞춰 형태를 고르는 기준",
+    "paragraphs": [
+      "귀걸이와 얼굴의 선을 서로 대비시키면 얼굴형과 같은 윤곽을 반복하지 않으면서 시각적 균형을 살펴볼 수 있습니다. 실제 인상은 얼굴의 폭과 길이 비율뿐 아니라 귀걸이의 크기와 착용 위치에 따라서도 달라집니다.",
+      "타원형 얼굴은 여러 귀걸이 형태를 폭넓게 시도해 볼 수 있는 편입니다. 둥근 얼굴에는 세로선이 강조된 드롭형이나 선형 귀걸이를, 각진 얼굴에는 길게 떨어지는 드롭형이나 곧은 선의 귀걸이를 선택지로 살펴볼 수 있습니다.",
+      "스터드형, 버튼형, 후프형처럼 얼굴 옆에 폭을 더하는 형태는 긴 얼굴이나 직사각형 얼굴에 비교해 볼 수 있습니다. 길고 가느다란 드롭형의 경우 얼굴의 세로 길이를 더 강조할 수 있으므로 크기와 길이를 함께 확인하는 편이 좋습니다."
+    ],
+    "bullets": [
+      "둥근 얼굴: 길고 세로선이 있는 드롭형·선형",
+      "각진 얼굴: 길게 떨어지거나 선이 부드러운 형태",
+      "긴 얼굴: 스터드형·버튼형·후프형",
+      "타원형 얼굴: 얼굴 비율과 선호 분위기에 따라 폭넓게 비교"
+    ]
+  },
+  {
+    "title": "헤어스타일과 귀걸이 노출량",
+    "paragraphs": [
+      "얼굴 주변의 폭과 길이 인상은 헤어스타일에 따라서도 달라집니다. 둥근 얼굴에는 정수리 높이를 더하고 옆 폭을 줄이는 헤어스타일이 제안되며, 긴 얼굴에는 앞머리나 턱선 길이의 보브, 얼굴 주변 레이어처럼 옆 폭을 만드는 스타일이 제안됩니다.",
+      "귀를 드러내는 올림머리나 짧은 머리를 하면 얼굴 가까이에서 귀걸이가 더 뚜렷하게 보입니다. 반대로 귀를 덮는 긴 머리에서는 귀걸이 일부가 가려질 수 있으므로, 크기와 길이, 장식성을 조절해 보는 것이 좋습니다.",
+      "앞머리와 안경이 함께 있는 경우에는 얼굴 주변 장식과 귀걸이의 가장 넓은 부분이 겹치는지 확인하는 것이 좋습니다. 머리를 묶었을 때와 내렸을 때는 같은 귀걸이라도 보이는 정도가 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "올림머리·짧은 머리: 귀걸이의 길이와 장식성이 더 선명하게 보임",
+      "긴 머리: 귀걸이가 머리카락에 가려지는 정도를 확인",
+      "앞머리·안경: 얼굴 주변 장식과 귀걸이의 겹침을 비교",
+      "둥근 얼굴: 정수리 높이와 옆 폭의 균형을 함께 고려"
+    ],
+    "image": {
+      "src": "/Image/guide/earring-style-by-face-shape-section-2-76a04a08.webp",
+      "alt": "헤어스타일과 귀걸이 노출량 예시 이미지",
+      "caption": "헤어스타일과 귀걸이 노출량에서 확인할 부분을 보여주는 이미지입니다.",
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  {
+    "title": "귀걸이 종류별 선택 포인트",
+    "paragraphs": [
+      "귀 가까이에 고정되는 기본 형태가 스터드형이라면, 후프형은 얼굴 옆에 둥근 선과 폭을 더하는 형태입니다. 드롭형과 댕글형은 아래로 움직임과 길이를 만들고, 샹들리에형은 여러 장식이 층을 이루는 형태입니다. 이어 커프와 이어 랩은 귀의 다른 위치에 걸어 장식합니다.",
+      "귀걸이의 형태를 정한 뒤에는 크기와 무게뿐 아니라 잠금 구조도 함께 확인해야 합니다. 작은 귀걸이보다 큰 귀걸이가 무거운 경우가 많으며, 뒷장식이 충분한 지지를 하지 못하면 귀걸이가 처질 수 있습니다.",
+      "스터드형을 고를 때는 장식의 크기만 확인하기보다 무게와 뒷장식의 지지력도 함께 살펴보는 것이 좋습니다. 귀의 두께와 귓불 상태, 귀걸이 구조에 따라 실제 착용감이 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "스터드형: 단정하고 귀 가까이에서 보이는 기본 형태",
+      "후프형: 얼굴 옆에 둥근 선과 폭을 더하는 형태",
+      "드롭형·댕글형: 세로선과 움직임을 만드는 형태",
+      "샹들리에형: 여러 장식이 층을 이루는 화려한 형태",
+      "이어 커프·이어 랩: 귀의 다른 위치를 활용하는 형태"
+    ]
+  },
+  {
+    "title": "상담 전에 비교할 항목",
+    "paragraphs": [
+      "선택 범위를 좁히려면 원하는 얼굴 인상을 먼저 정하고, 얼굴형과 헤어스타일, 착용할 옷의 목선, 안경이나 앞머리 유무를 함께 정리하는 것이 쉽습니다. 사진으로 비교할 때는 머리를 묶은 모습과 내린 모습을 모두 확인하는 방법이 유용합니다.",
+      "맞춤 상담을 받을 때에는 원하는 귀걸이의 형태와 함께 착용 시간, 무게에 대한 민감도, 잠금 방식, 귓불의 두께와 침 길이도 확인하는 것이 좋습니다. 다만 제작 가능 여부와 세부 사양은 상담 시점의 디자인 및 소재 조건에 따라 달라질 수 있습니다."
+    ],
+    "bullets": [
+      "원하는 인상: 세로로 길어 보이는 느낌, 옆 폭을 더하는 느낌, 단정한 느낌",
+      "착용 환경: 머리를 묶는 시간과 귀걸이가 보이는 정도",
+      "착용 조건: 무게, 침 길이, 귓불 두께, 뒷장식",
+      "맞춤 제작 조건: 디자인과 소재, 구조를 상담 후 확인"
+    ],
+    "image": {
+      "src": "/Image/guide/earring-style-by-face-shape-section-4-99dbb0ef.webp",
+      "alt": "상담 전에 비교할 항목 예시 이미지",
+      "caption": "상담 전에 비교할 항목에서 확인할 부분을 보여주는 이미지입니다.",
+      "width": 1024,
+      "height": 1024
+    }
+  }
+]
+const cautions = [
+  "얼굴형별 추천은 개인의 얼굴 비율과 헤어스타일, 안경, 앞머리, 선호하는 인상에 따라 달라질 수 있으므로 고정된 규칙으로 보지 마세요.",
+  "큰 귀걸이는 무게와 뒷장식의 지지력에 따라 처질 수 있습니다. 실제 착용 전 크기와 무게, 잠금 구조를 상담으로 확인하세요.",
+  "귀걸이의 제작 가능 여부와 세부 사양은 선택한 디자인과 소재, 구조에 따라 달라질 수 있습니다."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/earring-types-guide",
+    "label": "귀걸이 종류, 스터드·드롭·후프·클립형 차이",
+    "description": "스터드·후프·허기·드롭·클립형의 움직임과 무게, 잠금 구조 및 착용 목적별 선택 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/earring-closure-selection-guide",
+    "label": "첫 귀걸이는 잠금 방식부터 고르세요",
+    "description": "귀걸이 모양보다 마찰식, 나사식, 잠금식 등 뒷마개 구조를 먼저 살펴 첫 귀걸이를 고르는 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/earring-back-lost-types",
+    "label": "귀걸이 뒷마개 분실, 종류별 교체 기준",
+    "description": "귀걸이 뒷마개를 잃어버렸을 때 종류와 침 굵기, 소재를 확인하는 기준을 정리했습니다."
+  },
+  {
+    "to": "/guide/custom-earrings-production-time",
+    "label": "귀걸이 주문제작 기간, 디자인 확정부터 한쌍 수령까지",
+    "description": "귀걸이 주문제작의 주요 단계를 디자인 확정, 제작, 조립, 세팅, 마감과 착용 검수로 나눠 설명합니다."
+  }
+]
+const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]
+
+// guide-manager:data:start
+const gmArticleTitle = '얼굴형별 귀걸이 고르는 법'
+const gmArticleLead = '얼굴 가까이에 놓이는 장신구인 귀걸이는 모양과 길이에 따라 얼굴의 폭과 길이 인상을 달리 보이게 할 수 있습니다. 얼굴형을 고정된 기준으로 단정하기보다는 헤어스타일과 안경, 앞머리, 원하는 분위기를 함께 살펴보세요.'
+const gmArticleCategory = '선택'
+const gmArticleKeyword = '얼굴형별 귀걸이'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '얼굴형과 헤어스타일에 맞는 귀걸이 맞춤 상담'
+const gmHeroAlt = '밝은 진열대 위에 스터드형, 둥근 후프형, 길게 떨어지는 드롭형 귀걸이가 나란히 놓인 모습'
+const gmHeroWidth = 1536
+const gmHeroHeight = 1024
+const gmReviewedBy = '귀족 주얼리 상담팀'
+const gmSourceNote = '얼굴형과 헤어스타일에 따른 선택 원리는 승인된 기관 자료를 바탕으로 정리했습니다. 개인의 착용감과 맞춤 제작 조건은 상담 시점의 디자인과 소재에 따라 확인이 필요합니다.'
+const gmSources = [
+  {
+    "label": "Jewelers of America, Earring Style Guide",
+    "url": "https://www.jewelers.org/buying-jewelry/jewelry-styles/earrings",
+    "note": "얼굴형과 귀걸이 형태의 조화 및 대비, 얼굴형별 귀걸이 선택 기준을 참고했습니다."
+  },
+  {
+    "label": "Gemological Institute of America, Earrings",
+    "url": "https://gemkids.gia.edu/jewelry/earrings",
+    "note": "스터드형, 후프형, 드롭형, 샹들리에형, 이어 커프와 이어 랩 등 귀걸이 종류와 용어를 참고했습니다."
+  },
+  {
+    "label": "University of Kentucky Cooperative Extension, Face Shape and Hair Care",
+    "url": "https://publications.mgcafe.uky.edu/sites/publications.ca.uky.edu/files/fcs2847.pdf",
+    "note": "얼굴형에 따른 헤어스타일의 폭과 길이 인상에 관한 기본 원리를 참고했습니다."
+  },
+  {
+    "label": "Gemological Institute of America, How to Choose Diamond Stud Earrings",
+    "url": "https://4cs.gia.edu/en-us/blog/how-to-choose-diamond-stud-earrings/",
+    "note": "스터드형 귀걸이의 크기와 무게, 뒷장식의 지지력 및 처짐 관계를 참고했습니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: articleImages,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url },
+        reviewedBy: { '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: gmReviewedBy, url: siteConfig.url },
+        publisher: {
+          '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url,
+          logo: { '@type': 'ImageObject', url: siteConfig.url + '/favicon.svg' },
+        },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :hero-width="gmHeroWidth"
+    :hero-height="gmHeroHeight"
+    :reviewed-by="gmReviewedBy"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

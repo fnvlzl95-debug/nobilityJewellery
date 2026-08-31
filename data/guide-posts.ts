@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'earring-style-by-face-shape',
+    path: '/guide/earring-style-by-face-shape',
+    title: '얼굴형별 귀걸이 고르는 법',
+    description: '얼굴형과 헤어스타일에 따라 스터드형, 후프형, 드롭형 귀걸이를 고르는 기준을 정리했습니다.',
+    keyword: '얼굴형별 귀걸이',
+    image: '/Image/guide/earring-style-by-face-shape-hero-a6093f0d.webp',
+    publishedAt: '2026-08-31',
+    category: '선택',
+  },
+  {
     slug: 'jongno-jewelry-quote-comparison-tips',
     path: '/guide/jongno-jewelry-quote-comparison-tips',
     title: '종로 금은방 견적 비교 기록법',
