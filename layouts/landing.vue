@@ -267,6 +267,21 @@
   border-color: rgba(201, 162, 39, 0.3);
 }
 
+/* 갤러리 썸네일은 해당 제품 상세로 들어가는 입구다 */
+.page-landing .gallery-grid a {
+  display: block;
+  text-decoration: none;
+}
+
+.page-landing .gallery-grid a:hover img {
+  border-color: rgba(201, 162, 39, 0.3);
+}
+
+.page-landing .gallery-grid a:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
+}
+
 .page-landing .gallery-cta {
   text-align: center;
   margin-top: 32px;

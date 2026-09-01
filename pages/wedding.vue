@@ -268,10 +268,18 @@ const processSteps = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/set/set0101.webp" alt="14K 결혼예물 세트 - 종로 금은방 도매가" loading="lazy" />
-            <img src="/Image/set/set0102.webp" alt="신부 예물 - 다이아몬드 목걸이, 귀걸이 세트" loading="lazy" />
-            <img src="/Image/set/set0201.webp" alt="웨딩 주얼리 컬렉션 - 맞춤 제작 가능" loading="lazy" />
-            <img src="/Image/set/set0202.webp" alt="결혼 예물 반지 - 이니셜 각인 서비스" loading="lazy" />
+            <NuxtLink to="/gallery/modern-dual-chain-set">
+              <img src="/Image/set/set0101.webp" alt="14K 결혼예물 세트 - 종로 금은방 도매가" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/modern-dual-chain-set">
+              <img src="/Image/set/set0102.webp" alt="신부 예물 - 다이아몬드 목걸이, 귀걸이 세트" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/u-link-lettering-signature-set">
+              <img src="/Image/set/set0201.webp" alt="웨딩 주얼리 컬렉션 - 맞춤 제작 가능" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/u-link-lettering-signature-set">
+              <img src="/Image/set/set0202.webp" alt="결혼 예물 반지 - 이니셜 각인 서비스" loading="lazy" />
+            </NuxtLink>
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">

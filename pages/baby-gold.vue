@@ -93,11 +93,15 @@ const products = [
   }
 ]
 
+// resolve the component object: `:is="'NuxtLink'"` renders a literal <NuxtLink>
+// element during prerender instead of an anchor
+const NuxtLinkComponent = resolveComponent('NuxtLink')
+
 const zodiacSigns = [
-  { year: '2024', sign: '용띠', emoji: '🐉' },
-  { year: '2025', sign: '뱀띠', emoji: '🐍' },
-  { year: '2026', sign: '말띠', emoji: '🐴' },
-  { year: '2027', sign: '양띠', emoji: '🐑' }
+  { year: '2024', sign: '용띠', emoji: '🐉', to: '' },
+  { year: '2025', sign: '뱀띠', emoji: '🐍', to: '' },
+  { year: '2026', sign: '말띠', emoji: '🐴', to: '/gallery/pure-gold-horse-baby-ring' },
+  { year: '2027', sign: '양띠', emoji: '🐑', to: '' }
 ]
 
 const processSteps = [
@@ -180,15 +184,24 @@ const processSteps = [
           <h2 class="section-title">띠별 돌반지</h2>
           <p class="section-desc">태어난 해의 띠를 새긴 특별한 돌반지</p>
           <div class="zodiac-grid">
-            <div
+            <component
+              :is="zodiac.to ? NuxtLinkComponent : 'div'"
               v-for="zodiac in zodiacSigns"
               :key="zodiac.year"
+              :to="zodiac.to || undefined"
               class="zodiac-card"
+              :class="{ 'is-linked': zodiac.to }"
             >
               <span class="zodiac-emoji">{{ zodiac.emoji }}</span>
               <span class="zodiac-year">{{ zodiac.year }}년생</span>
               <span class="zodiac-sign">{{ zodiac.sign }}</span>
-            </div>
+              <span v-if="zodiac.to" class="zodiac-link">
+                디자인 보기
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </component>
           </div>
           <p class="zodiac-note">* 모든 12간지 디자인 주문제작 가능합니다</p>
         </div>
@@ -213,10 +226,18 @@ const processSteps = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/SB0101.webp" alt="24K 순금 말띠 돌반지 - 돌잔치용 귀금속 선물" loading="lazy" />
-            <img src="/Image/ring/SB0102.webp" alt="순금 돌반지 띠별 디자인 - 이름 각인 가능" loading="lazy" />
-            <img src="/Image/ring/SB0103.webp" alt="99.9% 순금 아기반지 - 종로 금은방 도매가" loading="lazy" />
-            <img src="/Image/ring/SB0104.webp" alt="백일반지 순금 세트 - 백일 선물용 귀금속" loading="lazy" />
+            <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
+              <img src="/Image/ring/SB0101.webp" alt="24K 순금 말띠 돌반지 - 돌잔치용 귀금속 선물" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
+              <img src="/Image/ring/SB0102.webp" alt="순금 말띠 돌반지 각인 디테일 - 이름 각인 가능" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
+              <img src="/Image/ring/pure-gold-crown-character-baby-ring-01.webp" alt="왕관을 쓴 문어 캐릭터 아기 돌반지" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
+              <img src="/Image/ring/pure-gold-crown-character-baby-ring-02.webp" alt="왕관을 쓴 공룡 캐릭터 아기 돌반지" loading="lazy" />
+            </NuxtLink>
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">
@@ -340,11 +361,42 @@ const processSteps = [
   padding: 24px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
+  color: inherit;
+  text-decoration: none;
   transition: all 0.3s;
 }
 
 .zodiac-card:hover {
   border-color: rgba(201, 162, 39, 0.3);
+}
+
+.zodiac-card.is-linked {
+  border-color: rgba(201, 162, 39, 0.22);
+}
+
+.zodiac-card.is-linked:hover {
+  background: rgba(250, 250, 250, 0.04);
+  border-color: rgba(201, 162, 39, 0.5);
+}
+
+.zodiac-card.is-linked:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
+}
+
+.zodiac-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #c9a227;
+  transition: gap 0.3s;
+}
+
+.zodiac-card.is-linked:hover .zodiac-link {
+  gap: 10px;
 }
 
 .zodiac-emoji {

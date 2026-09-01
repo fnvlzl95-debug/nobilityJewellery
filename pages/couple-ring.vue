@@ -223,10 +223,18 @@ const engravingOptions = [
         <div class="gallery-section">
           <h2 class="section-title">제품 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/NN0103.webp" alt="PROMISE 14K 커플링 - 종로 금은방 도매가 주문제작" loading="lazy" />
-            <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 커플링 - 결혼반지 맞춤제작" loading="lazy" />
-            <img src="/Image/ring/NN0102.webp" alt="14K 로즈골드 커플링 - 기념일 선물 추천" loading="lazy" />
-            <img src="/Image/ring/NN0104.webp" alt="14K 옐로우골드 커플링 - 클래식 디자인" loading="lazy" />
+            <NuxtLink to="/gallery/promise-couple-ring">
+              <img src="/Image/ring/NN0103.webp" alt="PROMISE 14K 커플링 - 종로 금은방 도매가 주문제작" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/promise-couple-ring">
+              <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 커플링 - 결혼반지 맞춤제작" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/diamond-solitaire-couple-ring">
+              <img src="/Image/ring/NS0102.webp" alt="다이아몬드 솔리테어 커플링 - 중앙 스톤 세팅" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/promise-couple-ring">
+              <img src="/Image/ring/NN0104.webp" alt="14K 옐로우골드 커플링 - 클래식 디자인" loading="lazy" />
+            </NuxtLink>
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">

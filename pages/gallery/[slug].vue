@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { getItemBySlug, getRelatedItems, categories } from '~/data/gallery-items'
+import { getItemBySlug, getRelatedItems, getLandingLinkForItem, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
@@ -20,6 +20,7 @@ const product = item
 const category = categories.find((c) => c.id === product.category)
 const categoryLabel = category?.label ?? '컬렉션'
 const relatedItems = getRelatedItems(product, 3)
+const landingLink = getLandingLinkForItem(product)
 
 const { trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag()
 
@@ -101,6 +102,15 @@ const handleKakao = () => {
 const handlePhone = () => {
   trackPhoneClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })
 }
+const handleLanding = () => {
+  trackEvent('gallery_landing_click', {
+    item_id: String(product.id),
+    item_name: product.title,
+    item_category: product.category,
+    destination: landingLink.to,
+  })
+}
+
 const handleRelated = (target: { id: number; title: string; category: string }) => {
   trackEvent('gallery_related_click', {
     item_id: String(target.id),
@@ -299,6 +309,9 @@ onUnmounted(() => {
               가격은 금시세에 따라 달라져 상담으로 안내드립니다.<br>
               원하시는 사이즈·소재·각인을 함께 알려주시면 더 빠릅니다.
             </p>
+            <NuxtLink :to="landingLink.to" class="cta-guide-link" @click="handleLanding">
+              {{ landingLink.label }} 보기
+            </NuxtLink>
           </div>
         </section>
       </div>
@@ -681,13 +694,20 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
+  min-height: 56px;
+  padding: 8px 12px;
   border: 1px solid rgba(201, 162, 39, 0.35);
   color: var(--gold);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
   text-decoration: none;
   transition: background-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
+}
+.cta-secondary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .cta-secondary:hover {
@@ -700,6 +720,20 @@ onUnmounted(() => {
   font-size: 13px;
   line-height: 1.7;
   color: var(--gray);
+}
+
+.cta-guide-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.cta-guide-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 /* ── Related ────────────────────────────────────────────────── */

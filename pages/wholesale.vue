@@ -89,12 +89,38 @@ const highlights = [
   }
 ]
 
-const products = [
-  { category: '반지', items: ['커플링', '결혼반지', '약혼반지', '돌반지', '패션링'] },
-  { category: '목걸이', items: ['골드 체인', '펜던트', '진주 목걸이', '초커'] },
-  { category: '귀걸이', items: ['스터드', '드롭 이어링', '후프', '진주 귀걸이'] },
-  { category: '팔찌', items: ['뱅글', '체인 팔찌', '커프', '테니스 팔찌'] },
-  { category: '세트', items: ['웨딩 세트', '예물 세트', '주얼리 세트'] }
+// 전용 안내 페이지가 있는 품목만 링크한다. 나머지는 그대로 텍스트다.
+const products: { category: string; items: { label: string; to?: string }[] }[] = [
+  {
+    category: '반지',
+    items: [
+      { label: '커플링', to: '/couple-ring' },
+      { label: '결혼반지', to: '/wedding' },
+      { label: '약혼반지' },
+      { label: '돌반지', to: '/baby-gold' },
+      { label: '패션링' },
+    ],
+  },
+  {
+    category: '목걸이',
+    items: [{ label: '골드 체인' }, { label: '펜던트' }, { label: '진주 목걸이' }, { label: '초커' }],
+  },
+  {
+    category: '귀걸이',
+    items: [{ label: '스터드' }, { label: '드롭 이어링' }, { label: '후프' }, { label: '진주 귀걸이' }],
+  },
+  {
+    category: '팔찌',
+    items: [{ label: '뱅글' }, { label: '체인 팔찌' }, { label: '커프' }, { label: '테니스 팔찌' }],
+  },
+  {
+    category: '세트',
+    items: [
+      { label: '웨딩 세트', to: '/wedding' },
+      { label: '예물 세트', to: '/wedding' },
+      { label: '주얼리 세트' },
+    ],
+  },
 ]
 
 </script>
@@ -157,7 +183,10 @@ const products = [
             >
               <h3 class="product-category">{{ product.category }}</h3>
               <ul class="product-items">
-                <li v-for="(item, i) in product.items" :key="i">{{ item }}</li>
+                <li v-for="(item, i) in product.items" :key="i">
+                  <NuxtLink v-if="item.to" :to="item.to" class="product-item-link">{{ item.label }}</NuxtLink>
+                  <template v-else>{{ item.label }}</template>
+                </li>
               </ul>
             </div>
           </div>
@@ -529,6 +558,24 @@ const products = [
   font-size: 13px;
   color: rgba(250, 250, 250, 0.6);
   margin-bottom: 8px;
+}
+
+.product-item-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 162, 39, 0.4);
+  text-underline-offset: 4px;
+  transition: color 0.3s, text-decoration-color 0.3s;
+}
+
+.product-item-link:hover {
+  color: #c9a227;
+  text-decoration-color: #c9a227;
+}
+
+.product-item-link:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
 }
 
 .products-cta {

@@ -119,6 +119,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-baby-gold-ring-purchase-checklist', label: '구매 전 체크리스트', description: '종로 방문 전 확인' },
       { to: '/guide/gold-one-don-gram', label: '금 1돈 무게 환산', description: '돈·그램 계산 기준' },
       { to: '/gallery/pure-gold-horse-baby-ring', label: '말띠 돌반지 디자인', description: '2026 말띠 제작 안내' },
+      { to: '/gallery/pure-gold-crown-character-baby-ring', label: '왕관 캐릭터 돌반지', description: '문어·공룡 캐릭터 2종' },
     ],
   },
   {

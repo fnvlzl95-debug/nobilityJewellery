@@ -73,21 +73,29 @@ useHead({
 const customTypes = [
   {
     title: '커플링 주문제작',
+    to: '/couple-ring',
+    linkLabel: '커플링 안내 보기',
     description: '두 분만의 특별한 커플링을 제작합니다. 이니셜 각인, 특별한 날짜, 원하시는 디자인으로 세상에 하나뿐인 반지를 만들어드립니다.',
     items: ['이니셜 각인', '날짜 각인', '디자인 맞춤', '사이즈 정밀 조절']
   },
   {
     title: '돌반지 주문제작',
+    to: '/baby-gold',
+    linkLabel: '돌반지 안내 보기',
     description: '아이의 첫 돌을 축하하는 순금 돌반지를 맞춤 제작합니다. 띠별 디자인, 이름 각인 등 정성을 담아 제작합니다.',
     items: ['24K 순금', '띠별 디자인', '이름 각인', '크기 맞춤']
   },
   {
     title: '결혼예물 맞춤',
+    to: '/wedding',
+    linkLabel: '결혼예물 안내 보기',
     description: '결혼을 준비하시는 분들을 위한 예물 세트를 맞춤 제작합니다. 반지, 목걸이, 귀걸이 세트를 일관된 디자인으로.',
     items: ['반지 + 목걸이 + 귀걸이', '디자인 통일', '소재 선택', '예산 맞춤']
   },
   {
     title: '리폼/리디자인',
+    to: '/repair',
+    linkLabel: '리폼·수리 안내 보기',
     description: '오래된 금제품을 새로운 디자인으로 다시 태어나게 합니다. 기존 금을 녹여 새로운 주얼리로 제작해드립니다.',
     items: ['기존 금 활용', '새 디자인 적용', '크기 변경', '스타일 현대화']
   }
@@ -138,9 +146,10 @@ const advantages = [
         <div class="types-section">
           <h2 class="section-title">주문제작 종류</h2>
           <div class="types-grid">
-            <div
+            <NuxtLink
               v-for="(type, index) in customTypes"
               :key="index"
+              :to="type.to"
               class="type-card"
             >
               <h3 class="type-title">{{ type.title }}</h3>
@@ -148,7 +157,13 @@ const advantages = [
               <ul class="type-items">
                 <li v-for="(item, i) in type.items" :key="i">{{ item }}</li>
               </ul>
-            </div>
+              <span class="type-link">
+                {{ type.linkLabel }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </NuxtLink>
           </div>
         </div>
 
@@ -207,10 +222,18 @@ const advantages = [
         <div class="gallery-section">
           <h2 class="section-title">주문제작 갤러리</h2>
           <div class="gallery-grid">
-            <img src="/Image/ring/NS0102.webp" alt="14K 다이아몬드 솔리테어 반지 - 주문제작 가능" loading="lazy" />
-            <img src="/Image/ring/NN0103.webp" alt="14K 골드 커플링 주문제작 - 이니셜 각인 가능" loading="lazy" />
-            <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작 - 띠별 디자인" loading="lazy" />
-            <img src="/Image/ring/NN0101.webp" alt="14K 화이트골드 맞춤 반지 - 사이즈 조절 가능" loading="lazy" />
+            <NuxtLink to="/gallery/diamond-solitaire-couple-ring">
+              <img src="/Image/ring/NS0102.webp" alt="14K 다이아몬드 솔리테어 반지 - 주문제작 가능" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/promise-couple-ring">
+              <img src="/Image/ring/NN0103.webp" alt="14K 골드 커플링 주문제작 - 이니셜 각인 가능" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
+              <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작 - 띠별 디자인" loading="lazy" />
+            </NuxtLink>
+            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
+              <img src="/Image/ring/pure-gold-crown-character-baby-ring-01.webp" alt="왕관을 쓴 문어 캐릭터 아기 돌반지" loading="lazy" />
+            </NuxtLink>
           </div>
           <div class="gallery-cta">
             <NuxtLink to="/gallery" class="btn-text">
@@ -413,15 +436,40 @@ const advantages = [
 }
 
 .type-card {
+  display: flex;
+  flex-direction: column;
   padding: 32px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
+  color: inherit;
+  text-decoration: none;
   transition: all 0.3s;
 }
 
 .type-card:hover {
   background: rgba(250, 250, 250, 0.04);
   border-color: rgba(201, 162, 39, 0.3);
+}
+
+.type-card:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
+}
+
+.type-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c9a227;
+  transition: gap 0.3s;
+}
+
+.type-card:hover .type-link {
+  gap: 12px;
 }
 
 .type-title {

@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
-import { galleryItems, categories, getItemsByCategory, type GalleryItem } from '~/data/gallery-items'
+import { galleryItems, categories, getItemsByCategory, getLandingLinkForCategory, type GalleryItem } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const { trackPageInquiryClick, trackEvent, trackMetaEvent } = useGtag()
-
-const categoryLinkMap: Record<string, { to: string; label: string }> = {
-  ring: { to: '/couple-ring', label: '커플링/반지 안내' },
-  necklace: { to: '/custom', label: '목걸이 주문제작' },
-  bracelet: { to: '/custom', label: '팔찌 주문제작' },
-  set: { to: '/wedding', label: '예물 세트 안내' },
-}
 
 const availableCategoryData = categories.filter((category) => getItemsByCategory(category.id).length > 0)
 
@@ -129,7 +122,7 @@ const availableCategories = computed(() => availableCategoryData)
 const categorySections = computed(() => availableCategories.value.map((category) => ({
   ...category,
   items: getItemsByCategory(category.id),
-  cta: categoryLinkMap[category.id] ?? { to: '/contact', label: '상담 문의' },
+  cta: getLandingLinkForCategory(category.id),
 })))
 const categorySectionId = (categoryId: string) => `category-${categoryId}`
 

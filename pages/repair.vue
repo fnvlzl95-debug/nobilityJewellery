@@ -84,37 +84,49 @@ const repairServices = [
     title: '반지 사이즈 조절',
     description: '반지가 헐겁거나 꽉 끼시나요? 14K, 18K 골드 반지의 사이즈 늘리기, 줄이기 모두 가능합니다.',
     details: ['사이즈 늘리기 (최대 2호)', '사이즈 줄이기', '당일 작업 가능 (상태에 따라)'],
-    icon: 'ring'
+    icon: 'ring',
+    to: '/guide/jongno-ring-size-repair',
+    linkLabel: '사이즈 수리 자세히'
   },
   {
     title: '체인 수리',
     description: '끊어진 목걸이, 팔찌 체인을 원래대로 복원해드립니다. 다양한 체인 종류 수리 가능.',
     details: ['목걸이 체인 땜', '팔찌 체인 땜', '잠금장치 교체'],
-    icon: 'chain'
+    icon: 'chain',
+    to: '/guide/necklace-bracelet-chain-repair',
+    linkLabel: '체인 수리 자세히'
   },
   {
     title: '세척 및 광택',
     description: '오래된 귀금속의 광택을 되살려드립니다. 금, 은 모두 세척 가능.',
     details: ['초음파 세척', '광택 복원', '로듐 도금 (화이트골드)'],
-    icon: 'polish'
+    icon: 'polish',
+    to: '/guide/jongno-ring-polishing-cost',
+    linkLabel: '광택 작업 자세히'
   },
   {
     title: '귀걸이 수리',
     description: '귀걸이 침 교체, 잠금장치 수리 등 다양한 귀걸이 수리 서비스.',
     details: ['침 교체 (피어싱/클립)', '잠금장치 수리', '큐빅/보석 재세팅'],
-    icon: 'earring'
+    icon: 'earring',
+    to: '/guide/earring-post-bent-repair',
+    linkLabel: '귀걸이 수리 자세히'
   },
   {
     title: '보석 세팅',
     description: '빠진 보석 재세팅, 보석 교체 등 세팅 관련 수리.',
     details: ['빠진 보석 재세팅', '보석 교체', '발 수리'],
-    icon: 'gem'
+    icon: 'gem',
+    to: '/guide/ring-cubic-stone-repair',
+    linkLabel: '보석 세팅 자세히'
   },
   {
     title: '기타 수리',
     description: '위에 없는 수리도 상담 가능합니다. 먼저 전화로 문의해주세요.',
     details: ['각인 추가/수정', '디자인 변경', '리폼/리세팅'],
-    icon: 'tool'
+    icon: 'tool',
+    to: '/custom',
+    linkLabel: '리폼·주문제작 안내'
   }
 ]
 
@@ -155,9 +167,10 @@ const repairServices = [
 
         <!-- Services Grid -->
         <div class="services-grid">
-          <div
+          <NuxtLink
             v-for="(service, index) in repairServices"
             :key="index"
+            :to="service.to"
             class="service-card"
           >
             <div class="service-header">
@@ -192,7 +205,13 @@ const repairServices = [
             <ul class="service-details">
               <li v-for="(detail, i) in service.details" :key="i">{{ detail }}</li>
             </ul>
-          </div>
+            <span class="service-link">
+              {{ service.linkLabel }}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </NuxtLink>
         </div>
 
         <GuideClusterLinks cluster-id="repair" current-path="/repair" />
@@ -379,10 +398,35 @@ const repairServices = [
 }
 
 .service-card {
+  display: flex;
+  flex-direction: column;
   padding: 32px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
+  color: inherit;
+  text-decoration: none;
   transition: all 0.3s;
+}
+
+.service-card:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
+}
+
+.service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c9a227;
+  transition: gap 0.3s;
+}
+
+.service-card:hover .service-link {
+  gap: 12px;
 }
 
 .service-card:hover {

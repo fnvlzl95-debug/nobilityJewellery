@@ -793,6 +793,30 @@ const galleryItemSource: GalleryItemSource[] = [
       { label: '판매', value: '낱개 구매 가능' },
     ],
   },
+  {
+    id: 42,
+    slug: 'pure-gold-crown-character-baby-ring',
+    category: 'ring',
+    title: '왕관 캐릭터 아기 돌반지 2종',
+    titleEn: 'Crown Character Baby Rings',
+    description: '왕관을 쓴 문어와 공룡 캐릭터를 입체적으로 표현한 돌·백일 기념 아기 반지입니다.',
+    material: '24K 순금',
+    workType: '주문제작 가능',
+    delivery: '최소 2주',
+    specs: [
+      { label: '디자인', value: '왕관 문어 · 왕관 공룡 캐릭터 2종' },
+      { label: '중량 옵션', value: '1돈 · 반돈 (기타 중량 상담)' },
+      { label: '각인', value: '이름·날짜 각인 가능' },
+    ],
+    images: [
+      '/Image/ring/pure-gold-crown-character-baby-ring-01.webp',
+      '/Image/ring/pure-gold-crown-character-baby-ring-02.webp',
+    ],
+    imageAlts: [
+      '왕관을 쓴 문어 캐릭터를 입체적으로 표현한 아기 돌반지',
+      '왕관을 쓴 공룡 캐릭터와 입체 밴드를 조합한 아기 돌반지'
+    ],
+  },
 ]
 
 // 갤러리 공통 기준: 대부분의 디자인은 14K·18K, 세 가지 골드 색상으로 주문제작하며 제작 기간은 최소 2주다.
@@ -861,6 +885,32 @@ export const categories: Category[] = [
     description: '목걸이·팔찌·반지·귀걸이를 함께 맞춘 주얼리 세트로, 원하는 구성과 색상을 상담해 주문제작합니다.'
   },
 ]
+
+// 제품에서 해당 안내 페이지로 돌아가는 단일 소스 매핑.
+// 갤러리 목록의 카테고리 CTA와 상세 페이지가 같은 표를 쓴다.
+export interface LandingLink {
+  to: string
+  label: string
+}
+
+const landingByCategory: Record<string, LandingLink> = {
+  ring: { to: '/couple-ring', label: '커플링·반지 안내' },
+  necklace: { to: '/custom', label: '목걸이 주문제작 안내' },
+  bracelet: { to: '/custom', label: '팔찌 주문제작 안내' },
+  earring: { to: '/custom', label: '귀걸이 주문제작 안내' },
+  set: { to: '/wedding', label: '결혼예물 안내' },
+}
+
+const customLanding: LandingLink = { to: '/custom', label: '주문제작 안내' }
+
+export const getLandingLinkForCategory = (categoryId: string): LandingLink =>
+  landingByCategory[categoryId] ?? customLanding
+
+// 돌·백일 반지는 category가 'ring'이지만 전용 안내 페이지가 따로 있다.
+export const getLandingLinkForItem = (item: GalleryItem): LandingLink =>
+  item.slug.includes('baby-ring')
+    ? { to: '/baby-gold', label: '순금 돌반지 안내' }
+    : getLandingLinkForCategory(item.category)
 
 // 카테고리별 아이템 필터
 export const getItemsByCategory = (categoryId: string): GalleryItem[] => {
