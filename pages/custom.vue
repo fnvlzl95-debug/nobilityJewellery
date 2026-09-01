@@ -231,8 +231,8 @@ const advantages = [
             <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
               <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작 - 띠별 디자인" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
-              <img src="/Image/ring/pure-gold-crown-character-baby-ring-01.webp" alt="왕관을 쓴 문어 캐릭터 아기 돌반지" loading="lazy" />
+            <NuxtLink to="/gallery/pure-gold-snake-baby-ring">
+              <img src="/Image/ring/pure-gold-snake-baby-ring-01.webp" alt="왕관을 쓴 뱀 캐릭터의 뱀띠 아기 돌반지" loading="lazy" />
             </NuxtLink>
           </div>
           <div class="gallery-cta">

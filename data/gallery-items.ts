@@ -795,26 +795,26 @@ const galleryItemSource: GalleryItemSource[] = [
   },
   {
     id: 42,
-    slug: 'pure-gold-crown-character-baby-ring',
+    slug: 'pure-gold-snake-baby-ring',
     category: 'ring',
-    title: '왕관 캐릭터 아기 돌반지 2종',
-    titleEn: 'Crown Character Baby Rings',
-    description: '왕관을 쓴 문어와 공룡 캐릭터를 입체적으로 표현한 돌·백일 기념 아기 반지입니다.',
+    title: '뱀띠 아기 돌반지 2종',
+    titleEn: 'Snake Zodiac Baby Rings',
+    description: '왕관을 쓴 뱀 캐릭터를 두 가지 입체 디자인으로 표현한 돌·백일 기념 아기 반지입니다.',
     material: '24K 순금',
     workType: '주문제작 가능',
     delivery: '최소 2주',
     specs: [
-      { label: '디자인', value: '왕관 문어 · 왕관 공룡 캐릭터 2종' },
+      { label: '디자인', value: '왕관 뱀 캐릭터 2종' },
       { label: '중량 옵션', value: '1돈 · 반돈 (기타 중량 상담)' },
       { label: '각인', value: '이름·날짜 각인 가능' },
     ],
     images: [
-      '/Image/ring/pure-gold-crown-character-baby-ring-01.webp',
-      '/Image/ring/pure-gold-crown-character-baby-ring-02.webp',
+      '/Image/ring/pure-gold-snake-baby-ring-01.webp',
+      '/Image/ring/pure-gold-snake-baby-ring-02.webp',
     ],
     imageAlts: [
-      '왕관을 쓴 문어 캐릭터를 입체적으로 표현한 아기 돌반지',
-      '왕관을 쓴 공룡 캐릭터와 입체 밴드를 조합한 아기 돌반지'
+      '왕관을 쓴 뱀 캐릭터를 입체적으로 표현한 뱀띠 아기 돌반지',
+      '왕관 뱀 캐릭터와 입체 밴드를 조합한 뱀띠 아기 돌반지'
     ],
   },
 ]

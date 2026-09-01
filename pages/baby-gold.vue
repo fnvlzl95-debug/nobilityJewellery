@@ -99,7 +99,7 @@ const NuxtLinkComponent = resolveComponent('NuxtLink')
 
 const zodiacSigns = [
   { year: '2024', sign: '용띠', emoji: '🐉', to: '' },
-  { year: '2025', sign: '뱀띠', emoji: '🐍', to: '' },
+  { year: '2025', sign: '뱀띠', emoji: '🐍', to: '/gallery/pure-gold-snake-baby-ring' },
   { year: '2026', sign: '말띠', emoji: '🐴', to: '/gallery/pure-gold-horse-baby-ring' },
   { year: '2027', sign: '양띠', emoji: '🐑', to: '' }
 ]
@@ -232,11 +232,11 @@ const processSteps = [
             <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
               <img src="/Image/ring/SB0102.webp" alt="순금 말띠 돌반지 각인 디테일 - 이름 각인 가능" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
-              <img src="/Image/ring/pure-gold-crown-character-baby-ring-01.webp" alt="왕관을 쓴 문어 캐릭터 아기 돌반지" loading="lazy" />
+            <NuxtLink to="/gallery/pure-gold-snake-baby-ring">
+              <img src="/Image/ring/pure-gold-snake-baby-ring-01.webp" alt="왕관을 쓴 뱀 캐릭터의 뱀띠 아기 돌반지" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/pure-gold-crown-character-baby-ring">
-              <img src="/Image/ring/pure-gold-crown-character-baby-ring-02.webp" alt="왕관을 쓴 공룡 캐릭터 아기 돌반지" loading="lazy" />
+            <NuxtLink to="/gallery/pure-gold-snake-baby-ring">
+              <img src="/Image/ring/pure-gold-snake-baby-ring-02.webp" alt="입체 밴드를 조합한 왕관 뱀 캐릭터 돌반지" loading="lazy" />
             </NuxtLink>
           </div>
           <div class="gallery-cta">
