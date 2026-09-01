@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: '14k-18k-jewelry-price-difference',
+    path: '/guide/14k-18k-jewelry-price-difference',
+    title: '14K·18K 주얼리 가격 차이 기준',
+    description: '일반 주얼리의 14K와 18K 가격 차이를 금 함량, 중량, 제작 조건, 보석과 부자재로 나누어 살펴봅니다.',
+    keyword: '14K 18K 주얼리 가격 차이',
+    image: '/Image/guide/14k-18k-jewelry-price-difference-hero-2bafd6d0.webp',
+    publishedAt: '2026-09-01',
+    category: '가격',
+  },
+  {
     slug: 'earring-style-by-face-shape',
     path: '/guide/earring-style-by-face-shape',
     title: '얼굴형별 귀걸이 고르는 법',

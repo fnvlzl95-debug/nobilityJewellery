@@ -65,6 +65,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/hollow-vs-solid-gold-jewelry', label: '중공·솔리드 차이', description: '부피와 실제 무게 비교' },
       { to: '/buy-gold', label: '금·은 매입 안내', description: '당일 시세와 계량 상담' },
       { to: '/baby-gold', label: '순금 돌반지 주문', description: '1돈·반돈·각인 상담' },
+      { to: '/guide/14k-18k-jewelry-price-difference', label: '14K·18K 주얼리 가격 차이 기준', description: '금 함량·중량·제작 조건·보석·부자재 비교' },
     ],
   },
   {
