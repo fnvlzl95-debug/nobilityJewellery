@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'stud-earring-meaning-selection-guide',
+    path: '/guide/stud-earring-meaning-selection-guide',
+    title: '스터드 귀걸이 뜻과 선택 기준',
+    description: '스터드 귀걸이의 형태와 잠금 방식을 알아보고, 선물용과 첫 귀걸이를 고를 때 확인할 소재·무게·크기·관리 기준을 정리합니다.',
+    keyword: '스터드 귀걸이 뜻',
+    image: '/Image/guide/stud-earring-meaning-selection-guide-hero-9d867f5d.webp',
+    publishedAt: '2026-09-02',
+    category: '선택',
+  },
+  {
     slug: '14k-18k-jewelry-price-difference',
     path: '/guide/14k-18k-jewelry-price-difference',
     title: '14K·18K 주얼리 가격 차이 기준',
