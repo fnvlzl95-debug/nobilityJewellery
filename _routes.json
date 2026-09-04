@@ -16,6 +16,7 @@
     "/_nuxt/*",
     "/",
     "/_payload.json",
+    "/_redirects",
     "/.nojekyll",
     "/200",
     "/404",
