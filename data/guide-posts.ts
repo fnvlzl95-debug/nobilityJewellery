@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'jongno-couple-ring-price-consultation-prep',
+    path: '/guide/jongno-couple-ring-price-consultation-prep',
+    title: '종로 커플링 가격 상담 전 정할 것',
+    description: '종로 커플링 상담에서 예산만 말하지 않고 금속, 폭, 보석, 세팅, 착용감과 두 반지의 통일 정도를 나누어 전달하는 방법을 정리합니다.',
+    keyword: '종로 커플링 가격 상담',
+    image: '/Image/guide/jongno-couple-ring-price-consultation-prep-hero-f20610a4.webp',
+    publishedAt: '2026-09-04',
+    category: '가격',
+  },
+  {
     slug: 'stud-earring-meaning-selection-guide',
     path: '/guide/stud-earring-meaning-selection-guide',
     title: '스터드 귀걸이 뜻과 선택 기준',

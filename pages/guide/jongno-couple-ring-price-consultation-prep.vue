@@ -1,0 +1,267 @@
+<script setup lang="ts">
+import { siteConfig } from '~/config/site'
+import { buildBreadcrumbJsonLd } from '~/utils/seo'
+
+const pagePath = '/guide/jongno-couple-ring-price-consultation-prep'
+const pageTitle = '종로 커플링 가격 상담 전 정할 것 | 귀족'
+const pageDescription = '종로 커플링 상담에서 예산만 말하지 않고 금속, 폭, 보석, 세팅, 착용감과 두 반지의 통일 정도를 나누어 전달하는 방법을 정리합니다.'
+const ogImage = `${siteConfig.url}/Image/guide/jongno-couple-ring-price-consultation-prep-hero-f20610a4.webp`
+const publishedAt = '2026-09-04'
+const updatedAt = ''
+const faqItems = [
+  {
+    "question": "커플링 상담에서 예산만 말하면 부족한가요?",
+    "answer": "예산은 출발점이지만 금속 종류와 순도, 폭과 두께, 보석, 세팅과 착용 조건을 함께 말해야 같은 기준으로 비교하기 쉽습니다."
+  },
+  {
+    "question": "반지 폭은 가격 외에 무엇에 영향을 주나요?",
+    "answer": "반지 폭은 착용감과 사이즈에 관련됩니다. 폭이 넓거나 여러 반지를 함께 착용한다면 별도 고려가 필요할 수 있습니다."
+  },
+  {
+    "question": "보석 조건은 어떻게 나누어 말해야 하나요?",
+    "answer": "보석의 종류와 형태, 개수와 크기, 고정 방식을 따로 정하세요. 세팅 방식은 외관과 보호, 착용성에 영향을 줄 수 있습니다."
+  },
+  {
+    "question": "두 반지를 꼭 똑같이 해야 하나요?",
+    "answer": "꼭 같을 필요는 없습니다. 금속 색상이나 전체 분위기만 맞추고 폭, 보석 유무와 세부 형태를 다르게 정할 수도 있습니다."
+  }
+]
+const quickAnswers = [
+  "예산과 함께 금속 종류와 순도, 반지 폭과 두께를 정하세요.",
+  "보석의 종류와 크기, 개수, 세팅 방식을 따로 나누어 말하세요.",
+  "두 반지를 똑같이 할지 금속 색상이나 폭만 맞출지 미리 정하세요."
+]
+const sections = [
+  {
+    "title": "예산을 조건별로 나누기",
+    "paragraphs": [
+      "상담을 시작하면서 총예산만 말하면 금속, 디자인, 보석과 제작 조건 가운데 무엇을 우선할지 판단하기 어렵습니다. 따라서 반드시 원하는 조건과 조정 가능한 조건을 먼저 나누어 적어 보는 것이 좋습니다.",
+      "금속과 순도, 완성된 반지의 중량, 보석과 장식, 디자인과 제작 조건을 비교할 때 예산을 기준으로 활용할 수 있습니다. 다만 실제 금액은 선택한 사양과 상담 시점의 조건에 따라 달라질 수 있으므로, 항목별 설명도 함께 확인해야 합니다."
+    ],
+    "bullets": [
+      "반드시 유지할 조건: 금속 색상, 보석 유무, 착용 목적",
+      "조정 가능한 조건: 반지 폭, 보석 크기, 장식 개수, 표면 마감",
+      "견적을 받을 때 각 조건이 금액에 어떻게 반영되는지 질문하기"
+    ]
+  },
+  {
+    "title": "금속과 반지 형태 정하기",
+    "paragraphs": [
+      "금 제품이라면 14K나 18K처럼 순도를 나타내는 표기를 먼저 확인해야 합니다. 금속은 색상뿐 아니라 종류와 순도도 정해야 하며, 금속의 색과 특성이 전체 분위기와 보석의 외관에 미치는 영향은 상담에서 확인하는 것이 좋습니다.",
+      "반지 폭과 두께를 정할 때는 디자인뿐 아니라 착용감과 사이즈도 함께 살펴야 합니다. 폭이 넓거나 다른 반지와 함께 착용할 계획이라면 일반적인 좁은 반지와 같은 방식으로 사이즈를 정하지 않을 수 있으므로, 착용 환경을 고려해야 합니다."
+    ],
+    "bullets": [
+      "금속 종류와 순도: 원하는 색상과 표기 확인",
+      "반지 폭과 두께: 손가락 비율과 평소 착용감을 함께 고려",
+      "표면 마감: 매끈한 마감, 무광 느낌 등 선호를 사진이나 말로 설명",
+      "두 사람의 손 사용 습관과 함께 착용할 반지 여부 전달"
+    ],
+    "image": {
+      "src": "/Image/guide/jongno-couple-ring-price-consultation-prep-section-2-95fbc3a7.webp",
+      "alt": "금속 색상이 다른 반지 두 개와 폭을 재는 측정 도구가 놓인 모습",
+      "caption": "금속 색상과 반지 폭을 함께 비교하는 장면",
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  {
+    "title": "보석과 세팅을 나누어 말하기",
+    "paragraphs": [
+      "보석을 넣는다면 먼저 보석의 종류와 형태, 개수와 크기를 정하고, 고정 방식은 별도로 확인합니다. 전체 인상이 비슷해 보여도 보석의 노출과 보호 정도, 착용성은 세팅 방식에 따라 달라질 수 있습니다.",
+      "손을 많이 사용하거나 옷과 장갑에 걸리는 것을 줄이고 싶을 때에는 낮은 형태의 세팅을 상담 기준으로 제시합니다. 세팅별 장단점과 보석에 들어가는 빛의 차이는 제품 구조를 기준으로 확인해야 합니다."
+    ],
+    "bullets": [
+      "보석 조건: 종류, 형태, 개수, 크기",
+      "고정 방식: 발로 고정하는 방식, 테두리로 감싸는 방식, 홈에 넣는 방식",
+      "전체 스타일: 단일 보석 중심, 보조석 배열 등",
+      "생활 조건: 손 사용량, 걸림에 대한 민감도, 관리 방식"
+    ]
+  },
+  {
+    "title": "두 반지의 통일 정도 정하기",
+    "paragraphs": [
+      "두 반지를 완전히 똑같이 할지, 금속 색상이나 폭만 맞추고 세부 형태는 다르게 할지 먼저 정합니다. 이렇게 기준을 정해 두면 상담에서 비교할 선택지가 줄어듭니다. 두 사람의 손 모양과 착용 습관이 다를 때에는 같은 분위기를 유지하면서 폭이나 보석 조건을 다르게 정할 수도 있습니다.",
+      "상담 전에는 두 반지에서 반드시 같아야 하는 항목과 달라도 되는 항목을 각각 적어 둡니다. 정리한 이 기준을 바탕으로 디자인을 고르는 순서를 정할 수 있습니다."
+    ],
+    "bullets": [
+      "같게 할 항목: 금속 색상, 표면 마감, 전체 분위기 등",
+      "다르게 할 수 있는 항목: 폭, 두께, 보석 유무, 세부 곡선 등",
+      "각자의 손가락과 평소 착용 환경에 맞춘 사이즈 상담 요청",
+      "사진이나 스케치로 원하는 통일 정도를 미리 공유"
+    ],
+    "image": {
+      "src": "/Image/guide/jongno-couple-ring-price-consultation-prep-section-4-b70aa819.webp",
+      "alt": "비슷한 금속 색상으로 맞춘 두 반지와 형태가 다른 반지가 함께 놓인 모습",
+      "caption": "같은 분위기와 다른 세부 형태를 비교하는 커플링 구성",
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  {
+    "title": "상담 자리에서 확인할 질문",
+    "paragraphs": [
+      "준비한 조건을 바탕으로 상담할 때에는 가격만 듣지 말고 어떤 사양을 기준으로 한 견적인지 확인합니다. 금속 표기와 순도, 반지 폭과 두께, 보석과 세팅, 사이즈 측정 기준을 같은 순서로 되짚어 보면 매장별 비교가 쉬워집니다.",
+      "주문제작을 생각한다면 현재 확인할 수 있는 제작 조건과 수정 가능 범위를 상담 시점에 물어보세요. 제품별로 다를 수 있는 사항은 안내받은 내용을 문서나 주문 내역으로 확인하는 것이 좋습니다."
+    ],
+    "bullets": [
+      "이 견적은 어떤 금속 종류와 순도를 기준으로 하나요?",
+      "반지 폭과 두께, 보석의 종류와 크기가 어떻게 정해졌나요?",
+      "세팅 방식과 표면 마감은 무엇인가요?",
+      "두 사람의 사이즈는 어떤 반지 폭과 착용 조건을 기준으로 측정하나요?",
+      "변경하거나 추가로 확인할 수 있는 조건은 무엇인가요?"
+    ]
+  }
+]
+const cautions = [
+  "14K나 18K 같은 순도 표기만으로 완성 중량, 디자인, 보석과 제작 조건까지 판단할 수 없습니다. 견적서에서 각 항목을 함께 확인하세요.",
+  "반지 폭과 세팅, 손 사용 환경에 따라 착용감과 사이즈 상담이 달라질 수 있습니다. 최종 사이즈와 제작 가능 여부는 상담 시 제품 사양을 기준으로 확인하세요.",
+  "보석의 종류와 크기, 고정 방식에 따라 외관과 관리 조건이 달라질 수 있으므로 원하는 이미지와 실제 상담 내용을 구분해 기록하세요."
+]
+const relatedLinks = [
+  {
+    "to": "/guide/jongno-14k-couple-ring-quote-checklist",
+    "label": "종로 14K 커플링 견적은 중량·디자인·공임을 나눠 비교하세요",
+    "description": "금속 중량, 디자인 사양과 제작 조건을 같은 기준으로 비교하는 방법을 정리했습니다."
+  },
+  {
+    "to": "/guide/jongno-custom-couple-ring-order",
+    "label": "종로 커플링 주문제작, 상담부터 수령까지 확인할 것",
+    "description": "주문제작 전 소재, 폭, 두께, 사이즈와 각인 조건을 확인하는 순서를 안내합니다."
+  },
+  {
+    "to": "/guide/couple-ring-14k-18k-price-difference",
+    "label": "14K·18K 커플링 가격 차이: 금 함량·중량·공임 비교",
+    "description": "14K와 18K를 비교할 때 금 함량, 완성 중량과 제작 조건을 살펴보는 방법입니다."
+  },
+  {
+    "to": "/guide/jongno-wedding-jewelry-consultation-checklist",
+    "label": "결혼예물 상담 전 확인할 체크리스트",
+    "description": "예산, 금속과 보석 사양, 반지 치수와 상담 기록을 준비하는 방법을 정리했습니다."
+  }
+]
+const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]
+
+// guide-manager:data:start
+const gmArticleTitle = '종로 커플링 가격 상담 전 정할 것'
+const gmArticleLead = '금속 종류와 순도, 반지 폭과 두께, 보석과 세팅, 표면 마감, 사이즈와 착용 환경을 먼저 나누어 정하면 커플링 가격을 비교하기가 수월해집니다. 예산만으로 비교하기 어려운 이유는 상담에서 각 항목을 같은 기준으로 확인해야 하기 때문입니다.'
+const gmArticleCategory = '가격'
+const gmArticleKeyword = '종로 커플링 가격 상담'
+const gmInquiryType = 'custom' as const
+const gmInquiryTopic = '커플링 주문제작 상담 전 디자인 조건과 예산 정리'
+const gmHeroAlt = '두 개의 금속 반지가 보석 견본과 반지 측정 도구 옆에 나란히 놓인 모습'
+const gmHeroWidth = 1536
+const gmHeroHeight = 1024
+const gmReviewedBy = '귀족 주얼리 상담팀'
+const gmSourceNote = '금속 표시와 순도, 디자인과 세팅, 반지 폭과 사이즈에 관한 공식 안내를 바탕으로 상담 준비 항목을 정리했습니다. 실제 가격과 제작 조건은 제품 사양과 상담 시점에 따라 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "Federal Trade Commission, Jewelry Guides",
+    "url": "https://www.ftc.gov/news-events/topics/tools-consumers/jewelry-guides",
+    "note": "귀금속의 종류, 품질, 금속 함량, 크기와 서비스 가능성 등 중요한 정보를 정확히 표시해야 한다는 공식 지침입니다."
+  },
+  {
+    "label": "Federal Trade Commission, Buying Platinum, Gold, and Silver Jewelry",
+    "url": "https://consumer.ftc.gov/articles/buying-platinum-gold-and-silver-jewelry",
+    "note": "금, 백금과 은의 표시, 금 순도와 합금의 기본 개념을 설명하는 공식 소비자 안내입니다."
+  },
+  {
+    "label": "GIA, 10 Tips for Buying an Engagement Ring",
+    "url": "https://4cs.gia.edu/en-us/blog/tips-for-buying-an-engagement-ring/",
+    "note": "금속, 보석 형태, 세팅, 보조석과 스타일을 구매 전 검토 항목으로 제시합니다."
+  },
+  {
+    "label": "GIA, Complete Guide to Engagement Ring Settings: Types vs. Styles",
+    "url": "https://4cs.gia.edu/en-us/blog/guide-to-ring-settings/",
+    "note": "세팅 방식과 전체 디자인 스타일을 구분하고 세팅이 외관, 보석 보호와 착용성에 영향을 준다고 설명합니다."
+  },
+  {
+    "label": "GIA, Accurate Determination of Finger and Ring Sizes",
+    "url": "https://my.gia.edu/quality-assurance-benchmark/accurate-determination-finger-ring-size",
+    "note": "반지 폭과 여러 반지를 함께 착용하는 경우 사이즈 측정에 별도 고려가 필요하다고 안내합니다."
+  }
+]
+// guide-manager:data:end
+
+useHead({
+  title: pageTitle,
+  link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${siteConfig.url}${pagePath}` },
+    { property: 'og:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
+        { name: '홈', path: '/' },
+        { name: '귀금속 가이드', path: '/guide' },
+        { name: gmArticleTitle, path: pagePath },
+      ])),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: pageTitle,
+        description: pageDescription,
+        image: articleImages,
+        datePublished: publishedAt,
+        dateModified: updatedAt || publishedAt,
+        mainEntityOfPage: `${siteConfig.url}${pagePath}`,
+        author: { '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url },
+        reviewedBy: { '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: gmReviewedBy, url: siteConfig.url },
+        publisher: {
+          '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url,
+          logo: { '@type': 'ImageObject', url: siteConfig.url + '/favicon.svg' },
+        },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <GuideArticleView
+    :category="gmArticleCategory"
+    :keyword="gmArticleKeyword"
+    :inquiry-type="gmInquiryType"
+    :inquiry-topic="gmInquiryTopic"
+    :title="gmArticleTitle"
+    :lead="gmArticleLead"
+    :published-at="publishedAt"
+    :updated-at="updatedAt || undefined"
+    :hero-image="ogImage"
+    :hero-alt="gmHeroAlt"
+    :hero-width="gmHeroWidth"
+    :hero-height="gmHeroHeight"
+    :reviewed-by="gmReviewedBy"
+    :quick-answers="quickAnswers"
+    :sections="sections"
+    :cautions="cautions"
+    :faq-items="faqItems"
+    :related-links="relatedLinks"
+    :source-note="gmSourceNote"
+    :sources="gmSources"
+  />
+</template>

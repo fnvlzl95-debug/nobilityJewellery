@@ -103,6 +103,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/wedding-ring-vs-couple-ring-choice', label: '결혼반지·커플링 선택', description: '용도별 차이 비교' },
       { to: '/guide/find-girlfriend-ring-size-guide', label: '몰래 반지 사이즈 재기', description: '선물 준비 전 확인' },
       { to: '/gallery', label: '커플링 디자인 갤러리', description: '실제 제작 디자인 보기' },
+      { to: '/guide/jongno-couple-ring-price-consultation-prep', label: '종로 커플링 가격 상담 전 정할 것', description: '종로 커플링 상담에서 예산만 말하지 않고 금속, 폭, 보석, 세팅, 착용감과 두 반지의 통일 정도' },
     ],
   },
   {
