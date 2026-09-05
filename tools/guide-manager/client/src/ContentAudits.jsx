@@ -94,7 +94,7 @@ function Diagnosis({ item }) {
   </>
 }
 
-function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy }) {
+function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, confirmCurrent, setConfirmCurrent }) {
   const snapshot = item.snapshot
   const readOnly = snapshot.guide.isCustom
   const recentHold = snapshot.guards?.recentObservationHold
@@ -150,13 +150,15 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy }) 
       <button className="button button-quiet" type="button" onClick={onSave} disabled={!!busy}>{busy === 'save' ? <Busy>저장 중</Busy> : <><Check size={15} />수정안 저장</>}</button>
       <button className="button button-primary" type="button" onClick={onCreate} disabled={!!busy || !plan.changes.some((entry) => entry.enabled)}>{busy === 'create' ? <Busy>작업 생성 중</Busy> : <><FilePenLine size={15} />수정안 확정·편집 시작</>}</button>
     </div>}
+    {(!item.aiAnalysis || item.status === 'stale' || item.status === 'measured') && <label className="guard-note"><input type="checkbox" checked={confirmCurrent} onChange={event => setConfirmCurrent(event.target.checked)} /><span>현재 원문·지표와 수정 범위를 직접 검토했습니다. 최신 진단 없이 진행하는 검토 기록을 남깁니다.</span></label>}
     <small className="apply-boundary">편집 작업 생성은 저장소를 바꾸지 않습니다. 원고·이미지·diff 확인 후 별도 최종 승인과 반영 절차가 필요합니다.</small>
   </section>
 }
 
 function AuditDetail({ item, onBack, onReload, onStart, busy, setBusy, setGlobalError, setMessage }) {
   const [plan, setPlan] = useState(item.plan)
-  useEffect(() => setPlan(item.plan), [item.id, item.updatedAt])
+  const [confirmCurrent, setConfirmCurrent] = useState(false)
+  useEffect(() => { setPlan(item.plan); setConfirmCurrent(false) }, [item.id, item.updatedAt])
   const run = async (name, action, success) => {
     setBusy(name); setGlobalError(''); setMessage('')
     try { const result = await action(); if (success) setMessage(success); return result }
@@ -166,7 +168,7 @@ function AuditDetail({ item, onBack, onReload, onStart, busy, setBusy, setGlobal
   const save = () => run('save', () => api.put(`/audits/${item.guideSlug}/plan`, { plan }), '수정 계획을 저장했습니다.').then(onReload).catch(() => {})
   const create = () => {
     if (!confirm('현재 체크한 수정안을 확정하고 가이드 편집 작업을 만들까요? 아직 저장소에는 반영되지 않습니다.')) return
-    run('create', () => api.post(`/audits/${item.guideSlug}/create-update`, { plan }), '수정 작업을 만들었습니다.').then((generation) => onStart({ generationId: generation.id })).catch(() => {})
+    run('create', () => api.post(`/audits/${item.guideSlug}/create-update`, { plan, confirmCurrent, contextFingerprint: item.snapshot.contextFingerprint }), '수정 작업을 만들었습니다.').then((generation) => onStart({ generationId: generation.id })).catch(() => {})
   }
   const analyzeOne = () => run('analyze-one', () => api.post('/audits/analyze', { slugs: [item.guideSlug], force: true }), 'Terra 상세 진단을 완료했습니다.').then(onReload).catch(() => {})
   return <aside className="audit-detail">
@@ -183,7 +185,7 @@ function AuditDetail({ item, onBack, onReload, onStart, busy, setBusy, setGlobal
         <details className="audit-caveats"><summary>해석 한계와 안전 규칙</summary>{item.snapshot.caveats.map((value) => <p key={value}>{value}</p>)}</details>
       </div>
       <div className="audit-plan-col">
-        <PlanEditor item={item} plan={plan} setPlan={setPlan} onSave={save} onCreate={create} onAnalyze={analyzeOne} busy={busy} />
+        <PlanEditor item={item} plan={plan} setPlan={setPlan} onSave={save} onCreate={create} onAnalyze={analyzeOne} busy={busy} confirmCurrent={confirmCurrent} setConfirmCurrent={setConfirmCurrent} />
       </div>
     </div>
   </aside>
@@ -215,12 +217,12 @@ export function ContentAudits({ onStart }) {
   useEffect(() => {
     Promise.all([loadReport(), api.get('/audits/analyze/status')]).then(([, currentJob]) => {
       setJob(currentJob)
-      if (currentJob.state === 'running') setBusy('audit-job')
+      if (['queued', 'running', 'cancelling'].includes(currentJob.state)) setBusy('audit-job')
     }).catch((value) => setError(errorText(value)))
   }, [])
   useEffect(() => { loadDetail().catch((value) => setError(errorText(value))) }, [selectedSlug])
   useEffect(() => {
-    if (job?.state !== 'running') return undefined
+    if (!['queued', 'running', 'cancelling'].includes(job?.state)) return undefined
     setBusy('audit-job')
     const timer = setInterval(async () => {
       try { setJob(await api.get('/audits/analyze/status')) } catch (value) { setError(errorText(value)) }
@@ -228,11 +230,11 @@ export function ContentAudits({ onStart }) {
     return () => clearInterval(timer)
   }, [job?.id, job?.state])
   useEffect(() => {
-    if (!job?.id || job.state === 'running' || handledJob.current === job.id) return
+    if (!job?.id || ['queued', 'running', 'cancelling'].includes(job.state) || handledJob.current === job.id) return
     handledJob.current = job.id
     setBusy('')
     if (job.state === 'done') setMessage(`Terra 정밀진단 ${job.analyzed}개를 완료했습니다.`)
-    else if (job.state === 'error') setError(job.error || 'Terra 정밀진단이 중단됐습니다.')
+    else if (['error', 'cancelled', 'interrupted'].includes(job.state)) setError(job.error || 'Terra 정밀진단이 중단됐습니다.')
     Promise.all([loadReport(), loadDetail()]).catch((value) => setError(errorText(value)))
   }, [job?.id, job?.state])
 

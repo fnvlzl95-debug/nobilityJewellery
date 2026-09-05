@@ -6,6 +6,8 @@ const humanizer = require('./humanizerService');
 const applies = require('./applyService');
 const { getGuide } = require('./inventoryService');
 const { preferredArchetype, archetypePrompt } = require('./imageService');
+const { policyFor, needsHumanizer, assertUpdatePolicy } = require('./updatePolicyService');
+const jobs = require('./jobService');
 
 const PIPELINE_STEPS = [
   ['topic', 'Terra 주제 전략'],
@@ -19,12 +21,22 @@ const PIPELINE_STEPS = [
 
 function jewelrySubject(topic) {
   const value = String(topic || '');
+  if (/루비/.test(value)) return 'deep red ruby gemstones with realistic corundum crystal and facet details';
+  if (/지르콘/.test(value) && /큐빅|지르코니아/.test(value)) return 'natural zircon and cubic zirconia as separate realistic loose gemstone specimens';
+  if (/지르콘/.test(value)) return 'realistic natural zircon gemstones with accurate facets';
+  if (/사파이어/.test(value)) return 'realistic blue sapphire gemstones with accurate corundum facets';
+  if (/에메랄드/.test(value)) return 'realistic green emerald gemstones with characteristic emerald-cut facets';
   if (/(목걸이|체인|펜던트)/.test(value)) return 'a realistic fine-jewelry necklace and chain';
   if (/(팔찌|손목)/.test(value)) return 'a realistic fine-jewelry bracelet';
   if (/(귀걸이|이어링)/.test(value)) return 'a realistic pair of fine-jewelry earrings';
   if (/(진주)/.test(value)) return 'real cultured pearl jewelry';
   if (/(다이아|보석|루비|사파이어|에메랄드|오팔|가넷|탄생석)/.test(value)) return 'real gemstone jewelry with accurate stone cuts and settings';
   return 'a realistic fine-jewelry ring';
+}
+
+function hasEnglishImagePrompt(image) {
+  const prompt = String(image?.prompt || '').trim();
+  return prompt.length >= 20 && /[a-z]{3}/i.test(prompt) && !/[가-힣\u4e00-\u9fff\u3040-\u30ff]/.test(prompt);
 }
 
 function visualPrompt(topic, sectionTitle, kind = 'section', archetype = '') {
@@ -44,9 +56,10 @@ function planDraftImages(sourceDraft, topic) {
     prompt: !/[가-힣]/.test(draft.heroImage?.prompt || '') && draft.heroImage?.prompt
       ? draft.heroImage.prompt : visualPrompt(topic, draft.title, 'hero', heroArchetype),
   };
-  const existing = (draft.sections || []).map((section, index) => section.image?.path ? index : null).filter((index) => index != null);
-  const preferred = draft.sections?.length >= 4 ? [1, 3] : draft.sections?.length >= 2 ? [1] : draft.sections?.length ? [0] : [];
-  const planned = [...new Set([...existing, ...preferred])].slice(0, 2);
+  // An illustration must have an authored purpose. Section number alone never
+  // creates another paid image or invents a generic jewelry scene.
+  const planned = (draft.sections || []).map((section, index) => section.image?.path || hasEnglishImagePrompt(section.image) ? index : null)
+    .filter(index => index != null).slice(0, 2);
   draft.sections = (draft.sections || []).map((section, index) => {
     if (!planned.includes(index)) return { ...section, image: null };
     return {
@@ -56,20 +69,20 @@ function planDraftImages(sourceDraft, topic) {
         alt: section.image?.alt || `${section.title} 예시 이미지`,
         caption: section.image?.caption || `${section.title}에서 확인할 부분을 보여주는 이미지입니다.`,
         archetype: section.image?.archetype || preferredArchetype(`${topic} ${section.title}`) || '',
-        prompt: !/[가-힣]/.test(section.image?.prompt || '') && section.image?.prompt
-          ? section.image.prompt : visualPrompt(topic, section.title, 'section', section.image?.archetype || ''),
+        prompt: hasEnglishImagePrompt(section.image) ? section.image.prompt : 'Preserve the existing verified image without generating a replacement.',
       },
     };
   });
   return {
     draft,
     placements: [
-      { slot: 'hero', sectionIndex: null, location: '제목과 첫 문단 다음', alt: draft.heroImage.alt },
+      { slot: 'hero', sectionIndex: null, location: '제목과 첫 문단 다음', alt: draft.heroImage.alt, reused: !!draft.heroImage.path },
       ...planned.map((sectionIndex) => ({
         slot: `section-${sectionIndex + 1}`,
         sectionIndex,
         location: `${sectionIndex + 1}번째 본문 섹션 “${draft.sections[sectionIndex].title}” 안`,
         alt: draft.sections[sectionIndex].image.alt,
+        reused: !!draft.sections[sectionIndex].image.path,
       })),
     ],
   };
@@ -106,6 +119,7 @@ function updateAutomation(id, patch) {
 }
 
 function finishStep(id, step, message, extra = {}) {
+  jobs.throwIfCancelled();
   return updateAutomation(id, {
     stage: step,
     steps: { [step]: { state: 'done', message, completedAt: nowIso(), ...extra } },
@@ -113,6 +127,7 @@ function finishStep(id, step, message, extra = {}) {
 }
 
 function startStep(id, step, message) {
+  jobs.throwIfCancelled();
   return updateAutomation(id, {
     stage: step,
     steps: { [step]: { state: 'running', message, startedAt: nowIso() } },
@@ -125,6 +140,7 @@ function activeSlots(generation) {
 
 // 이미지 정책: 'new'는 항상 생성, 'reuse'는 기존 이미지 유지, 'auto'는 작업 종류와 수정 계획으로 판단한다.
 function resolveImagePolicy(requested, generation, existingHeroPath) {
+  if (generation.kind === 'update' && policyFor(generation)?.scope.preserveImages) return 'reuse';
   if (requested === 'reuse' && existingHeroPath) return 'reuse';
   if (requested === 'reuse' || requested === 'new') return 'new';
   if (generation.kind !== 'update' || !existingHeroPath) return 'new';
@@ -145,8 +161,8 @@ function readiness(generation, diff = null) {
     topic: !!(generation?.input?.topicDecision || generation?.kind === 'update' || generation?.topic),
     officialSources: officialSelected.length > 0 || (selected.length > 0 && !!generation?.input?.allowWithoutOfficial),
     structuredDraft: !!draft,
-    heroImage: !!draft?.heroImage?.path && (reuse || active.has('hero')),
-    bodyImages: placements.filter((item) => item.slot !== 'hero').every((item) => active.has(item.slot)),
+    heroImage: !!draft?.heroImage?.path && (reuse || active.has('hero') || placements.some(item => item.slot === 'hero' && item.reused)),
+    bodyImages: placements.filter((item) => item.slot !== 'hero').every((item) => item.reused || active.has(item.slot)),
     humanized: !!generation?.humanized || !!auto.humanizeSkipped,
     seoLint: !!generation?.lint && !generation.lint.blocking,
     diffReady: !!diff,
@@ -162,6 +178,7 @@ function readiness(generation, diff = null) {
 }
 
 async function prepareBest(input = {}, dependencyOverrides = {}) {
+  const injectedDependencies = Object.keys(dependencyOverrides).length > 0;
   const deps = {
     suggestTopics: topicService.suggestTopics,
     createGeneration: generations.createGeneration,
@@ -178,14 +195,19 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
   };
   let generation = input.generationId ? deps.getGeneration(Number(input.generationId)) : null;
   let candidate = generation?.input?.topicDecision || null;
-  let report = input.report || null;
+  // Caller-supplied report flags are not authorization. Only a dependency-injected
+  // test harness can bypass fetching the current server-scored report.
+  let report = injectedDependencies ? input.report || null : null;
   let id = generation?.id || null;
   try {
+    jobs.throwIfCancelled();
+    if (generation) assertUpdatePolicy(generation);
+    if (id) jobs.claimGeneration(id);
     if (!generation) {
       report = report || await deps.suggestTopics({ limit: 8, force: !!input.forceTopics });
       candidate = report.accepted?.find((item) => item.id === input.candidateId)
         || (!input.candidateId ? report.recommended : null);
-      if (!candidate || !candidate.accepted) throw new Error('서버 중복·수요 검사를 통과한 주제를 선택해 주세요');
+      if (!candidate || !candidate.accepted || !injectedDependencies && candidate.automaticEligible !== true) throw new Error('최신 서버 중복·수요 검사를 통과한 주제를 선택해 주세요. 자료가 부족한 경우 근거를 기록한 수동 작업으로 준비할 수 있습니다.');
       generation = await deps.createGeneration({
         topic: candidate.topic,
         category: candidate.category,
@@ -196,6 +218,7 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
         automationRequested: true,
       });
       id = generation.id;
+      jobs.claimGeneration(id);
       updateAutomation(id, {
         state: 'running', stage: 'topic', startedAt: nowIso(), completedAt: null,
         topicReportMeta: { generatedAt: report.generatedAt, model: report.model, methodology: report.methodology, period: report.period },
@@ -222,14 +245,15 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
     if (!generation.research?.official) await deps.researchOfficial(id);
     generation = deps.getGeneration(id);
     let allSources = generation.research?.official?.sources || [];
-    let officialUrls = allSources.filter((source) => source.official).map((source) => source.url);
+    const supportedSource = source => (generation.research?.official?.claims || []).some(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url));
+    let officialUrls = allSources.filter(source => source.official && supportedSource(source)).map(source => source.url);
     if (!officialUrls.length) {
       // 1차 조사에서 권위 출처가 안 나오면 정부·표준기관을 명시해 한 번만 다시 조사한다.
       startStep(id, 'sources', '권위 출처를 찾지 못해 정부·표준기관 중심으로 다시 조사합니다.');
       await deps.researchOfficial(id, { emphasizeOfficial: true });
       generation = deps.getGeneration(id);
       allSources = generation.research?.official?.sources || [];
-      officialUrls = allSources.filter((source) => source.official).map((source) => source.url);
+      officialUrls = allSources.filter(source => source.official && supportedSource(source)).map(source => source.url);
     }
     if (officialUrls.length) {
       if (!allSources.some((source) => source.selected && source.official)) await deps.selectSources(id, officialUrls, { allowWithoutOfficial: false });
@@ -254,14 +278,20 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
     startStep(id, 'visuals', '대표 이미지와 본문 이미지 위치를 확정하고 있습니다.');
     const existingGuide = generation.target_slug ? getGuide(generation.target_slug) : null;
     const imagePolicy = resolveImagePolicy(input.imagePolicy || null, generation, existingGuide?.image || null);
-    const reuseHero = imagePolicy === 'reuse';
+    const scope = policyFor(generation)?.scope;
+    const reuseAll = imagePolicy === 'reuse';
+    const reuseHero = reuseAll || !!scope?.preserveHero;
     const sourceDraft = generation.humanized || generation.draft;
-    const plan = planDraftImages(sourceDraft, generation.topic);
-    // 대표 이미지를 유지하더라도 본문 이미지 계획까지 버리지 않는다. 유지 대상은 대표 이미지 한 장뿐이다.
+    const plan = reuseAll ? { draft: structuredClone(sourceDraft), placements: [] } : planDraftImages(sourceDraft, generation.topic);
+    if (scope?.preserveBodyImages) {
+      plan.draft.sections = structuredClone(sourceDraft.sections);
+      plan.placements = plan.placements.filter(placement => placement.slot === 'hero');
+    }
+    // Reuse preserves every existing image and placement, including body images.
     if (reuseHero) {
       plan.draft.heroImage = {
         ...(plan.draft.heroImage || {}),
-        path: existingGuide.image,
+        path: sourceDraft.heroImage?.path || existingGuide.image,
         alt: plan.draft.heroImage?.alt || `${generation.topic} 가이드 대표 이미지`,
         caption: plan.draft.heroImage?.caption || '',
       };
@@ -274,7 +304,8 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
     let slots = activeSlots(generation);
     const failures = [];
     for (const placement of plan.placements) {
-      if (slots.has(placement.slot)) continue;
+      jobs.throwIfCancelled();
+      if (placement.reused || slots.has(placement.slot)) continue;
       const latestDraft = deps.getGeneration(id).humanized || deps.getGeneration(id).draft;
       const imagePlan = placement.slot === 'hero' ? latestDraft.heroImage : latestDraft.sections[placement.sectionIndex]?.image;
       if (!imagePlan?.prompt) { failures.push(`${placement.slot}: 생성 프롬프트가 없습니다`); continue; }
@@ -288,13 +319,14 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
           archetype: imagePlan.archetype,
         });
       } catch (error) {
+        jobs.throwIfCancelled();
         // 한 장이 실패해도 나머지 이미지와 이후 단계는 계속 진행하고, 실패 사실만 남긴다.
         failures.push(`${placement.slot}: ${error.message}`);
       }
       slots = activeSlots(deps.getGeneration(id));
     }
     // 실패한 본문 이미지는 계획에서 빼서 빈 경로가 남지 않게 한다. 본문 이미지는 선택 항목이다.
-    const failedBody = plan.placements.filter((placement) => placement.slot !== 'hero' && !slots.has(placement.slot));
+    const failedBody = plan.placements.filter((placement) => placement.slot !== 'hero' && !placement.reused && !slots.has(placement.slot));
     if (failedBody.length) {
       const cleaned = deps.getGeneration(id).humanized || deps.getGeneration(id).draft;
       const patched = JSON.parse(JSON.stringify(cleaned));
@@ -306,7 +338,7 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
       updateAutomation(id, { placements: plan.placements });
     }
     const madeCount = plan.placements.filter((placement) => slots.has(placement.slot)).length;
-    const heroNote = reuseHero ? '기존 대표 이미지를 유지하고' : '대표 이미지를 새로 만들고';
+    const heroNote = reuseAll ? '기존 대표·본문 이미지를 모두 유지하고' : reuseHero ? '기존 대표 이미지를 유지하고' : '대표 이미지를 새로 만들고';
     if (failures.length) {
       updateAutomation(id, {
         imageFailures: failures.join(' / '),
@@ -318,11 +350,11 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
 
     generation = deps.getGeneration(id);
     startStep(id, 'humanize', '보호 사실을 잠근 상태로 설명 문단을 다듬고 있습니다.');
-    let humanizeSkipped = null;
-    if (!generation.humanized) {
+    let humanizeSkipped = needsHumanizer(generation) ? null : '선택 범위에 설명 문장 변경이 없어 기존 문장을 유지했습니다.';
+    if (!generation.humanized && !humanizeSkipped) {
       // 문장 다듬기는 표현만 바꾸는 단계다. 엔진이 꺼져 있어도 원고 사실은 그대로이므로 전체를 중단하지 않는다.
-      try { await deps.humanizeGeneration(id); }
-      catch (error) { humanizeSkipped = error.message; }
+      try { const result = await deps.humanizeGeneration(id); humanizeSkipped = result?.humanizeSkipped || null; }
+      catch (error) { jobs.throwIfCancelled(); humanizeSkipped = error.message; }
     }
     if (humanizeSkipped) {
       updateAutomation(id, {
@@ -331,7 +363,7 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
       });
     } else {
       updateAutomation(id, { humanizeSkipped: null });
-      finishStep(id, 'humanize', '설명 문단을 다듬고 수치·단위·등급·URL 보존 검사를 실행했습니다.');
+      finishStep(id, 'humanize', '변경 문단을 다듬고 보호 사실·금지·조건 문장 보존 검사를 실행했습니다. 출처와 의미는 최종 검토가 필요합니다.');
     }
 
     startStep(id, 'seo', '검색 설명·중복·출처·이미지를 최종 검사하고 있습니다.');
@@ -369,4 +401,4 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
   }
 }
 
-module.exports = { PIPELINE_STEPS, jewelrySubject, visualPrompt, planDraftImages, automationState, readiness, prepareBest };
+module.exports = { PIPELINE_STEPS, jewelrySubject, visualPrompt, hasEnglishImagePrompt, planDraftImages, automationState, readiness, prepareBest };

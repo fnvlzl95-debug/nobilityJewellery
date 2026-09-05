@@ -73,6 +73,7 @@ function GuidePreview({ draft, generation }) {
     <header><span>{draft.category}</span><h1>{draft.title}</h1><p>{draft.lead}</p>
       <small>{draft.publishedAt} 최초 작성{draft.updatedAt ? ` · ${draft.updatedAt} 최종 검토` : ''}</small>
       {heroUrl ? <img src={heroUrl} className="preview-image-fallback" alt={draft.heroImage?.alt || draft.title} /> : <div className="image-placeholder"><ImagePlus size={24} />대표 이미지 생성 대기</div>}
+      {heroUrl && draft.heroImage?.caption && <p className="muted">{draft.heroImage.caption}</p>}
     </header>
     <section className="quick-preview"><h2>먼저 확인하세요</h2><ul>{draft.quickAnswers?.map((answer) => <li key={answer}>{answer}</li>)}</ul></section>
     {draft.sections?.map((section, index) => {
@@ -82,6 +83,11 @@ function GuidePreview({ draft, generation }) {
         <h2><span>{String(index + 1).padStart(2, '0')}</span>{section.title}</h2>
         {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         {section.bullets?.length > 0 && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
+        {!!section.table?.headers?.length && !!section.table?.rows?.length && <div className="preview-table-scroll" role="region" aria-label={`${section.title} 비교표`} tabIndex={0}>
+          <table><caption>{section.title} 비교</caption><thead><tr>{section.table.headers.map((heading, column) => <th key={column} scope="col">{heading}</th>)}</tr></thead>
+            <tbody>{section.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, column) => <td key={column}>{cell}</td>)}</tr>)}</tbody>
+          </table>
+        </div>}
         {url && <figure><img src={url} loading="lazy" alt={section.image?.alt || section.title} /><figcaption>{section.image?.caption}</figcaption></figure>}
       </section>
     })}
@@ -89,27 +95,53 @@ function GuidePreview({ draft, generation }) {
   </article>
 }
 
-function DraftTab({ draft, onChange, onSave, busy, isUpdate = false }) {
+function DraftTab({ draft, generationId, baseRevision, generationRevision, serverDraft, onChange, onRestore, onSave, busy, isUpdate = false }) {
   const [advanced, setAdvanced] = useState(false)
-  const [raw, setRaw] = useState('')
-  useEffect(() => setRaw(draft ? JSON.stringify(draft, null, 2) : ''), [draft])
+  const [rawState, setRawState] = useState({ raw: '', baseRevision: null, baseDraft: null })
+  const raw = rawState.raw
+  const rawKey = 'guide-manager-raw-draft-v1:' + generationId
+  useEffect(() => {
+    const fresh = { version: 2, raw: draft ? JSON.stringify(draft, null, 2) : '', baseRevision, baseDraft: serverDraft }
+    try {
+      const saved = localStorage.getItem(rawKey)
+      if (!saved) { setRawState(fresh); return }
+      let record
+      try { record = JSON.parse(saved) } catch { /* preserve invalid legacy JSON text as well */ }
+      setRawState(record?.version === 2 && typeof record.raw === 'string' ? record : { version: 2, raw: saved, baseRevision: null, baseDraft: null })
+    } catch { setRawState(fresh) }
+  }, [draft, generationId, baseRevision, generationRevision])
+  const retainRaw = text => {
+    const record = { ...rawState, version: 2, raw: text }
+    setRawState(record)
+    try { localStorage.setItem(rawKey, JSON.stringify(record)) }
+    catch { alert('임시 보관 공간이 부족합니다. JSON을 복사해 보관해 주세요.') }
+  }
+  const rawConflict = rawState.baseRevision == null || rawState.baseRevision !== generationRevision
   if (!draft) return <EmptyRow icon={FileSearch} title="편집할 원고가 없습니다" hint="원고 생성 단계를 먼저 끝내주세요." />
   const patch = (key, value) => onChange({ ...draft, [key]: value })
   const titleLength = String(draft.title || '').length
   const titleTone = titleLength >= 32 ? (isUpdate ? 'warning' : 'danger') : titleLength >= 28 ? 'warning' : 'safe'
-  const saveRaw = () => {
+  const saveRaw = async () => {
     let parsed
     try { parsed = JSON.parse(raw) } catch (_) { alert('JSON 형식을 확인해 주세요.'); return }
-    onChange(parsed); onSave(parsed)
+    onRestore(parsed, rawState.baseRevision)
+    if (rawConflict) { setAdvanced(false); return }
+    const result = await onSave(parsed, { baseRevision: rawState.baseRevision })
+    if (result) localStorage.removeItem(rawKey)
   }
-  return <div className="tab-panel">
+  return <fieldset className="tab-panel draft-fields" disabled={!!busy}>
     <div className="panel-head">
       <div><h2>원고 편집</h2><p>저장하면 승인 상태가 풀리고 검사를 다시 실행합니다.</p></div>
       <button type="button" className="text-button" onClick={() => setAdvanced(!advanced)}>{advanced ? '기본 편집으로' : '구조 JSON 편집'}</button>
     </div>
     {advanced ? <>
-      <textarea className="json-editor" value={raw} onChange={(event) => setRaw(event.target.value)} spellCheck={false} />
-      <button type="button" className="button button-primary" onClick={saveRaw} disabled={!!busy}><Save size={15} />JSON 저장·재검사</button>
+      <p>JSON 입력과 편집을 시작한 원고 버전을 함께 임시 보관합니다. 서버 원고가 바뀌면 비교 확인 전에는 저장하지 않습니다.</p>
+      {rawConflict && <div className="draft-retained"><strong>임시 JSON의 기준 원고와 서버 버전이 다릅니다.</strong><p>입력은 그대로 보관했습니다. ‘JSON 비교·확인’을 눌러 기본 편집의 최신 원고 비교 단계에서 적용 여부를 결정하세요. 형식이 미완성이라면 아래 입력을 복사해 보관할 수 있습니다.</p>
+        {rawState.baseDraft && <details><summary>JSON 편집을 시작한 기준 원고</summary><pre>{JSON.stringify(rawState.baseDraft, null, 2)}</pre></details>}
+      </div>}
+      <textarea className="json-editor" value={raw} onChange={event => retainRaw(event.target.value)} spellCheck={false} />
+      <button type="button" className="button button-quiet" onClick={() => { if (confirm('미저장 JSON 입력을 폐기할까요?')) { localStorage.removeItem(rawKey); setRawState({ version: 2, raw: JSON.stringify(draft, null, 2), baseRevision, baseDraft: serverDraft }) } }}>JSON 입력 폐기</button>
+      <button type="button" className="button button-primary" onClick={saveRaw} disabled={!!busy}><Save size={15} />{rawConflict ? 'JSON 비교·확인' : 'JSON 저장·재검사'}</button>
     </> : <>
       <div className="edit-grid">
         <label className="span-2"><span>제목 <small className={`field-meter ${titleTone}`}>{titleLength}/27자 권장 · 31자 한도</small></span><input maxLength="64" value={draft.title || ''} onChange={(event) => patch('title', event.target.value)} /><small className={`field-help ${titleTone}`}>{titleLength >= 32 ? (isUpdate ? '기존 제목을 그대로 유지하는 본문 수정은 예외입니다. 제목을 바꾸면 31자 한도가 적용됩니다.' : '검색결과 잘림을 막기 위해 저장 전 31자 이하로 줄여야 합니다.') : titleLength >= 28 ? '뒷부분이 잘릴 수 있습니다. 핵심 답을 앞 27자 안에 배치하세요.' : '“| 귀족” 접미사 5자는 자동으로 붙습니다.'}</small></label>
@@ -122,22 +154,24 @@ function DraftTab({ draft, onChange, onSave, busy, isUpdate = false }) {
       </div>
       <button type="button" className="button button-primary" disabled={!!busy} onClick={() => onSave(draft)}>{busy === 'save' ? <Spinner /> : <><Save size={15} />원고 저장·재검사</>}</button>
     </>}
-  </div>
+  </fieldset>
 }
 
-function SourcesTab({ rows, selected, setSelected, allowWithoutOfficial, setAllowWithoutOfficial, onSave, onResearch, busy }) {
+function SourcesTab({ rows, claims = [], selected, setSelected, allowWithoutOfficial, setAllowWithoutOfficial, onSave, onResearch, busy }) {
   if (!rows.length) return <div className="tab-panel">
     <EmptyRow icon={FileSearch} title="아직 조사한 출처가 없습니다" hint="진행 순서의 ‘출처 조사’ 단계를 실행하거나 아래 버튼을 누르세요." />
     <button type="button" className="button button-primary" disabled={!!busy} onClick={() => onResearch(false)}>{busy === 'official' ? <Spinner label="조사 중" /> : <><FileSearch size={15} />출처 조사 실행</>}</button>
   </div>
-  const official = rows.filter((source) => source.official)
+  const claimUrls = new Set(claims.filter(claim => String(claim.claim || '').trim()).flatMap(claim => claim.sourceUrls || []))
+  const supported = rows.filter(source => claimUrls.has(source.url))
+  const official = supported.filter((source) => source.official)
   const selectedOfficial = official.filter((source) => selected.includes(source.url)).length
   return <div className="tab-panel">
     <div className="panel-head">
       <div><h2>출처 승인 <b>{selected.length}/{rows.length}</b></h2><p>체크한 근거만 원고에 사용합니다. 공식·권위 출처(정부·표준기관·교육기관·국제 보석 협회)가 1개 이상이면 그대로 진행됩니다.</p></div>
       <div className="panel-head-actions">
         {official.length > 0 && <button type="button" className="text-button" onClick={() => setSelected(official.map((source) => source.url))}>공식 출처 모두 선택</button>}
-        <button type="button" className="text-button" onClick={() => setSelected(rows.map((source) => source.url))}>전체 선택</button>
+        <button type="button" className="text-button" onClick={() => setSelected(supported.map((source) => source.url))}>근거 연결 출처 선택</button>
         <button type="button" className="text-button" onClick={() => setSelected([])}>선택 해제</button>
       </div>
     </div>
@@ -156,8 +190,8 @@ function SourcesTab({ rows, selected, setSelected, allowWithoutOfficial, setAllo
     </div>}
 
     <div className="source-list">{rows.map((source) => <label key={source.url} className={source.official ? '' : 'unofficial'}>
-      <input type="checkbox" checked={selected.includes(source.url)} onChange={(event) => setSelected(event.target.checked ? [...selected, source.url] : selected.filter((url) => url !== source.url))} />
-      <span><strong>{source.label}</strong><small>{source.domain} · {source.official ? '공식 출처' : '보조 후보'}</small><em>{source.reason}</em></span>
+      <input type="checkbox" disabled={!claimUrls.has(source.url) && !selected.includes(source.url)} checked={selected.includes(source.url)} onChange={(event) => setSelected(event.target.checked ? [...selected, source.url] : selected.filter((url) => url !== source.url))} />
+      <span><strong>{source.label}</strong><small>{source.domain} · {source.official ? '공식 출처' : '보조 후보'}</small><em>{source.reason}</em>{!claimUrls.has(source.url) && <small className="error-copy">확인한 주장과 연결되지 않은 출처입니다. 출처를 다시 조사해 주세요.</small>}</span>
     </label>)}</div>
 
     <div className="source-actions">
@@ -298,7 +332,7 @@ function TopicStrategy({ report, selectedId, onSelect, onPrepare, busy }) {
   </section>
 }
 
-function NewWorkPanel({ mode, setMode, create, setCreate, guides, onSubmit, busy, topicReport, selectedTopicId, onDiscover, onSelectTopic, onPrepareTopic, onCancel }) {
+function NewWorkPanel({ mode, setMode, create, setCreate, guides, clusters, onSubmit, busy, topicReport, selectedTopicId, onDiscover, onSelectTopic, onPrepareTopic, onCancel }) {
   const [guideQuery, setGuideQuery] = useState('')
   const categories = useMemo(() => [...new Set(guides.map((guide) => guide.category).filter(Boolean))], [guides])
   const matched = useMemo(() => {
@@ -345,7 +379,12 @@ function NewWorkPanel({ mode, setMode, create, setCreate, guides, onSubmit, busy
         <label className="span-2"><span>주제 {mode === 'update' ? '(대표 검색어)' : ''}</span><input required value={create.topic} onChange={(event) => setCreate({ ...create, topic: event.target.value })} placeholder="예: 금반지 광택 비용" /></label>
         <label><span>카테고리</span><input list="guide-categories" value={create.category} onChange={(event) => setCreate({ ...create, category: event.target.value })} />
           <datalist id="guide-categories">{categories.map((value) => <option key={value} value={value} />)}</datalist></label>
+        {mode === 'update' && <label className="span-2"><span>이번 수정 범위</span><select value={create.updateScope || 'sources'} onChange={event => setCreate({ ...create, updateScope: event.target.value })}><option value="sources">출처만 보강 · 제목과 본문 유지</option><option value="snippet">검색 제목·설명</option><option value="intro">첫 문단·핵심 답변</option><option value="body">본문 보강</option><option value="links">내부 링크</option></select><small>선택한 범위를 서버에서 검증하며 나머지 내용은 보존합니다.</small></label>}
         {mode === 'new' && <label><span>영문 slug</span><input value={create.slug} onChange={(event) => setCreate({ ...create, slug: event.target.value })} placeholder="비워두면 자동 제안" /></label>}
+        {mode === 'new' && <>
+          <label className="span-2"><span>이 글을 새로 작성하는 이유 · 필수</span><textarea required minLength={20} maxLength={600} rows="3" value={create.editorialJustification || ''} onChange={event => setCreate({ ...create, editorialJustification: event.target.value })} placeholder="기존 글에서 답하지 못한 고객 질문과 이 글이 추가로 해결할 내용을 20자 이상 적어 주세요." /><small>검색 자료가 없으면 운영자의 편집 판단으로 기록합니다. 검색 수요가 검증된 것으로 표시하지 않습니다.</small></label>
+          <label className="span-2"><span>연결할 가이드 묶음</span><select value={create.cluster || ''} onChange={event => setCreate({ ...create, cluster: event.target.value })}><option value="">원고 내용으로 제안받기</option>{clusters.map(cluster => <option key={cluster.id} value={cluster.id}>{cluster.title}</option>)}</select></label>
+        </>}
         <label className="span-2"><span>확인된 영업 정보</span><textarea rows="3" value={create.businessFacts} onChange={(event) => setCreate({ ...create, businessFacts: event.target.value })} placeholder="가격·기간·가능 여부는 확인된 사실만 입력" /></label>
       </div>
 
@@ -364,15 +403,38 @@ function NewWorkPanel({ mode, setMode, create, setCreate, guides, onSubmit, busy
   </section>
 }
 
-const EMPTY_CREATE = { topic: '', targetSlug: '', category: '', inquiryType: 'custom', businessFacts: '', slug: '' }
+const EMPTY_CREATE = { topic: '', targetSlug: '', category: '', inquiryType: 'custom', businessFacts: '', slug: '', updateScope: 'sources', editorialJustification: '', cluster: '' }
 
 export function Editor({ seed, clearSeed }) {
   const [items, setItems] = useState([])
   const [guides, setGuides] = useState([])
+  const [clusters, setClusters] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [generation, setGeneration] = useState(null)
   const loadSequence = useRef(0)
   const [draft, setDraft] = useState(null)
+  const draftState = useRef({ id: null, draft: null, baseRevision: null, dirty: false })
+  const selectedRef = useRef(null)
+  const chooseGeneration = id => { selectedRef.current = id; setSelectedId(id) }
+  const selectionMatches = generation?.id === selectedId && selectedId != null
+  const [loadingGeneration, setLoadingGeneration] = useState(false)
+  const [dirty, setDirty] = useState(false)
+  const [draftConflict, setDraftConflict] = useState(false)
+  const draftKey = id => 'guide-manager-draft-v1:' + id
+  const loadLocalDraft = id => { try { return JSON.parse(localStorage.getItem(draftKey(id)) || 'null') } catch { return null } }
+  const preserveDraft = (id, value, baseRevision) => {
+    if (id !== selectedRef.current || generation?.id !== id) { setError('선택한 원고를 불러오는 중입니다. 내용을 확인한 뒤 편집해 주세요.'); return false }
+    const local = { draft: value, baseRevision, savedAt: new Date().toISOString() }
+    try { localStorage.setItem(draftKey(id), JSON.stringify(local)) }
+    catch { setError('임시 보관 공간이 부족합니다. 화면을 떠나기 전에 원고를 저장해 주세요.') }
+    draftState.current = { id, ...local, dirty: true }; setDirty(true); setDraft(value); return true
+  }
+  const editDraft = value => preserveDraft(selectedRef.current, value, draftState.current.baseRevision ?? generation?.revision)
+  const useServerDraft = value => {
+    if (value && value.id !== selectedRef.current) return
+    draftState.current = { id: value?.id || null, draft: value?.humanized || value?.draft || null, baseRevision: value?.revision, dirty: false }
+    setDraft(draftState.current.draft); setDirty(false); setDraftConflict(false)
+  }
   const [selectedSources, setSelectedSources] = useState([])
   const [allowWithoutOfficial, setAllowWithoutOfficial] = useState(false)
   const [diff, setDiff] = useState(null)
@@ -384,45 +446,61 @@ export function Editor({ seed, clearSeed }) {
   const [selectedTopicId, setSelectedTopicId] = useState('')
   const [imagePolicy, setImagePolicy] = useState('auto')
   const [kindFilter, setKindFilter] = useState('all')
-  const [busy, setBusy] = useState('')
+  const [busyTasks, setBusyTasks] = useState({})
+  const busy = busyTasks[selectedId || 'global'] || ''
+  const setBusy = label => setBusyTasks(current => ({ ...current, [selectedId || 'global']: label }))
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [refreshedAt, setRefreshedAt] = useState('')
 
   const loadLists = async () => {
-    const [gens, guideRows] = await Promise.all([api.get('/generations'), api.get('/guides')])
-    setItems(gens); setGuides(guideRows)
+    const [gens, guideRows, clusterRows] = await Promise.all([api.get('/generations'), api.get('/guides'), api.get('/clusters')])
+    setItems(gens); setGuides(guideRows); setClusters(clusterRows)
     return gens
   }
   const loadGeneration = async (id) => {
+    if (id !== selectedRef.current) return null
     const sequence = ++loadSequence.current
-    if (!id) { setGeneration(null); setDraft(null); setRefreshedAt(new Date().toISOString()); return null }
+    if (!id) { setGeneration(null); useServerDraft(null); setLoadingGeneration(false); setRefreshedAt(new Date().toISOString()); return null }
+    setLoadingGeneration(true)
     try {
       const value = await api.get(`/generations/${id}`)
-      if (sequence !== loadSequence.current) return null
+      if (sequence !== loadSequence.current || selectedRef.current !== id || value.id !== id) return null
       setGeneration(value)
-      setDraft(value.humanized || value.draft)
+      const local = loadLocalDraft(id)
+      if (local?.draft) {
+        draftState.current = { id, ...local, dirty: true }
+        setDraft(local.draft); setDirty(true); setDraftConflict(local.baseRevision !== value.revision)
+      } else useServerDraft(value)
       setSelectedSources(value.research?.official?.sources?.filter((source) => source.selected).map((source) => source.url) || [])
       setAllowWithoutOfficial(!!value.input?.allowWithoutOfficial)
       setRefreshedAt(new Date().toISOString())
       return value
-    } catch (value) { setGeneration(null); setDraft(null); setError(value.message); return null }
+    } catch (value) { if (sequence === loadSequence.current && selectedRef.current === id) setError(value.message); return null }
+    finally { if (sequence === loadSequence.current && selectedRef.current === id) setLoadingGeneration(false) }
   }
 
   useEffect(() => {
     loadLists().then((gens) => {
       if (!gens.length) { setPanel('create'); return }
-      if (seed) return // 다른 화면에서 넘어온 경우 아래 seed 효과가 선택을 결정한다.
-      setSelectedId(gens[0].id)
-      loadGeneration(gens[0].id)
+      if (seed || selectedRef.current != null) return // 다른 화면에서 넘어온 경우 아래 seed 효과가 선택을 결정한다.
+      let restoredId
+      try { restoredId = Number(localStorage.getItem('guide-manager-selected-generation')) } catch { /* storage unavailable */ }
+      const id = gens.some(item => item.id === restoredId) ? restoredId : gens[0].id
+      chooseGeneration(id)
+      loadGeneration(id)
     }).catch((value) => setError(value.message))
   }, [])
+
+  useEffect(() => {
+    if (selectedId) { try { localStorage.setItem('guide-manager-selected-generation', String(selectedId)) } catch { /* draft persistence reports storage errors */ } }
+  }, [selectedId])
 
   useEffect(() => {
     if (!seed) return
     if (seed.generationId) {
       setPanel('work'); setTab('preview')
-      setSelectedId(Number(seed.generationId))
+      chooseGeneration(Number(seed.generationId))
       loadGeneration(Number(seed.generationId))
     } else {
       setPanel('create')
@@ -433,17 +511,13 @@ export function Editor({ seed, clearSeed }) {
   }, [seed])
 
   useEffect(() => {
-    if (busy !== 'auto' && busy !== 'prepare') return undefined
-    if (!selectedId) return undefined
-    const timer = setInterval(() => {
-      api.get(`/generations/${selectedId}`).then((value) => { setGeneration(value); setDraft(value.humanized || value.draft) }).catch(() => {})
-    }, 2500)
-    return () => clearInterval(timer)
-  }, [busy, selectedId])
+    const protect = event => { if (draftState.current.dirty) { event.preventDefault(); event.returnValue = '' } }
+    window.addEventListener('beforeunload', protect)
+    return () => window.removeEventListener('beforeunload', protect)
+  }, [])
 
   const select = async (id) => {
-    if (busy) return
-    setSelectedId(id); setPanel('work'); setTab('preview'); setDiff(null)
+    chooseGeneration(id); setPanel('work'); setTab('preview'); setDiff(null)
     await loadGeneration(id)
   }
 
@@ -459,6 +533,12 @@ export function Editor({ seed, clearSeed }) {
 
   const run = async (label, fn, { success = '', focus = null } = {}) => {
     if (busy) return null
+    const independentAction = ['create', 'topics', 'prepare', 'prune'].includes(label) || label.startsWith('delete-')
+    if (!independentAction && (!selectionMatches || selectedRef.current !== selectedId)) { setError('선택한 원고가 아직 준비되지 않았습니다. 불러오기가 끝난 뒤 실행해 주세요.'); return null }
+    if (draftState.current.dirty && !['save', 'sources', 'official', 'select', 'topics', 'create', 'prepare', 'diff'].includes(label)) {
+      setError('먼저 미저장 원고를 저장하거나 폐기해 주세요. 임시 편집은 이 브라우저에 보관돼 있습니다.'); return null
+    }
+    const runningId = selectedId
     setBusy(label); setError(''); setMessage('')
     let result = null
     let failed = false
@@ -469,7 +549,8 @@ export function Editor({ seed, clearSeed }) {
     setBusy('')
     // 이미지·검사처럼 다른 모양의 응답이 와도 화면 선택은 바뀌지 않는다.
     const nextId = focus === 'result' && result?.id ? result.id : selectedId
-    if (nextId !== selectedId) { setSelectedId(nextId); setPanel('work') }
+    if (selectedRef.current !== runningId) { await loadLists().catch(() => {}); return failed ? null : result }
+    if (nextId !== selectedId) { chooseGeneration(nextId); setPanel('work') }
     await loadLists().catch(() => {})
     if (nextId) await loadGeneration(nextId)
     return failed ? null : result
@@ -477,7 +558,12 @@ export function Editor({ seed, clearSeed }) {
 
   const createGeneration = async (event) => {
     event.preventDefault()
-    const payload = mode === 'update' ? create : { ...create, targetSlug: '' }
+    const justification = String(create.editorialJustification || '').trim()
+    if (mode === 'new' && justification.length < 20) { setError('신규 글의 선정 이유를 20자 이상 적어 주세요. 기존 글과 어떤 질문이 다른지 기록하면 좋습니다.'); return }
+    const payload = mode === 'update' ? create : {
+      ...create, targetSlug: '',
+      topicDecision: { selectionMode: 'editorial', editorialJustification: justification, topic: create.topic, primaryKeyword: create.topic, cluster: create.cluster || 'other', automaticEligible: false, decisionStatus: 'editorial_review' },
+    }
     const result = await run('create', () => api.post('/generations', payload), { success: '새 작업을 만들었습니다.', focus: 'result' })
     if (result?.id) { setPanel('work'); setTab('preview'); setCreate(EMPTY_CREATE) }
   }
@@ -503,7 +589,23 @@ export function Editor({ seed, clearSeed }) {
   const saveSources = () => run('sources', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: selectedSources, allowWithoutOfficial }), { success: '출처 선택을 저장했습니다.' })
   const researchSources = (emphasizeOfficial) => run('official', () => api.post(`/generations/${selectedId}/research/official`, { emphasizeOfficial }),
     { success: emphasizeOfficial ? '정부·표준기관 중심으로 출처를 다시 조사했습니다.' : '공식 출처 후보를 찾았습니다.' })
-  const saveDraft = (value) => run('save', () => api.put(`/generations/${selectedId}/draft`, { draft: value }), { success: '원고를 저장하고 다시 검사했습니다.' })
+  const saveDraft = (value, { baseRevision: explicitRevision } = {}) => {
+    if (!selectionMatches || selectedRef.current !== selectedId || draftState.current.id !== selectedId) { setError('선택한 원고를 확인한 뒤 저장해 주세요. 다른 글의 내용을 저장하지 않았습니다.'); return null }
+    if ((explicitRevision != null && explicitRevision !== generation.revision) || (explicitRevision == null && draftConflict)) { setError('서버 원고가 바뀌었습니다. 아래 최신 원고를 비교한 뒤 적용 여부를 정해 주세요.'); return null }
+    const id = selectedId
+    return run('save', async () => {
+      const result = await api.put('/generations/' + id + '/draft', { draft: value }, { headers: { 'If-Match': String(explicitRevision ?? draftState.current.baseRevision ?? generation.revision) } })
+      localStorage.removeItem(draftKey(id))
+      localStorage.removeItem('guide-manager-raw-draft-v1:' + id)
+      if (selectedRef.current === id) useServerDraft(result)
+      return result
+    }, { success: '원고를 저장하고 다시 검사했습니다.' })
+  }
+  const discardDraft = () => {
+    if (!selectionMatches || selectedRef.current !== selectedId) return
+    if (!confirm('이 작업의 미저장 편집을 폐기하고 서버 원고를 불러올까요?')) return
+    localStorage.removeItem(draftKey(selectedId)); useServerDraft(generation)
+  }
   const doAction = (label, path, body, success) => run(label, () => api.post(`/generations/${selectedId}${path}`, body || {}), { success })
   const generateImage = (label, item) => run(label, () => api.post(`/generations/${selectedId}/images`, {
     slot: item.slot, sectionIndex: item.sectionIndex,
@@ -525,7 +627,7 @@ export function Editor({ seed, clearSeed }) {
       const rest = await api.get('/generations').catch(() => [])
       setItems(rest)
       const next = rest[0]?.id || null
-      setSelectedId(next)
+      chooseGeneration(next)
       await loadGeneration(next)
       if (!next) setPanel('create')
     }
@@ -539,7 +641,7 @@ export function Editor({ seed, clearSeed }) {
     if (ids.includes(selectedId)) {
       const rest = await api.get('/generations').catch(() => [])
       setItems(rest)
-      setSelectedId(rest[0]?.id || null)
+      chooseGeneration(rest[0]?.id || null)
       await loadGeneration(rest[0]?.id || null)
     }
   }
@@ -553,7 +655,8 @@ export function Editor({ seed, clearSeed }) {
   const stepAction = (step) => {
     if (step.key === 'official') return researchSources(false)
     if (step.key === 'select') {
-      const officials = sourceRows.filter((source) => source.official).map((source) => source.url)
+      const claimUrls = new Set((generation.research?.official?.claims || []).filter(claim => String(claim.claim || '').trim()).flatMap(claim => claim.sourceUrls || []))
+      const officials = sourceRows.filter(source => source.official && claimUrls.has(source.url)).map(source => source.url)
       if (officials.length) {
         setSelectedSources(officials)
         return run('select', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: officials, allowWithoutOfficial: false }), { success: '공식 출처를 모두 선택해 저장했습니다.' })
@@ -561,7 +664,8 @@ export function Editor({ seed, clearSeed }) {
       // 권위 출처가 없을 때도 막지 않고, 운영자 확인을 받아 보조 출처로 진행한다.
       setTab('sources')
       if (!confirm('공식·권위 출처 후보가 없습니다. 보조 출처 전체를 근거로 삼아 진행할까요?\n(취소하면 ‘출처’ 탭에서 다시 조사하거나 직접 고를 수 있습니다.)')) return undefined
-      const all = sourceRows.map((source) => source.url)
+      const all = sourceRows.filter(source => claimUrls.has(source.url)).map(source => source.url)
+      if (!all.length) { setError('주장과 연결된 출처가 없습니다. 출처를 다시 조사해 주세요.'); return undefined }
       setSelectedSources(all); setAllowWithoutOfficial(true)
       return run('select', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: all, allowWithoutOfficial: true }), { success: '보조 출처로 진행하도록 저장했습니다. 검수 단계에서 근거를 확인해 주세요.' })
     }
@@ -613,7 +717,7 @@ export function Editor({ seed, clearSeed }) {
   return <main className="editor-page page-enter">
     <header className="editor-topbar">
       <div className="editor-title"><p className="eyebrow">GUIDE WORKBENCH</p><h1>가이드 편집</h1></div>
-      {panel === 'work' && generation && <div className="editor-current">
+      {panel === 'work' && selectionMatches && <div className="editor-current">
         <KindTag kind={generation.kind} />
         <strong>{generation.topic}</strong>
         <span className="editor-current-meta">#{generation.id}{generation.target_slug ? ` · ${generation.target_slug}` : ''} · {dateTime(generation.updated_at)}</span>
@@ -655,13 +759,17 @@ export function Editor({ seed, clearSeed }) {
       <section className="workspace">
         <ErrorNotice message={error} onClose={() => setError('')} />
         <SuccessNotice message={message} onClose={() => setMessage('')} />
+        {dirty && panel === 'work' && selectionMatches && <section className="draft-retained" role="status"><strong>미저장 원고 · 이 브라우저에 임시 보관됨</strong><p>새로고침·작업 이동 후에도 복원됩니다. 출처 저장이나 검사 결과가 내 편집을 덮어쓰지 않습니다.</p>
+          {draftConflict && <><p className="error-copy">서버 원고가 변경됐습니다. 저장하려면 두 원고를 먼저 비교해 주세요.</p><details><summary>서버의 최신 원고 확인</summary><pre>{JSON.stringify(generation?.humanized || generation?.draft, null, 2)}</pre></details><button className="button button-quiet" onClick={() => { if (confirm('서버의 최신 원고와 내 편집을 비교했으며, 다음 저장 시 내 편집을 적용할까요?')) { preserveDraft(selectedId, draft, generation.revision); setDraftConflict(false) } }}>최신 원고 확인 · 내 편집 유지</button></>}
+          <div className="draft-retained-actions"><button className="button button-primary" disabled={!!busy || draftConflict} onClick={() => saveDraft(draft)}>원고 저장</button><button className="button button-quiet" disabled={!!busy} onClick={discardDraft}>미저장 편집 폐기</button></div>
+        </section>}
 
         {panel === 'create' ? <NewWorkPanel
-          mode={mode} setMode={setMode} create={create} setCreate={setCreate} guides={guides}
+          mode={mode} setMode={setMode} create={create} setCreate={setCreate} guides={guides} clusters={clusters}
           onSubmit={createGeneration} busy={busy} topicReport={topicReport} selectedTopicId={selectedTopicId}
           onDiscover={discoverTopics} onSelectTopic={selectTopic} onPrepareTopic={prepareTopic}
           onCancel={() => { setPanel('work'); if (!selectedId && items[0]) select(items[0].id) }}
-        /> : !generation ? <div className="empty-workspace"><Gem size={40} /><h2>왼쪽에서 작업을 선택하세요</h2><p>또는 오른쪽 위 ‘새 작업’으로 새 글 작성이나 기존 글 수정을 시작할 수 있습니다.</p></div> : <>
+        /> : selectedId && !selectionMatches ? <div className="empty-workspace">{loadingGeneration ? <Spinner label="선택한 원고를 불러오는 중" /> : <><CircleAlert size={28} /><h2>선택한 원고를 불러오지 못했습니다</h2><p>이전 글의 편집 내용은 보관돼 있습니다.</p><button className="button button-quiet" onClick={() => loadGeneration(selectedId)}>다시 불러오기</button></>}</div> : !generation ? <div className="empty-workspace"><Gem size={40} /><h2>왼쪽에서 작업을 선택하세요</h2><p>또는 오른쪽 위 ‘새 작업’으로 새 글 작성이나 기존 글 수정을 시작할 수 있습니다.</p></div> : <>
           <section className={`work-banner ${generation.kind === 'update' ? 'update' : 'new'}`}>
             <div className="banner-copy">
               <KindTag kind={generation.kind} />
@@ -671,7 +779,7 @@ export function Editor({ seed, clearSeed }) {
             <div className="banner-actions">
               <RefreshStatus refreshedAt={refreshedAt} sources={[{ label: '작업 수정', value: generation.updated_at }]} />
               {generation.kind === 'update' && autoEligible && <label className="image-policy"><span>대표 이미지</span>
-                <select value={imagePolicy} onChange={(event) => setImagePolicy(event.target.value)} disabled={!!busy} title="본문 이미지는 어느 설정에서도 새로 생성됩니다.">
+                <select value={imagePolicy} onChange={(event) => setImagePolicy(event.target.value)} disabled={!!busy} title="확정된 수정 범위에서 이미지를 허용할 때만 생성합니다.">
                   <option value="auto">자동 판단</option><option value="reuse">기존 것 유지</option><option value="new">새로 생성</option>
                 </select></label>}
               {autoEligible && <button type="button" className="button button-primary" onClick={autoAdvance} disabled={!!busy}>
@@ -687,6 +795,8 @@ export function Editor({ seed, clearSeed }) {
             {(generation.input.auditPlan.changes || []).filter((entry) => entry.enabled).map((entry) => <div key={entry.id}><b>{entry.priority} · {entry.area}</b><span>{entry.action}</span></div>)}
           </details>}
 
+          {!!generation.input?.updatePolicy?.scope?.reviewNotes?.length && <div className="guard-note" role="note"><ShieldCheck size={16} /><div>{generation.input.updatePolicy.scope.reviewNotes.map((note, index) => <p key={index}>{note}</p>)}</div></div>}
+
           <section className="progress-section">
             <div className="panel-head"><div><h2>작업 순서</h2><p>{currentStep ? `다음 할 일은 ${currentStep.label}입니다.` : '모든 단계가 끝났습니다.'}</p></div></div>
             <StepRail steps={steps} currentIndex={currentIndex} busy={busy} onStep={stepAction} />
@@ -699,8 +809,8 @@ export function Editor({ seed, clearSeed }) {
 
           <div className="tab-body">
             {tab === 'preview' && <GuidePreview draft={draft} generation={generation} />}
-            {tab === 'draft' && <DraftTab draft={draft} onChange={setDraft} onSave={saveDraft} busy={busy} isUpdate={generation?.kind === 'update'} />}
-            {tab === 'sources' && <SourcesTab rows={sourceRows} selected={selectedSources} setSelected={setSelectedSources}
+            {tab === 'draft' && <DraftTab key={generation.id} generationId={generation.id} baseRevision={draftState.current.baseRevision} generationRevision={generation.revision} serverDraft={generation.humanized || generation.draft} draft={draft} onRestore={(value, revision) => { if (preserveDraft(selectedId, value, revision)) setDraftConflict(revision == null || revision !== generation.revision) }} onChange={editDraft} onSave={saveDraft} busy={busy} isUpdate={generation?.kind === 'update'} />}
+            {tab === 'sources' && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} selected={selectedSources} setSelected={setSelectedSources}
               allowWithoutOfficial={allowWithoutOfficial} setAllowWithoutOfficial={setAllowWithoutOfficial}
               onSave={saveSources} onResearch={researchSources} busy={busy} />}
             {tab === 'images' && <ImagesTab generation={generation} draft={draft} busy={busy} onGenerate={generateImage} />}

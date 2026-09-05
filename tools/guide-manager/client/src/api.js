@@ -13,21 +13,43 @@ async function request(path, options = {}) {
   if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = 'application/json'
   if (options.method && options.method !== 'GET') headers['X-Guide-Manager-Token'] = await sessionToken()
   const generationId = path.match(/^\/generations\/(\d+)\//)?.[1]
-  if (options.method && generationId && revisions.has(generationId)) headers['If-Match'] = String(revisions.get(generationId))
+  if (options.method && generationId && !headers['If-Match'] && revisions.has(generationId)) headers['If-Match'] = String(revisions.get(generationId))
   const response = await fetch(`/api${path}`, { ...options, headers, body: options.body && !(options.body instanceof FormData) ? JSON.stringify(options.body) : options.body })
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) {
     if (payload.code === 'SESSION_REQUIRED') sessionPromise = null
     throw Object.assign(new Error(payload.error || `요청 실패 (${response.status})`), { status: response.status, code: payload.code })
   }
-  if (payload?.kind && payload?.id && Number.isInteger(payload.revision)) revisions.set(String(payload.id), payload.revision)
+  if (response.status === 202 && payload.jobId && !options.noPoll) {
+    window.dispatchEvent(new CustomEvent('guide-job-update', { detail: payload.job }))
+    return waitForJob(payload.jobId)
+  }
+  rememberRevision(payload)
   return payload
 }
 
+function rememberRevision(payload) {
+  if (payload?.kind && payload?.id && Number.isInteger(payload.revision)) revisions.set(String(payload.id), payload.revision)
+}
+async function waitForJob(id) {
+  let failures = 0
+  while (true) {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    let job
+    try { job = await request('/jobs/' + id); failures = 0 }
+    catch (error) {
+      if (++failures < 4 && (!error.status || error.status >= 500)) continue
+      throw Object.assign(new Error('진행 상태 연결이 끊겼습니다. 실행 기록에서 계속 확인할 수 있습니다. ' + error.message), { jobId: id })
+    }
+    window.dispatchEvent(new CustomEvent('guide-job-update', { detail: job }))
+    if (job.state === 'done') { rememberRevision(job.result); return job.result }
+    if (['error', 'cancelled', 'interrupted'].includes(job.state)) throw Object.assign(new Error(job.error || '실행이 중단됐습니다'), { code: job.code, jobId: id })
+  }
+}
 export const api = {
   get: (path) => request(path),
-  post: (path, body = {}) => request(path, { method: 'POST', body }),
-  put: (path, body = {}) => request(path, { method: 'PUT', body }),
+  post: (path, body = {}, options = {}) => request(path, { ...options, method: 'POST', body }),
+  put: (path, body = {}, options = {}) => request(path, { ...options, method: 'PUT', body }),
   del: (path) => request(path, { method: 'DELETE' }),
   upload: (path, file) => {
     const body = new FormData()

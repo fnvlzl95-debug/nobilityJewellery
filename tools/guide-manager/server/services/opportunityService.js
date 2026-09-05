@@ -1,6 +1,8 @@
 const { db } = require('../lib/db');
 const { clamp, normalizeUrl } = require('../lib/utils');
 const { latestImport, latestGa4PagesImport } = require('./analyticsService');
+const { jaccard, candidateGuideSimilarity, findIntentConflicts, activeIntents, DUPLICATE_THRESHOLD } = require('./intentService');
+const { loadGa4Metrics } = require('./analyticsMetricsService');
 
 function expectedCtr(position) {
   const p = Number(position || 100);
@@ -9,19 +11,6 @@ function expectedCtr(position) {
   if (p <= 10) return 0.03;
   if (p <= 20) return 0.015;
   return 0.01;
-}
-
-function normalizedTokens(value) {
-  return new Set(String(value || '').toLowerCase().replace(/[^a-z0-9가-힣]+/g, ' ').split(/\s+/).filter((x) => x.length > 1));
-}
-
-function jaccard(a, b) {
-  const left = normalizedTokens(a);
-  const right = normalizedTokens(b);
-  if (!left.size && !right.size) return 1;
-  let common = 0;
-  for (const token of left) if (right.has(token)) common++;
-  return common / Math.max(1, new Set([...left, ...right]).size);
 }
 
 function businessScore(keyword, category) {
@@ -59,12 +48,8 @@ function pageOpportunities() {
     FROM gsc_pages WHERE import_id = ? GROUP BY normalized_url
   `).all(performance.id);
   const gscMap = new Map(gscRows.map((row) => [row.normalizedUrl, row]));
-  const ga4Rows = ga4 ? db.prepare(`
-    SELECT guide_slug AS slug, SUM(views) AS views, SUM(active_users) AS activeUsers,
-      SUM(events) AS events, CASE WHEN COUNT(*)=1 THEN MAX(bounce_rate) ELSE NULL END AS bounceRate
-    FROM ga4_pages WHERE import_id = ? AND guide_slug IS NOT NULL GROUP BY guide_slug
-  `).all(ga4.id) : [];
-  const ga4Map = new Map(ga4Rows.map((row) => [row.slug, row]));
+  const ga4Map = loadGa4Metrics(ga4?.id);
+  const ga4Rows = [...ga4Map.values()];
   const naverWebRows = naverWebImport ? db.prepare(`
     SELECT normalized_url AS normalizedUrl, SUM(clicks) AS clicks, SUM(impressions) AS impressions,
       CASE WHEN SUM(impressions)>0 THEN CAST(SUM(clicks) AS REAL)/SUM(impressions) ELSE AVG(ctr) END AS ctr
@@ -79,7 +64,7 @@ function pageOpportunities() {
   return guides.map((guide) => {
     const url = normalizeUrl(`https://noblessegold.com${guide.path}`);
     const gsc = gscMap.get(url) || { clicks: 0, impressions: 0, ctr: 0, position: null, variants: 0 };
-    const ga = ga4Map.get(guide.slug) || { views: 0, activeUsers: 0, events: 0, bounceRate: null };
+    const ga = ga4Map.get(guide.slug) || { views: 0, activeUsers: null, events: 0, bounceRate: null };
     const rank = rankMap.get(guide.slug) || null;
     const naverWeb = naverWebMap.get(url) || null;
     const expected = expectedCtr(gsc.position);
@@ -143,11 +128,21 @@ function newTopicOpportunities() {
     SELECT query, clicks, impressions, ctr, position FROM gsc_queries
     WHERE import_id = ? AND impressions >= 10 ORDER BY impressions DESC
   `).all(performance.id);
-  return rows.map((row) => {
-    const nearest = guides.map((guide) => ({ guide, similarity: Math.max(jaccard(row.query, guide.keyword), jaccard(row.query, guide.title)) }))
-      .sort((a, b) => b.similarity - a.similarity)[0];
-    return {
-      type: nearest && nearest.similarity >= 0.65 ? '중복 검토' : '신규 주제',
+  const activeGenerations = activeIntents();
+  const result = [];
+  for (const row of rows) {
+    const candidate = { topic: row.query, primaryKeyword: row.query, workingTitle: row.query };
+    // Published scores already establish both the nearest guide and blocking state.
+    // Read active work once per summary; only that distinct set needs conflict scoring.
+    const nearest = guides.reduce((best, guide) => {
+      const similarity = candidateGuideSimilarity(candidate, guide);
+      return !best || similarity > best.similarity ? { guide, similarity } : best;
+    }, null);
+    const conflicts = findIntentConflicts(candidate, { guides: [], activeGenerations });
+    const item = {
+      type: (nearest?.similarity >= DUPLICATE_THRESHOLD || conflicts.some(conflict => conflict.blocking)) ? '중복 검토' : '신규 주제',
+      automaticEligible: false,
+      evidenceNote: '검색어 단서입니다. 신규 추천에서 최신성·검색 의도·진행 작업을 확인한 뒤 제작하세요.',
       query: row.query,
       impressions: row.impressions,
       clicks: row.clicks,
@@ -155,13 +150,17 @@ function newTopicOpportunities() {
       position: row.position,
       nearestGuide: nearest ? { slug: nearest.guide.slug, title: nearest.guide.title, similarity: Number(nearest.similarity.toFixed(2)) } : null,
     };
-  }).filter((row) => row.type === '신규 주제' || row.impressions >= 20).slice(0, 30);
+    if (item.type === '신규 주제' || item.impressions >= 20) result.push(item);
+    // SQL already orders by impressions; later rows cannot enter this 30-row view.
+    if (result.length === 30) break;
+  }
+  return result;
 }
 
-function summary() {
+function summary({ includeNewTopics = true } = {}) {
   const pageRows = pageOpportunities();
   const counts = Object.fromEntries(['CTR 개선', '본문 보강', '내부링크 강화', '기술 우선'].map((type) => [type, pageRows.filter((row) => row.type === type).length]));
-  return { pageRows, newTopics: newTopicOpportunities(), counts };
+  return { pageRows, newTopics: includeNewTopics ? newTopicOpportunities() : [], counts };
 }
 
 module.exports = { expectedCtr, jaccard, businessScore, pageOpportunities, newTopicOpportunities, summary };

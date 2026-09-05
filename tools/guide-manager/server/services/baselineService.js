@@ -1,6 +1,7 @@
 const { db } = require('../lib/db');
 const { nowIso, normalizeUrl } = require('../lib/utils');
 const { latestImport, latestGa4PagesImport } = require('./analyticsService');
+const { aggregateGa4Rows } = require('./analyticsMetricsService');
 
 function daysInclusive(start, end) {
   if (!start || !end) return null;
@@ -22,10 +23,7 @@ function metricSnapshot(slug, { performance = latestImport('gsc_performance'), g
       COUNT(*) AS variants
     FROM gsc_pages WHERE import_id=? AND normalized_url=?
   `).get(performance.id, normalized) : null;
-  const engagement = ga4 ? db.prepare(`
-    SELECT SUM(views) AS views, SUM(active_users) AS activeUsers, SUM(events) AS events,
-      CASE WHEN COUNT(*)=1 THEN MAX(bounce_rate) ELSE NULL END AS bounceRate, COUNT(*) AS rows FROM ga4_pages WHERE import_id=? AND guide_slug=?
-  `).get(ga4.id, slug) : null;
+  const engagement = ga4 ? aggregateGa4Rows(db.prepare('SELECT * FROM ga4_pages WHERE import_id=? AND guide_slug=?').all(ga4.id, slug)) : null;
   return {
     capturedAt: nowIso(),
     gsc: performance ? {
@@ -39,19 +37,27 @@ function metricSnapshot(slug, { performance = latestImport('gsc_performance'), g
       importId: ga4.id, sourceType: ga4.sourceType, periodStart: ga4.periodStart, periodEnd: ga4.periodEnd,
       periodDays: daysInclusive(ga4.periodStart, ga4.periodEnd),
       hasData: Number(engagement?.rows || 0) > 0,
-      views: engagement?.views ?? null, activeUsers: engagement?.rows === 1 ? engagement.activeUsers : null,
-      events: Number(engagement?.events || 0), bounceRate: engagement?.bounceRate == null ? null : Number(engagement.bounceRate),
+      views: engagement?.rows ? engagement.views : null, activeUsers: engagement?.activeUsers ?? null,
+      events: engagement?.rows ? engagement.events : null, bounceRate: engagement?.bounceRate ?? null,
     } : null,
   };
 }
 
 function recordBaseline(generationId, slug, snapshot, appliedAt = nowIso()) {
+  const generation = db.prepare('SELECT kind,input_json FROM generations WHERE id=?').get(generationId);
+  const input = JSON.parse(generation?.input_json || '{}');
+  const recorded = { ...snapshot, contentChange: {
+    kind: generation?.kind || 'update', fields: input.updatePolicy?.scope?.fields || null,
+    selectionMode: input.topicDecision?.selectionMode || null,
+    editorialJustification: input.topicDecision?.editorialJustification || null,
+  } };
   db.prepare(`
     INSERT INTO content_baselines (generation_id, guide_slug, snapshot_json, applied_at, created_at)
     VALUES (?, ?, ?, ?, ?)
     ON CONFLICT(generation_id) DO UPDATE SET guide_slug=excluded.guide_slug,
-      snapshot_json=excluded.snapshot_json, applied_at=excluded.applied_at, created_at=excluded.created_at
-  `).run(generationId, slug, JSON.stringify(snapshot), appliedAt, nowIso());
+      snapshot_json=excluded.snapshot_json, applied_at=excluded.applied_at, created_at=excluded.created_at,
+      deployed_at=NULL, deployment_commit=NULL
+  `).run(generationId, slug, JSON.stringify(recorded), appliedAt, nowIso());
 }
 
 function importRows(type) {
@@ -81,28 +87,47 @@ function delta(before, after, key) {
   return { before: left, after: right, change: right - left, rate: left === 0 ? null : (right - left) / Math.abs(left) };
 }
 
+function eligibleObservation(type, deployedAt) {
+  if (!deployedAt) return null;
+  const day = new Date(Date.parse(deployedAt) + 9 * 3600000).toISOString().slice(0, 10);
+  return importRows(type).filter(row => row.periodStart > day
+    && daysInclusive(row.periodStart, row.periodEnd) >= 7
+    && daysInclusive(row.periodStart, row.periodEnd) <= 35
+    && Date.parse(row.periodEnd + 'T23:59:59+09:00') < Date.now())
+    .sort((a,b) => String(b.periodEnd).localeCompare(String(a.periodEnd)) || b.id-a.id)[0] || null;
+}
+
+function observationReadyAt(deployedAt, days) {
+  if (!deployedAt) return null;
+  const day = new Date(Date.parse(deployedAt) + 9 * 3600000).toISOString().slice(0, 10);
+  return new Date(Date.parse(day + 'T00:00:00+09:00') + (days + 1) * 86400000).toISOString();
+}
+
 function listComparisons() {
   return db.prepare(`
     SELECT b.id, b.generation_id AS generationId, b.guide_slug AS guideSlug, b.snapshot_json AS snapshotJson,
-      b.applied_at AS appliedAt, b.deployed_at AS deployedAt, b.deployment_commit AS deploymentCommit, g.topic FROM content_baselines b JOIN generations g ON g.id=b.generation_id
+      b.applied_at AS appliedAt, b.deployed_at AS deployedAt, b.deployment_commit AS deploymentCommit, g.topic, g.kind FROM content_baselines b JOIN generations g ON g.id=b.generation_id
     ORDER BY b.applied_at DESC
   `).all().map((row) => {
     const before = JSON.parse(row.snapshotJson);
-    const performance = eligibleImport(before.gsc, 'gsc_performance', row.deployedAt);
-    const ga4 = eligibleImport(before.ga4, ['ga4_path_device', 'ga4_overview'], row.deployedAt);
+    const isNew = row.kind === 'new';
+    const performance = isNew ? eligibleObservation('gsc_performance', row.deployedAt) : eligibleImport(before.gsc, 'gsc_performance', row.deployedAt);
+    const ga4 = isNew ? eligibleObservation(['ga4_path_device','ga4_overview'], row.deployedAt) : eligibleImport(before.ga4, ['ga4_path_device', 'ga4_overview'], row.deployedAt);
     const after = performance || ga4 ? metricSnapshot(row.guideSlug, { performance, ga4 }) : null;
     return {
-      id: row.id, generationId: row.generationId, guideSlug: row.guideSlug, topic: row.topic,
+      id: row.id, generationId: row.generationId, guideSlug: row.guideSlug, topic: row.topic, kind: row.kind,
       appliedAt: row.appliedAt, deployedAt: row.deployedAt, deploymentCommit: row.deploymentCommit,
-      readyAt: row.deployedAt ? new Date(Date.parse(row.deployedAt) + Math.max(before.gsc?.periodDays || 0, before.ga4?.periodDays || 0, 28) * 86400000).toISOString() : null,
-      status: !row.deployedAt ? 'awaiting_deployment' : after ? 'comparable' : 'waiting', before, after,
-      changes: after ? {
+      readyAt: observationReadyAt(row.deployedAt, isNew ? 28 : Math.max(before.gsc?.periodDays || 0, before.ga4?.periodDays || 0, 28)),
+      status: !row.deployedAt ? 'awaiting_deployment' : after ? (isNew ? 'observed' : 'comparable') : 'waiting', before, after,
+      changes: after && !isNew ? {
         clicks: delta(before.gsc, after.gsc, 'clicks'), impressions: delta(before.gsc, after.gsc, 'impressions'),
         ctr: delta(before.gsc, after.gsc, 'ctr'), position: delta(before.gsc, after.gsc, 'position'),
         views: delta(before.ga4, after.ga4, 'views'), activeUsers: delta(before.ga4, after.ga4, 'activeUsers'),
         bounceRate: delta(before.ga4, after.ga4, 'bounceRate'),
       } : null,
-      note: '배포 다음 날부터의 전체 측정 기간만 비교합니다. 누락 행은 0이 아닙니다. 동일 길이 측정 기간의 참고 변화이며, 콘텐츠 수정의 인과효과로 해석하지 않습니다.',
+      note: isNew
+        ? '새 글은 기존 성과를 0으로 가정하지 않습니다. 배포 다음 날 이후 완료된 7~35일 자료의 노출·클릭·방문을 관찰하며, 기본 점검 시점은 28일입니다. 목록에 없는 행은 미확인입니다.'
+        : '배포 다음 날부터의 전체 측정 기간만 비교합니다. 누락 행은 0이 아닙니다. 동일 길이 측정 기간의 참고 변화이며, 콘텐츠 수정의 인과효과로 해석하지 않습니다.',
     };
   });
 }
@@ -116,4 +141,4 @@ function recordDeployment(id, { deployedAt, commit } = {}) {
   return { ok: true };
 }
 
-module.exports = { recordDeployment, daysInclusive, metricSnapshot, recordBaseline, listComparisons, eligibleImport };
+module.exports = { recordDeployment, daysInclusive, metricSnapshot, recordBaseline, listComparisons, eligibleImport, eligibleObservation, observationReadyAt };

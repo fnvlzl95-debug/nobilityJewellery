@@ -3,13 +3,17 @@ const { clamp, nowIso, sha256 } = require('../lib/utils');
 const { latestImport, latestGa4PagesImport } = require('./analyticsService');
 const { listGuides, listClusters } = require('./inventoryService');
 const { completeJson } = require('./openaiService');
-const { businessScore, jaccard } = require('./opportunityService');
+const { businessScore } = require('./opportunityService');
+const { normalizeText, compactText, semanticSimilarity, candidateGuideSimilarity, activeIntents, findIntentConflicts, differentScope } = require('./intentService');
+const { loadGa4Metrics } = require('./analyticsMetricsService');
 const naver = require('./naverService');
 
-const CACHE_KEY = 'topic_strategy_cache_v2';
+const CACHE_KEY = 'topic_strategy_cache_v3';
 const CACHE_MAX_AGE_MS = 12 * 60 * 60 * 1000;
 const TOPIC_MODEL = 'gpt-5.6-terra';
-const SCORING_VERSION = 4;
+const SCORING_VERSION = 5;
+const MIN_GOOGLE_IMPRESSIONS = 10;
+const MAX_DATA_AGE_DAYS = 7;
 const METHODOLOGY = 'Google 수요 30% + 순위 상승 여지 15% + Naver 상대 수요 15% + 사업 연관성 10% + GA4 주제군 반응 10% + 중복 회피 15% + 내부링크 적합도 5%';
 
 const topicStrategySchema = {
@@ -54,95 +58,6 @@ function dynamicTopicStrategySchema(clusters = listClusters()) {
   return schema;
 }
 
-const genericTokens = new Set([
-  '금', '귀금속', '주얼리', '쥬얼리', '가이드', '총정리', '정리', '기준', '확인', '방법', '추천',
-  '보는법', '알아보기', '전', '할', '것', '반지', '목걸이', '팔찌', '귀걸이', '종로',
-]);
-
-function normalizeText(value) {
-  return String(value || '').toLowerCase()
-    .replace(/화이트\s*골드/g, '화이트골드')
-    .replace(/랩\s*그로운/g, '랩그로운')
-    .replace(/다이아몬드/g, '다이아')
-    .replace(/캐럿/g, 'ct')
-    .replace(/[^a-z0-9가-힣]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function compactText(value) {
-  return normalizeText(value).replace(/\s+/g, '');
-}
-
-function tokenSet(value, { core = false } = {}) {
-  const tokens = normalizeText(value).split(' ').filter(Boolean);
-  return new Set(core ? tokens.filter((token) => !genericTokens.has(token)) : tokens);
-}
-
-function diceCoefficient(a, b) {
-  const left = compactText(a);
-  const right = compactText(b);
-  if (!left && !right) return 1;
-  if (left.length < 2 || right.length < 2) return left === right ? 1 : 0;
-  const grams = (value) => {
-    const result = [];
-    for (let i = 0; i < value.length - 1; i++) result.push(value.slice(i, i + 2));
-    return result;
-  };
-  const rightCounts = new Map();
-  for (const gram of grams(right)) rightCounts.set(gram, (rightCounts.get(gram) || 0) + 1);
-  let common = 0;
-  const leftGrams = grams(left);
-  for (const gram of leftGrams) {
-    const count = rightCounts.get(gram) || 0;
-    if (count) { common++; rightCounts.set(gram, count - 1); }
-  }
-  return (2 * common) / (leftGrams.length + Math.max(1, right.length - 1));
-}
-
-function coreCoverage(a, b) {
-  const left = tokenSet(a, { core: true });
-  const right = tokenSet(b, { core: true });
-  if (!left.size || !right.size) return 0;
-  let common = 0;
-  for (const token of left) if (right.has(token)) common++;
-  if (common === 1 && (left.size > 1 || right.size > 1)) {
-    return common / Math.max(left.size, right.size);
-  }
-  return common / Math.min(left.size, right.size);
-}
-
-function semanticSimilarity(a, b) {
-  const left = compactText(a);
-  const right = compactText(b);
-  const containment = left.length >= 4 && right.length >= 4 && (left.includes(right) || right.includes(left))
-    ? Math.min(left.length, right.length) / Math.max(left.length, right.length)
-    : 0;
-  const coverage = coreCoverage(a, b);
-  return clamp(Math.max(
-    jaccard(a, b),
-    diceCoefficient(a, b) * 0.9,
-    containment >= 0.45 ? 0.72 + containment * 0.22 : containment,
-    coverage >= 0.66 ? coverage * 0.9 : coverage * 0.72,
-  ), 0, 1);
-}
-
-function candidateGuideSimilarity(candidate, guide) {
-  const primaryToKeyword = semanticSimilarity(candidate.primaryKeyword, guide.keyword);
-  const primaryToTitle = semanticSimilarity(candidate.primaryKeyword, guide.title);
-  const topicToTitle = semanticSimilarity(candidate.topic, guide.title);
-  const titleToTitle = semanticSimilarity(candidate.workingTitle, guide.title);
-  const samePrimaryKeyword = compactText(candidate.primaryKeyword) === compactText(guide.keyword);
-  const sameWorkingTitle = compactText(candidate.workingTitle) === compactText(guide.title);
-  if (samePrimaryKeyword || sameWorkingTitle) return 1;
-
-  // 짧은 대표 검색어가 긴 기존 제목에 포함된 것만으로 중복을 확정하지 않는다.
-  // 대표 검색어·전체 주제·작업 제목이 같은 의도를 가리킬 때만 높은 점수를 준다.
-  const titleConsensus = primaryToTitle * 0.4 + topicToTitle * 0.3 + titleToTitle * 0.3;
-  const keywordTitleAgreement = primaryToKeyword * 0.55 + titleToTitle * 0.45;
-  return clamp(Math.max(titleConsensus, keywordTitleAgreement), 0, 1);
-}
-
 function closestGuides(candidate, guides, limit = 3) {
   return guides.map((guide) => {
     const similarity = candidateGuideSimilarity(candidate, guide);
@@ -181,12 +96,35 @@ function clusterKey(value) {
   return 'other';
 }
 
+function queryRelatedToCandidate(candidate, query) {
+  const primary = candidate.primaryKeyword || candidate.keyword || candidate.topic;
+  const subject = { ...candidate, keyword: primary, title: candidate.workingTitle || candidate.title || candidate.topic };
+  const queryText = compactText(query);
+  if (queryText.length < 2 || differentScope(subject, { topic: query, title: query, keyword: query })) return false;
+  // Supporting keywords are model-authored: they cannot independently lend an
+  // unrelated high-volume query to a candidate. Compare the actual topic/title.
+  const fields = [primary, candidate.topic, candidate.workingTitle || candidate.title].filter(Boolean);
+  return fields.some(value => compactText(value).includes(queryText) || semanticSimilarity(value, query) >= 0.62);
+}
+
 function matchedQueryRows(candidate, queries) {
-  const evidence = new Set((candidate.evidenceQueries || []).map(normalizeText));
-  const exact = queries.filter((row) => evidence.has(normalizeText(row.query)));
-  if (exact.length) return exact;
-  const comparison = [candidate.primaryKeyword, candidate.topic, ...(candidate.supportingKeywords || [])];
-  return queries.filter((row) => Math.max(...comparison.map((value) => semanticSimilarity(value, row.query))) >= 0.72);
+  return queries.filter(row => Number(row.impressions || 0) > 0 && queryRelatedToCandidate(candidate, row.query));
+}
+
+function periodQuality(period, { maxAgeDays = MAX_DATA_AGE_DAYS, now = Date.now() } = {}) {
+  const start = period?.start || period?.periodStart;
+  const end = period?.end || period?.periodEnd;
+  const parse = value => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return NaN;
+    const stamp = Date.parse(value);
+    return Number.isFinite(stamp) && new Date(stamp).toISOString().slice(0, 10) === value ? stamp : NaN;
+  };
+  const from = parse(start), to = parse(end);
+  if (!Number.isFinite(from) || !Number.isFinite(to) || from > to) return { usable: false, status: 'missing_period', reason: '측정 기간이 확인되지 않았습니다.', ageDays: null };
+  const ageDays = Math.floor(now / 86400000) - Math.floor(to / 86400000);
+  if (ageDays < 0) return { usable: false, status: 'future_period', reason: '측정 종료일이 미래입니다.', ageDays };
+  if (ageDays > maxAgeDays) return { usable: false, status: 'stale', reason: `측정 종료 후 ${ageDays}일이 지나 최신 수요로 사용할 수 없습니다.`, ageDays };
+  return { usable: true, status: 'current', ageDays, days: Math.round((to - from) / 86400000) + 1 };
 }
 
 function weightedPosition(rows) {
@@ -205,7 +143,9 @@ function opportunityFromPosition(position) {
   return 15;
 }
 
-function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map(), naverTrends = {}, naverWeb = {}, requireDemandEvidence = true }) {
+function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map(), naverTrends = {}, naverWeb = {}, requireDemandEvidence = true, evidencePeriod = null, ga4Period = null, activeGenerations = [] }) {
+  const dataQuality = periodQuality(evidencePeriod);
+  const ga4Quality = periodQuality(ga4Period);
   const clusterCounts = new Map();
   for (const guide of guides) {
     const key = clusterKey(`${guide.title} ${guide.keyword} ${guide.category}`);
@@ -229,15 +169,17 @@ function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map
     ) >= 0.22);
     const relatedGa4Views = relatedGuides.reduce((sum, guide) => sum + Number(ga4BySlug.get(guide.slug)?.views || 0), 0);
     const rejectionReasons = [];
+    const conflicts = findIntentConflicts(candidate, { guides, activeGenerations });
+    for (const conflict of conflicts.filter(row => row.blocking)) rejectionReasons.push(`${conflict.kind === 'active' ? '진행 작업' : '기존 글'} “${conflict.title}”과 중복됩니다.`);
     const compact = compactText(candidate.primaryKeyword);
     if (compact.length < 3) rejectionReasons.push('대표 검색어가 너무 넓어 단일 검색 의도를 만들기 어렵습니다.');
-    if (guides.some((guide) => guide.slug === candidate.slug)) rejectionReasons.push('이미 사용 중인 slug입니다.');
-    if (nearestGuides[0]?.similarity >= 0.72) rejectionReasons.push(`기존 글 “${nearestGuides[0].title}”과 검색 의도가 겹칠 가능성이 높습니다.`);
+
     return {
       ...candidate,
       id,
       cluster: key,
       nearestGuides,
+      conflicts,
       rejectionReasons,
       matchedQueries: matches.slice(0, 12).map((row) => ({
         query: row.query, clicks: row.clicks, impressions: row.impressions, ctr: row.ctr, position: row.position,
@@ -248,16 +190,19 @@ function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map
   const maxImpressions = Math.max(1, ...prepared.map((candidate) => candidate.metrics.googleImpressions));
   const maxGa4Views = Math.max(0, ...prepared.map((candidate) => candidate.metrics.relatedGa4Views));
   const maxNaverRatio = Math.max(0, ...prepared.map((candidate) => Number(naverTrends[candidate.id]?.ratio || 0)));
-  return prepared.map((candidate) => {
+  const scored = prepared.map((candidate) => {
     const trend = naverTrends[candidate.id] || null;
     const web = naverWeb[candidate.id] || null;
-    const googleDemand = candidate.metrics.googleImpressions
-      ? Math.log1p(candidate.metrics.googleImpressions) / Math.log1p(maxImpressions) * 100 : 12;
+    const googleDemand = dataQuality.usable && candidate.metrics.googleImpressions
+      ? Math.log1p(candidate.metrics.googleImpressions) / Math.log1p(maxImpressions) * 100 : 0;
     const rankOpportunity = opportunityFromPosition(candidate.metrics.googlePosition);
-    const naverDemand = trend?.ratio != null && maxNaverRatio > 0 ? trend.ratio / maxNaverRatio * 100 : 42;
+    const naverQuality = periodQuality({ start: trend?.latestPeriod, end: trend?.latestPeriod }, { maxAgeDays: 14 });
+    const naverValid = Number(trend?.ratio) > 0 && Number(trend?.dataPoints) >= 4 && naverQuality.usable
+      && Array.isArray(trend.keywords) && trend.keywords.length > 0 && trend.keywords.every(keyword => queryRelatedToCandidate(candidate, keyword));
+    const naverDemand = naverValid && maxNaverRatio > 0 ? trend.ratio / maxNaverRatio * 100 : 0;
     const business = businessScore(candidate.primaryKeyword, candidate.category);
-    const audienceFit = candidate.metrics.relatedGa4Views && maxGa4Views > 0
-      ? Math.log1p(candidate.metrics.relatedGa4Views) / Math.log1p(maxGa4Views) * 100 : 42;
+    const audienceFit = ga4Quality.usable && candidate.metrics.relatedGa4Views && maxGa4Views > 0
+      ? Math.log1p(candidate.metrics.relatedGa4Views) / Math.log1p(maxGa4Views) * 100 : 0;
     const novelty = (1 - (candidate.nearestGuides[0]?.similarity || 0)) * 100;
     const clusterOpportunity = clamp(42 + candidate.metrics.relatedGuideCount * 9 - candidate.metrics.clusterGuideCount * 1.4, 35, 96);
     const score = Math.round(
@@ -270,10 +215,19 @@ function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map
       + clusterOpportunity * 0.05,
     );
     const rejectionReasons = [...candidate.rejectionReasons];
-    if (requireDemandEvidence && !candidate.metrics.googleImpressions && trend?.ratio == null) rejectionReasons.push('현재 Google·Naver 자료에서 검색 수요 신호를 확인하지 못했습니다.');
+    const googleValid = dataQuality.usable && candidate.metrics.googleImpressions >= MIN_GOOGLE_IMPRESSIONS;
+    const hasDemand = googleValid || naverValid;
+    const duplicateFree = rejectionReasons.length === 0;
+    if (requireDemandEvidence && !hasDemand) rejectionReasons.push(!dataQuality.usable ? dataQuality.reason : '관련 Google 노출 10회 이상 또는 최신 Naver 양의 수요 표본을 확인하지 못했습니다.');
+    if (requireDemandEvidence && score < 52) rejectionReasons.push('자동 준비의 최소 우선순위 52점에 미달합니다.');
+    const editorialEligible = duplicateFree && String(candidate.editorialJustification || '').trim().length >= 20;
     return {
       ...candidate,
       accepted: rejectionReasons.length === 0,
+      automaticEligible: requireDemandEvidence && rejectionReasons.length === 0,
+      editorialEligible,
+      decisionStatus: rejectionReasons.length === 0 ? (requireDemandEvidence ? 'evidence_supported' : 'needs_evidence') : editorialEligible ? 'editorial_review' : 'held',
+      dataQuality: { google: dataQuality, ga4: ga4Quality, naver: naverQuality, relatedGoogleEvidence: googleValid, relatedNaverEvidence: naverValid },
       rejectionReasons,
       score,
       scoreLabel: score >= 78 ? '우선 제작' : score >= 65 ? '강한 후보' : score >= 52 ? '검토 후보' : '보류',
@@ -299,59 +253,55 @@ function scoreTopicCandidates({ candidates, guides, queries, ga4BySlug = new Map
       },
     };
   }).sort((a, b) => Number(b.accepted) - Number(a.accepted) || b.score - a.score || b.metrics.googleImpressions - a.metrics.googleImpressions);
+  const reserved = [];
+  for (const candidate of scored) {
+    const sameBatch = findIntentConflicts(candidate, { guides: reserved, activeGenerations: [] }).find(row => row.blocking);
+    if (sameBatch) {
+      candidate.rejectionReasons.push(`이번 추천의 “${sameBatch.title}”과 중복됩니다.`);
+      candidate.accepted = false; candidate.automaticEligible = false; candidate.editorialEligible = false; candidate.decisionStatus = 'held';
+    } else if (candidate.accepted || candidate.editorialEligible) reserved.push({ slug: candidate.slug, title: candidate.workingTitle, keyword: candidate.primaryKeyword, topic: candidate.topic });
+  }
+  return scored.sort((a, b) => Number(b.accepted) - Number(a.accepted) || b.score - a.score);
 }
 
 function analyticsContext() {
   const performance = latestImport('gsc_performance');
-  if (!performance) throw new Error('먼저 GSC Performance 자료를 가져와 주세요');
-  const queries = db.prepare(`
+
+  const queries = performance ? db.prepare(`
     SELECT query, clicks, impressions, ctr, position FROM gsc_queries
     WHERE import_id=? AND impressions >= 2 ORDER BY impressions DESC, position ASC LIMIT 120
-  `).all(performance.id);
+  `).all(performance.id) : [];
   const guides = listGuides();
   const clusters = listClusters();
   const ga4 = latestGa4PagesImport();
-  const ga4Rows = ga4 ? db.prepare(`
-    SELECT guide_slug AS slug, SUM(views) AS views, SUM(active_users) AS activeUsers,
-      SUM(events) AS events, AVG(bounce_rate) AS bounceRate
-    FROM ga4_pages WHERE import_id=? AND guide_slug IS NOT NULL GROUP BY guide_slug
-  `).all(ga4.id) : [];
-  const ga4BySlug = new Map(ga4Rows.map((row) => [row.slug, row]));
-  return { performance, ga4, queries, guides, clusters, ga4Rows, ga4BySlug };
+  const ga4BySlug = loadGa4Metrics(ga4?.id);
+  const ga4Rows = [...ga4BySlug.values()];
+  const activeGenerations = activeIntents();
+  return { performance, ga4, queries, guides, clusters, ga4Rows, ga4BySlug, activeGenerations, dataQuality: periodQuality(performance) };
 }
 
 function strategySignature(context) {
   return sha256(JSON.stringify({
-    importId: context.performance.id,
-    period: [context.performance.periodStart, context.performance.periodEnd],
-    guides: context.guides.map((guide) => [guide.slug, guide.title, guide.keyword, guide.updatedAt]),
+    scoringVersion: SCORING_VERSION,
+    day: new Date().toISOString().slice(0, 10),
+    import: context.performance, ga4: context.ga4,
+    guides: context.guides.map(guide => [guide.slug, guide.title, guide.keyword, guide.sourceHash, guide.updatedAt]),
+    clusters: context.clusters,
+    active: context.activeGenerations.map(row => [row.id, row.revision, row.updated_at, row.slug, row.topic, row.primaryKeyword, row.title]),
   }));
+}
+
+function limitReport(report, limit) {
+  const accepted = report.accepted.slice(0, Math.max(1, Math.min(8, Number(limit) || 5)));
+  return { ...report, accepted, recommended: accepted[0] || null };
 }
 
 function cachedReport(signature, context, limit) {
   try {
     const cached = JSON.parse(getSetting(CACHE_KEY, 'null'));
-    if (!cached || cached.signature !== signature) return null;
+    if (!cached || cached.signature !== signature || cached.report.scoringVersion !== SCORING_VERSION) return null;
     if (Date.now() - new Date(cached.generatedAt).getTime() > CACHE_MAX_AGE_MS) return null;
-    if (cached.report.scoringVersion === SCORING_VERSION) return { ...cached.report, cached: true };
-    const candidates = [...(cached.report.accepted || []), ...(cached.report.rejected || [])];
-    if (!candidates.length) return null;
-    const trends = Object.fromEntries(candidates.filter((item) => item.researchSignals?.naverTrend).map((item) => [item.id, item.researchSignals.naverTrend]));
-    const web = Object.fromEntries(candidates.filter((item) => item.researchSignals?.naverWeb).map((item) => [item.id, item.researchSignals.naverWeb]));
-    const rescored = scoreTopicCandidates({ candidates, guides: context.guides, queries: context.queries, ga4BySlug: context.ga4BySlug, naverTrends: trends, naverWeb: web });
-    const accepted = rescored.filter((candidate) => candidate.accepted).slice(0, Math.max(1, Math.min(8, Number(limit) || 5)));
-    const rejected = rescored.filter((candidate) => !candidate.accepted);
-    const report = {
-      ...cached.report,
-      scoringVersion: SCORING_VERSION,
-      methodology: METHODOLOGY,
-      analysisSummary: reconciledAnalysisSummary(cached.report.analysisSummary, accepted, rejected),
-      recommended: accepted[0] || null,
-      accepted,
-      rejected,
-    };
-    setSetting(CACHE_KEY, JSON.stringify({ signature, generatedAt: cached.generatedAt, report }));
-    return { ...report, cached: true };
+    return { ...limitReport(cached.report, limit), cached: true };
   } catch (_) { return null; }
 }
 
@@ -364,6 +314,8 @@ function modelInput(context) {
     }))),
     '현재 가이드 인벤토리(이들과 같은 검색 의도는 후보로 내지 말 것):',
     JSON.stringify(context.guides.map((guide) => ({ slug: guide.slug, title: guide.title, keyword: guide.keyword, category: guide.category }))),
+    '진행 중 신규·수정 작업(동일 검색 의도의 새 작업을 만들지 말 것):',
+    JSON.stringify(context.activeGenerations.map(row => ({ slug: row.slug, topic: row.topic, title: row.title }))),
     '현재 내부링크 클러스터:',
     JSON.stringify(context.clusters),
     context.ga4 ? `GA4 측정 기간(검색 노출과 합산하지 말고 기존 주제군의 이용 신호로만 사용): ${context.ga4.periodStart}~${context.ga4.periodEnd}` : '',
@@ -372,8 +324,17 @@ function modelInput(context) {
 }
 
 async function suggestTopics({ limit = 5, force = false, complete = completeJson, naverClient = naver } = {}) {
-  const context = analyticsContext();
+  let context = analyticsContext();
   const signature = strategySignature(context);
+  if (!context.dataQuality.usable || !context.queries.some(row => Number(row.impressions) >= MIN_GOOGLE_IMPRESSIONS)) {
+    return { generatedAt: nowIso(), cached: false, scoringVersion: SCORING_VERSION,
+      model: null, period: context.performance ? { start: context.performance.periodStart, end: context.performance.periodEnd, importId: context.performance.id } : null,
+      periods: { gsc: context.performance, ga4: context.ga4 }, inventory: { guides: context.guides.length, clusters: context.clusters.length },
+      methodology: METHODOLOGY, dataQuality: context.dataQuality,
+      analysisSummary: '자동 추천에 필요한 최신 검색 수요가 부족합니다. 자료를 갱신하거나 독자의 구체적 질문과 기존 글과의 차이를 적어 편집 주제로 검토해 주세요.',
+      caveat: '자료 부족은 수요가 없다는 뜻이 아닙니다. 이 상태에서는 검색 효과를 예측하거나 자동 제작하지 않습니다.',
+      recommended: null, accepted: [], rejected: [], warnings: [context.dataQuality.reason || '관련 검색 노출 표본이 부족합니다.'] };
+  }
   if (!force) {
     const cached = cachedReport(signature, context, limit);
     if (cached) return cached;
@@ -402,7 +363,7 @@ async function suggestTopics({ limit = 5, force = false, complete = completeJson
     input: modelInput(context),
     maxOutputTokens: 9000,
   });
-  let preliminary = scoreTopicCandidates({ candidates: result.parsed.candidates, guides: context.guides, queries: context.queries, ga4BySlug: context.ga4BySlug, requireDemandEvidence: false });
+  let preliminary = scoreTopicCandidates({ candidates: result.parsed.candidates, guides: context.guides, queries: context.queries, ga4BySlug: context.ga4BySlug, evidencePeriod: context.performance, ga4Period: context.ga4, activeGenerations: context.activeGenerations, requireDemandEvidence: false });
   const naverTargets = preliminary.filter((candidate) => candidate.rejectionReasons.length === 0).slice(0, 5);
   const warnings = [];
   let trends = {};
@@ -419,8 +380,9 @@ async function suggestTopics({ limit = 5, force = false, complete = completeJson
     }));
     web = Object.fromEntries(webRows.filter(([, value]) => value));
   }
-  const scored = scoreTopicCandidates({ candidates: result.parsed.candidates, guides: context.guides, queries: context.queries, ga4BySlug: context.ga4BySlug, naverTrends: trends, naverWeb: web });
-  const accepted = scored.filter((candidate) => candidate.accepted).slice(0, Math.max(1, Math.min(8, Number(limit) || 5)));
+  context = analyticsContext(); // Recheck imports and reservations created while the model was running.
+  const scored = scoreTopicCandidates({ candidates: result.parsed.candidates, guides: context.guides, queries: context.queries, ga4BySlug: context.ga4BySlug, evidencePeriod: context.performance, ga4Period: context.ga4, activeGenerations: context.activeGenerations, naverTrends: trends, naverWeb: web });
+  const accepted = scored.filter((candidate) => candidate.accepted);
   const rejected = scored.filter((candidate) => !candidate.accepted);
   const report = {
     generatedAt: nowIso(),
@@ -434,6 +396,7 @@ async function suggestTopics({ limit = 5, force = false, complete = completeJson
     },
     inventory: { guides: context.guides.length, clusters: context.clusters.length },
     methodology: METHODOLOGY,
+    dataQuality: context.dataQuality,
     caveat: '점수는 노출을 보장하는 예측이 아니라 현재 데이터로 후보를 비교하는 우선순위입니다.',
     analysisSummary: reconciledAnalysisSummary(result.parsed.analysisSummary, accepted, rejected),
     recommended: accepted[0] || null,
@@ -441,12 +404,12 @@ async function suggestTopics({ limit = 5, force = false, complete = completeJson
     rejected,
     warnings,
   };
-  setSetting(CACHE_KEY, JSON.stringify({ signature, generatedAt: report.generatedAt, report }));
-  return report;
+  setSetting(CACHE_KEY, JSON.stringify({ signature: strategySignature(context), generatedAt: report.generatedAt, report }));
+  return limitReport(report, limit);
 }
 
 module.exports = {
   TOPIC_MODEL, topicStrategySchema, dynamicTopicStrategySchema, normalizeText, semanticSimilarity, closestGuides, clusterKey,
   candidateGuideSimilarity, reconciledAnalysisSummary, matchedQueryRows,
-  scoreTopicCandidates, analyticsContext, suggestTopics,
+  scoreTopicCandidates, analyticsContext, suggestTopics, queryRelatedToCandidate, periodQuality, strategySignature, cachedReport, limitReport, CACHE_KEY, SCORING_VERSION,
 };

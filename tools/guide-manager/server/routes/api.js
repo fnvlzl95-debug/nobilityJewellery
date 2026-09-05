@@ -17,36 +17,68 @@ const topics = require('../services/topicService');
 const automation = require('../services/automationService');
 const audits = require('../services/contentAuditService');
 const measurement = require('../services/measurementService');
+const jobs = require('../services/jobService');
 const { nowIso } = require('../lib/utils');
 
 const router = express.Router();
-// Serialize mutations across tabs so delayed AI results cannot overwrite a newer edit.
-let mutation = null;
+// Writes lock only the generation they change; shared site operations retain exclusivity.
+function mutationKeys(req) {
+  const keys = [];
+  const generationId = req.path.match(/^\/generations\/(\d+)(?:\/|$)/)?.[1] || (req.path === '/automation/prepare' ? req.body?.generationId : null);
+  if (generationId) keys.push('generation:' + Number(generationId));
+  if (req.path === '/generations/bulk-delete') for (const id of req.body.ids || []) keys.push('generation:' + Number(id));
+  if (req.path === '/generations' || /\/create-update$/.test(req.path)) keys.push('generation-create');
+  if (req.path === '/automation/prepare' && !generationId) keys.push('candidate:' + (req.body.candidateId || 'automatic'));
+  if (/\/apply$/.test(req.path) || /^\/applies\/.*\/recover$/.test(req.path) || req.path === '/inventory/refresh' || req.path === '/settings') keys.push('site');
+  if (req.path.startsWith('/audits/')) keys.push('audits');
+  if (req.path === '/automation/topics') keys.push('topics');
+  return [...new Set(keys)];
+}
 router.use((req, res, next) => {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
-  if (audits.jobStatus().state === 'running') return res.status(409).json({ error: '기존 글 분석이 진행 중입니다. 완료 후 수정해 주세요' });
-  if (mutation) return res.status(409).json({ error: '다른 작업이 진행 중입니다. 완료 후 다시 시도해 주세요', code: 'WORK_IN_PROGRESS' });
-  const generationId = req.path.match(/^\/generations\/(\d+)\//)?.[1];
-  if (generationId) {
-    const row = db.prepare('SELECT revision FROM generations WHERE id=?').get(Number(generationId));
-    if (!row) return res.status(404).json({ error: '작업을 찾을 수 없습니다' });
-    if (req.headers['if-match'] !== String(row.revision)) return res.status(409).json({ error: '다른 화면에서 작업이 변경됐습니다. 새로고침 후 내용을 확인해 주세요', code: 'STALE_REVISION' });
-  }
-  const marker = Symbol(); mutation = marker;
-  // Release on response finish, not socket close: disconnected AI calls still run.
-  res.once('finish', () => { if (mutation === marker) mutation = null; });
-  req.releaseMutation = () => { if (mutation === marker) mutation = null; };
-  next();
+  try {
+    if (req.path === '/audits/analyze/start' && audits.jobStatus().state === 'running') return res.json({ ...audits.jobStatus(), alreadyRunning: true });
+    if (req.path.startsWith('/audits/') && audits.jobStatus().state === 'running') throw Object.assign(new Error('기존 글 분석이 진행 중입니다. 해당 분석이 끝나면 계획을 저장해 주세요'), { status: 409, code: 'AUDIT_IN_PROGRESS' });
+    const generationId = req.path.match(/^\/generations\/(\d+)\//)?.[1];
+    if (generationId) {
+      const row = db.prepare('SELECT revision FROM generations WHERE id=?').get(Number(generationId));
+      if (!row) return res.status(404).json({ error: '작업을 찾을 수 없습니다' });
+      if (req.headers['if-match'] !== String(row.revision)) return res.status(409).json({ error: '다른 화면에서 작업이 변경됐습니다. 내 편집은 보관됩니다. 최신 원고를 확인해 주세요', code: 'STALE_REVISION' });
+    }
+    req.mutationKeys = mutationKeys(req);
+    req.releaseMutation = jobs.acquire(req.mutationKeys);
+    res.once('finish', req.releaseMutation);
+    res.once('close', () => { if (!req.handlerStarted) req.releaseMutation?.(); });
+    next();
+  } catch (error) { next(error); }
 });
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 30 * 1024 * 1024, files: 1 } });
 
 function route(handler) {
   return async (req, res, next) => {
-    try { res.json(await handler(req, res)); }
+    try { req.handlerStarted = true; res.json(await handler(req, res)); }
     catch (error) { next(error); }
     finally { req.releaseMutation?.(); }
   };
 }
+
+function background(action, handler, options = {}) {
+  jobs.register(action, payload => handler({ ...payload, query: payload.query || {} }));
+  return route((req, res) => {
+    const generationId = Number(req.params.id || req.body.generationId) || null;
+    const expectedRevision = generationId ? db.prepare('SELECT revision FROM generations WHERE id=?').get(generationId)?.revision : null;
+    req.releaseMutation?.();
+    const job = jobs.submit(action, { params: req.params, body: req.body, query: req.query }, {
+      keys: req.mutationKeys, generationId, expectedRevision, ...options,
+    });
+    res.status(202);
+    return { jobId: job.id, job };
+  });
+}
+router.get('/jobs', route(req => jobs.list({ active: req.query.active === '1' })));
+router.get('/jobs/:id', route(req => jobs.get(req.params.id)));
+router.post('/jobs/:id/cancel', route(req => jobs.cancel(req.params.id)));
+router.post('/jobs/:id/retry', route((req, res) => { const job = jobs.retry(req.params.id); res.status(202); return { jobId: job.id, job }; }));
 
 function freshness() {
   return {
@@ -73,7 +105,7 @@ router.get('/dashboard', route(async () => {
       SUM(CASE WHEN is_custom=1 THEN 1 ELSE 0 END) AS custom FROM guides
   `).get();
   const imports = analytics.listImports();
-  const opportunity = opportunities.summary();
+  const opportunity = opportunities.summary({ includeNewTopics: false });
   return {
     guides: guideCounts,
     dataQuality: measurement.dataQuality(),
@@ -119,18 +151,18 @@ router.post('/analytics/import', upload.single('file'), route((req) => {
 router.get('/opportunities', route(() => ({ ...opportunities.summary(), freshness: freshness() })));
 router.get('/audits', route(() => audits.report()));
 router.post('/audits/scan', route(() => ({ scan: audits.scanAll(), report: audits.report() })));
-router.post('/audits/analyze', route((req) => audits.analyze({
+router.post('/audits/analyze', background('audit-detail', (req) => audits.analyze({
   slugs: req.body.slugs || null,
   limit: req.body.limit || 10,
   all: !!req.body.all,
   force: !!req.body.force,
-})));
-router.post('/audits/analyze/start', route((req) => audits.startAnalyze({
+}), { timeoutMs: 60 * 60 * 1000, maxCalls: 70, maxTokens: 900000 }));
+router.post('/audits/analyze/start', route((req) => { req.releaseMutation?.(); return audits.startAnalyze({
   slugs: req.body.slugs || null,
   limit: req.body.limit || 10,
   all: !!req.body.all,
   force: !!req.body.force,
-})));
+}); }));
 router.get('/audits/analyze/status', route(() => audits.jobStatus()));
 router.get('/audits/:slug', route((req) => {
   const item = audits.detail(req.params.slug);
@@ -139,21 +171,21 @@ router.get('/audits/:slug', route((req) => {
 }));
 router.put('/audits/:slug/plan', route((req) => audits.savePlan(req.params.slug, req.body.plan || req.body)));
 router.post('/audits/:slug/create-update', route((req) => audits.createUpdate(req.params.slug, req.body || {})));
-router.post('/automation/topics', route((req) => topics.suggestTopics({
+router.post('/automation/topics', background('topics', (req) => topics.suggestTopics({
   limit: req.body.limit || 5,
   force: !!req.body.force,
 })));
-router.post('/automation/prepare', route((req) => automation.prepareBest({
+router.post('/automation/prepare', background('prepare', (req) => automation.prepareBest({
   candidateId: req.body.candidateId || null,
   generationId: req.body.generationId || null,
   businessFacts: req.body.businessFacts || '',
   forceTopics: !!req.body.forceTopics,
   imagePolicy: req.body.imagePolicy || null,
-})));
+}), { retryMode: 'resume' }));
 
-router.post('/naver/research', route((req) => naver.researchKeyword(req.body.keyword, { depth: req.body.depth || 100 })));
+router.post('/naver/research', background('naver-research', (req) => naver.researchKeyword(req.body.keyword, { depth: req.body.depth || 100 })));
 router.get('/naver/due', route(() => ({ rows: naver.dueKeywords(7), quota: naver.quotaState() })));
-router.post('/naver/scan', route((req) => naver.scanDue({ ids: req.body.ids || null, depth: req.body.depth || 100, force: !!req.body.force })));
+router.post('/naver/scan', background('naver-scan', (req) => naver.scanDue({ ids: req.body.ids || null, depth: req.body.depth || 100, force: !!req.body.force })));
 
 router.get('/generations', route((req) => generations.listGenerations({ includeArchived: req.query.archived === '1' })));
 router.post('/generations', route((req) => generations.createGeneration(req.body)));
@@ -165,10 +197,10 @@ router.get('/generations/:id', route((req) => {
   return item;
 }));
 router.put('/generations/:id/draft', route((req) => generations.saveDraft(Number(req.params.id), req.body.draft)));
-router.post('/generations/:id/research/official', route((req) => generations.researchOfficial(Number(req.params.id), {
+router.post('/generations/:id/research/official', background('official', (req) => generations.researchOfficial(Number(req.params.id), {
   emphasizeOfficial: !!req.body.emphasizeOfficial,
 })));
-router.post('/generations/:id/research/naver', route(async (req) => {
+router.post('/generations/:id/research/naver', background('generation-naver', async (req) => {
   const id = Number(req.params.id);
   const generation = generations.getGeneration(id);
   if (!generation) throw Object.assign(new Error('생성 작업을 찾을 수 없습니다'), { status: 404 });
@@ -179,20 +211,20 @@ router.post('/generations/:id/research/naver', route(async (req) => {
 router.put('/generations/:id/sources', route((req) => generations.selectSources(Number(req.params.id), req.body.selectedUrls || [], {
   allowWithoutOfficial: typeof req.body.allowWithoutOfficial === 'boolean' ? req.body.allowWithoutOfficial : null,
 })));
-router.post('/generations/:id/generate', route((req) => generations.generateDraft(Number(req.params.id), { forceModel: req.body.model || null })));
-router.post('/generations/:id/humanize', route((req) => humanizer.humanizeGeneration(Number(req.params.id))));
+router.post('/generations/:id/generate', background('generate', (req) => generations.generateDraft(Number(req.params.id), { forceModel: req.body.model || null })));
+router.post('/generations/:id/humanize', background('humanize', (req) => humanizer.humanizeGeneration(Number(req.params.id))));
 router.post('/generations/:id/lint', route((req) => generations.lintGeneration(Number(req.params.id), { requireImage: !!req.body.requireImage })));
-router.post('/generations/:id/images', route((req) => images.generateSlot(Number(req.params.id), req.body)));
+router.post('/generations/:id/images', background('image', (req) => images.generateSlot(Number(req.params.id), req.body)));
 router.get('/generations/:id/images', route((req) => images.listImages(Number(req.params.id))));
 router.post('/generations/:id/approve', route((req) => generations.approveGeneration(Number(req.params.id))));
 router.get('/generations/:id/diff', route((req) => applies.preview(Number(req.params.id))));
-router.post('/generations/:id/apply', route((req) => applies.apply(Number(req.params.id))));
+router.post('/generations/:id/apply', background('apply', req => applies.apply(Number(req.params.id)), { cancellable: false, timeoutMs: 45 * 60 * 1000, retryMode: 'retry' }));
 
 router.post('/applies/:id/recover', route(req => applies.recoverApply(Number(req.params.id))));
 router.get('/applies', route(() => applies.listApplies()));
 router.get('/settings', route(() => settings.settingsStatus()));
 router.get('/settings/evaluations', route(() => evaluations.batchSummary()));
-router.post('/settings/evaluations', route(() => evaluations.runBenchmark()));
+router.post('/settings/evaluations', background('evaluation', () => evaluations.runBenchmark()));
 router.put('/settings', route((req) => settings.updateSettings(req.body)));
 router.post('/settings/import-reference', route(() => settings.importReferenceCredentials({ force: true })));
 router.get('/humanizer/health', route(() => humanizer.health()));

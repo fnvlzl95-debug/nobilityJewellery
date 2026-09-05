@@ -26,42 +26,53 @@ function imageStub(slots) {
   };
 }
 
-// 기존 글 수정에서 대표 이미지를 유지하더라도 본문 이미지 계획까지 사라지면 안 된다.
-test('대표 이미지를 유지하는 수정 작업도 본문 이미지는 생성한다', async () => {
-  const guide = inventory.listGuides().find((item) => !item.isCustom && item.image);
-  assert.ok(guide, '이미지가 있는 일반 가이드를 찾지 못했습니다');
-  const created = generations.createGeneration({ targetSlug: guide.slug, topic: guide.keyword || guide.title });
-  const slots = [];
+// 출처 보완은 기존 본문과 이미지의 배치를 보존하며 외부 작성·시각·다듬기 비용을 만들지 않는다.
+test('출처만 수정하면 모든 기존 이미지를 보존하고 작성·이미지·Humanizer를 호출하지 않는다', async () => {
+  const policy = require('../server/services/updatePolicyService');
+  const guide = inventory.listGuides().find(item => {
+    if (item.isCustom || !item.image) return false;
+    try {
+      const current = policy.assertCreateUpdatePolicy(item.slug, { updateScope: 'sources' });
+      return current.baselineDraft.sections.some(section => section.image?.path);
+    } catch (_) { return false; }
+  });
+  assert.ok(guide, '관찰 보호가 끝났고 기존 본문 이미지가 있는 일반 가이드가 필요합니다');
+  const created = generations.createGeneration({ targetSlug: guide.slug, topic: guide.keyword || guide.title, updateScope: 'sources' });
+  const baseline = structuredClone(created.input.updatePolicy.baselineDraft);
+  const calls = { writer: 0, image: 0, humanizer: 0 };
+  const inspect = () => ({ blocking: false, score: 97, findings: [] });
   try {
     const result = await prepareBest({ generationId: created.id, imagePolicy: 'reuse' }, {
-      researchOfficial: (id) => generations.updateGeneration(id, {
-        research_json: JSON.stringify({
-          official: {
-            topic: 'test', summary: '공식 근거',
-            sources: [{ label: 'GIA', url: 'https://www.gia.edu/example', domain: 'gia.edu', official: true, reason: '교육 자료', selected: false }],
-            claims: [{ claim: '검토 항목', sourceUrls: ['https://www.gia.edu/example'], confidence: 'high' }],
-          },
-        }),
-        status: 'researched',
+      researchOfficial: id => generations.updateGeneration(id, {
+        research_json: JSON.stringify({ official: {
+          topic: guide.keyword, summary: '공식 근거',
+          sources: [{ label: 'GIA', url: 'https://www.gia.edu/gem-imitation', domain: 'gia.edu', official: true, reason: '재료 분류 교육 자료', selected: false }],
+          claims: [{ claim: '재료 표기를 확인합니다.', sourceUrls: ['https://www.gia.edu/gem-imitation'], confidence: 'high' }],
+        } }), status: 'researched',
       }),
-      generateDraft: (id) => generations.updateGeneration(id, {
-        draft_json: JSON.stringify(makeDraft({ slug: guide.slug })),
-        lint_json: JSON.stringify({ blocking: false, score: 94, findings: [] }), status: 'draft',
-      }),
-      generateSlot: imageStub(slots),
-      humanizeGeneration: (id) => {
-        const current = generations.getGeneration(id);
-        return generations.updateGeneration(id, { humanized_json: JSON.stringify(current.draft), status: 'humanized' });
+      generateDraft: async id => {
+        const prepared = await generations.executeWriterPolicy({
+          generation: generations.getGeneration(id), inspect,
+          write: async () => { calls.writer++; throw new Error('출처만 수정하는 작업에서 작성 모델을 호출했습니다'); },
+        });
+        return generations.updateGeneration(id, { draft_json: JSON.stringify(prepared.draft), lint_json: JSON.stringify(prepared.lint), status: 'draft' });
       },
-      lintGeneration: (id) => generations.updateGeneration(id, { lint_json: JSON.stringify({ blocking: false, score: 97, findings: [] }) }),
+      generateSlot: async () => { calls.image++; throw new Error('기존 이미지 보존 중 이미지 생성을 호출했습니다'); },
+      humanizeGeneration: async () => { calls.humanizer++; throw new Error('출처만 수정하는 작업에서 Humanizer를 호출했습니다'); },
+      lintGeneration: id => generations.updateGeneration(id, { lint_json: JSON.stringify(inspect()) }),
       preview: () => ({ files: [{ path: `pages/guide/${guide.slug}.vue` }], images: [] }),
     });
-    assert.ok(!slots.includes('hero'), '기존 대표 이미지는 다시 생성하지 않아야 합니다');
-    assert.ok(slots.some((slot) => slot.startsWith('section-')), `본문 이미지를 생성해야 합니다 (생성된 슬롯: ${slots.join(', ') || '없음'})`);
+    assert.deepEqual(calls, { writer: 0, image: 0, humanizer: 0 });
     const draft = result.humanized || result.draft;
-    assert.equal(draft.heroImage.path, guide.image, '대표 이미지는 기존 경로를 유지해야 합니다');
+    assert.deepEqual(draft.heroImage, baseline.heroImage, '대표 이미지의 경로·설명·크기를 보존합니다');
+    assert.deepEqual(draft.sections, baseline.sections, '본문과 이미지의 위치·경로·설명을 모두 보존합니다');
+    assert.equal(draft.title, baseline.title);
+    assert.equal(draft.lead, baseline.lead);
+    assert.deepEqual(draft.sources.map(source => source.url), ['https://www.gia.edu/gem-imitation']);
+    assert.deepEqual(result.research.automation.placements, []);
     assert.equal(result.readiness.checks.bodyImages, true);
     assert.equal(result.readiness.ready, true);
+    assert.match(result.research.automation.humanizeSkipped, /선택 범위/);
   } finally {
     db.prepare('DELETE FROM generations WHERE id=?').run(created.id);
   }
@@ -146,29 +157,36 @@ test('통과 후보가 없으면 모델 설명 대신 서버 판정과 일치하
 
 test('주제 점수는 실제 검색 신호가 있는 비중복 후보를 우선하고 중복 후보를 제외한다', () => {
   const guides = [{ slug: 'hallmark', title: '귀금속 각인 585·750·925 뜻', keyword: '귀금속 각인 숫자 뜻', category: '소재·보석' }];
-  const queries = [{ query: '예물', clicks: 0, impressions: 167, ctr: 0, position: 6.88 }];
+  const date = daysAgo => new Date(Date.now() - daysAgo * 86400000).toISOString().slice(0, 10);
+  const queries = [{ query: '결혼예물 예산 준비', clicks: 0, impressions: 167, ctr: 0, position: 6.88 }];
   const rows = scoreTopicCandidates({
     guides,
     queries,
+    evidencePeriod: { start: date(28), end: date(1) },
     candidates: [
-      candidate(),
+      candidate({ evidenceQueries: ['결혼예물 예산 준비'] }),
       candidate({ id: 'dup', topic: '금 585 뜻', primaryKeyword: '금 585 뜻', slug: 'gold-585-meaning', workingTitle: '금 585 뜻 알아보기', evidenceQueries: ['예물'] }),
     ],
-    naverTrends: { 'wedding-budget-1': { ratio: 80 }, dup: { ratio: 100 } },
   });
   assert.equal(rows[0].id, 'wedding-budget-1');
   assert.equal(rows[0].accepted, true);
+  assert.equal(rows[0].automaticEligible, true);
+  assert.equal(rows[0].dataQuality.relatedGoogleEvidence, true);
   assert.equal(rows.find((row) => row.id === 'dup').accepted, false);
 });
 
-test('이미지 계획은 대표 1장과 본문 최대 2장을 실제 섹션 위치에 고정한다', () => {
+test('이미지 계획은 대표 1장과 명시된 본문 최대 2장만 실제 섹션 위치에 고정한다', () => {
   const draft = makeDraft({ sections: [
     ...makeDraft().sections,
     { title: '마지막 확인', paragraphs: ['최종 조건을 확인합니다.'], bullets: [], image: null },
     { title: '상담 준비', paragraphs: ['문의할 내용을 적습니다.'], bullets: [], image: null },
   ] });
+  assert.deepEqual(planDraftImages(draft, '결혼예물 예산 준비').placements.map(item => item.slot), ['hero']);
+  draft.sections[0].image = { path: '', alt: '예물 구성', caption: '', prompt: 'A close-up of the specific wedding jewelry materials on a neutral desk.' };
+  draft.sections[2].image = { path: '', alt: '상담 준비', caption: '', prompt: 'A single jewelry design sketch beside a realistic ring on a neutral desk.' };
+  draft.sections[4].image = { path: '', alt: '추가 예시', caption: '', prompt: 'A realistic jewelry storage tray with separate soft compartments.' };
   const result = planDraftImages(draft, '결혼예물 예산 준비');
-  assert.deepEqual(result.placements.map((item) => item.slot), ['hero', 'section-2', 'section-4']);
+  assert.deepEqual(result.placements.map((item) => item.slot), ['hero', 'section-1', 'section-3']);
   assert.equal(result.draft.sections.filter((section) => section.image).length, 2);
   assert.ok(result.placements.every((item) => item.location));
   assert.ok(!/[가-힣]/.test(result.draft.heroImage.prompt));

@@ -228,15 +228,17 @@ function extractGuideContent(guide, source = null) {
   const keyword = stringConst(code, 'gmArticleKeyword') || plainAttribute(code, 'keyword') || guide?.keyword || '';
   const category = stringConst(code, 'gmArticleCategory') || plainAttribute(code, 'category') || guide?.category || '';
   const sources = rawSources.map((item) => ({
-    label: cleanText(item?.label), url: cleanText(item?.url), note: cleanText(item?.note), official: item?.official === true || isOfficial(item?.url),
+    label: cleanText(item?.label), url: cleanText(item?.url), note: cleanText(item?.note), official: require('./generationService').officialDomain(item?.url),
   })).filter((item) => item.url);
   const normalizedSections = sections.map((section) => ({
     title: cleanText(section?.title),
     paragraphs: Array.isArray(section?.paragraphs) ? section.paragraphs.map(cleanText).filter(Boolean) : [],
     bullets: Array.isArray(section?.bullets) ? section.bullets.map(cleanText).filter(Boolean) : [],
+    table: section?.table && Array.isArray(section.table.headers) && Array.isArray(section.table.rows)
+      ? { headers: section.table.headers.map(cleanText), rows: section.table.rows.filter(Array.isArray).map(row => row.map(cleanText)) } : null,
     hasImage: !!section?.image,
   })).filter((section) => section.title || section.paragraphs.length || section.bullets.length);
-  const textParts = [title, lead, ...quickAnswers, ...normalizedSections.flatMap((section) => [section.title, ...section.paragraphs, ...section.bullets]), ...cautions,
+  const textParts = [title, lead, ...quickAnswers, ...normalizedSections.flatMap((section) => [section.title, ...section.paragraphs, ...section.bullets, ...(section.table?.headers || []), ...(section.table?.rows || []).flat()]), ...cautions,
     ...faqItems.flatMap((item) => [item?.question, item?.answer])].map(cleanText).filter(Boolean);
   const bodyText = textParts.join('\n');
   const pagePath = stringConst(code, 'pagePath');
@@ -249,6 +251,7 @@ function extractGuideContent(guide, source = null) {
   return {
     title: cleanText(title), pageTitle: cleanText(pageTitle), description: cleanText(description), lead: cleanText(lead),
     keyword: cleanText(keyword), category: cleanText(category), quickAnswers: quickAnswers.map(cleanText).filter(Boolean),
+    heroCaption: stringConst(code, 'gmHeroCaption') || plainAttribute(code, 'hero-caption'),
     sections: normalizedSections, cautions: cautions.map(cleanText).filter(Boolean),
     faqItems: faqItems.map((item) => ({ question: cleanText(item?.question), answer: cleanText(item?.answer) })).filter((item) => item.question),
     relatedLinks: relatedLinks.map((item) => ({ to: cleanText(item?.to), label: cleanText(item?.label), description: cleanText(item?.description) })).filter((item) => item.to),

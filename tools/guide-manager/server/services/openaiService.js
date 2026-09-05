@@ -3,10 +3,11 @@ const { getCredentials, ALLOWED_MODELS } = require('./settingsService');
 const { config } = require('../lib/config');
 const { nowIso } = require('../lib/utils');
 const log = require('../lib/logger');
+const jobs = require('./jobService');
 
 const TEXT_TIMEOUT_MS = 120000;
 const IMAGE_TIMEOUT_MS = 180000;
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 2;
 
 function extractText(data) {
   if (typeof data.output_text === 'string' && data.output_text) return data.output_text;
@@ -25,10 +26,20 @@ function extractText(data) {
 }
 
 async function fetchWithTimeout(url, options, timeoutMs) {
+  jobs.throwIfCancelled();
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try { return await fetch(url, { ...options, signal: controller.signal }); }
-  finally { clearTimeout(timer); }
+  const parent = jobs.getJobSignal();
+  const abort = () => controller.abort(parent.reason);
+  parent?.addEventListener('abort', abort, { once: true });
+  if (parent?.aborted) abort();
+  const timer = setTimeout(() => controller.abort(Object.assign(new Error('OpenAI 응답 본문 수신 시간 초과'), { name: 'AbortError' })), timeoutMs);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    // The deadline includes reading the complete response body, not just its headers.
+    const text = await response.text();
+    jobs.throwIfCancelled();
+    return { ok: response.ok, status: response.status, text: async () => text, json: async () => JSON.parse(text) };
+  } finally { clearTimeout(timer); parent?.removeEventListener('abort', abort); }
 }
 
 function classifyError(status, text) {
@@ -97,6 +108,8 @@ async function completeJson({ generationId = null, stage, model, effort, instruc
   let lastError;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
+      jobs.consumeCall(stage, 'text');
+      jobs.event('provider-attempt', { providerStage: stage, model: selected.model, attempt, maxAttempts: MAX_RETRIES });
       const response = await fetchWithTimeout(`${credentials.openaiBase.replace(/\/$/, '')}/responses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${credentials.openaiKey}` },
@@ -109,6 +122,7 @@ async function completeJson({ generationId = null, stage, model, effort, instruc
         error.retryable = data.incomplete_details?.reason !== 'max_output_tokens';
         throw error;
       }
+      jobs.recordUsage(data.usage);
       const raw = extractText(data);
       let parsed;
       try { parsed = JSON.parse(raw); }
@@ -124,11 +138,14 @@ async function completeJson({ generationId = null, stage, model, effort, instruc
       return { parsed, raw, usage: data.usage || null, model: data.model || selected.model };
     } catch (error) {
       lastError = error;
+      jobs.event('provider-error', { attempt, message: log.sanitize(error.message), code: error.code || error.name });
+      if (jobs.getJobSignal()?.aborted || ['JOB_BUDGET_EXCEEDED', 'JOB_CANCELLED', 'JOB_DEADLINE'].includes(error.code)) break;
       const retryable = error.retryable || error.name === 'AbortError' || /fetch failed|ECONNRESET|ETIMEDOUT/i.test(error.message);
       if (!retryable || attempt === MAX_RETRIES) break;
       const delay = 1200 * attempt;
       log.warn('openai', `${stage} ${selected.model} 호출 재시도 ${attempt}/${MAX_RETRIES}: ${error.message}`);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      jobs.event('provider-retry', { providerStage: stage, attempt, delayMs: delay });
+      await jobs.wait(delay);
     }
   }
   db.prepare(`
@@ -157,6 +174,8 @@ async function generateImage({ generationId, prompt, quality = 'medium', size = 
   let lastError;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
+      jobs.consumeCall('image', 'image');
+      jobs.event('provider-attempt', { providerStage: 'image', model, attempt, maxAttempts: MAX_RETRIES });
       const response = await fetchWithTimeout(`${credentials.openaiBase.replace(/\/$/, '')}/images/generations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${credentials.openaiKey}` },
@@ -164,17 +183,21 @@ async function generateImage({ generationId, prompt, quality = 'medium', size = 
       }, IMAGE_TIMEOUT_MS);
       if (!response.ok) throw classifyError(response.status, await response.text().catch(() => ''));
       const data = await response.json();
+      jobs.recordUsage(data.usage);
       const image = data?.data?.[0]?.b64_json;
       if (!image) throw new Error('이미지 응답에 파일 데이터가 없습니다');
       return { buffer: Buffer.from(image, 'base64'), model, usage: data.usage || null };
     } catch (error) {
       lastError = error;
+      jobs.event('provider-error', { attempt, message: log.sanitize(error.message), code: error.code || error.name });
+      if (jobs.getJobSignal()?.aborted || ['JOB_BUDGET_EXCEEDED', 'JOB_CANCELLED', 'JOB_DEADLINE'].includes(error.code)) break;
       const retryable = error.retryable || error.name === 'AbortError' || /fetch failed|ECONNRESET|ETIMEDOUT/i.test(error.message);
       if (!retryable || attempt === MAX_RETRIES) break;
-      await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
+      jobs.event('provider-retry', { providerStage: 'image', attempt, delayMs: 2000 * attempt });
+      await jobs.wait(2000 * attempt);
     }
   }
   throw lastError;
 }
 
-module.exports = { completeJson, generateImage, extractText, modelConfig, classifyError, assertStrictJsonSchema };
+module.exports = { fetchWithTimeout, completeJson, generateImage, extractText, modelConfig, classifyError, assertStrictJsonSchema };

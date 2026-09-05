@@ -16,6 +16,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'zircon-vs-cubic-zirconia',
+      path: '/guide/zircon-vs-cubic-zirconia',
+      title: '지르콘과 큐빅 지르코니아 차이',
+      description: '지르콘과 큐빅 지르코니아는 이름이 비슷하지만 재료와 관리법이 다릅니다. 제품 표기와 보고서에서 확인할 항목, 지르콘 관리 방법을 정리합니다.',
+      keyword: '지르콘 큐빅 지르코니아 차이',
+      image: '/Image/guide/zircon-vs-cubic-zirconia-hero-b17bdd15.webp',
+      publishedAt: '2026-09-06',
+      category: '소재·보석',
+    },
+  {
+      slug: 'ruby-heat-treatment-buying-checklist',
+      path: '/guide/ruby-heat-treatment-buying-checklist',
+      title: '루비 가열·비가열, 구매 전 확인할 것',
+      description: '루비 가열·비가열과 유리 충전의 차이를 확인하세요. 천연 여부와 처리 정보를 보고서·판매 설명에 대조하고, 세척 전에 피해야 할 행동을 정리합니다.',
+      keyword: '루비 가열 비가열',
+      image: '/Image/guide/ruby-heat-treatment-buying-checklist-hero-ef60bae6.webp',
+      publishedAt: '2026-09-06',
+      category: '소재·보석',
+    },
+  {
     slug: 'plated-jewelry-discoloration-care-guide',
     path: '/guide/plated-jewelry-discoloration-care-guide',
     title: '도금 변색, 닦기 전 원인 확인',

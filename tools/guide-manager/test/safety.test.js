@@ -1,11 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('fs');
 const { validateDraft } = require('../server/services/draftSchema');
 const { lintDraft, compareProtectedFacts, findUnexpectedHan } = require('../server/services/lintService');
 const { buildDesiredFiles, validateHashes } = require('../server/services/applyService');
 const { stripDraftSectionNumbering } = require('../server/lib/sectionTitle');
 const { officialDomain } = require('../server/services/generationService');
-const { koreaDate } = require('../server/lib/utils');
+const { koreaDate, fileHash, sha256 } = require('../server/lib/utils');
+const { guideIndexPath, parseGuidePosts, getGuide } = require('../server/services/inventoryService');
+const { patchGuideIndex } = require('../server/services/rendererService');
 const { makeDraft } = require('./fixture');
 
 test('콘텐츠 날짜는 자정 이후에도 한국시간 날짜를 사용한다', () => {
@@ -165,6 +168,28 @@ test('보호된 커스텀 가이드는 저장소 반영 단계에서도 차단�
   }), /커스텀 가이드/);
 });
 
-test('작업 시작 이후 guide-posts 해시가 바뀌면 반영을 거부한다', () => {
-  assert.throws(() => validateHashes({ input: { baseIndexHash: 'wrong' } }, { isNew: true, textFiles: [] }), /가이드 목록이 작업 시작 후 변경/);
+test('신규 글은 최신 목록에 독립 항목을 병합하고 기존 글의 목록·본문 충돌은 계속 차단한다', () => {
+  const source = fs.readFileSync(guideIndexPath(), 'utf8');
+  const originalPosts = parseGuidePosts(source);
+  const first = makeDraft({ slug: 'new-index-merge-regression-one' });
+  const second = makeDraft({ slug: 'new-index-merge-regression-two' });
+  // Only in-memory index changes: no real guide or source file is written.
+  const afterFirst = patchGuideIndex(source, first, { isNew: true });
+  const afterSecond = patchGuideIndex(afterFirst, second, { isNew: true });
+  assert.doesNotThrow(() => validateHashes({ input: { baseIndexHash: 'previous-index' } }, { isNew: true, textFiles: [] }));
+  const posts = parseGuidePosts(afterSecond);
+  assert.equal(posts.length, originalPosts.length + 2);
+  assert.equal(posts.filter(post => post.slug === first.slug).length, 1);
+  assert.equal(posts.filter(post => post.slug === second.slug).length, 1);
+  for (const original of originalPosts) assert.equal(posts.find(post => post.slug === original.slug).block, original.block);
+
+  const target = getGuide('baby-ring-price');
+  const entry = originalPosts.find(post => post.slug === target.slug);
+  const desired = { isNew: false, textFiles: [{ path: target.sourcePath }] };
+  const update = { target_slug: target.slug, base_source_hash: fileHash(target.sourcePath), input: { baseIndexHash: 'previous-index' } };
+  assert.throws(() => validateHashes(update, desired), /가이드 목록이 작업 시작 후 변경/);
+  update.input.baseIndexEntryHash = sha256(entry.block);
+  assert.doesNotThrow(() => validateHashes(update, desired), '다른 글의 목록 변경은 같은 대상 항목을 무효화하지 않습니다');
+  update.base_source_hash = 'stale-target-source';
+  assert.throws(() => validateHashes(update, desired), /대상 가이드가 작업 시작 후 변경/);
 });

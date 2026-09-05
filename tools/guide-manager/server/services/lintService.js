@@ -1,6 +1,6 @@
 const { db } = require('../lib/db');
 const { validateDraft, schemaErrors } = require('./draftSchema');
-const { jaccard } = require('./opportunityService');
+const { jaccard, findIntentConflicts } = require('./intentService');
 const { hasSectionNumbering } = require('../lib/sectionTitle');
 
 const BANNED = ['무조건', '100%', '최고', '최저', '완벽 보장', '반드시 가능합니다'];
@@ -28,6 +28,8 @@ function visibleTextEntries(draft) {
     add(`sections.${sectionIndex}.title`, section?.title);
     (section?.paragraphs || []).forEach((value, index) => add(`sections.${sectionIndex}.paragraphs.${index}`, value));
     (section?.bullets || []).forEach((value, index) => add(`sections.${sectionIndex}.bullets.${index}`, value));
+    (section?.table?.headers || []).forEach((value, index) => add(`sections.${sectionIndex}.table.headers.${index}`, value));
+    (section?.table?.rows || []).forEach((row, rowIndex) => row.forEach((value, columnIndex) => add(`sections.${sectionIndex}.table.rows.${rowIndex}.${columnIndex}`, value)));
     add(`sections.${sectionIndex}.image.alt`, section?.image?.alt);
     add(`sections.${sectionIndex}.image.caption`, section?.image?.caption);
   });
@@ -56,14 +58,14 @@ function allText(draft) {
   return [
     draft.title, draft.description, draft.lead,
     ...(draft.quickAnswers || []),
-    ...(draft.sections || []).flatMap((section) => [section.title, ...(section.paragraphs || []), ...(section.bullets || [])]),
+    ...(draft.sections || []).flatMap((section) => [section.title, ...(section.paragraphs || []), ...(section.bullets || []), ...(section.table?.headers || []), ...(section.table?.rows || []).flat()]),
     ...(draft.cautions || []),
     ...(draft.faqItems || []).flatMap((item) => [item.question, item.answer]),
   ].filter(Boolean).join('\n');
 }
 
 // 운영자가 보조 출처로 진행하기로 확정하면 공식 출처 관련 규칙만 경고로 낮춘다. 나머지 안전 규칙은 그대로다.
-function lintDraft(draft, { targetSlug = null, requireImage = false, allowWithoutOfficial = false } = {}) {
+function lintDraft(draft, { targetSlug = null, generationId = null, requireImage = false, allowWithoutOfficial = false } = {}) {
   const sourceSeverity = allowWithoutOfficial ? 'warning' : 'error';
   const findings = [];
   const add = (severity, code, message, path = '') => findings.push({ severity, code, message, path });
@@ -93,11 +95,10 @@ function lintDraft(draft, { targetSlug = null, requireImage = false, allowWithou
       );
     }
   }
-  const duplicate = db.prepare('SELECT slug, title, keyword FROM guides WHERE slug <> COALESCE(?, \'\')').all(targetSlug)
-    .map((row) => ({ ...row, similarity: Math.max(jaccard(draft.title, row.title), jaccard(draft.keyword, row.keyword)) }))
-    .sort((a, b) => b.similarity - a.similarity)[0];
-  if (duplicate?.similarity >= 0.78) add('error', 'cannibalization', `기존 “${duplicate.title}”과 주제가 매우 유사합니다 (${duplicate.similarity.toFixed(2)}).`, 'keyword');
-  else if (duplicate?.similarity >= 0.65) add('warning', 'cannibalization_warning', `기존 “${duplicate.title}”과 검색 의도가 겹칠 수 있습니다 (${duplicate.similarity.toFixed(2)}).`, 'keyword');
+  const duplicates = findIntentConflicts({ slug: draft.slug, title: draft.title, keyword: draft.keyword }, { targetSlug, generationId });
+  const duplicate = duplicates[0];
+  if (duplicate?.blocking) add('error', 'cannibalization', `기존 글 또는 진행 작업 “${duplicate.title}”과 주제가 매우 유사합니다 (${duplicate.similarity.toFixed(2)}).`, 'keyword');
+  else if (duplicate) add('warning', 'cannibalization_warning', `기존 글 또는 진행 작업 “${duplicate.title}”과 검색 의도가 겹칠 수 있습니다 (${duplicate.similarity.toFixed(2)}).`, 'keyword');
   const similarDescription = db.prepare('SELECT slug, title, description FROM guides WHERE slug <> COALESCE(?, \'\') AND description IS NOT NULL').all(targetSlug)
     .map((row) => ({ ...row, similarity: jaccard(draft.description, row.description) }))
     .sort((a, b) => b.similarity - a.similarity)[0];

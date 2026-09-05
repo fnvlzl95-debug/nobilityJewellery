@@ -67,7 +67,7 @@ function Dashboard({ data, onNavigate, refresh, refreshing, message, clearMessag
           : `평균 참여 ${Number(g.avgEngagementSeconds || 0).toFixed(1)}초`}
       />
       <Metric label="Naver 웹검색 CTR" value={n.overallCtr == null ? '—' : `${(Number(n.overallCtr) * 100).toFixed(1)}%`} note={`${naver?.periodStart || '—'} ~ ${naver?.periodEnd || '—'} · TOP 30`} />
-      <Metric label="Google 검색 후 참여" value={fmt(organic?.summary?.engagedSessions)} note={`${organic?.periodStart || '—'} ~ ${organic?.periodEnd || '—'} · 활성 사용자 ${fmt(organic?.summary?.activeUsers)}`} />
+      <Metric label="Google 검색 후 참여" value={fmt(organic?.summary?.engagedSessions)} note={`${organic?.periodStart || '—'} ~ ${organic?.periodEnd || '—'} · 고유 사용자 집계 불가(페이지 간 중복)`} />
       <Metric label="색인 상태" value={`${fmt(c.indexed)} / ${fmt((c.indexed || 0) + (c.notIndexed || 0))}`} note={`미색인 ${fmt(c.notIndexed)}`} />
     </section>
 
@@ -252,7 +252,7 @@ function ImageStudio() {
   }
 
   return <main className="page page-enter">
-    <header className="page-head"><div><p className="eyebrow">IMAGE ATELIER</p><h1>이미지 작업실</h1><p>기존 이미지를 재사용하지 않고 가이드별 대표·본문 이미지를 새로 만듭니다.</p></div><div className="page-head-actions">
+    <header className="page-head"><div><p className="eyebrow">IMAGE ATELIER</p><h1>이미지 작업실</h1><p>기존 이미지를 보존하면서, 수정 범위에 필요한 대표·본문 이미지만 준비합니다.</p></div><div className="page-head-actions">
       <RefreshStatus refreshedAt={refreshedAt} sources={[{ label: '선택 작업 수정', value: generation?.updated_at }]} />
       <button className="button button-quiet" onClick={refresh} disabled={busy || refreshing}>{refreshing ? <Spinner label="확인 중" /> : <><RefreshCcw size={16} />새로고침</>}</button>
     </div></header>
@@ -414,8 +414,9 @@ function HistoryPage() {
       <div className="section-head"><div><h2>28일 이후 참고 변화</h2><p>배포 완료일이 기록된 작업만, 같은 보고서의 겹치지 않는 전체 기간으로 비교합니다.</p></div></div>
       {comparisons.length ? <div className="comparison-list">{comparisons.map((item) => <article key={item.id}>
         <div><strong>{item.topic}</strong><small>{item.guideSlug} · 반영 {dateTime(item.appliedAt)}</small></div>
-        <Badge tone={item.status === 'comparable' ? 'success' : 'neutral'}>{item.status === 'comparable' ? '비교 가능' : item.status === 'awaiting_deployment' ? '배포일 미등록 · 비교 보류' : `${new Date(item.readyAt).toLocaleDateString('ko-KR')} 이후 자료 필요`}</Badge>
+        <Badge tone={item.status === 'comparable' ? 'success' : 'neutral'}>{item.status === 'comparable' ? '비교 가능' : item.status === 'observed' ? '신규 글 관찰' : item.status === 'awaiting_deployment' ? '배포일 미등록 · 비교 보류' : `${new Date(item.readyAt).toLocaleDateString('ko-KR')} 이후 자료 필요`}</Badge>
         {item.changes && <div className="change-strip">{[['노출', item.changes.impressions], ['클릭', item.changes.clicks], ['CTR', item.changes.ctr], ['조회', item.changes.views]].map(([label, value]) => value && <span key={label}>{label}<b>{label === 'CTR' ? `${(value.before * 100).toFixed(2)} → ${(value.after * 100).toFixed(2)}%` : `${fmt(value.before)} → ${fmt(value.after)}`}</b></span>)}</div>}
+        {item.status === 'observed' && <div className="change-strip">{[['노출', item.after?.gsc?.impressions], ['클릭', item.after?.gsc?.clicks], ['조회', item.after?.ga4?.views]].map(([label, value]) => <span key={label}>{label}<b>{value == null ? '미확인' : fmt(value)}</b></span>)}</div>}
         <p>{item.note}</p>
         {item.deployedAt ? <small>배포 {dateTime(item.deployedAt)} · {item.deploymentCommit}</small> : <DeploymentForm id={item.id} onSaved={load} onError={setError} />}
       </article>)}</div> : <div className="empty-inline"><Clock3 size={24} />성공적으로 반영된 작업부터 변경 전 기준선이 기록됩니다.</div>}
@@ -449,6 +450,36 @@ function SettingsPage() {
       <section className="settings-section full-span model-evaluation"><div className="section-head"><div><h2>Luna · Terra 5건 비교</h2><p>대표 가이드 5건의 구조 성공률, 안전 휴리스틱, 토큰과 응답 시간을 같은 계약으로 비교합니다.</p></div><button className="button button-quiet" disabled={!!busy} onClick={() => { if (confirm('Luna와 Terra를 각각 5회 호출해 비교할까요? OpenAI API 사용량이 발생합니다.')) run('evaluation', () => api.post('/settings/evaluations')) }}>{busy === 'evaluation' ? <Spinner label="10회 비교 중" /> : '비교 다시 실행'}</button></div>{evaluation?.batchId ? <><div className="evaluation-grid">{evaluation.models.map((model) => <article key={model.model}><strong>{model.model}</strong><span>스키마 성공 <b>{fmt(model.success)} / {fmt(model.total)}</b></span><span>평균 품질 <b>{model.avgQuality == null ? '—' : Number(model.avgQuality).toFixed(1)}</b></span><span>평균 응답 <b>{model.avgLatencyMs == null ? '—' : `${(model.avgLatencyMs / 1000).toFixed(1)}초`}</b></span><span>토큰 <b>{fmt(model.inputTokens)} + {fmt(model.outputTokens)}</b></span></article>)}</div><small className="safety-copy">{evaluation.note}</small></> : <div className="empty-inline"><Activity size={23} />아직 실제 모델 비교를 실행하지 않았습니다.</div>}</section>
     </div>
   </main>
+}
+
+function BackgroundJobs({ onOpen }) {
+  const [rows, setRows] = useState([])
+  const [error, setError] = useState('')
+  const [open, setOpen] = useState(false)
+  const active = rows.filter(row => ['queued', 'running', 'cancelling'].includes(row.state))
+  useEffect(() => {
+    let mounted = true
+    const load = () => api.get('/jobs').then(value => { if (mounted) setRows(value) }).catch(() => {})
+    load()
+    const timer = setInterval(load, 3000)
+    window.addEventListener('guide-job-update', load)
+    return () => { mounted = false; clearInterval(timer); window.removeEventListener('guide-job-update', load) }
+  }, [])
+  const control = async (row, action) => {
+    setError('')
+    if (action === 'retry' && !confirm(row.retryMode === 'resume' ? '완료된 단계를 유지하고 남은 단계를 재개할까요? API 사용량이 발생할 수 있습니다.' : '이 단계를 다시 실행할까요? 모델·이미지 단계는 새 호출 비용이 발생할 수 있습니다.')) return
+    try { await api.post('/jobs/' + row.id + '/' + action, {}, { noPoll: true }); setRows(await api.get('/jobs')) }
+    catch (value) { setError(value.message) }
+  }
+  const stateLabel = { queued: '대기', running: '실행 중', cancelling: '안전하게 중단 중', done: '완료', error: '실패', cancelled: '취소됨', interrupted: '재시작으로 중단됨' }
+  const actionLabel = { topics: '신규 주제 분석', prepare: '자동 준비', official: '출처 조사', generate: '원고 생성', humanize: '문장 다듬기', image: '이미지 생성', apply: '저장소 반영', audits: '기존 글 진단' }
+  return <section className="background-jobs" aria-label="백그라운드 실행 상태"><button type="button" className="job-summary" onClick={() => setOpen(!open)}><Clock3 size={16} /><strong>실행 기록</strong><span>{active.length ? active.length + '건 진행 중 · 다른 글 편집 가능' : '진행 중인 실행 없음'}</span><ChevronRight size={16} /></button>
+    {open && <div className="job-history"><ErrorNotice message={error} onClose={() => setError('')} />{rows.slice(0, 12).map(row => <article key={row.id}><div><strong>{actionLabel[row.action] || row.action}{row.generationId ? ' · 작업 #' + row.generationId : ''}</strong><Badge tone={row.state === 'done' ? 'success' : ['error', 'interrupted'].includes(row.state) ? 'danger' : 'neutral'}>{stateLabel[row.state] || row.state}</Badge></div><small>{dateTime(row.createdAt)} · API {row.calls}/{row.maxCalls}회 · 토큰 {fmt(row.tokens)}</small>
+      {row.events?.at(-1) && <small>{row.events.at(-1).providerStage || row.events.at(-1).stage} {row.events.at(-1).message || ''}</small>}
+      {row.error && <p className="error-copy">{row.error}</p>}
+      <div className="job-actions">{row.generationId && <button className="text-button" onClick={() => onOpen(row.generationId)}>원고 열기</button>}{row.cancellable && ['queued', 'running'].includes(row.state) && <button className="text-button" onClick={() => control(row, 'cancel')}>실행 취소</button>}{['error', 'cancelled', 'interrupted'].includes(row.state) && <button className="text-button" onClick={() => control(row, 'retry')}>{row.retryMode === 'resume' ? '남은 단계 재개' : '단계 다시 실행'}</button>}</div>
+    </article>)}{!rows.length && <p>실행을 시작하면 상태와 재시도 기록이 이곳에 남습니다.</p>}</div>}
+  </section>
 }
 
 export default function App() {
@@ -487,6 +518,7 @@ export default function App() {
     </aside>
     <div className="mobile-header"><button onClick={() => setMobileNav(!mobileNav)}><Menu /></button><strong>{activeLabel}</strong><Gem size={19} /></div>
     <div className="app-content">
+      <BackgroundJobs onOpen={generationId => startEditor({ generationId })} />
       {error && <ErrorNotice message={error} onClose={() => setError('')} />}
       {view === 'dashboard' && (dashboard ? <Dashboard data={dashboard} onNavigate={navigate} refresh={refreshDashboard} refreshing={dashboardBusy} message={dashboardMessage} clearMessage={() => setDashboardMessage('')} /> : <div className="global-loading"><Spinner label="분석 기준선 불러오는 중" /></div>)}
       {view === 'opportunities' && <Opportunities onStart={startEditor} />}

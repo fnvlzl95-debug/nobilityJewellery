@@ -2,6 +2,13 @@ const Ajv = require('ajv');
 
 const string = { type: 'string' };
 const nonEmpty = { type: 'string', minLength: 1 };
+const tableSchema = {
+  type: 'object', additionalProperties: false, required: ['headers', 'rows'],
+  properties: {
+    headers: { type: 'array', minItems: 2, maxItems: 6, items: nonEmpty },
+    rows: { type: 'array', minItems: 1, maxItems: 10, items: { type: 'array', minItems: 2, maxItems: 6, items: nonEmpty } },
+  },
+};
 
 const imageSchema = {
   type: 'object',
@@ -56,8 +63,10 @@ const guideDraftSchema = {
         properties: {
           title: nonEmpty,
           paragraphs: { type: 'array', minItems: 1, maxItems: 5, items: nonEmpty },
-          bullets: { type: 'array', maxItems: 8, items: nonEmpty },
+          // Existing birthstone guides legitimately enumerate all twelve months.
+          bullets: { type: 'array', maxItems: 12, items: nonEmpty },
           image: { anyOf: [{ type: 'null' }, imageSchema] },
+          table: { anyOf: [{ type: 'null' }, tableSchema] },
         },
       },
     },
@@ -92,6 +101,7 @@ guideDraftResponseSchema.properties.heroImage = responseImageSchema;
 guideDraftResponseSchema.properties.sections.items.properties.image = {
   anyOf: [{ type: 'null' }, responseImageSchema],
 };
+guideDraftResponseSchema.properties.sections.items.required.push('table');
 
 const evidenceSchema = {
   type: 'object', additionalProperties: false, required: ['topic', 'summary', 'sources', 'claims'],
@@ -118,7 +128,15 @@ const evidenceSchema = {
 };
 
 const ajv = new Ajv({ allErrors: true, strict: false });
-const validateDraft = ajv.compile(guideDraftSchema);
+const validateDraftShape = ajv.compile(guideDraftSchema);
+function validateDraft(draft) {
+  const valid = validateDraftShape(draft);
+  validateDraft.errors = [...(validateDraftShape.errors || [])];
+  if (valid) (draft.sections || []).forEach((section, index) => {
+    if (section.table && section.table.rows.some(row => row.length !== section.table.headers.length)) validateDraft.errors.push({ instancePath: `/sections/${index}/table/rows`, message: '각 행의 셀 수가 표 제목 열 수와 같아야 합니다' });
+  });
+  return valid && !validateDraft.errors.length;
+}
 const validateEvidence = ajv.compile(evidenceSchema);
 
 function schemaErrors(validate) {

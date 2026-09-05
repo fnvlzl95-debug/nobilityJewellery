@@ -13,6 +13,13 @@ $applies = Invoke-RestMethod 'http://127.0.0.1:8788/api/applies' -TimeoutSec 10
 if ($applies | Where-Object { $_.state -eq 'running' }) { throw '진행 중인 저장소 반영이 있습니다.' }
 $audit = Invoke-RestMethod 'http://127.0.0.1:8788/api/audits/analyze/status' -TimeoutSec 10
 if ($audit.state -eq 'running') { throw '진행 중인 전수 분석이 있습니다.' }
+try {
+  $jobResponse = Invoke-RestMethod 'http://127.0.0.1:8788/api/jobs?active=1' -TimeoutSec 10
+  $runningJobs = if ($jobResponse.jobs) { $jobResponse.jobs } else { $jobResponse }
+  if ($runningJobs | Where-Object { $_.state -in @('queued','running','cancelling') }) { throw '대기·실행·취소 정리 중인 작업이 있습니다. 실행 기록을 확인하세요.' }
+} catch {
+  if (-not $_.Exception.Response -or [int]$_.Exception.Response.StatusCode -ne 404) { throw }
+}
 $needsInstall = -not (Test-Path -LiteralPath (Join-Path $targetRoot 'node_modules')) -or ((Get-FileHash -LiteralPath (Join-Path $sourceRoot 'package-lock.json')).Hash -ne (Get-FileHash -LiteralPath (Join-Path $targetRoot 'package-lock.json')).Hash)
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $backupRoot = Join-Path $targetRoot "data\backups\upgrade-$stamp"
@@ -24,7 +31,7 @@ foreach ($directory in @('server','client','scripts','test')) {
 Copy-Item -LiteralPath (Join-Path $targetRoot 'package.json'), (Join-Path $targetRoot 'package-lock.json') -Destination $backupRoot
 Push-Location $sourceRoot
 try {
-  $databaseBackup = "const Database=require('better-sqlite3');const db=new Database(process.argv[1],{readonly:true,fileMustExist:true});db.backup(process.argv[2]).then(()=>db.close()).catch(e=>{console.error(e.message);process.exitCode=1});"
+  $databaseBackup = "const Database=require('better-sqlite3');const db=new Database(process.argv[1],{readonly:true,fileMustExist:true});if(db.prepare('SELECT COUNT(*) n FROM image_assets WHERE status=?').get('generating').n)throw new Error('Image generation is still running');db.backup(process.argv[2]).then(()=>db.close()).catch(e=>{console.error(e.message);process.exitCode=1});"
   & node -e $databaseBackup (Join-Path $targetRoot 'data\app.db') (Join-Path $backupRoot 'app.db')
   if ($LASTEXITCODE -ne 0) { throw 'SQLite 백업 실패' }
 } finally { Pop-Location }

@@ -7,6 +7,7 @@ const { config } = require('../lib/config');
 const { nowIso } = require('../lib/utils');
 const { generateImage } = require('./openaiService');
 const { getGeneration, updateGeneration } = require('./generationService');
+const { assertUpdatePolicy } = require('./updatePolicyService');
 
 function safeSlug(value) {
   return String(value || '').replace(/[^a-z0-9-]/g, '');
@@ -51,11 +52,13 @@ function recentArchetypeCounts(limit = 10) {
 
 function chooseArchetype({ generationId = null, slot = 'section', context = '', requested = '' } = {}) {
   const valid = new Set(IMAGE_ARCHETYPES.map((item) => item.id));
+  // Content intent outranks visual variety. A second close-up must not silently
+  // turn into a comparison scene just because the first slot used the same style.
+  if (valid.has(requested)) return requested;
   const used = generationId ? new Set(db.prepare(`
     SELECT archetype FROM image_assets
     WHERE generation_id=? AND status='active' AND archetype IS NOT NULL AND slot<>?
   `).all(generationId, slot).map((row) => row.archetype)) : new Set();
-  if (valid.has(requested) && !used.has(requested)) return requested;
   const preferred = preferredArchetype(context, slot);
   const counts = recentArchetypeCounts();
   return IMAGE_ARCHETYPES
@@ -71,6 +74,21 @@ function archetypePrompt(archetype) {
   return `${item.scene}. Surface and lighting: ${item.palette}.`;
 }
 
+function composeImagePrompt(basePrompt, archetype) {
+  let base = String(basePrompt || '').trim();
+  // Old planned/regenerated prompts may already contain one or several scene
+  // additions. Replace only known generated additions, preserving authored text.
+  for (const item of IMAGE_ARCHETYPES) {
+    for (const fragment of [archetypePrompt(item.id), `${item.scene}.`, `Surface and lighting: ${item.palette}.`]) {
+      base = base.split(fragment).join(' ');
+    }
+  }
+  const quality = 'Premium editorial jewelry photography for a Korean jewelry knowledge guide with accurate, realistic materials.';
+  const exclusions = 'No logos, no text, no letters, no watermark, no collage, and no UI frame.';
+  base = base.split(quality).join(' ').split(exclusions).join(' ').replace(/\s+/g, ' ').trim();
+  return [base, archetypePrompt(archetype), quality, exclusions].join(' ');
+}
+
 async function optimizeWebp(buffer, targetPath) {
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
   const info = await sharp(buffer).rotate().webp({ quality: 86, effort: 5 }).toFile(targetPath);
@@ -82,6 +100,10 @@ async function generateSlot(generationId, { slot = 'hero', sectionIndex = null, 
   const generation = getGeneration(generationId);
   const draft = JSON.parse(JSON.stringify(generation?.humanized || generation?.draft || null));
   if (!draft) throw new Error('이미지를 연결할 원고가 없습니다');
+  const policy = assertUpdatePolicy(generation, { draft, phase: 'image' });
+  if (policy && (slot === 'hero' ? policy.scope.preserveHero ?? policy.scope.preserveImages : policy.scope.preserveBodyImages ?? policy.scope.preserveImages)) {
+    throw Object.assign(new Error('이 수정 범위는 기존 이미지를 보존합니다. 이미지 변경을 포함한 새 계획을 확정한 뒤 생성해 주세요.'), { status: 422, code: 'IMAGE_SCOPE_PROTECTED' });
+  }
   if (slot !== 'hero' && !/^section-\d+$/.test(slot)) throw new Error('이미지 슬롯 형식이 올바르지 않습니다');
   if (slot !== 'hero') {
     sectionIndex = Number(sectionIndex);
@@ -93,12 +115,7 @@ async function generateSlot(generationId, { slot = 'hero', sectionIndex = null, 
   const selectedArchetype = chooseArchetype({
     generationId, slot, context: `${generation.topic} ${slot === 'hero' ? draft.title : draft.sections[sectionIndex]?.title}`, requested: archetype || plan.archetype,
   });
-  const finalPrompt = [
-    basePrompt,
-    archetypePrompt(selectedArchetype),
-    'Premium editorial jewelry photography for a Korean jewelry knowledge guide with accurate, realistic materials.',
-    'No logos, no text, no letters, no watermark, no collage, and no UI frame.',
-  ].join(' ');
+  const finalPrompt = composeImagePrompt(basePrompt, selectedArchetype);
   const stamp = nowIso();
   const insert = db.prepare(`
     INSERT INTO image_assets (generation_id, slot, section_index, prompt, alt_text, caption, archetype, status, created_at, updated_at)
@@ -149,6 +166,6 @@ function listImages(generationId) {
 }
 
 module.exports = {
-  IMAGE_ARCHETYPES, preferredArchetype, recentArchetypeCounts, chooseArchetype, archetypePrompt,
+  IMAGE_ARCHETYPES, preferredArchetype, recentArchetypeCounts, chooseArchetype, archetypePrompt, composeImagePrompt,
   bufferHash, hashedFileName, generateSlot, listImages, optimizeWebp,
 };

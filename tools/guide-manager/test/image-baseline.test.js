@@ -42,3 +42,22 @@ test('콘텐츠 기준선은 GA4와 GSC 측정 기간을 섞지 않고 보존한
   assert.ok(snapshot.ga4.periodDays > 0);
   assert.notEqual(snapshot.gsc.importId, snapshot.ga4.importId);
 });
+
+test('검수에서 뺀 이미지 원본은 보관하되 게시 변경 묶음에는 포함하지 않는다', () => {
+  const { db } = require('../server/lib/db');
+  const { config } = require('../server/lib/config');
+  const { makeDraft } = require('./fixture');
+  const { buildDesiredFiles } = require('../server/services/applyService');
+  const stamp = new Date().toISOString();
+  const id = Number(db.prepare(`INSERT INTO generations(kind,topic,status,input_json,created_at,updated_at) VALUES('new','image selection fixture','draft','{}',?,?)`).run(stamp,stamp).lastInsertRowid);
+  const used='/Image/guide/release-used-hero.webp', unused='/Image/guide/release-unused-body.webp';
+  try {
+    const insert=db.prepare(`INSERT INTO image_assets(generation_id,slot,prompt,local_path,public_path,status,created_at,updated_at) VALUES(?,?,'fixture',?,?,'active',?,?)`);
+    insert.run(id,'hero',path.join(config.dataDir,'images',String(id),'hero.webp'),used,stamp,stamp);
+    insert.run(id,'section-2',path.join(config.dataDir,'images',String(id),'body.webp'),unused,stamp,stamp);
+    const draft=makeDraft({slug:'release-image-selection'}); draft.heroImage.path=used;
+    const desired=buildDesiredFiles({id,kind:'new',draft,input:{}});
+    assert.deepEqual(desired.images.map(image=>image.publicPath),[used]);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM image_assets WHERE generation_id=?').get(id).n,2);
+  } finally { db.prepare('DELETE FROM generations WHERE id=?').run(id); }
+});

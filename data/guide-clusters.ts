@@ -85,6 +85,8 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/emerald-oil-treatment-care', label: '에메랄드 오일 처리', description: '처리와 세척 주의' },
       { to: '/guide/sapphire-quality-factors', label: '사파이어 등급', description: '색·투명도·컷·처리' },
           { to: '/guide/birthstone-price-factors-guide', label: '탄생석 가격 순위가 달라지는 주요 기준', description: '탄생석은 종류만으로 가격이 정해지지 않습니다' },
+      { to: '/guide/ruby-heat-treatment-buying-checklist', label: '루비 가열·비가열, 구매 전 확인할 것', description: '루비 가열·비가열과 유리 충전의 차이를 확인하세요' },
+      { to: '/guide/zircon-vs-cubic-zirconia', label: '지르콘과 큐빅 지르코니아 차이', description: '지르콘과 큐빅 지르코니아는 이름이 비슷하지만 재료와 관리법이 다릅니다' },
 ],
   },
   // 아래 3개 클러스터는 기존 클러스터보다 뒤에 있어야 한다 —

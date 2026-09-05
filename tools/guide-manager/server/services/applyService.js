@@ -7,7 +7,7 @@ const { config } = require('../lib/config');
 const { fileHash, nowIso, sha256 } = require('../lib/utils');
 const { gitExecutable, nodeExecutable, npmCliPath } = require('../lib/executables');
 const { siteRoot, guideIndexPath, getGuide, scanInventory, PROTECTED_SLUGS, parseGuidePosts } = require('./inventoryService');
-const { getGeneration, updateGeneration, assertDraftImages } = require('./generationService');
+const { getGeneration, updateGeneration, assertDraftImages, assertSelectedEvidence } = require('./generationService');
 const { renderNewGuide, patchExistingGuide, patchGuideIndex } = require('./rendererService');
 const { lintDraft } = require('./lintService');
 const { reconcileGa4Mappings } = require('./analyticsService');
@@ -55,14 +55,15 @@ function buildDesiredFiles(generation) {
   const currentPage = fs.existsSync(pagePath) ? fs.readFileSync(pagePath, 'utf8') : '';
   if (isNew && currentPage) throw new Error(`이미 존재하는 slug입니다: ${draft.slug}`);
   if (!isNew && !currentPage) throw new Error(`수정할 페이지 파일이 없습니다: ${pagePath}`);
-  const pageContent = isNew ? renderNewGuide(draft) : patchExistingGuide(currentPage, draft);
+  const pageContent = isNew ? renderNewGuide(draft) : patchExistingGuide(currentPage, draft, { policy: require('./updatePolicyService').policyFor(generation) });
   const currentIndex = fs.readFileSync(indexPath, 'utf8');
   const indexContent = patchGuideIndex(currentIndex, draft, { isNew });
   const clusterChange = isNew ? buildClusterChange(draft, generation.input?.topicDecision) : null;
+  const usedImages = new Set([draft.heroImage, ...(draft.sections || []).map(section => section.image)].filter(Boolean).map(image => image.path));
   const images = db.prepare(`
     SELECT slot, local_path AS localPath, public_path AS publicPath FROM image_assets
     WHERE generation_id=? AND status='active' ORDER BY id
-  `).all(generation.id).map((row) => ({ ...row, targetPath: path.join(root, 'public', row.publicPath.replace(/^\//, '').replace(/\//g, path.sep)) }));
+  `).all(generation.id).filter(row => usedImages.has(row.publicPath)).map((row) => ({ ...row, targetPath: path.join(root, 'public', row.publicPath.replace(/^\//, '').replace(/\//g, path.sep)) }));
   for (const image of images) {
     if (!/^\/Image\/guide\/[a-zA-Z0-9_-]+\.webp$/.test(image.publicPath || '')) throw new Error('이미지 경로가 허용 범위를 벗어났습니다');
     const relative = path.relative(path.join(config.dataDir, 'images'), image.localPath);
@@ -100,12 +101,15 @@ function validateHashes(generation, desired) {
   const indexPath = guideIndexPath();
   const entry = generation.target_slug ? parseGuidePosts(fs.readFileSync(indexPath, 'utf8')).find(post => post.slug === generation.target_slug) : null;
   const unchangedEntry = generation.input.baseIndexEntryHash && entry && sha256(entry.block) === generation.input.baseIndexEntryHash;
-  if (fileHash(indexPath) !== generation.input.baseIndexHash && !unchangedEntry) {
+  // A new page is inserted into the current index, not an old whole-file snapshot.
+  // Unrelated manager publications therefore do not invalidate its paid draft/images.
+  // Existing slug collisions and uncommitted external edits are checked separately.
+  if (!desired.isNew && fileHash(indexPath) !== generation.input.baseIndexHash && !unchangedEntry) {
     const error = new Error('가이드 목록이 작업 시작 후 변경됐습니다. 새 작업을 만들어 최신 목록 기준으로 다시 검토해 주세요');
     error.status = 409;
     throw error;
   }
-  if (desired.clusterSuggestion && generation.input.baseClusterHash && fileHash(clusterFilePath()) !== generation.input.baseClusterHash) {
+  if (!desired.isNew && desired.clusterSuggestion && generation.input.baseClusterHash && fileHash(clusterFilePath()) !== generation.input.baseClusterHash) {
     const error = new Error('가이드 클러스터가 작업 시작 후 변경됐습니다. 최신 클러스터 기준으로 새 작업을 만들어 주세요');
     error.status = 409;
     throw error;
@@ -188,7 +192,9 @@ async function apply(id) {
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
   if (generation.status !== 'approved') throw new Error('먼저 원고와 이미지를 검수하고 승인해 주세요');
   const draft = generation.humanized || generation.draft;
-  const lint = lintDraft(draft, { targetSlug: generation.target_slug, requireImage: true, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial });
+  require('./updatePolicyService').assertUpdatePolicy(generation, { draft, phase: 'apply' });
+  assertSelectedEvidence(generation, draft);
+  const lint = lintDraft(draft, { targetSlug: generation.target_slug, generationId: generation.id, requireImage: true, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial });
   if (lint.blocking) throw new Error('차단 검사가 남아 있어 반영할 수 없습니다');
   assertDraftImages(generation);
   const baseline = metricSnapshot(draft.slug);

@@ -6,12 +6,15 @@ const { config } = require('../lib/config');
 const { nowIso } = require('../lib/utils');
 const { compareProtectedFacts, findUnexpectedHan } = require('./lintService');
 const { getGeneration, updateGeneration } = require('./generationService');
+const { policyFor, needsHumanizer, assertUpdatePolicy } = require('./updatePolicyService');
+const jobs = require('./jobService');
 const log = require('../lib/logger');
 
 const PROFILE = 'v6_engine';
 const TARGET_VERSION = 'humanizing-engine-v9-registerlock';
 const CHUNK_LIMIT = 650;
 let starting = null;
+function requestSignal(timeoutMs) { return AbortSignal.any([AbortSignal.timeout(timeoutMs), jobs.getJobSignal()].filter(Boolean)); }
 
 function baseUrl() {
   return getSetting('humanizer_url', config.humanizerUrl).replace(/\/$/, '');
@@ -32,6 +35,7 @@ async function health() {
 }
 
 async function startBackend() {
+  jobs.throwIfCancelled();
   if (starting) return starting;
   starting = (async () => {
     const dir = backendDir();
@@ -49,7 +53,7 @@ async function startBackend() {
     });
     child.unref();
     for (let i = 0; i < 15; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await jobs.wait(2000);
       const state = await health();
       if (state.up) return state;
     }
@@ -64,7 +68,7 @@ async function ensureUp() {
   return state.up ? state : startBackend();
 }
 
-function chunksFromDraft(draft) {
+function chunksFromDraft(draft, { includeEntry = () => true } = {}) {
   const entries = [{ key: 'lead', text: draft.lead }];
   (draft.sections || []).forEach((section, sectionIndex) => {
     (section.paragraphs || []).forEach((text, paragraphIndex) => entries.push({ key: `section:${sectionIndex}:${paragraphIndex}`, text }));
@@ -73,6 +77,7 @@ function chunksFromDraft(draft) {
   let current = [];
   let length = 0;
   for (const entry of entries) {
+    if (!entry.text || !includeEntry(entry)) continue;
     const nextLength = length + (current.length ? 2 : 0) + entry.text.length;
     if (current.length && nextLength > CHUNK_LIMIT) {
       groups.push(current);
@@ -86,7 +91,24 @@ function chunksFromDraft(draft) {
   return groups;
 }
 
+// A conservative edit gate, not a semantic proof. Sentences making material,
+// treatment, safety or conditional claims stay verbatim until source review.
+const CLAIM_RISK = /\d|https?:|진주|산호|오팔|에메랄드|터키석|호박|다이아|루비|사파이어|도금|백금|합금|니켈|순금|은\s*제품|초음파|세척|세정|연마|표백|스팀|열처리|알레르기|금지|않|없|아니|불가|가능|해야|경우|조건|따라|(?:하면|해도|할\s*때)|\b(?:안|못)\s/;
+function claimSentences(text) {
+  return String(text || '').split(/(?<=[.!?。])\s+|\n+/).map(value => value.trim().replace(/\s+/g, ' ')).filter(value => value && CLAIM_RISK.test(value));
+}
+function validateHumanizedChunk(before, after) {
+  const facts = compareProtectedFacts(before, after);
+  const priorClaims = claimSentences(before);
+  const nextClaims = claimSentences(after);
+  const claimPass = JSON.stringify(priorClaims) === JSON.stringify(nextClaims);
+  return { ...facts, pass: facts.pass && claimPass, tokenPass: facts.pass, claimPass,
+    conservativeClaimGate: true, limitation: '보호 문장 변경을 거부하는 보수적 검사이며 일반 문장의 의미·출처 일치를 증명하지 않습니다.',
+    changedClaimCount: claimPass ? 0 : Math.max(priorClaims.length, nextClaims.length) };
+}
+
 async function submit(text, memo) {
+  jobs.throwIfCancelled();
   const response = await fetch(`${baseUrl()}/transform`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -103,7 +125,7 @@ async function submit(text, memo) {
       evidence: false,
       length: 'keep',
     }),
-    signal: AbortSignal.timeout(15000),
+    signal: requestSignal(15000),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.ok || !data.jobId) throw new Error(`Humanizer 제출 실패 (${response.status}): ${data.error || 'unknown'}`);
@@ -121,8 +143,8 @@ function engineMeta(result) {
 async function poll(jobId, estSec) {
   const deadline = Date.now() + Math.max(300000, Number(estSec || 60) * 3000);
   while (Date.now() < deadline) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    const response = await fetch(`${baseUrl()}/transform/${jobId}`, { signal: AbortSignal.timeout(10000) });
+    await jobs.wait(3000);
+    const response = await fetch(`${baseUrl()}/transform/${jobId}`, { signal: requestSignal(10000) });
     const data = await response.json().catch(() => ({}));
     if (response.status === 404) throw new Error('Humanizer 작업이 유실됐습니다');
     if (data.status === 'done') {
@@ -149,8 +171,25 @@ function applyChunk(draft, group, output) {
 }
 
 async function humanizeGeneration(id) {
+  jobs.throwIfCancelled();
   const generation = getGeneration(id);
   if (!generation?.draft) throw new Error('휴먼라이징할 초안이 없습니다');
+  assertUpdatePolicy(generation, { draft: generation.draft, phase: 'humanize' });
+  if (!needsHumanizer(generation)) {
+    const next = updateGeneration(id, { humanized_json: JSON.stringify(generation.draft), status: 'humanized', error: null });
+    return { ...next, humanizeWarnings: [], humanizeSkipped: '선택 범위에 문장 변경이 없어 기존 원문을 유지했습니다.' };
+  }
+  const policy = policyFor(generation);
+  const groups = chunksFromDraft(generation.draft, { includeEntry: entry => {
+    if (!policy) return true;
+    if (entry.key === 'lead') return policy.scope.fields.includes('lead') && entry.text !== policy.baselineDraft.lead;
+    const [, sectionIndex, paragraphIndex] = entry.key.split(':').map(Number);
+    return policy.scope.fields.includes('sections') && entry.text !== policy.baselineDraft.sections[sectionIndex]?.paragraphs[paragraphIndex];
+  } });
+  if (!groups.length) {
+    const next = updateGeneration(id, { humanized_json: JSON.stringify(generation.draft), status: 'humanized', error: null });
+    return { ...next, humanizeWarnings: [], humanizeSkipped: '변경된 설명 문단이 없어 원문을 유지했습니다.' };
+  }
   await ensureUp();
   updateGeneration(id, { status: 'humanizing', error: null });
   const resultDraft = JSON.parse(JSON.stringify(generation.draft));
@@ -162,10 +201,10 @@ async function humanizeGeneration(id) {
     '문단 수와 사실 범위를 유지하고 문장 연결과 표현만 자연스럽게 다듬으세요.',
     '가격·제작 기간·수리 가능 여부를 새로 단정하지 마세요.',
   ].join(' ');
-  const groups = chunksFromDraft(resultDraft);
   const warnings = [];
   try {
     for (const group of groups) {
+      jobs.throwIfCancelled();
       const before = group.map((entry) => entry.text).join('\n\n');
       if (before.length < 200) {
         warnings.push('V9 최소 길이 미만 문단은 원문을 유지했습니다.');
@@ -179,13 +218,13 @@ async function humanizeGeneration(id) {
       try {
         const job = await submit(before, memo);
         const transformed = await poll(job.jobId, job.estSec);
-        const facts = compareProtectedFacts(before, transformed.outputText);
+        const facts = validateHumanizedChunk(before, transformed.outputText);
         const countPass = transformed.outputText.split(/\n\n+/).filter((x) => x.trim()).length === group.length;
         const unexpectedHan = findUnexpectedHan(transformed.outputText);
         const validation = { ...facts, paragraphCountPass: countPass, scriptPass: unexpectedHan.length === 0, unexpectedHan };
         if (!facts.pass || unexpectedHan.length || !countPass || !applyChunk(resultDraft, group, transformed.outputText)) {
           const reason = !facts.pass
-            ? '보호 사실 변경을 감지해 해당 문단을 원문으로 복원했습니다.'
+            ? '수치·소재·관리 방법·금지·조건을 포함한 보호 문장 변경을 감지해 원문으로 복원했습니다. 의미를 승인한 결과가 아니므로 표현 변경은 출처와 함께 직접 검토해 주세요.'
             : unexpectedHan.length
               ? `중국어·비정상 한자 혼입(${unexpectedHan.slice(0, 3).join(', ')})을 감지해 해당 문단을 원문으로 복원했습니다.`
               : '문단 구조 변경을 감지해 해당 문단을 원문으로 복원했습니다.';
@@ -198,9 +237,12 @@ async function humanizeGeneration(id) {
           .run(transformed.version, transformed.outputText, JSON.stringify(validation), run.lastInsertRowid);
       } catch (error) {
         db.prepare(`UPDATE humanize_runs SET status='error', error=? WHERE id=?`).run(error.message, run.lastInsertRowid);
+        jobs.throwIfCancelled();
         warnings.push(`일부 문단 Humanizer 실패로 원문 유지: ${error.message}`);
       }
     }
+    jobs.throwIfCancelled();
+    assertUpdatePolicy(generation, { draft: resultDraft, phase: 'humanize' });
     const next = updateGeneration(id, { humanized_json: JSON.stringify(resultDraft), status: 'humanized', error: warnings.length ? warnings.join(' ') : null });
     return { ...next, humanizeWarnings: warnings };
   } catch (error) {
@@ -209,4 +251,4 @@ async function humanizeGeneration(id) {
   }
 }
 
-module.exports = { PROFILE, TARGET_VERSION, health, startBackend, ensureUp, chunksFromDraft, compareProtectedFacts, humanizeGeneration };
+module.exports = { PROFILE, TARGET_VERSION, health, startBackend, ensureUp, chunksFromDraft, compareProtectedFacts, validateHumanizedChunk, humanizeGeneration };

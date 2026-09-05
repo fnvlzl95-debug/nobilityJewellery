@@ -9,6 +9,9 @@ const { lintDraft } = require('./lintService');
 const { getGuide, guideIndexPath, listGuides, siteRoot, parseGuidePosts } = require('./inventoryService');
 const { jaccard } = require('./opportunityService');
 const { stripSectionNumbering, stripDraftSectionNumbering } = require('../lib/sectionTitle');
+const { assertUniqueIntent } = require('./intentService');
+const { assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor } = require('./updatePolicyService');
+const jobs = require('./jobService');
 
 function parseGeneration(row) {
   if (!row) return null;
@@ -93,6 +96,8 @@ function createGeneration(input) {
   if (input.targetSlug && !target) throw Object.assign(new Error('수정할 가이드를 찾을 수 없습니다'), { status: 404 });
   const topic = String(input.topic || target?.keyword || '').trim();
   if (!topic) throw new Error('주제를 입력해 주세요');
+  const updatePolicy = target ? assertCreateUpdatePolicy(target.slug, input) : null;
+  assertUniqueIntent({ topic, primaryKeyword: input.topicDecision?.primaryKeyword || topic, slug: input.slug || target?.slug, workingTitle: input.topicDecision?.workingTitle }, { targetSlug: target?.slug });
   const stamp = nowIso();
   const payload = {
     category: input.category || target?.category || '선택',
@@ -106,13 +111,18 @@ function createGeneration(input) {
     topicDecision: input.topicDecision || null,
     auditId: input.auditId ? Number(input.auditId) : null,
     auditPlan: input.auditPlan && typeof input.auditPlan === 'object' ? input.auditPlan : null,
+    reviewedContextFingerprint: input.reviewedContextFingerprint || null,
+    updateScope: input.updateScope || (target && !input.auditPlan ? 'sources' : null),
+    updatePolicy,
     automationRequested: !!input.automationRequested,
   };
   const result = db.prepare(`
     INSERT INTO generations (target_slug, kind, topic, status, input_json, base_source_hash, created_at, updated_at)
     VALUES (?, ?, ?, 'idea', ?, ?, ?, ?)
-  `).run(target?.slug || null, target ? 'update' : 'new', topic, JSON.stringify(payload), target?.sourceHash || null, stamp, stamp);
-  return getGeneration(Number(result.lastInsertRowid));
+  `).run(target?.slug || null, target ? 'update' : 'new', topic, JSON.stringify(payload), updatePolicy?.sourceHash || target?.sourceHash || null, stamp, stamp);
+  const id = Number(result.lastInsertRowid);
+  jobs.claimGeneration(id);
+  return getGeneration(id);
 }
 
 function updateGeneration(id, fields) {
@@ -161,6 +171,7 @@ function reclassifySources(bundle) {
 async function researchOfficial(id, { emphasizeOfficial = false } = {}) {
   const generation = getGeneration(id);
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
+  assertUpdatePolicy(generation);
   const result = await completeJson({
     generationId: id,
     stage: emphasizeOfficial ? 'official_research_retry' : 'official_research',
@@ -194,7 +205,9 @@ async function researchOfficial(id, { emphasizeOfficial = false } = {}) {
 function selectSources(id, selectedUrls, { allowWithoutOfficial = null } = {}) {
   const generation = getGeneration(id);
   if (!generation?.research?.official) throw new Error('먼저 공식 출처 조사를 실행해 주세요');
-  if (!(selectedUrls || []).length) throw new Error('원고 근거로 쓸 출처를 최소 1개 선택해 주세요');
+  if (!Array.isArray(selectedUrls) || !selectedUrls.length) throw Object.assign(new Error('원고 근거로 쓸 출처를 최소 1개 선택해 주세요'), { status: 422, code: 'SOURCE_SELECTION_REQUIRED' });
+  const available = new Set(generation.research.official.sources.map(source => source.url));
+  if (selectedUrls.some(url => typeof url !== 'string' || !available.has(url))) throw Object.assign(new Error('조사 결과에 없는 출처 URL입니다. 최신 출처 목록에서 다시 선택해 주세요.'), { status: 422, code: 'SOURCE_NOT_FOUND' });
   const selected = new Set(selectedUrls || []);
   generation.research.official.sources = generation.research.official.sources.map((source) => ({ ...source, selected: selected.has(source.url) }));
   const fields = { research_json: JSON.stringify(generation.research), status: 'researched' };
@@ -219,7 +232,7 @@ function blockingSummary(lint) {
 }
 
 function lintOptions(generation) {
-  return { targetSlug: generation.target_slug, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial };
+  return { targetSlug: generation.target_slug, generationId: generation.id, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial };
 }
 
 function sourceBundle(generation) {
@@ -230,10 +243,26 @@ function sourceBundle(generation) {
     throw new Error('선택한 출처 중 공식·권위 출처가 없습니다. ‘출처’ 탭에서 다시 조사하거나, 보조 출처로 진행하도록 확정해 주세요.');
   }
   const selectedUrls = new Set(selected.map((source) => source.url));
+  for (const source of selected) {
+    if (!(official.claims || []).some(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url))) throw Object.assign(new Error(`선택한 출처에 연결된 조사 근거가 없습니다. 근거가 있는 출처를 다시 선택해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_CLAIM_REQUIRED' });
+  }
   return {
     sources: selected,
-    claims: (official.claims || []).filter((claim) => claim.sourceUrls.some((url) => selectedUrls.has(url))),
+    claims: (official.claims || []).map(claim => ({ ...claim, sourceUrls: (claim.sourceUrls || []).filter(url => selectedUrls.has(url)) })).filter(claim => claim.sourceUrls.length),
   };
+}
+
+function assertSelectedEvidence(generation, draft) {
+  const original = policyFor(generation)?.baselineDraft.sources || [];
+  const selected = new Set((generation.research?.official?.sources || []).filter(source => source.selected).map(source => source.url));
+  const claims = generation.research?.official?.claims || [];
+  const publicIdentity = source => JSON.stringify({ label: source.label, url: source.url, note: source.note });
+  for (const source of draft.sources || []) {
+    if (original.some(prior => publicIdentity(prior) === publicIdentity(source))) continue;
+    if (!selected.has(source.url)) throw Object.assign(new Error(`신규·변경 출처를 출처 탭에서 먼저 선택해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_NOT_SELECTED' });
+    if (!claims.some(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url))) throw Object.assign(new Error(`출처와 연결된 확인 근거가 없습니다. 해당 문서에서 뒷받침하는 내용을 확인한 뒤 조사 자료를 보완해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_CLAIM_REQUIRED' });
+  }
+  return { checked: true, limitation: '선택한 문서와 조사 주장 사이 연결 검사이며 본문 주장의 의미·정확성을 자동으로 증명하지 않습니다.' };
 }
 
 function generationPrompt(generation, evidence, { repairDraft = null, errors = [] } = {}) {
@@ -248,6 +277,7 @@ function generationPrompt(generation, evidence, { repairDraft = null, errors = [
     `승인 출처와 근거:\n${JSON.stringify(evidence, null, 2)}`,
     `실제로 존재하는 관련 링크 후보:\n${JSON.stringify(relatedCandidates(generation), null, 2)}`,
     generation.input.auditPlan ? `사용자가 진단 화면에서 확정한 수정 계획(활성 항목만 구현하고 보존 항목은 유지):\n${JSON.stringify(generation.input.auditPlan, null, 2)}` : '',
+    generation.input.updatePolicy ? `서버가 허용한 변경 필드(나머지는 원문에서 보존):\n${JSON.stringify(generation.input.updatePolicy.scope)}` : '',
     existing ? `현재 페이지 원문(구조와 유효 사실을 보존):\n${existing}` : '',
     repairDraft ? `수정할 이전 초안:\n${JSON.stringify(repairDraft, null, 2)}` : '',
     errors.length ? `반드시 해결할 검사 오류:\n${errors.join('\n')}` : '',
@@ -265,6 +295,7 @@ const writerInstructions = [
   'quickAnswers는 정확히 3개, sections는 3~7개, cautions는 2개 이상, FAQ는 3~5개로 만드세요.',
   '관련 링크는 후보에서만 고르고 최소 3개를 넣으세요.',
   '기존 글 수정 작업에 확정 수정 계획이 있으면 enabled=true 항목을 우선 구현하고 preserve 항목은 유지하세요.',
+  '비교표가 필요한 본문은 sections[].table에 headers와 rows로 작성하세요. 최대 6열·10행이고 각 행 셀 수는 제목 열 수와 같아야 합니다. 표가 없으면 table은 null입니다.',
   '과장, 보장, 단정 대신 제품 상태와 상담 시점에 따른 조건을 분명히 쓰세요.',
   'heroImage.path와 본문 image.path는 빈 문자열로 두고, 실제 귀금속 사진을 만들 수 있는 구체적인 영문 prompt를 작성하세요. prompt에는 한글을 넣지 마세요.',
   '이미지 alt는 제목을 복사하지 말고 실제로 보이는 귀금속 종류·도구·배치·상황을 한국어로 구체적으로 묘사하세요.',
@@ -300,7 +331,7 @@ function normalizeDraft(generation, draft, evidence) {
   for (const source of evidence.sources) {
     if (!draft.sources.some((item) => item.url === source.url)) draft.sources.push({ label: source.label, url: source.url, note: source.reason, official: !!source.official });
   }
-  return draft;
+  return enforceDraftScope(generation, draft);
 }
 
 async function callWriter(generation, { model, stage, fallbackReason = null, repairDraft = null, errors = [] }) {
@@ -320,6 +351,15 @@ async function callWriter(generation, { model, stage, fallbackReason = null, rep
 }
 
 async function executeWriterPolicy({ generation, forceModel = null, write = callWriter, inspect = lintDraft }) {
+  const scope = generation.input?.updatePolicy?.scope;
+  if (generation.kind === 'update' && scope?.fields.every(field => ['sources', 'sourceNote'].includes(field))) {
+    const evidence = sourceBundle(generation);
+    const draft = enforceDraftScope(generation, {
+      sources: evidence.sources.map(source => ({ label: source.label, url: source.url, note: source.reason || source.note || '', official: !!source.official })),
+      sourceNote: generation.input.updatePolicy.baselineDraft.sourceNote || '소재와 관리 기준을 확인할 때 참고할 자료입니다. 제품 상태에 따라 적용 범위가 달라질 수 있습니다.',
+    });
+    return { draft, lint: inspect(draft, lintOptions(generation)) };
+  }
   if (forceModel === 'gpt-5.6-terra') {
     const draft = await write(generation, { model: 'gpt-5.6-terra', stage: 'manual_terra' });
     return { draft, lint: inspect(draft, lintOptions(generation)) };
@@ -346,6 +386,8 @@ async function executeWriterPolicy({ generation, forceModel = null, write = call
 async function generateDraft(id, { forceModel = null } = {}) {
   let generation = getGeneration(id);
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
+  assertUpdatePolicy(generation);
+  assertUniqueIntent({ topic: generation.topic, primaryKeyword: generation.input?.topicDecision?.primaryKeyword || generation.topic, slug: generation.input?.desiredSlug }, { targetSlug: generation.target_slug, generationId: generation.id });
   updateGeneration(id, { status: 'generating', error: null });
   try {
     const { draft, lint } = await executeWriterPolicy({ generation, forceModel });
@@ -365,6 +407,8 @@ function saveDraft(id, draft) {
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
   if (!draft || typeof draft !== 'object' || Array.isArray(draft)) throw Object.assign(new Error('원고 객체가 필요합니다'), { status: 422 });
   const normalizedDraft = stripDraftSectionNumbering(draft);
+  assertUpdatePolicy(generation, { draft: normalizedDraft, phase: 'save' });
+  assertSelectedEvidence(generation, normalizedDraft);
   const existing = generation.target_slug ? getGuide(generation.target_slug) : null;
   normalizedDraft.publishedAt = isoDate(normalizedDraft.publishedAt) || isoDate(existing?.publishedAt) || koreaDate();
   normalizedDraft.updatedAt = isoDate(normalizedDraft.updatedAt) || '';
@@ -376,6 +420,8 @@ function lintGeneration(id, { requireImage = false } = {}) {
   const generation = getGeneration(id);
   const draft = generation?.humanized || generation?.draft;
   if (!draft) throw new Error('검사할 원고가 없습니다');
+  assertUpdatePolicy(generation, { draft, phase: 'lint' });
+  assertSelectedEvidence(generation, draft);
   const lint = lintDraft(draft, { ...lintOptions(generation), requireImage });
   return updateGeneration(id, { lint_json: JSON.stringify(lint), status: lint.blocking ? 'review' : generation.status, error: lint.blocking ? '차단 검사를 확인하세요' : null });
 }
@@ -393,6 +439,9 @@ function approveGeneration(id) {
   const generation = getGeneration(id);
   const draft = generation?.humanized || generation?.draft;
   if (!draft) throw new Error('승인할 원고가 없습니다');
+  assertUpdatePolicy(generation, { draft, phase: 'approve' });
+  assertSelectedEvidence(generation, draft);
+  assertUniqueIntent({ topic: generation.topic, primaryKeyword: draft.keyword, slug: draft.slug, workingTitle: draft.title }, { targetSlug: generation.target_slug, generationId: generation.id });
   const lint = lintDraft(draft, { ...lintOptions(generation), requireImage: true });
   if (lint.blocking) {
     updateGeneration(id, { lint_json: JSON.stringify(lint), status: 'review', error: '차단 검사 또는 대표 이미지를 먼저 해결해 주세요' });
@@ -405,7 +454,7 @@ function approveGeneration(id) {
 }
 
 module.exports = {
-  assertDraftImages, parseGeneration, getGeneration, listGenerations, createGeneration, updateGeneration,
+  assertDraftImages, assertSelectedEvidence, parseGeneration, getGeneration, listGenerations, createGeneration, updateGeneration,
   deleteGeneration, deleteGenerations,
   researchOfficial, selectSources, generateDraft, saveDraft, lintGeneration, approveGeneration,
   officialDomain, writerInstructions, normalizeDraft, executeWriterPolicy,

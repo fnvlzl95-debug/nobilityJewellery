@@ -11,6 +11,7 @@ const humanizer = require('./services/humanizerService');
 const api = require('./routes/api');
 
 function initialize() {
+  require('./services/jobService').recoverInterrupted();
   db.prepare("UPDATE applies SET state='recovery_required', error='서버 재시작으로 반영이 중단됐습니다. 백업 복구 후 다시 반영해 주세요' WHERE state='running'").run();
   db.prepare("UPDATE generations SET status='review', approved_at=NULL, error='서버 재시작으로 작업이 중단됐습니다. 내용을 확인한 뒤 다시 실행해 주세요' WHERE status IN ('generating','humanizing')").run();
   db.prepare("UPDATE image_assets SET status='error', error='서버 재시작으로 이미지 생성이 중단됐습니다' WHERE status='generating'").run();
@@ -59,8 +60,8 @@ app.use((error, req, res, next) => {
 });
 
 const server = app.listen(config.port, config.host, () => log.info('server', `http://${config.host}:${config.port} 실행 중`));
-// 이미지 생성·자동 파이프라인은 수 분이 걸린다. 로컬 전용 도구이므로 Node 기본 5분 요청 타임아웃을 해제한다.
-server.requestTimeout = 0;
+// 긴 작업은 실행 ID를 반환하므로 HTTP 요청 자체는 제한합니다.
+server.requestTimeout = 60 * 1000;
 server.keepAliveTimeout = 75 * 1000;
 server.headersTimeout = 80 * 1000;
 server.on('error', (error) => {

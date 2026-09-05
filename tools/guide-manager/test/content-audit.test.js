@@ -71,17 +71,25 @@ test('보호 가이드 2개는 진단되지만 수정 작업 생성은 차단한
   assert.throws(() => audits.createUpdate('gold-one-don-gram'), /보호 가이드/);
 });
 
-test('사용자 수정 계획은 존재하는 내부 링크와 활성 변경만 저장한다', () => {
-  const slug = 'baby-ring-price';
-  const item = audits.detail(slug);
+test('사용자 수정 계획은 지원되는 활성 범위와 존재하는 내부 링크를 저장한다', () => {
+  const item = audits.report().rows.map(row => audits.detail(row.slug))
+    .find(candidate => !candidate.snapshot.guide.isCustom && !candidate.snapshot.guards.recentObservationHold);
+  assert.ok(item, '관찰기간이 끝난 일반 가이드가 필요합니다');
+  const slug = item.guideSlug;
   const saved = audits.savePlan(slug, {
     ...item.plan,
-    goal: 'CTR과 첫 화면 응답을 순서대로 개선',
-    changes: item.plan.changes.map((entry, index) => ({ ...entry, enabled: index === 0 })),
+    goal: '기존 본문을 유지하고 관리 기준의 출처만 보강',
+    changes: [
+      { id: 'verified-source', area: '출처', enabled: true, action: '공식 근거 보강', proposedState: '현재 본문에 해당하는 소재 관리 기준의 공식 출처를 추가합니다.' },
+      { id: 'disabled-snippet', area: '제목·설명', enabled: false, action: '제목 변경', proposedState: '선택하지 않은 제목 변경은 실행하지 않습니다.' },
+    ],
+    sectionPlan: [],
     internalLinks: [{ to: '/guide/gold-one-don-gram', reason: '중량 기준 연결' }, { to: '/missing', reason: '없는 링크' }],
   });
-  assert.equal(saved.plan.goal, 'CTR과 첫 화면 응답을 순서대로 개선');
-  assert.equal(saved.plan.internalLinks.length, 1);
+  assert.equal(saved.plan.goal, '기존 본문을 유지하고 관리 기준의 출처만 보강');
+  assert.deepEqual(saved.plan.internalLinks.map(link => link.to), ['/guide/gold-one-don-gram']);
+  assert.deepEqual(saved.plan.changes.filter(change => change.enabled).map(change => change.area), ['출처']);
+  assert.equal(saved.plan.changes.find(change => change.area === '제목·설명').enabled, false);
   assert.equal(saved.planStatus, 'edited');
 });
 
@@ -92,11 +100,14 @@ test('성과가 강한 스니펫은 Terra 제안이 있어도 제목 변경을 �
   mock.snapshot.guards.recentObservationHold = false;
   mock.snapshot.guards.keepSnippet = true;
   mock.snapshot.content.title = '현재 성과 제목';
+  mock.snapshot.content.description = '현재 성과를 유지할 검색 설명';
   const guarded = audits.applyServerGuards({
-    proposedTitle: '새 제목', risks: [], changes: [{ area: '제목·설명', enabled: true }, { area: '본문', enabled: true }],
+    proposedTitle: '새 제목', proposedDescription: '새 검색 설명', risks: [], changes: [{ area: '제목·설명', enabled: true }, { area: '본문', enabled: true }],
   }, mock);
   assert.equal(guarded.changes[0].enabled, false);
   assert.equal(guarded.changes[1].enabled, true);
+  assert.equal(guarded.proposedTitle, mock.snapshot.content.title);
+  assert.equal(guarded.proposedDescription, mock.snapshot.content.description);
   assert.match(guarded.risks[0], /서버 보호/);
 });
 
@@ -107,11 +118,14 @@ test('네이버 1~3위 페이지는 Google CTR과 별개로 제목 변경을 보
   mock.snapshot.guards.keepNaverSnippet = true;
   mock.snapshot.guards.naverRank = 1;
   mock.snapshot.content.title = '현재 제목';
+  mock.snapshot.content.description = '현재 네이버 검색 설명';
   const guarded = audits.applyServerGuards({
-    proposedTitle: '새 제목', risks: [], changes: [{ area: '제목·설명', enabled: true }, { area: '본문', enabled: true }],
+    proposedTitle: '새 제목', proposedDescription: '새 설명', risks: [], changes: [{ area: '제목·설명', enabled: true }, { area: '본문', enabled: true }],
   }, mock);
   assert.equal(guarded.changes[0].enabled, false);
   assert.equal(guarded.changes[1].enabled, true);
+  assert.equal(guarded.proposedTitle, mock.snapshot.content.title);
+  assert.equal(guarded.proposedDescription, mock.snapshot.content.description);
   assert.match(guarded.risks[0], /네이버 웹검색 1위/);
   const repeated = audits.applyServerGuards(guarded, mock);
   assert.equal(repeated.risks.filter((value) => /네이버 웹검색 1위/.test(value)).length, 1);
@@ -166,7 +180,7 @@ test('공식 출처가 없는 기존 글은 본문 보강과 분리해 출처 �
   assert.equal(audits.classify(snapshot), '출처 백필');
 });
 
-test('확정 계획으로 기존 글 수정 작업을 만들고 진단 지시를 전달한다', (t) => {
+test('최신 AI 진단이 없는 계획은 현재 지표 검토 확인과 정확한 fingerprint 후에만 수정 작업을 만든다', (t) => {
   const candidate = audits.report().rows
     .map((row) => audits.detail(row.slug))
     .find((item) => !item.snapshot.guide.isCustom
@@ -174,10 +188,22 @@ test('확정 계획으로 기존 글 수정 작업을 만들고 진단 지시를
       && item.plan.changes.some((entry) => entry.enabled));
   assert.ok(candidate, '현재 수정 가능한 비보호 가이드가 필요합니다');
   const slug = candidate.guideSlug;
-  const generation = audits.createUpdate(slug);
+  audits.savePlan(slug, {
+    ...candidate.plan,
+    changes: [{ id: 'source-reviewed', area: '출처', enabled: true, action: '공식 출처 보강', proposedState: '현재 글의 소재·관리 기준을 뒷받침하는 공식 출처를 보강합니다.' }],
+    sectionPlan: [],
+    preserve: ['기존에 확인된 사실을 유지합니다.'],
+  });
+  db.prepare("UPDATE content_audits SET status='measured' WHERE id=?").run(candidate.id);
+  const current = audits.detail(slug);
+  assert.throws(() => audits.createUpdate(slug), { code: 'AUDIT_REVIEW_REQUIRED' });
+  assert.throws(() => audits.createUpdate(slug, { confirmCurrent: true, contextFingerprint: 'outdated-context' }), { code: 'AUDIT_REVIEW_REQUIRED' });
+  const generation = audits.createUpdate(slug, { confirmCurrent: true, contextFingerprint: current.snapshot.contextFingerprint });
   t.after(() => db.prepare('DELETE FROM generations WHERE id=?').run(generation.id));
   assert.equal(generation.kind, 'update');
   assert.equal(generation.target_slug, slug);
   assert.ok(generation.input.auditId);
   assert.ok(generation.input.auditPlan.changes.some((entry) => entry.enabled));
+  assert.equal(generation.input.reviewedContextFingerprint, current.snapshot.contextFingerprint);
+  assert.deepEqual(generation.input.updatePolicy.scope.fields.sort(), ['sourceNote', 'sources']);
 });

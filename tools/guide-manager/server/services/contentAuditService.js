@@ -6,8 +6,9 @@ const { extractGuideContent } = require('./contentExtractorService');
 const { expectedCtr, jaccard, businessScore } = require('./opportunityService');
 const { completeJson } = require('./openaiService');
 const generations = require('./generationService');
+const { loadGa4Metrics, groupGa4BySlug } = require('./analyticsMetricsService');
 
-const ANALYSIS_VERSION = 'noblesse-content-audit-v4';
+const ANALYSIS_VERSION = 'noblesse-content-audit-v5';
 const CLASSIFICATIONS = ['기술 우선', 'CTR 개선', '출처 백필', '본문 보강', '내부링크 강화', '통합 검토', '유지'];
 const CHANGE_AREAS = ['기술', '제목·설명', '첫 화면', '본문', '내부링크', '출처', '통합'];
 const EVIDENCE_KEYS = new Set(['gsc', 'ga4', 'naver', 'content', 'technical', 'duplicate', 'coverage']);
@@ -197,9 +198,9 @@ function deterministicChanges(snapshot) {
     ['content'], '신뢰성·사실성', true,
   ));
   if (links.inboundCount < 2 || content.structure.relatedLinkCount < 3) changes.push(change(
-    'strengthen-internal-links', '내부링크', 'P2', '허브와 형제 가이드에서 문맥형 링크 보강',
+    'strengthen-internal-links', '내부링크', 'P2', '이 글의 관련 링크를 검색 여정에 맞게 보강',
     `관련 링크 ${content.structure.relatedLinkCount}개 · 다른 가이드에서 들어오는 링크 ${links.inboundCount}개`,
-    `관련 클러스터 허브와 형제 글에서 이 페이지로 연결되는 링크를 최소 2개 확보하고, 이 글의 관련 링크는 실제 존재 경로 ${links.recommended.slice(0, 4).map((item) => item.to).join(', ') || '후보 조사 필요'} 안에서 선택합니다.`,
+    `이 글에서 다음 질문에 답하는 관련 글로 연결합니다. 실제 존재 경로 ${links.recommended.slice(0, 4).map((item) => item.to).join(', ') || '후보 조사 필요'} 안에서 관련 링크를 선택하고 링크 설명에 이 글 다음에 읽을 이유를 씁니다. 클러스터 편입은 별도 검토 항목입니다.`,
     ['content'], '크롤링·노출', false,
   ));
   if (!changes.length) changes.push(change(
@@ -258,12 +259,8 @@ function buildSnapshots() {
   const queryRows = performance ? db.prepare(`
     SELECT query, clicks, impressions, ctr, position FROM gsc_queries WHERE import_id=? ORDER BY impressions DESC
   `).all(performance.id) : [];
-  const ga4Rows = ga4Import ? db.prepare(`
-    SELECT guide_slug AS slug, SUM(views) AS views, SUM(active_users) AS activeUsers, SUM(events) AS events,
-      CASE WHEN SUM(views)>0 THEN SUM(COALESCE(bounce_rate,0)*views)/SUM(views) ELSE AVG(bounce_rate) END AS bounceRate
-    FROM ga4_pages WHERE import_id=? AND guide_slug IS NOT NULL GROUP BY guide_slug
-  `).all(ga4Import.id) : [];
-  const ga4Map = new Map(ga4Rows.map((row) => [row.slug, row]));
+  const ga4Map = loadGa4Metrics(ga4Import?.id);
+  const ga4Rows = [...ga4Map.values()];
   const organicRows = organicImport ? db.prepare(`
     SELECT guide_slug AS slug, SUM(clicks) AS clicks, SUM(impressions) AS impressions,
       CASE WHEN SUM(impressions)>0 THEN CAST(SUM(clicks) AS REAL)/SUM(impressions) ELSE 0 END AS ctr,
@@ -275,6 +272,8 @@ function buildSnapshots() {
     FROM ga4_organic_pages WHERE import_id=? AND guide_slug IS NOT NULL GROUP BY guide_slug
   `).all(organicImport.id) : [];
   const organicMap = new Map(organicRows.map((row) => [row.slug, row]));
+  const safeOrganic = groupGa4BySlug(organicImport ? db.prepare('SELECT * FROM ga4_organic_pages WHERE import_id=? AND guide_slug IS NOT NULL').all(organicImport.id) : []);
+  for (const [slug, row] of organicMap) Object.assign(row, safeOrganic.get(slug));
   const naverWebRows = naverWebImport ? db.prepare(`
     SELECT normalized_url AS normalizedUrl, SUM(clicks) AS clicks, SUM(impressions) AS impressions,
       CASE WHEN SUM(impressions)>0 THEN CAST(SUM(clicks) AS REAL)/SUM(impressions) ELSE AVG(ctr) END AS ctr
@@ -286,14 +285,22 @@ function buildSnapshots() {
   const clusters = inventory.listClusters();
   const clusterByPath = new Map();
   for (const cluster of clusters) {
-    clusterByPath.set(pathOnly(cluster.hubPath), cluster);
-    for (const link of cluster.links || []) clusterByPath.set(pathOnly(link.to), cluster);
+    // Public findGuideClusterForPath uses the first matching cluster.
+    for (const value of [cluster.hubPath, ...(cluster.links || []).map(link => link.to)]) {
+      const key = pathOnly(value);
+      if (!clusterByPath.has(key)) clusterByPath.set(key, cluster);
+    }
   }
   const inbound = new Map(guides.map((guide) => [guide.path, []]));
   for (const guide of guides) {
-    for (const link of contents.get(guide.slug).relatedLinks) {
+    const cluster = /GuideArticleView/.test(guide.source) ? clusterByPath.get(guide.path) : null;
+    const visibleLinks = [...contents.get(guide.slug).relatedLinks,
+      ...(cluster ? [{ to: cluster.hubPath }, ...cluster.links] : [])];
+    const seen = new Set();
+    for (const link of visibleLinks) {
       const target = pathOnly(link.to);
-      if (inbound.has(target)) inbound.get(target).push({ from: guide.path, title: guide.title });
+      if (target !== guide.path && !seen.has(target) && inbound.has(target)) inbound.get(target).push({ from: guide.path, title: guide.title });
+      seen.add(target);
     }
   }
   const maxImpressions = Math.max(1, ...gscRows.map((row) => row.impressions || 0));
@@ -314,7 +321,7 @@ function buildSnapshots() {
     gsc.arithmeticClickGap = gsc.expectedCtr == null ? null : Math.max(0, Math.round(gsc.impressions * gsc.expectedCtr - gsc.clicks));
     const rawGa4 = ga4Map.get(guide.slug);
     const ga4 = rawGa4 ? {
-      mapped: true, views: Number(rawGa4.views || 0), activeUsers: Number(rawGa4.activeUsers || 0),
+      mapped: true, views: Number(rawGa4.views || 0), activeUsers: rawGa4.activeUsers ?? null,
       events: Number(rawGa4.events || 0), bounceRate: rawGa4.bounceRate == null ? null : Number(rawGa4.bounceRate),
       eventsPerView: rawGa4.views ? round(rawGa4.events / rawGa4.views, 2) : null,
     } : { mapped: false, views: 0, activeUsers: 0, events: 0, bounceRate: null, eventsPerView: null };
@@ -322,7 +329,7 @@ function buildSnapshots() {
     const googleOrganic = rawOrganic ? {
       mapped: true, clicks: Number(rawOrganic.clicks || 0), impressions: Number(rawOrganic.impressions || 0),
       ctr: Number(rawOrganic.ctr || 0), position: rawOrganic.position == null ? null : Number(rawOrganic.position),
-      activeUsers: Number(rawOrganic.activeUsers || 0), engagedSessions: Number(rawOrganic.engagedSessions || 0),
+      activeUsers: rawOrganic.activeUsers ?? null, engagedSessions: Number(rawOrganic.engagedSessions || 0),
       engagementRate: rawOrganic.engagementRate == null ? null : Number(rawOrganic.engagementRate),
       avgEngagementSeconds: rawOrganic.avgEngagementSeconds == null ? null : Number(rawOrganic.avgEngagementSeconds),
       events: Number(rawOrganic.events || 0), keyEvents: Number(rawOrganic.keyEvents || 0),
@@ -363,7 +370,7 @@ function buildSnapshots() {
     const demand = Math.log1p(gsc.impressions) / Math.log1p(maxImpressions) * 100;
     const ctrOpportunity = gsc.expectedCtr ? clamp((gsc.expectedCtr - gsc.ctr) / gsc.expectedCtr, 0, 1) : 0;
     const gscOpportunity = clamp(demand * (0.4 + 0.6 * ctrOpportunity), 0, 100);
-    const rankOpportunity = gsc.position >= 3 && gsc.position <= 10 ? 100 : gsc.position <= 20 ? 70 : gsc.position ? 25 : 0;
+    const rankOpportunity = gsc.position == null ? 0 : gsc.position >= 3 && gsc.position <= 10 ? 100 : gsc.position <= 20 ? 70 : 25;
     const viewScale = Math.log1p(ga4.views) / Math.log1p(maxViews) * 100;
     const ga4Opportunity = ga4.mapped ? clamp(viewScale * (0.4 + 0.6 * (ga4.bounceRate == null ? 0.4 : ga4.bounceRate)), 0, 100) : 0;
     const naverOpportunity = !naver.measured || naver.available === false ? 50 : naver.found ? clamp(110 - Number(naver.rank || 100) * 5, 0, 100) : 70;
@@ -652,11 +659,12 @@ function applyServerGuards(plan, item) {
   const addRisk = (message) => {
     if (!plan.risks.includes(message)) plan.risks.unshift(message);
   };
-  if (item.snapshot.guards.keepSnippet && plan.proposedTitle !== item.snapshot.content.title) {
+  const snippetChanged = plan.proposedTitle !== item.snapshot.content.title || plan.proposedDescription !== item.snapshot.content.description;
+  if (item.snapshot.guards.keepSnippet && snippetChanged) {
     addRisk('서버 보호: 현재 CTR이 기대치에 근접해 제목 변경은 기본 비활성 검토 대상입니다. 변경 전후를 별도 기간으로 측정하세요.');
     for (const entry of plan.changes) if (entry.area === '제목·설명') entry.enabled = false;
   }
-  if (item.snapshot.guards.keepNaverSnippet && plan.proposedTitle !== item.snapshot.content.title) {
+  if (item.snapshot.guards.keepNaverSnippet && snippetChanged) {
     const reason = item.snapshot.guards.naverRank
       ? `현재 네이버 웹검색 ${item.snapshot.guards.naverRank}위 페이지`
       : '현재 Naver 웹검색 TOP 30에서 전체 평균 이상 CTR을 기록한 페이지';
@@ -665,6 +673,12 @@ function applyServerGuards(plan, item) {
   }
   if (item.snapshot.guide.isCustom) {
     addRisk('보호 페이지: 진단 결과는 참고용이며 자동 수정 작업을 만들 수 없습니다.');
+    for (const entry of plan.changes) entry.enabled = false;
+  }
+  if (item.snapshot.guards.keepSnippet || item.snapshot.guards.keepNaverSnippet) {
+    plan.proposedTitle = item.snapshot.content.title;
+    plan.proposedDescription = item.snapshot.content.description;
+    for (const entry of plan.changes) if (entry.area === '제목·설명') entry.enabled = false;
   }
   if (item.snapshot.guards.recentObservationHold) {
     addRisk(`관찰 보호: 최근 콘텐츠 변경일 ${item.snapshot.guards.changeDate} 기준 D+31인 ${item.snapshot.guards.observeUntil}까지 자동 수정을 보류합니다.`);
@@ -710,8 +724,10 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
   if (Array.isArray(slugs) && slugs.length) {
     const selected = new Set(slugs.map(String));
     rows = rows.filter((row) => selected.has(row.guideSlug));
-  } else if (!all) {
-    rows = rows.filter((row) => force || !['ready'].includes(row.status)).slice(0, Math.max(1, Math.min(30, Number(limit) || 10)));
+  } else {
+    // Observation-held and read-only pages do not need paid rewriting plans by default.
+    rows = rows.filter(row => !row.snapshot.guide.isCustom && !row.snapshot.guards.recentObservationHold);
+    if (!all) rows = rows.filter((row) => force || row.status !== 'ready').slice(0, Math.max(1, Math.min(30, Number(limit) || 10)));
   }
   if (!force) rows = rows.filter((row) => row.status !== 'ready');
   if (!rows.length) {
@@ -724,6 +740,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
   let completed = 0;
   onProgress?.({ phase: 'running', requested, completed, analyzed, failed });
   for (let offset = 0; offset < rows.length; offset += BATCH_SIZE) {
+    require('./jobService').throwIfCancelled();
     const batch = rows.slice(offset, offset + BATCH_SIZE);
     const ids = batch.map((item) => item.id);
     db.prepare(`UPDATE content_audits SET status='analyzing', error=NULL, updated_at=? WHERE id IN (${ids.map(() => '?').join(',')})`).run(nowIso(), ...ids);
@@ -744,6 +761,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
           '각 항목은 실행에 필요한 구체성을 유지하되 같은 근거와 주의를 반복하지 말고 밀도 있게 작성하세요.',
           '가격·제작 기간·수리 가능성·보석 등급·인증은 입력 근거 없이 만들지 말고 requiresOfficialSource를 true로 표시하세요.',
           'allowedInternalLinks에 없는 내부 링크를 제안하지 마세요.',
+          '자동 편집은 이 글의 제목·설명, 첫 화면, 본문(비교표 포함), 출처, 관련 링크만 바꿀 수 있습니다. 다른 글에서 들어오는 링크, URL 통합·리디렉션·서버 설정 수정은 자동 변경 항목으로 만들지 말고 caveats에 별도 검토로 남기세요.',
           'serverGuards.keepSnippet 또는 keepNaverSnippet이 true면 성과 제목을 보존하고 변경이 꼭 필요할 때만 위험을 명시하세요.',
           '보호 페이지도 진단하되 자동 수정 대상으로 지시하지 마세요.',
           '각 분석은 입력 slug를 정확히 한 번 반환하세요.',
@@ -751,6 +769,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
         input: JSON.stringify({ pages: batch.map(aiContext) }), maxOutputTokens: 16000,
       });
       const bySlug = new Map((result.parsed.analyses || []).map((analysis) => [analysis.slug, analysis]));
+      require('./jobService').throwIfCancelled();
       for (const item of batch) {
         const analysis = bySlug.get(item.guideSlug);
         if (!analysis) {
@@ -761,7 +780,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
     } catch (error) {
       for (const item of batch) db.prepare(`UPDATE content_audits SET status='error', error=?, updated_at=? WHERE id=?`).run(error.message, nowIso(), item.id);
       failed += batch.length;
-      if (error.transportFailure || [401, 403, 429].includes(error.status)) throw error;
+      if (error.transportFailure || ['JOB_CANCELLED','JOB_DEADLINE','JOB_BUDGET_EXCEEDED'].includes(error.code) || error.name === 'AbortError' || [401, 403, 429].includes(error.status)) throw error;
     }
     completed += batch.length;
     onProgress?.({ phase: 'running', requested, completed, analyzed, failed });
@@ -772,11 +791,22 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
 }
 
 function jobStatus() {
-  return activeJob || { id: null, state: 'idle', requested: 0, completed: 0, analyzed: 0, failed: 0 };
+  const jobs = require('./jobService');
+  const id = db.prepare("SELECT id FROM background_jobs WHERE action='audits' ORDER BY created_at DESC, rowid DESC LIMIT 1").get()?.id || activeJob?.backgroundJobId;
+  if (!id) return { id: null, state: 'idle', requested: 0, completed: 0, analyzed: 0, failed: 0 };
+  const job = jobs.get(id);
+  const progress = job.events.filter(event => event.stage === 'audit-progress').at(-1) || {};
+  return { id, backgroundJobId: id, requested: 0, completed: 0, analyzed: 0, failed: 0,
+    ...(activeJob?.backgroundJobId === id ? activeJob : {}), ...progress, ...(job.result || {}), id, backgroundJobId: id,
+    state: ['queued','running','cancelling'].includes(job.state) ? 'running' : job.state,
+    phase: job.state === 'done' ? 'complete' : job.state,
+    startedAt: job.startedAt, finishedAt: job.finishedAt, error: job.error,
+  };
 }
 
 function startAnalyze(options = {}) {
-  if (activeJob?.state === 'running') return { ...activeJob, alreadyRunning: true };
+  const current = jobStatus();
+  if (current.state === 'running') return { ...current, alreadyRunning: true };
   const stamp = nowIso();
   activeJob = {
     id: `audit-${Date.now()}`,
@@ -784,30 +814,33 @@ function startAnalyze(options = {}) {
     options: { all: !!options.all, limit: Number(options.limit || 10), slugs: Array.isArray(options.slugs) ? options.slugs : null, force: !!options.force },
     model: 'gpt-5.6-terra', reasoningEffort: 'medium', startedAt: stamp, updatedAt: stamp, finishedAt: null, error: null,
   };
-  setImmediate(async () => {
-    try {
-      const result = await analyze({
-        ...activeJob.options,
-        onProgress(progress) { activeJob = { ...activeJob, ...progress, updatedAt: nowIso() }; },
-      });
-      activeJob = { ...activeJob, ...result, state: 'done', phase: 'complete', completed: result.requested, finishedAt: nowIso(), updatedAt: nowIso() };
-    } catch (error) {
-      activeJob = { ...activeJob, state: 'error', phase: 'stopped', error: error.message, finishedAt: nowIso(), updatedAt: nowIso() };
-    }
+  const job = require('./jobService').submit('audits', { body: activeJob.options }, {
+    keys: ['audits'], timeoutMs: 60 * 60 * 1000, maxCalls: 70, maxTokens: 900000, retryMode: 'resume',
   });
-  return activeJob;
+  activeJob.backgroundJobId = job.id;
+  return jobStatus();
 }
 
+require('./jobService').register('audits', ({ body }) => analyze({ ...body,
+  onProgress(progress) {
+    activeJob = { ...activeJob, ...progress, updatedAt: nowIso() };
+    require('./jobService').event('audit-progress', progress);
+  },
+}));
+
 function savePlan(slug, input) {
+  scanAll();
   const item = detail(slug);
   if (!item) throw Object.assign(new Error('진단할 가이드를 찾을 수 없습니다'), { status: 404 });
-  const plan = sanitizePlan(input, item);
+  const plan = applyServerGuards(sanitizePlan(input, item), item);
+  require('./updatePolicyService').validatePlanCapabilities(plan);
   if (!plan.changes.some((entry) => entry.enabled)) throw Object.assign(new Error('적용할 수정 항목을 최소 1개 선택해 주세요'), { status: 422 });
   db.prepare(`UPDATE content_audits SET plan_json=?, plan_status='edited', updated_at=? WHERE id=?`).run(JSON.stringify(plan), nowIso(), item.id);
   return detail(slug);
 }
 
 function createUpdate(slug, input = {}) {
+  scanAll();
   let item = detail(slug);
   if (!item) throw Object.assign(new Error('진단할 가이드를 찾을 수 없습니다'), { status: 404 });
   if (item.snapshot.guide.isCustom) throw Object.assign(new Error('보호 가이드는 진단만 가능하고 자동 수정할 수 없습니다'), { status: 422 });
@@ -815,14 +848,18 @@ function createUpdate(slug, input = {}) {
     throw Object.assign(new Error(`최근 수정 가이드는 ${item.snapshot.guards.observeUntil}까지 D+31 관찰 후 수정할 수 있습니다`), { status: 422 });
   }
   if (input.plan) item = savePlan(slug, input.plan);
-  const plan = item.plan;
+  const fingerprint = item.snapshot.contextFingerprint;
+  const explicitlyReviewed = input.confirmCurrent === true && input.contextFingerprint === fingerprint;
+  if (item.status !== 'ready' && !explicitlyReviewed) throw Object.assign(new Error('현재 원문과 지표를 확인한 뒤 검토 확인을 선택하거나 최신 AI 분석을 실행해 주세요'), { status: 409, code: 'AUDIT_REVIEW_REQUIRED' });
+  const plan = applyServerGuards(structuredClone(item.plan), item);
+  require('./updatePolicyService').validatePlanCapabilities(plan);
   if (!plan?.changes?.some((entry) => entry.enabled)) throw Object.assign(new Error('확정할 수정 항목이 없습니다'), { status: 422 });
-  db.prepare(`UPDATE content_audits SET plan_status='confirmed', updated_at=? WHERE id=?`).run(nowIso(), item.id);
+  db.prepare(`UPDATE content_audits SET plan_status=?, plan_json=?, updated_at=? WHERE id=?`).run(explicitlyReviewed ? 'reviewed_current' : 'confirmed', JSON.stringify(plan), nowIso(), item.id);
   const generation = generations.createGeneration({
     targetSlug: slug, topic: item.snapshot.content.keyword || item.snapshot.guide.keyword,
     category: item.snapshot.content.category || item.snapshot.guide.category,
     inquiryType: item.snapshot.content.category === '수리' ? 'repair' : 'custom',
-    auditId: item.id, auditPlan: plan,
+    auditId: item.id, auditPlan: plan, reviewedContextFingerprint: fingerprint,
   });
   db.prepare(`UPDATE content_audits SET plan_status='generation_started', updated_at=? WHERE id=?`).run(nowIso(), item.id);
   return generation;

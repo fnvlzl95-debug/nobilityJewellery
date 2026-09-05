@@ -6,6 +6,10 @@ interface ArticleSection {
   title: string
   paragraphs: string[]
   bullets?: string[]
+  table?: {
+    headers: string[]
+    rows: string[][]
+  } | null
   image?: {
     src: string
     alt: string
@@ -43,6 +47,7 @@ const props = withDefaults(defineProps<{
   updatedAt?: string
   heroImage: string
   heroAlt: string
+  heroCaption?: string
   heroWidth?: number
   heroHeight?: number
   reviewedBy?: string
@@ -58,6 +63,7 @@ const props = withDefaults(defineProps<{
   inquiryTopic: '',
   heroWidth: 1536,
   heroHeight: 1024,
+  heroCaption: '',
   reviewedBy: '귀족 주얼리 상담팀',
   sourceNote: '귀족 매장 상담과 제작·수리 실무를 바탕으로 작성했으며, 제품 상태·시세·작업 가능 여부는 상담 시점에 다시 확인합니다.',
   sources: () => [],
@@ -180,6 +186,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
           fetchpriority="high"
           preload
         />
+        <p v-if="props.heroCaption" class="guide-hero-caption">{{ props.heroCaption }}</p>
       </header>
 
       <section class="quick-answer">
@@ -228,6 +235,13 @@ const handleGuideLinkClick = (event: MouseEvent) => {
           <ul v-if="section.bullets?.length" class="article-bullets">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
+          <div v-if="section.table?.headers.length && section.table.rows.length" class="article-table-scroll" role="region" :aria-label="`${displaySectionTitle(section.title)} 비교표`" tabindex="0">
+            <table class="article-table">
+              <caption>{{ displaySectionTitle(section.title) }} 비교</caption>
+              <thead><tr><th v-for="(heading, column) in section.table.headers" :key="column" scope="col">{{ heading }}</th></tr></thead>
+              <tbody><tr v-for="(row, rowIndex) in section.table.rows" :key="rowIndex"><td v-for="(cell, column) in row" :key="column">{{ cell }}</td></tr></tbody>
+            </table>
+          </div>
           <figure v-if="section.image" class="article-image">
             <NuxtImg
               :src="section.image.src"
@@ -415,6 +429,13 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   border: 1px solid rgba(201, 162, 39, 0.3);
 }
 
+.guide-hero-caption {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(250, 250, 250, 0.72);
+}
+
 /* ── 위젯 공통: 좌측 골드 액센트(테두리 박스 대신) ── */
 .quick-answer {
   margin-bottom: 28px;
@@ -564,6 +585,20 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   padding-inline-start: 1.35em;
   list-style: disc outside;
 }
+
+.article-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 24px 0;
+  border: 1px solid rgba(250, 250, 250, 0.18);
+  border-radius: 6px;
+}
+.article-table-scroll:focus-visible { outline: 2px solid #d4b44a; outline-offset: 4px; }
+.article-table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.75; }
+.article-table caption { padding: 12px 16px; text-align: left; font-weight: 600; color: #d4b44a; }
+.article-table th, .article-table td { min-width: 125px; padding: 14px 16px; vertical-align: top; text-align: left; border-top: 1px solid rgba(250, 250, 250, 0.15); }
+.article-table th { background: rgba(250, 250, 250, 0.06); color: #fafafa; }
+.article-table td { color: rgba(250, 250, 250, 0.9); }
 
 .quick-answer li::marker,
 .article-bullets li::marker,
