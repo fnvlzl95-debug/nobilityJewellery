@@ -20,6 +20,8 @@ try {
   if (!ready) throw new Error('Cloudflare 로컬 런타임 시작 실패: ' + logs)
   process.env.SEO_LOCAL_RENDER_ORIGIN = origin
   await import('./verify-seo-output.mjs')
+  const slash = await fetch(origin + '/guide/?page=2', { redirect: 'manual' })
+  if (slash.status !== 308 || slash.headers.get('location') !== '/guide?page=2') throw new Error('SSR 가이드 슬래시 정규화 실패')
   for (const [query, canonical, text, noindex] of [
     ['?page=2', '?page=2', '2페이지', true],
     ['?category=' + encodeURIComponent('관리'), '?category=' + encodeURIComponent('관리'), '귀금속 가이드 관리', false],

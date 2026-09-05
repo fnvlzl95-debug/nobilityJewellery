@@ -72,3 +72,10 @@ Windows 로컬 배포는 `tools/guide-manager/scripts/deploy-local.ps1`을 사�
 참고 구현 근거: [Nuxt prerender 설정](https://nuxt.com/docs/3.x/getting-started/prerendering), [Resend 멱등성 키](https://resend.com/docs/dashboard/emails/idempotency-keys).
 
 운영 배포 확인: 2026-09-06, localhost:8788에 새 API·세션 방어·분석 자료 최신성 표시가 반영되었다. Chrome 자동 점검 탭은 ERR_BLOCKED_BY_CLIENT로 열리지 않아 데스크톱·모바일 시각 점검은 완료하지 못했다. 브라우저에서 실제 메일을 발송하는 시험도 수행하지 않았다.
+
+## 운영 확인 결과
+
+- 운영 API에서 임시 작업 생성·저장·revision 충돌 거부·미완성 승인 거부·diff·성과 조회·외부 Origin 거부를 확인하고 임시 작업을 삭제했다.
+- 대시보드 조회 3회는 120ms·66ms·70ms였다. 부하 테스트 결과는 아니다.
+- 화이트골드 가이드 대표 이미지 원본은 159,098바이트, 640px 최적화 파일은 23,310바이트로 해당 파일 기준 85% 감소했다. 전체 페이지 속도나 매출 증가율을 뜻하지 않는다.
+- 사이트 160개 sitemap URL, 갤러리 42개 상세, 검색·카테고리·2페이지 초기 HTML, /guide/ 쿼리 보존 308 정규화를 검증했다.
