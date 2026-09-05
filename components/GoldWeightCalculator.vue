@@ -9,6 +9,14 @@ const props = withDefaults(defineProps<{
   compact: false,
 })
 
+const { trackEvent } = useGtag()
+const route = useRoute()
+const calculatedPaths = useState<string[]>('calculator-measured-paths', () => [])
+const recordCalculation = () => {
+  if (!calcGrams.value || calculatedPaths.value.includes(route.path)) return
+  calculatedPaths.value.push(route.path)
+  trackEvent('calculator_use', { source_path: route.path, calculator: 'gold_weight', unit: calcUnit.value, purity: calcPurity.value })
+}
 const DON_TO_GRAM = 3.75
 const purityOptions = [
   { key: '24k', label: '24K 순금', rate: 0.999 },
@@ -27,7 +35,7 @@ const resultId = computed(() => `${props.idPrefix}-result`)
 const activePurity = computed(() => purityOptions.find((option) => option.key === calcPurity.value)!)
 
 const calcGrams = computed(() => {
-  if (typeof calcWeight.value !== 'number' || calcWeight.value <= 0) return null
+  if (typeof calcWeight.value !== 'number' || !Number.isFinite(calcWeight.value) || calcWeight.value <= 0) return null
   return calcUnit.value === 'don' ? calcWeight.value * DON_TO_GRAM : calcWeight.value
 })
 
@@ -63,6 +71,7 @@ const calcPureGold = computed(() => {
             placeholder="0"
             class="calculator-input"
             :aria-describedby="resultId"
+            @change="recordCalculation"
           >
           <div class="calculator-toggle" role="group" aria-label="무게 단위 선택">
             <button

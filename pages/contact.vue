@@ -187,6 +187,7 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
+const pendingSubmission = shallowRef<{ key: string; requestId: string; requestedAt: string; acquisition: ReturnType<ReturnType<typeof useInquiryContext>['capture']> } | null>(null)
 const handleSubmit = async () => {
   if (isSubmitting.value) return
   formError.value = ''
@@ -205,23 +206,27 @@ const handleSubmit = async () => {
 
   isSubmitting.value = true
   const submissionSnapshot = { ...formData.value }
+  const key = JSON.stringify(submissionSnapshot)
+  if (!pendingSubmission.value || pendingSubmission.value.key !== key || Date.now() - Date.parse(pendingSubmission.value.requestedAt) > 22 * 3600000) pendingSubmission.value = { key, requestId: crypto.randomUUID(), requestedAt: new Date().toISOString(), acquisition: useInquiryContext().capture() }
 
   try {
     const response = await $fetch<{ ok: boolean, inquiryId?: string }>('/api/inquiry', {
       method: 'POST',
-      body: { ...submissionSnapshot, acquisition: useInquiryContext().capture() },
+      body: { ...submissionSnapshot, ...pendingSubmission.value, key: undefined },
     })
 
     if (!response.ok || !response.inquiryId) {
       throw new Error('접수번호를 확인할 수 없습니다.')
     }
 
+    pendingSubmission.value = null
     submittedInquiryId.value = response.inquiryId
     trackLeadSubmitted(
       submissionSnapshot.type || 'other',
       submissionSnapshot.source || 'contact',
       submissionSnapshot.topic || undefined,
       response.inquiryId,
+      submissionSnapshot.sourcePath || undefined,
     )
     isSubmitted.value = true
     formData.value = buildInitialFormData()

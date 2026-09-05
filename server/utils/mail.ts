@@ -6,6 +6,7 @@ interface MailOptions {
   html: string
   apiKey: string
   fromEmail?: string
+  idempotencyKey?: string
 }
 
 export async function sendMail(options: MailOptions) {
@@ -17,19 +18,27 @@ export async function sendMail(options: MailOptions) {
     throw new Error('RESEND_API_KEY not configured')
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
+  const requestBody = JSON.stringify({ from, to: options.to, subject: options.subject, html: options.html })
+  let response: Response | undefined
+  for (let attempt = 0; attempt < (options.idempotencyKey ? 2 : 1); attempt++) {
+    try {
+      response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
+      ...(options.idempotencyKey ? { 'Idempotency-Key': options.idempotencyKey } : {}),
     },
-    body: JSON.stringify({
-      from,
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-    }),
-  })
+        body: requestBody,
+        signal: AbortSignal.timeout(15000),
+      })
+      if (response.ok || ![429, 500, 502, 503, 504].includes(response.status) || attempt === 1 || !options.idempotencyKey) break
+    } catch (error) {
+      if (attempt === 1 || !options.idempotencyKey) throw error
+    }
+    await new Promise(resolve => setTimeout(resolve, 750))
+  }
+  if (!response) throw new Error('Mail provider did not respond')
 
   if (!response.ok) {
     const error = await response.json().catch(() => null) as { message?: string } | null

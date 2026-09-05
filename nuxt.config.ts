@@ -37,7 +37,7 @@ const getPrerenderRoutes = (dir = pagesDir): string[] => {
 
 // 정적 라우트 + 제품 상세 라우트
 const buildPrerenderRoutes = (): string[] => [
-  ...getPrerenderRoutes(),
+  ...getPrerenderRoutes().filter(route => route !== '/guide'),
   ...galleryItems.map((item) => `/gallery/${item.slug}`),
 ]
 
@@ -150,7 +150,7 @@ export default defineNuxtConfig({
             '/_nuxt/*',
             '/_ipx/*',
             '/Image/*',
-            '/guide/*',
+            ...new Set(guidePosts.map(post => `/guide/${post.slug[0]}*`)),
             '/gallery/*',
             '/favicon.svg',
             '/favicon.ico',
@@ -168,6 +168,7 @@ export default defineNuxtConfig({
       routes: buildPrerenderRoutes(),
     },
     routeRules: {
+      '/guide': { prerender: false, headers: { 'cache-control': 'no-cache' } },
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

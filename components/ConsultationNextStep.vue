@@ -2,8 +2,13 @@
 import { consultationPaths } from '~/data/consultation-paths'
 import { getItemBySlug } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
-const props = defineProps<{ path: string }>()
-const context = computed(() => consultationPaths[props.path])
+const props = defineProps<{ path: string; inquiryType?: 'custom' | 'repair' | 'wholesale' | 'other'; topic?: string }>()
+const context = computed(() => {
+  const existing = consultationPaths[props.path]
+  if (existing) return { ...existing, type: props.inquiryType || existing.type }
+  if (!props.path.startsWith('/guide/')) return null
+  return { title: props.topic ? props.topic + ' 상담 준비' : '상담 전에 준비해 주세요', description: '제품 상태와 원하는 작업을 알려주시면 확인할 사항을 안내합니다.', type: props.inquiryType || 'other', prompts: ['제품 전체 사진과 소재·각인', '궁금한 점 또는 원하는 작업', '희망 방문일이나 수령일'], gallerySlugs: [], links: [] }
+})
 const items = computed(() => context.value?.gallerySlugs.map(getItemBySlug).filter(item => !!item) || [])
 const { trackKakaoClick, trackInquiryClick, trackEvent } = useGtag()
 const source = computed(() => props.path.startsWith('/guide/') ? 'guide_article' : 'service')

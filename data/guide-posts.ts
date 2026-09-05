@@ -730,7 +730,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/gemstone-mohs-hardness-guide-hero.webp',
     publishedAt: '2026-07-11',
     updatedAt: '2026-08-25',
-    category: '관리',
+    category: '소재·보석',
   },
   {
     slug: 'earring-back-lost-types',

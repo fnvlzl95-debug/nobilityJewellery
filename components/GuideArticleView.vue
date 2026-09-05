@@ -65,8 +65,14 @@ const props = withDefaults(defineProps<{
 
 const { trackPhoneClick, trackKakaoClick, trackInquiryClick, trackGuideToServiceClick } = useGtag()
 const route = useRoute()
+const optimizedHero = computed(() => {
+  try { const url = new URL(props.heroImage, siteConfig.url); return url.origin === new URL(siteConfig.url).origin ? url.pathname : props.heroImage } catch { return props.heroImage }
+})
+const selectedPurpose = useState<'custom' | 'repair' | 'wholesale' | 'other' | null>('guide-consultation-purpose', () => null)
+const purposeTypes = [ { type: 'other' as const, label: '금·은 매입' }, { type: 'custom' as const, label: '돌 선물·맞춤 제작' }, { type: 'repair' as const, label: '제품 수리' } ]
+const effectiveType = computed(() => route.path === '/guide/gold-one-don-gram' ? selectedPurpose.value || 'other' : props.inquiryType)
 const guideCluster = computed(() => findGuideClusterForPath(route.path))
-const servicePaths = new Set(['/wedding', '/buy-gold', '/repair', '/custom', '/couple-ring', '/baby-gold'])
+const servicePaths = new Set(['/wedding', '/buy-gold', '/repair', '/custom', '/couple-ring', '/baby-gold', '/wholesale', '/gallery'])
 
 const sectionAnchor = (index: number) => `sec-${index + 1}`
 const formatSectionIndex = (index: number) => String(index + 1).padStart(2, '0')
@@ -74,15 +80,15 @@ const displaySectionTitle = (title: string) => String(title || '')
   .replace(/^\s*(?:\d{1,2}\s*[.)．:：-]\s+|[①-⑳]\s*)/u, '')
   .trim()
 const inquiryActionLabel = computed(() => {
-  if (props.inquiryType === 'repair') return '수리 문의'
-  if (props.inquiryType === 'wholesale') return '도매 상담'
-  if (props.inquiryType === 'other') return '매입 문의'
+  if (effectiveType.value === 'repair') return '수리 문의'
+  if (effectiveType.value === 'wholesale') return '도매 상담'
+  if (effectiveType.value === 'other') return '매입 문의'
   return '주문 상담'
 })
 const contactLink = computed(() => ({
   path: '/contact',
   query: {
-    type: props.inquiryType,
+    type: effectiveType.value,
     source: 'guide_article',
     topic: props.inquiryTopic || props.keyword,
     from: route.path,
@@ -92,7 +98,7 @@ const contactLink = computed(() => ({
 const handlePhoneClick = () => {
   trackPhoneClick('guide_article', {
     placement: 'section_cta',
-    intent: props.inquiryType,
+    intent: effectiveType.value,
     topic: props.inquiryTopic || props.keyword,
   })
 }
@@ -100,7 +106,7 @@ const handlePhoneClick = () => {
 const handleKakaoClick = () => {
   trackKakaoClick('guide_article', {
     placement: 'section_cta',
-    intent: props.inquiryType,
+    intent: effectiveType.value,
     topic: props.inquiryTopic || props.keyword,
   })
 }
@@ -108,7 +114,7 @@ const handleKakaoClick = () => {
 const handleInquiryClick = () => {
   trackInquiryClick('guide_article', {
     placement: 'section_cta',
-    intent: props.inquiryType,
+    intent: effectiveType.value,
     topic: props.inquiryTopic || props.keyword,
   })
 }
@@ -125,7 +131,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
   const placement = link.closest('.related-card')
     ? 'related_links'
-    : link.closest('.guide-cluster-links')
+    : link.closest('.guide-cluster')
       ? 'topic_cluster'
       : link.closest('.guide-article')
         ? 'article_body'
@@ -159,8 +165,12 @@ const handleGuideLinkClick = (event: MouseEvent) => {
           <span>{{ props.reviewedBy }} 검토</span>
         </div>
         <slot name="hero-summary" />
+        <fieldset v-if="route.path === '/guide/gold-one-don-gram'" class="guide-purpose">
+          <legend>무게 확인 후 어떤 상담이 필요하세요?</legend>
+          <button v-for="purpose in purposeTypes" :key="purpose.type" type="button" :aria-pressed="effectiveType === purpose.type" @click="selectedPurpose = purpose.type">{{ purpose.label }}</button>
+        </fieldset>
         <NuxtImg
-          :src="props.heroImage"
+          :src="optimizedHero"
           :alt="props.heroAlt"
           :width="props.heroWidth"
           :height="props.heroHeight"
@@ -232,7 +242,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
         </section>
       </article>
 
-      <ConsultationNextStep :path="route.path" />
+      <ConsultationNextStep :path="route.path" :inquiry-type="effectiveType" :topic="props.inquiryTopic || props.keyword" />
 
       <section v-if="props.cautions?.length" class="guide-caution">
         <h2>알아두시면 좋아요</h2>
@@ -301,6 +311,11 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 </template>
 
 <style scoped>
+.guide-purpose { margin:24px 0; padding:16px 0; border:0; color:#fafafa; }
+.guide-purpose legend { margin-bottom:12px; }
+.guide-purpose button { padding:10px 14px; margin:0 8px 8px 0; border:1px solid #c9a227; background:transparent; color:inherit; min-height:44px; cursor:pointer; }
+.guide-purpose button[aria-pressed="true"] { color:#0a0a0a; background:#c9a227; }
+
 .guide-page {
   min-height: 100dvh;
   background: #0a0a0a;

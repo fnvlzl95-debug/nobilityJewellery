@@ -12,7 +12,7 @@ function sourceModule(file, bindings) {
     .replaceAll('import.meta.env.PROD', 'true')
   const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
   const exports = {}
-  vm.runInNewContext(js, { exports, console, URLSearchParams, URL, ...bindings })
+  vm.runInNewContext(js, { exports, console, URLSearchParams, URL, AbortSignal, setTimeout, ...bindings })
   return exports
 }
 

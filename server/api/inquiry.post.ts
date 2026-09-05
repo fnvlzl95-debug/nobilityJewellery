@@ -15,6 +15,8 @@ interface InquiryBody {
   sourcePath?: string
   discoverySource?: string
   acquisition?: unknown
+  requestId?: string
+  requestedAt?: string
 }
 
 // Simple rate limiting store (in production, use Redis or similar)
@@ -24,6 +26,8 @@ const RATE_WINDOW = 60 * 1000 // Per minute
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now()
+  if (rateLimitStore.size > 5000) for (const [key, item] of rateLimitStore) if (now > item.resetTime) rateLimitStore.delete(key)
+  if (rateLimitStore.size >= 10000 && !rateLimitStore.has(ip)) return false
   const record = rateLimitStore.get(ip)
 
   if (!record || now > record.resetTime) {
@@ -132,7 +136,8 @@ export default defineEventHandler(async (event) => {
   }
 
   // Process inquiry
-  const inquiryId = createInquiryId()
+  if (body.requestId && (!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(body.requestId) || !body.requestedAt || !Number.isFinite(Date.parse(body.requestedAt)) || Math.abs(Date.now() - Date.parse(body.requestedAt)) > 23 * 3600000)) throw createError({ statusCode: 400, message: '문의 화면을 새로고침한 뒤 다시 전송해주세요.' })
+  const inquiryId = body.requestId ? `NG-${body.requestId.replaceAll('-', '').toUpperCase()}` : createInquiryId()
   const inquiry = {
     id: inquiryId,
     name: body.name.trim(),
@@ -145,7 +150,7 @@ export default defineEventHandler(async (event) => {
     sourcePath: cleanPath(body.sourcePath),
     discoverySource: ['naver_search', 'google_search', 'naver_place', 'ai', 'recommendation', 'returning', 'other'].includes(body.discoverySource || '') ? body.discoverySource! : '',
     acquisition: sanitizeAcquisition(body.acquisition),
-    submittedAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+    submittedAt: new Date(body.requestId ? body.requestedAt! : Date.now()).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
     ip: ip.split(',')[0].trim(),
   }
 
@@ -178,6 +183,7 @@ export default defineEventHandler(async (event) => {
 
     const mailResult = await sendMail({
       to: inquiryTo,
+      idempotencyKey: `inquiry/${inquiry.id}`,
       subject: `[귀족] 새 문의 ${inquiry.id} - ${inquiry.typeLabel} / ${inquiry.name}`,
       apiKey: resendApiKey,
       fromEmail: resendFrom,

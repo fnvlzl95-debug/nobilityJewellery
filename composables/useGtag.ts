@@ -145,6 +145,7 @@ export const useGtag = () => {
     leadSource?: string,
     leadTopic?: string,
     leadId?: string,
+    sourcePath?: string,
   ) => {
     if (!trackingAllowed() || !leadId || submittedLeadIds.has(leadId)) return
     submittedLeadIds.add(leadId)
@@ -153,6 +154,7 @@ export const useGtag = () => {
       lead_source: leadSource,
       lead_topic: leadTopic,
       lead_id: leadId,
+      source_path: sourcePath?.startsWith('/') && !sourcePath.startsWith('//') ? sourcePath.split(/[?#]/)[0] : undefined,
     })
     trackEvent('generate_lead', leadParams)
     trackMetaEvent('Lead', leadParams)

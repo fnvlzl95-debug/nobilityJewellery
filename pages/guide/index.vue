@@ -65,9 +65,14 @@ const activeCategory = computed<CategoryFilter>(() => (
   categoryOptions.find((category) => category === rawCategory.value) ?? '전체'
 ))
 const activeCategoryContext = computed(() => categoryContexts[activeCategory.value])
-const filteredPosts = computed(() => activeCategory.value === '전체'
+const searchTerm = computed(() => String(Array.isArray(route.query.q) ? route.query.q[0] || '' : route.query.q || '').trim().slice(0, 100))
+const searchInput = ref(searchTerm.value)
+watch(searchTerm, value => { searchInput.value = value })
+const searchGuides = () => router.push({ path: pagePath, query: { ...guideQuery(1), q: searchInput.value.trim() || undefined } })
+const categoryPosts = computed(() => activeCategory.value === '전체'
   ? guidePosts
   : guidePosts.filter((post) => post.category === activeCategory.value))
+const filteredPosts = computed(() => categoryPosts.value.filter(post => !searchTerm.value || `${post.title} ${post.description} ${post.keyword}`.toLocaleLowerCase().includes(searchTerm.value.toLocaleLowerCase())))
 const totalPages = computed(() => Math.max(1, Math.ceil(filteredPosts.value.length / postsPerPage)))
 const requestedPage = computed(() => {
   if (!rawPage.value || !/^\d+$/.test(rawPage.value)) {
@@ -84,6 +89,7 @@ const visibleEnd = computed(() => Math.min(pageStartIndex.value + postsPerPage, 
 
 const guideQuery = (page: number, category: CategoryFilter = activeCategory.value) => {
   const query: Record<string, string> = {}
+  if (searchTerm.value) query.q = searchTerm.value
   if (category !== '전체') {
     query.category = category
   }
@@ -182,7 +188,7 @@ useHead(() => ({
   ],
   meta: [
     // 2페이지 이후는 목록 이동용이므로 색인에서 제외해 /guide 1페이지로 검색 신호를 모은다.
-    { name: 'robots', content: currentPage.value > 1 ? 'noindex, follow' : 'index, follow' },
+    { name: 'robots', content: searchTerm.value || currentPage.value > 1 ? 'noindex, follow' : 'index, follow' },
     { name: 'description', content: pageDescription },
     { property: 'og:title', content: contextualPageTitle.value },
     { property: 'og:description', content: pageDescription },
@@ -210,7 +216,7 @@ useHead(() => ({
         name: basePageTitle,
         description: pageDescription,
         url: `${siteConfig.url}${pagePath}`,
-        hasPart: guidePosts.map((post) => ({
+        hasPart: paginatedPosts.value.map((post) => ({
           '@type': 'Article',
           headline: post.title,
           url: `${siteConfig.url}${post.path}`,
@@ -242,6 +248,10 @@ useHead(() => ({
         </div>
       </header>
 
+      <form class="guide-search" role="search" @submit.prevent="searchGuides">
+        <label for="guide-search-input">궁금한 내용을 검색하세요</label>
+        <div><input id="guide-search-input" v-model="searchInput" type="search" maxlength="100" placeholder="예: 반지 사이즈, 도금 변색, 금 무게"><button type="submit">검색</button></div>
+      </form>
       <nav class="guide-categories" aria-label="가이드 종류">
         <p class="guide-categories-label">주제별 보기</p>
         <div ref="categoryList" class="guide-category-list">
@@ -355,6 +365,12 @@ useHead(() => ({
 </template>
 
 <style scoped>
+.guide-search { margin:28px 0; }
+.guide-search label { display:block; margin-bottom:10px; color:#fafafa; }
+.guide-search div { display:flex; gap:10px; }
+.guide-search input { flex:1; min-width:0; padding:12px; border:1px solid #7c7047; background:#161616; color:#fafafa; }
+.guide-search button { padding:12px 20px; background:#c9a227; color:#111; border:0; cursor:pointer; }
+
 .guide-list-page {
   min-height: 100vh;
   background: #0a0a0a;

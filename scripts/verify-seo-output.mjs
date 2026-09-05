@@ -426,12 +426,13 @@ const verifyLocal = async () => {
       ? 'index.html'
       : `${decodeURIComponent(url.pathname).replace(/^\//, '')}.html`
     const filePath = join(publicDir, ...relativePath.split('/'))
-    if (!existsSync(filePath)) {
+    const dynamicGuide = url.pathname === '/guide' && process.env.SEO_LOCAL_RENDER_ORIGIN
+    if (!existsSync(filePath) && !dynamicGuide) {
       failures.push(`${url.pathname}: missing ${relativePath}`)
       continue
     }
 
-    const html = await readFile(filePath, 'utf8')
+    const html = dynamicGuide ? await (await fetch(process.env.SEO_LOCAL_RENDER_ORIGIN + '/guide')).text() : await readFile(filePath, 'utf8')
     const canonical = extractCanonical(html)
     const ogUrl = extractOgUrl(html)
     if (!canonical || normalizeUrl(canonical) !== normalizeUrl(location)) {
