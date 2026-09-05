@@ -61,12 +61,14 @@
 | 실제 운영 보존·응답 | 원고 작업 **64건**, 기존 기준선 **65건**의 전체 API 값 불변, 상담 집계 불변, 공개 대상 파일 5개 해시 불변. 진행 중 작업 0개. 대조 목록 연속 조회 **14/13/13ms**. 단일 운영 측정이며 일반 p95나 성능 상승률은 아님 |
 | 운영 진단 갱신 | 진주 글의 현재 원문 해시 일치, 출처 **2개**, 변경일 **9월 6일**, 보호 종료 **10월 7일**, 최근 변경 보호 `true` 확인. 읽기 진단으로 새 유료 분석을 실행하지 않음 |
 | 화면 검증 범위 | 실제 React 소스의 렌더·이벤트 회귀와 운영 API·정적 산출물 확인 완료. CUA의 기존 관리자 탭 연결은 30초 후 시간 초과로 종료돼 **운영 브라우저의 직접 클릭 검증은 미완료**. 이를 실제 브라우저 E2E 통과로 표현하지 않음 |
-| 커밋·원격 푸시 | 최종 커밋 기록 예정 |
-| 공개 배포 범위 | 공개 빌드 입력은 기존 **`6ea9575f373646b6112a6d2fc8ae63ab451a2268`**과 차이 없음. 공개 배포 **`a9842e0f`**, 05:21:37 KST 유지. **05:59 KST** 새 글 2편·진주 수정 글 모두 HTTP 200, H1 1개, canonical·Article·FAQ 확인. 이번 추가 배포 대상은 관리자 앱이며 공개 코드를 새로 배포했다고 주장하지 않음 |
+| 커밋·원격 푸시 | 코드 **`710aa1ebaf85dff2248a02aeac5ba8ec18c255a4`** 커밋·`origin/main` 푸시 완료, 원격 SHA 일치 확인. 후속 문서는 검증 기록만 갱신 |
+| 공개 배포 범위 | 공개 빌드 입력은 기존 **`6ea9575f373646b6112a6d2fc8ae63ab451a2268`**과 차이 없지만, 저장소 푸시 연동이 **`710aa1e`**의 자동 공개 배포 **`90d13eb4`**를 실행했다. **06:04 KST 성공 확인**, [실제 배포본](https://90d13eb4.nobilityjewellery.pages.dev) HTTP 200. **06:05 KST** 실제 도메인의 새 글 2편·진주 수정 글 모두 HTTP 200, H1 1개, canonical·Article·FAQ 재확인 |
 
 검증 중 실제 고객 상담을 생성·수정하거나 문의 메일을 발송하지 않았다. 유료 모델 호출도 하지 않았다. 격리 fixture의 성공은 실제 운영 상담 발생이나 검색 성과를 증명하지 않는다.
 
-운영 증거는 Git에서 제외한 `.tmp/measurement-loop-2026-09-06/`의 `before.json`, `preview.json`, `registered.json`, `verified.json`, `verified-remaining.json`, `local-deploy.log`에 보존했다. 대조 등록은 별도 `comparison_controls` 테이블에 추가했고 기존 배포일·원본·원고를 덮어쓰지 않았다.
+운영 증거는 Git에서 제외한 `.tmp/measurement-loop-2026-09-06/`의 `before.json`, `preview.json`, `registered.json`, `verified.json`, `verified-after-commit.json`, `verified-remaining.json`, `public-deployments.json`, `local-deploy.log`에 보존했다. 코드 커밋 뒤에도 등록 상태·운영 소스·원고·기준선 불변을 다시 확인했다. 대조 등록은 별도 `comparison_controls` 테이블에 추가했고 기존 배포일·원본·원고를 덮어쓰지 않았다.
+
+최종 배포 증거만 추가하는 후속 문서 커밋은 `[CF-Pages-Skip]` 접두어로 중복 공개 빌드를 생략한다. 적용 방식은 [Cloudflare Pages의 커밋별 배포 생략 문서](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/#skipping-a-build-via-a-commit-message)를 따른다. 제품 코드 검사를 생략하거나 이미 실행 중인 코드 배포를 중단하는 설정 변경은 아니다.
 
 ## 실제 사후 자료가 있어야 끝나는 부분
 
