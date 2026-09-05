@@ -138,6 +138,21 @@ const relatedLinks = [
   { to: '/guide/pearl-real-vs-fake-identification', label: '진주 진짜 가짜 구별법', description: '천연·양식·모조 진주 확인 순서' },
 ]
 
+const gmSourceNote = 'GIA의 진주 가치 평가 7요소와 분류 용어를 확인할 수 있는 원문입니다. 2021년 논문의 세부 분류 체계는 아코야·남양·타히티 해수 양식 진주를 대상으로 하므로 모든 진주에 같은 등급표가 적용된다는 뜻은 아닙니다.'
+const gmSources = [
+  {
+    "label": "Gemological Institute of America — Pearl Buyer’s Guide",
+    "url": "https://www.gia.edu/pearl/buyers-guide",
+    "note": "크기·형태·색·광택·표면·진주층·매칭을 설명하는 소비자 안내"
+  },
+  {
+    "label": "Gemological Institute of America — Pearl Classification: The GIA 7 Pearl Value Factors",
+    "url": "https://www.gia.edu/gems-gemology/summer-2021-pearl-classification-the-gia-7-pearl-value-factors",
+    "note": "7요소의 분류 용어와 해수 양식 진주에 대한 적용 범위"
+  }
+]
+
+const updatedAt = '2026-09-06'
 useHead({
   title: pageTitle,
   link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
@@ -172,7 +187,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
         publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
@@ -199,6 +214,9 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt || undefined"
+    :sources="gmSources"
+    :source-note="gmSourceNote"
     category="소재·보석"
     keyword="진주 등급 보는 법"
     inquiry-type="custom"

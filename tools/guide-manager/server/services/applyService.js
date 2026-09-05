@@ -55,9 +55,10 @@ function buildDesiredFiles(generation) {
   const currentPage = fs.existsSync(pagePath) ? fs.readFileSync(pagePath, 'utf8') : '';
   if (isNew && currentPage) throw new Error(`이미 존재하는 slug입니다: ${draft.slug}`);
   if (!isNew && !currentPage) throw new Error(`수정할 페이지 파일이 없습니다: ${pagePath}`);
-  const pageContent = isNew ? renderNewGuide(draft) : patchExistingGuide(currentPage, draft, { policy: require('./updatePolicyService').policyFor(generation) });
+  const policy = isNew ? null : require('./updatePolicyService').policyFor(generation);
+  const pageContent = isNew ? renderNewGuide(draft) : patchExistingGuide(currentPage, draft, { policy });
   const currentIndex = fs.readFileSync(indexPath, 'utf8');
-  const indexContent = patchGuideIndex(currentIndex, draft, { isNew });
+  const indexContent = patchGuideIndex(currentIndex, draft, { isNew, policy });
   const clusterChange = isNew ? buildClusterChange(draft, generation.input?.topicDecision) : null;
   const usedImages = new Set([draft.heroImage, ...(draft.sections || []).map(section => section.image)].filter(Boolean).map(image => image.path));
   const images = db.prepare(`
@@ -193,7 +194,7 @@ async function apply(id) {
   if (generation.status !== 'approved') throw new Error('먼저 원고와 이미지를 검수하고 승인해 주세요');
   const draft = generation.humanized || generation.draft;
   require('./updatePolicyService').assertUpdatePolicy(generation, { draft, phase: 'apply' });
-  assertSelectedEvidence(generation, draft);
+  assertSelectedEvidence(generation, draft, { requireOperatorReview: true });
   assertNewGuideConnection(generation, draft);
   const lint = lintDraft(draft, { targetSlug: generation.target_slug, generationId: generation.id, requireImage: true, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial });
   if (lint.blocking) throw new Error('차단 검사가 남아 있어 반영할 수 없습니다');

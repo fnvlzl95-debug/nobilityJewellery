@@ -25,6 +25,7 @@ function parseGeneration(row) {
   };
   for (const key of ['input_json', 'research_json', 'draft_json', 'humanized_json', 'lint_json']) delete parsed[key];
   if (parsed.research?.official) parsed.research = { ...parsed.research, official: reclassifySources(parsed.research.official) };
+  parsed.sourceReviewContexts = sourceReviewContexts(parsed);
   parsed.draft = reclassifySources(parsed.draft);
   parsed.humanized = reclassifySources(parsed.humanized);
   parsed.modelRuns = db.prepare(`
@@ -48,6 +49,24 @@ function parseGeneration(row) {
 
 function getGeneration(id) {
   return parseGeneration(db.prepare('SELECT * FROM generations WHERE id = ?').get(id));
+}
+
+function sourceReviewContexts(generation) {
+  const evidence = generation.research?.official;
+  return (evidence?.sources || []).map(source => {
+    const claims = (evidence.claims || []).filter(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url));
+    const fingerprint = sha256(JSON.stringify({ source: { url: source.url, label: source.label, reason: source.reason || '', note: source.note || '', official: officialDomain(source.url) }, claims }));
+    const saved = (generation.research?.sourceReviews || []).find(review => review.url === source.url);
+    const current = saved?.fingerprint === fingerprint;
+    return { url: source.url, fingerprint, claims, status: current ? saved.status : saved ? 'review_expired' : 'unreviewed', review: current ? saved : null };
+  });
+}
+
+function assertSourceReview(generation, url, { requireOperatorReview = false } = {}) {
+  if (generation.input?.sourceReviewVersion !== 1) return;
+  const context = sourceReviewContexts(generation).find(item => item.url === url);
+  if (!context || !['operator_reviewed', 'automatic_research'].includes(context.status)) throw Object.assign(new Error(`출처 또는 조사 주장이 변경되었습니다. 최신 문서를 대조한 확인 위치와 메모를 저장해 주세요: ${url}`), { status: 422, code: 'SOURCE_REVIEW_REQUIRED' });
+  if (requireOperatorReview && context.status !== 'operator_reviewed') throw Object.assign(new Error(`자동 조사 출처는 아직 운영자가 검토하지 않았습니다. 출처 탭에서 실제 문서의 확인 위치와 메모를 저장한 뒤 승인해 주세요: ${url}`), { status: 422, code: 'SOURCE_REVIEW_REQUIRED' });
 }
 
 function listGenerations({ includeArchived = false } = {}) {
@@ -118,6 +137,7 @@ function createGeneration(input) {
     automationRequested: !!input.automationRequested,
   };
   const manualSnippet = !!target && payload.auditPlan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID);
+  payload.sourceReviewVersion = 1;
   if (manualSnippet) payload.draftMode = 'reviewed_page_query_snippet';
   const preview = { kind: target ? 'update' : 'new', target_slug: target?.slug || null, topic, input: payload };
   const initialDraft = manualSnippet ? reviewedSnippetDraft(preview) : null;
@@ -240,21 +260,35 @@ async function researchOfficial(id, { emphasizeOfficial = false } = {}) {
   if (!validateEvidence(evidence)) throw new Error(`근거 구조가 올바르지 않습니다: ${schemaErrors(validateEvidence).join('; ')}`);
   evidence.sources = evidence.sources.map((source) => ({ ...source, official: officialDomain(source.url), selected: false }));
   const research = { ...(generation.research || {}), official: evidence, researchedAt: nowIso() };
-  return updateGeneration(id, { research_json: JSON.stringify(research), status: 'researched', error: null });
+  return updateGeneration(id, { research_json: JSON.stringify(research), input_json: JSON.stringify({ ...generation.input, sourceReviewVersion: 1 }), status: 'researched', error: null });
 }
 
-function selectSources(id, selectedUrls, { allowWithoutOfficial = null } = {}) {
+function selectSources(id, selectedUrls, { allowWithoutOfficial = null, sourceReviews = [], selectionMode = 'operator' } = {}) {
   const generation = getGeneration(id);
   if (!generation?.research?.official) throw new Error('먼저 공식 출처 조사를 실행해 주세요');
+  if (generation.status === 'applied' || generation.archived_at) throw Object.assign(new Error('반영이 끝난 작업의 출처 검토 기록은 바꾸지 않습니다. 새 수정 작업에서 검토해 주세요.'), { status: 409, code: 'SOURCE_REVIEW_LOCKED' });
+  assertUpdatePolicy(generation);
   if (!Array.isArray(selectedUrls) || !selectedUrls.length) throw Object.assign(new Error('원고 근거로 쓸 출처를 최소 1개 선택해 주세요'), { status: 422, code: 'SOURCE_SELECTION_REQUIRED' });
   const available = new Set(generation.research.official.sources.map(source => source.url));
   if (selectedUrls.some(url => typeof url !== 'string' || !available.has(url))) throw Object.assign(new Error('조사 결과에 없는 출처 URL입니다. 최신 출처 목록에서 다시 선택해 주세요.'), { status: 422, code: 'SOURCE_NOT_FOUND' });
+  if (!Array.isArray(sourceReviews)) throw Object.assign(new Error('출처 검토 기록 형식을 확인해 주세요.'), { status: 422, code: 'SOURCE_REVIEW_REQUIRED' });
+  const contexts = sourceReviewContexts(generation);
+  const reviews = selectedUrls.map(url => {
+    const context = contexts.find(item => item.url === url);
+    if (!context.claims.length) throw Object.assign(new Error(`출처와 연결된 조사 주장이 없습니다: ${url}`), { status: 422, code: 'SOURCE_CLAIM_REQUIRED' });
+    const provided = sourceReviews.find(review => review?.url === url);
+    if (!provided && context.status === 'operator_reviewed') return context.review;
+    if (selectionMode === 'automatic') return { url, fingerprint: context.fingerprint, status: 'automatic_research', selectedAt: nowIso() };
+    if (!provided || provided.fingerprint !== context.fingerprint) throw Object.assign(new Error(`최신 출처와 조사 주장을 확인한 뒤 검토를 저장해 주세요: ${url}`), { status: 422, code: 'SOURCE_REVIEW_REQUIRED' });
+    const location = String(provided.location || '').trim();
+    const note = String(provided.note || '').trim();
+    if (provided.confirmed !== true || location.length < 4 || location.length > 500 || note.length < 10 || note.length > 2000) throw Object.assign(new Error('선택 출처마다 문서 제목·절·문단 등 확인 위치(4자 이상), 대조 메모(10자 이상)와 직접 확인 표시가 필요합니다.'), { status: 422, code: 'SOURCE_REVIEW_REQUIRED' });
+    return { url, fingerprint: context.fingerprint, status: 'operator_reviewed', location, note, reviewedAt: nowIso() };
+  });
   const selected = new Set(selectedUrls || []);
   generation.research.official.sources = generation.research.official.sources.map((source) => ({ ...source, selected: selected.has(source.url) }));
-  const fields = { research_json: JSON.stringify(generation.research), status: 'researched' };
-  if (allowWithoutOfficial !== null) {
-    fields.input_json = JSON.stringify({ ...generation.input, allowWithoutOfficial: !!allowWithoutOfficial });
-  }
+  generation.research.sourceReviews = reviews;
+  const fields = { research_json: JSON.stringify(generation.research), status: generation.draft ? 'review' : 'researched', input_json: JSON.stringify({ ...generation.input, sourceReviewVersion: 1, ...(allowWithoutOfficial === null ? {} : { allowWithoutOfficial: !!allowWithoutOfficial }) }) };
   return updateGeneration(id, fields);
 }
 
@@ -286,14 +320,16 @@ function sourceBundle(generation) {
   const selectedUrls = new Set(selected.map((source) => source.url));
   for (const source of selected) {
     if (!(official.claims || []).some(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url))) throw Object.assign(new Error(`선택한 출처에 연결된 조사 근거가 없습니다. 근거가 있는 출처를 다시 선택해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_CLAIM_REQUIRED' });
+    assertSourceReview(generation, source.url);
   }
   return {
     sources: selected,
     claims: (official.claims || []).map(claim => ({ ...claim, sourceUrls: (claim.sourceUrls || []).filter(url => selectedUrls.has(url)) })).filter(claim => claim.sourceUrls.length),
+    reviewStatus: sourceReviewContexts(generation).filter(item => selectedUrls.has(item.url)).map(({ url, status }) => ({ url, status })),
   };
 }
 
-function assertSelectedEvidence(generation, draft) {
+function assertSelectedEvidence(generation, draft, options = {}) {
   const original = policyFor(generation)?.baselineDraft.sources || [];
   const selected = new Set((generation.research?.official?.sources || []).filter(source => source.selected).map(source => source.url));
   const claims = generation.research?.official?.claims || [];
@@ -302,6 +338,7 @@ function assertSelectedEvidence(generation, draft) {
     if (original.some(prior => publicIdentity(prior) === publicIdentity(source))) continue;
     if (!selected.has(source.url)) throw Object.assign(new Error(`신규·변경 출처를 출처 탭에서 먼저 선택해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_NOT_SELECTED' });
     if (!claims.some(claim => String(claim.claim || '').trim() && (claim.sourceUrls || []).includes(source.url))) throw Object.assign(new Error(`출처와 연결된 확인 근거가 없습니다. 해당 문서에서 뒷받침하는 내용을 확인한 뒤 조사 자료를 보완해 주세요: ${source.url}`), { status: 422, code: 'SOURCE_CLAIM_REQUIRED' });
+    assertSourceReview(generation, source.url, options);
   }
   return { checked: true, limitation: '선택한 문서와 조사 주장 사이 연결 검사이며 본문 주장의 의미·정확성을 자동으로 증명하지 않습니다.' };
 }
@@ -315,7 +352,7 @@ function generationPrompt(generation, evidence, { repairDraft = null, errors = [
     `문의 유형: ${generation.input.inquiryType}`,
     `희망 slug: ${generation.input.desiredSlug || '(영문 SEO slug 생성)'}`,
     `사업자 제공 사실:\n${generation.input.businessFacts || '없음'}`,
-    `승인 출처와 근거:\n${JSON.stringify(evidence, null, 2)}`,
+    `선택한 조사 출처와 주장(automatic_research는 운영자 검토 전이며 사실 정확성을 승인한 결과가 아닙니다):\n${JSON.stringify(evidence, null, 2)}`,
     `실제로 존재하는 관련 링크 후보:\n${JSON.stringify(relatedCandidates(generation), null, 2)}`,
     generation.input.auditPlan ? `사용자가 진단 화면에서 확정한 수정 계획(활성 항목만 구현하고 보존 항목은 유지):\n${JSON.stringify(generation.input.auditPlan, null, 2)}` : '',
     generation.input.updatePolicy ? `서버가 허용한 변경 필드(나머지는 원문에서 보존):\n${JSON.stringify(generation.input.updatePolicy.scope)}` : '',
@@ -497,7 +534,7 @@ function approveGeneration(id) {
   const draft = generation?.humanized || generation?.draft;
   if (!draft) throw new Error('승인할 원고가 없습니다');
   assertUpdatePolicy(generation, { draft, phase: 'approve' });
-  assertSelectedEvidence(generation, draft);
+  assertSelectedEvidence(generation, draft, { requireOperatorReview: true });
   const connection = require('./clusterService').assertNewGuideConnection(generation, draft);
   assertUniqueIntent({ topic: generation.topic, primaryKeyword: draft.keyword, slug: draft.slug, workingTitle: draft.title }, { targetSlug: generation.target_slug, generationId: generation.id });
   const lint = lintDraft(draft, { ...lintOptions(generation), requireImage: true });

@@ -48,10 +48,11 @@ export function guideSteps(generation, draft, { compared = false } = {}) {
   }
   return [
     { key: 'official', label: '출처 조사', done: !!generation?.research?.official, hint: '주제에 맞는 공식·권위 출처 후보를 찾습니다.', action: '출처 조사 실행' },
-    { key: 'select', label: '출처 선택', done: sources.some((source) => source.selected), hint: '찾은 후보 중 원고 근거로 쓸 출처를 고릅니다. ‘출처’ 탭에서 직접 고르거나 공식 출처만 한 번에 선택할 수 있습니다.', action: '공식 출처 모두 선택' },
+    { key: 'select', label: '출처 선택', done: sources.some((source) => source.selected), hint: '원문 링크와 연결된 주장을 대조하고 확인 위치·메모를 저장합니다. 자동 조사 출처는 최종 승인 전에 직접 검토해야 합니다.', action: '출처 검토하기' },
     { key: 'draft', label: '원고 생성', done: !!generation?.draft, hint: '선택한 근거만 사용해 Luna가 구조화 원고를 만들고 자동 검사까지 실행합니다.', action: '원고 생성' },
     { key: 'image', label: '이미지 생성', done: heroReady, hint: '대표 이미지를 만듭니다. 기존 글 수정은 기존 이미지를 그대로 유지할 수도 있습니다.', action: '대표 이미지 생성' },
     { key: 'polish', label: '다듬기·검사', done: (!!generation?.humanized || humanizeSkipped) && lintOk, hint: '수치·단위·URL을 잠근 채 문장을 다듬고 SEO·중복 검사를 통과시킵니다.', action: '문장 다듬기' },
+    ...(generation?.input?.sourceReviewVersion === 1 ? [{ key: 'source-review', label: '출처 원문 검토', done: generation.status === 'applied' || sources.filter(source => source.selected).every(source => generation.sourceReviewContexts?.some(item => item.url === source.url && item.status === 'operator_reviewed')), hint: '자동 조사와 운영자 검토는 다릅니다. 연결된 주장과 문서의 확인 위치를 직접 대조하고 기록하세요.', action: '출처 검토하기' }] : []),
     { key: 'approve', label: '최종 승인', done: ['approved', 'applied'].includes(generation?.status), hint: '미리보기를 읽어보고 문제가 없으면 승인하세요. 승인해도 저장소는 아직 바뀌지 않습니다.', action: '최종 승인' },
     { key: 'apply', label: '저장소 반영', done: generation?.status === 'applied', hint: '승인된 파일을 귀족 저장소에 반영하고 typecheck·build·SEO 검사를 실행합니다. 실패하면 자동 복원되며 배포는 별도 지시로만 진행합니다.', action: '저장소에 반영' },
   ]
@@ -204,7 +205,7 @@ function DraftTab({ draft, generationId, baseRevision, generationRevision, serve
   </fieldset>
 }
 
-function SourcesTab({ rows, claims = [], selected, setSelected, allowWithoutOfficial, setAllowWithoutOfficial, onSave, onResearch, busy }) {
+function SourcesTab({ rows, claims = [], contexts = [], reviews = {}, setReviews, selected, setSelected, allowWithoutOfficial, setAllowWithoutOfficial, onSave, onResearch, busy }) {
   if (!rows.length) return <div className="tab-panel">
     <EmptyRow icon={FileSearch} title="아직 조사한 출처가 없습니다" hint="진행 순서의 ‘출처 조사’ 단계를 실행하거나 아래 버튼을 누르세요." />
     <button type="button" className="button button-primary" disabled={!!busy} onClick={() => onResearch(false)}>{busy === 'official' ? <Spinner label="조사 중" /> : <><FileSearch size={15} />출처 조사 실행</>}</button>
@@ -215,7 +216,7 @@ function SourcesTab({ rows, claims = [], selected, setSelected, allowWithoutOffi
   const selectedOfficial = official.filter((source) => selected.includes(source.url)).length
   return <div className="tab-panel">
     <div className="panel-head">
-      <div><h2>출처 승인 <b>{selected.length}/{rows.length}</b></h2><p>체크한 근거만 원고에 사용합니다. 공식·권위 출처(정부·표준기관·교육기관·국제 보석 협회)가 1개 이상이면 그대로 진행됩니다.</p></div>
+      <div><h2>출처 검토 <b>{selected.length}/{rows.length}</b></h2><p>문서를 열고 조사 주장과 실제 원문을 대조하세요. 공식 도메인이나 모델의 확신도는 사실 검증을 대신하지 않습니다. 선택 출처마다 확인 위치와 메모를 남겨야 검토 완료로 저장됩니다.</p></div>
       <div className="panel-head-actions">
         {official.length > 0 && <button type="button" className="text-button" onClick={() => setSelected(official.map((source) => source.url))}>공식 출처 모두 선택</button>}
         <button type="button" className="text-button" onClick={() => setSelected(supported.map((source) => source.url))}>근거 연결 출처 선택</button>
@@ -236,10 +237,24 @@ function SourcesTab({ rows, claims = [], selected, setSelected, allowWithoutOffi
       </div>
     </div>}
 
-    <div className="source-list">{rows.map((source) => <label key={source.url} className={source.official ? '' : 'unofficial'}>
-      <input type="checkbox" disabled={!claimUrls.has(source.url) && !selected.includes(source.url)} checked={selected.includes(source.url)} onChange={(event) => setSelected(event.target.checked ? [...selected, source.url] : selected.filter((url) => url !== source.url))} />
-      <span><strong>{source.label}</strong><small>{source.domain} · {source.official ? '공식 출처' : '보조 후보'}</small><em>{source.reason}</em>{!claimUrls.has(source.url) && <small className="error-copy">확인한 주장과 연결되지 않은 출처입니다. 출처를 다시 조사해 주세요.</small>}</span>
-    </label>)}</div>
+    <div className="source-list">{rows.map(source => {
+      const context = contexts.find(item => item.url === source.url)
+      const review = reviews[source.url] || {}
+      const edit = patch => setReviews(current => ({ ...current, [source.url]: { ...current[source.url], ...patch, fingerprint: context?.fingerprint } }))
+      const linkedClaims = claims.filter(claim => (claim.sourceUrls || []).includes(source.url))
+      return <div key={source.url} className={`source-review-entry ${source.official ? '' : 'unofficial'}`}>
+        <label><input type="checkbox" disabled={!claimUrls.has(source.url) && !selected.includes(source.url)} checked={selected.includes(source.url)} onChange={event => setSelected(event.target.checked ? [...selected, source.url] : selected.filter(url => url !== source.url))} /><strong>{source.label}</strong></label>
+        <p>{/^https:\/\//.test(source.url) && <a href={source.url} target="_blank" rel="noopener noreferrer">원문 문서 열기 ↗</a>} <small>{source.domain} · {source.official ? '공식 출처' : '보조 후보'}</small></p>
+        <p>{source.reason}</p>
+        <p className={context?.status === 'operator_reviewed' ? 'muted' : 'warn-copy'}>{context?.status === 'operator_reviewed' ? `운영자 검토 기록: ${context.review?.reviewedAt || ''}` : context?.status === 'review_expired' ? '출처 또는 주장이 바뀌어 이전 검토가 만료됐습니다.' : context?.status === 'automatic_research' ? '자동 조사 선택 · 운영자 문서 대조 전' : '운영자 검토 기록 없음'}</p>
+        {linkedClaims.length ? <ul>{linkedClaims.map((claim, index) => <li key={index}><strong>조사 주장:</strong> {claim.claim} <small>(모델 확신도: {claim.confidence || '미기록'})</small></li>)}</ul> : <p className="error-copy">연결된 조사 주장이 없습니다. 출처를 다시 조사해 주세요.</p>}
+        {selected.includes(source.url) && <div className="source-review-form">
+          <label>문서 내 확인 위치<input value={review.location || ''} maxLength={500} placeholder="문서 제목 · 절 제목 · 해당 문단" onChange={event => edit({ location: event.target.value, confirmed: false })} /></label>
+          <label>주장과 대조한 메모<textarea value={review.note || ''} maxLength={2000} placeholder="어떤 주장을 확인했고 적용 조건이나 예외가 무엇인지 10자 이상 기록하세요." onChange={event => edit({ note: event.target.value, confirmed: false })} /></label>
+          <label><input type="checkbox" checked={!!review.confirmed} onChange={event => edit({ confirmed: event.target.checked })} />연결된 주장과 원문을 직접 대조했습니다.</label>
+        </div>}
+      </div>
+    })}</div>
 
     <div className="source-actions">
       <button type="button" className="button button-primary" onClick={onSave} disabled={busy === 'sources' || !selected.length}>{busy === 'sources' ? <Spinner /> : <><Check size={15} />선택 저장</>}</button>
@@ -299,12 +314,14 @@ function ChecksTab({ generation, draft, busy, onAction, onDiff, onApprove, onApp
   const lint = generation?.lint
   const automation = generation?.research?.automation
   const latestHumanize = generation?.humanizeRuns?.[0]
-  const steps = [['topic', 'Terra 주제'], ['sources', '공식 근거'], ['draft', '구조화 원고'], ['visuals', '이미지·위치'], ['humanize', '사실 보존'], ['seo', 'SEO 검사'], ['diff', '파일 diff']]
+  const steps = [['topic', 'Terra 주제'], ['sources', '조사 근거'], ['draft', '구조화 원고'], ['visuals', '이미지·위치'], ['humanize', '보호 문장 검사'], ['seo', '구조·정책 검사'], ['diff', '파일 diff']]
   return <div className="tab-panel checks-panel">
     {generation?.input?.allowWithoutOfficial && <p className="warn-copy">공식·권위 출처 없이 보조 출처만으로 진행 중인 작업입니다. 반영 전에 근거가 충분한지 직접 확인해 주세요.</p>}
     <section className="check-card">
-      <div className="check-head"><ShieldCheck size={16} /><strong>품질 검사</strong>{lint && <span className="quality-score">{lint.score}</span>}
+      <div className="check-head"><ShieldCheck size={16} /><strong>구조·정책 검사</strong>{lint && <span className="quality-score">{lint.score}</span>}
         <button type="button" className="text-button" disabled={!!busy || !draft} onClick={onAction}>{busy === 'lint' ? <Spinner /> : '다시 검사'}</button></div>
+      <p className="muted">원고 형식과 정해진 정책을 확인한 점수입니다. 사실 정확성이나 검색 노출·클릭 개선 효과를 검증한 점수가 아닙니다.</p>
+      {(generation.sourceReviewContexts || []).some(item => (generation.research?.official?.sources || []).some(source => source.url === item.url && source.selected) && item.status !== 'operator_reviewed') && <p className="warn-copy">운영자 검토 기록이 없는 출처가 있습니다. 출처 탭에서 연결 문서를 열고 조사 주장과 대조한 확인 위치·메모를 저장해 주세요.</p>}
       {!lint ? <p className="muted">원고 생성 후 검사가 실행됩니다.</p>
         : <div className="finding-list">{lint.findings?.length
           ? lint.findings.map((finding, index) => <div key={`${finding.code}-${index}`} className={finding.severity}><CircleAlert size={14} /><span>{finding.message}</span></div>)
@@ -320,7 +337,7 @@ function ChecksTab({ generation, draft, busy, onAction, onDiff, onApprove, onApp
       {automation.humanizeSkipped && <p className="warn-copy">문장 다듬기를 건너뛰고 원문을 유지했습니다 — {automation.humanizeSkipped}</p>}
       {automation.sourceFallback && <p className="warn-copy">공식·권위 출처를 찾지 못해 보조 출처로 진행했습니다 — {automation.sourceFallback}</p>}
       {automation.imageFailures && <p className="warn-copy">일부 이미지를 만들지 못했습니다 — {automation.imageFailures}. ‘이미지’ 탭에서 다시 시도할 수 있습니다.</p>}
-      {automation.state === 'ready' && <div className="ready-callout"><CheckCircle2 size={18} /><div><strong>바로 반영 가능한 상태입니다.</strong><p>최종 승인 후 저장소 반영을 진행할 수 있습니다.</p></div></div>}
+      {automation.state === 'ready' && <div className="ready-callout"><CheckCircle2 size={18} /><div><strong>자동 준비를 마쳤습니다.</strong><p>출처 원문 대조와 원고 검수, 최종 승인 후 저장소 반영을 진행할 수 있습니다.</p></div></div>}
       {automation.state === 'review' && generation.error && <p className="automation-error">{generation.error}</p>}
     </section>}
 
@@ -483,6 +500,7 @@ export function Editor({ seed, clearSeed }) {
     setDraft(draftState.current.draft); setDirty(false); setDraftConflict(false)
   }
   const [selectedSources, setSelectedSources] = useState([])
+  const [sourceReviews, setSourceReviews] = useState({})
   const [allowWithoutOfficial, setAllowWithoutOfficial] = useState(false)
   const [diff, setDiff] = useState(null)
   const [comparedDraft, setComparedDraft] = useState(null)
@@ -522,6 +540,7 @@ export function Editor({ seed, clearSeed }) {
         setDraft(local.draft); setDirty(true); setDraftConflict(local.baseRevision !== value.revision)
       } else useServerDraft(value)
       setSelectedSources(value.research?.official?.sources?.filter((source) => source.selected).map((source) => source.url) || [])
+      setSourceReviews(Object.fromEntries((value.sourceReviewContexts || []).map(item => [item.url, { fingerprint: item.fingerprint, location: item.review?.location || '', note: item.review?.note || '', confirmed: item.status === 'operator_reviewed' }])))
       setAllowWithoutOfficial(!!value.input?.allowWithoutOfficial)
       setRefreshedAt(new Date().toISOString())
       return value
@@ -636,7 +655,14 @@ export function Editor({ seed, clearSeed }) {
   }
   const autoAdvance = () => run('auto', () => api.post('/automation/prepare', { generationId: selectedId, businessFacts: create.businessFacts, imagePolicy }),
     { success: '남은 단계를 자동으로 끝냈습니다. 미리보기 확인 후 최종 승인만 하면 됩니다.' })
-  const saveSources = () => run('sources', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: selectedSources, allowWithoutOfficial }), { success: '출처 선택을 저장했습니다.' })
+  const saveSources = () => {
+    const reviews = selectedSources.map(url => ({ url, ...sourceReviews[url] }))
+    if (!reviews.length || reviews.some(review => !review.fingerprint || review.confirmed !== true || String(review.location || '').trim().length < 4 || String(review.note || '').trim().length < 10)) {
+      setError('선택 출처마다 확인 위치(4자 이상), 대조 메모(10자 이상)와 직접 확인 표시를 입력해 주세요. 입력한 내용은 화면에 유지됩니다.')
+      return undefined
+    }
+    return run('sources', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: selectedSources, allowWithoutOfficial, sourceReviews: reviews }, { headers: { 'If-Match': String(generation.revision) } }), { success: '출처 선택과 운영자 검토 기록을 저장했습니다.' })
+  }
   const saveCluster = (clusterId, baseRevision) => run('cluster', () => api.put(`/generations/${selectedId}/cluster`, { clusterId }, { headers: { 'If-Match': String(baseRevision) } }), { success: '연결 선택을 저장했습니다. 연결될 페이지를 확인하고 다시 승인해 주세요.' })
   const researchSources = (emphasizeOfficial) => run('official', () => api.post(`/generations/${selectedId}/research/official`, { emphasizeOfficial }),
     { success: emphasizeOfficial ? '정부·표준기관 중심으로 출처를 다시 조사했습니다.' : '공식 출처 후보를 찾았습니다.' })
@@ -706,6 +732,7 @@ export function Editor({ seed, clearSeed }) {
   const autoEligible = currentStep && ['official', 'select', 'draft', 'image', 'polish'].includes(currentStep.key)
 
   const stepAction = (step) => {
+    if (step.key === 'source-review') { setTab('sources'); return undefined }
     if (step.key === 'lint') return doAction('lint', '/lint', { requireImage: false }, '교정안 검사를 갱신했습니다.')
     if (step.key === 'compare') return previewDiff()
     if (step.key === 'official') return researchSources(false)
@@ -714,7 +741,9 @@ export function Editor({ seed, clearSeed }) {
       const officials = sourceRows.filter(source => source.official && claimUrls.has(source.url)).map(source => source.url)
       if (officials.length) {
         setSelectedSources(officials)
-        return run('select', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: officials, allowWithoutOfficial: false }), { success: '공식 출처를 모두 선택해 저장했습니다.' })
+        setAllowWithoutOfficial(false); setTab('sources')
+        setMessage('선택한 문서의 주장과 확인 위치를 대조한 뒤 검토 기록을 저장해 주세요.')
+        return undefined
       }
       // 권위 출처가 없을 때도 막지 않고, 운영자 확인을 받아 보조 출처로 진행한다.
       setTab('sources')
@@ -722,7 +751,8 @@ export function Editor({ seed, clearSeed }) {
       const all = sourceRows.filter(source => claimUrls.has(source.url)).map(source => source.url)
       if (!all.length) { setError('주장과 연결된 출처가 없습니다. 출처를 다시 조사해 주세요.'); return undefined }
       setSelectedSources(all); setAllowWithoutOfficial(true)
-      return run('select', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: all, allowWithoutOfficial: true }), { success: '보조 출처로 진행하도록 저장했습니다. 검수 단계에서 근거를 확인해 주세요.' })
+      setMessage('보조 출처의 주장과 확인 위치를 대조한 뒤 검토 기록을 저장해 주세요.')
+      return undefined
     }
     if (step.key === 'draft') return doAction('draft', '/generate', {}, '원고와 자동 검사를 완료했습니다.')
     if (step.key === 'image') {
@@ -843,7 +873,7 @@ export function Editor({ seed, clearSeed }) {
             </div>
           </section>
 
-          {busy === 'auto' && <p className="guide-running">출처 → 원고 → 이미지 → 다듬기 → SEO 검사 → 파일 변경 순으로 자동 진행 중입니다. 진행 상황은 아래 순서와 ‘검사·반영’ 탭에 실시간 반영됩니다.</p>}
+          {busy === 'auto' && <p className="guide-running">출처 → 원고 → 이미지 → 다듬기 → 구조·정책 검사 → 파일 변경 순으로 자동 진행 중입니다. 진행 상황은 아래 순서와 ‘검사·반영’ 탭에 실시간 반영됩니다.</p>}
 
           {isManualSnippet(generation) && <div className="guard-note" role="note"><ShieldCheck size={16} /><p>페이지 검색어를 검토해 입력한 제목·설명 교정안입니다. 기존 본문·출처·이미지를 보존하며 원고 검사와 변경 비교 후 승인할 수 있습니다.</p></div>}
 
@@ -869,7 +899,7 @@ export function Editor({ seed, clearSeed }) {
           <div className="tab-body">
             {tab === 'preview' && <GuidePreview draft={draft} generation={generation} />}
             {tab === 'draft' && <DraftTab key={generation.id} generationId={generation.id} baseRevision={draftState.current.baseRevision} generationRevision={generation.revision} serverDraft={generation.humanized || generation.draft} draft={draft} onRestore={(value, revision) => { if (preserveDraft(selectedId, value, revision)) setDraftConflict(revision == null || revision !== generation.revision) }} onChange={editDraft} onSave={saveDraft} busy={busy} isUpdate={generation?.kind === 'update'} />}
-            {tab === 'sources' && !isManualSnippet(generation) && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} selected={selectedSources} setSelected={setSelectedSources}
+            {tab === 'sources' && !isManualSnippet(generation) && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} contexts={generation.sourceReviewContexts || []} reviews={sourceReviews} setReviews={setSourceReviews} selected={selectedSources} setSelected={setSelectedSources}
               allowWithoutOfficial={allowWithoutOfficial} setAllowWithoutOfficial={setAllowWithoutOfficial}
               onSave={saveSources} onResearch={researchSources} busy={busy} />}
             {tab === 'images' && !isManualSnippet(generation) && <ImagesTab generation={generation} draft={draft} busy={busy} onGenerate={generateImage} />}

@@ -257,12 +257,12 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
       officialUrls = allSources.filter(source => source.official && supportedSource(source)).map(source => source.url);
     }
     if (officialUrls.length) {
-      if (!allSources.some((source) => source.selected && source.official)) await deps.selectSources(id, officialUrls, { allowWithoutOfficial: false });
-      finishStep(id, 'sources', `공식·권위 출처 ${officialUrls.length}개만 원고 근거로 잠갔습니다.`, { count: officialUrls.length });
+      if (!allSources.some((source) => source.selected && source.official)) await deps.selectSources(id, officialUrls, { allowWithoutOfficial: false, selectionMode: 'automatic' });
+      finishStep(id, 'sources', `공식·권위 출처 ${officialUrls.length}개를 조사 근거로 선택했습니다. 최종 승인 전 문서와 주장을 직접 검토해 주세요.`, { count: officialUrls.length });
     } else if (allSources.length) {
       if (!generation.input?.allowWithoutOfficial) throw new Error('공식·권위 출처를 찾지 못했습니다. 출처 탭에서 보조 출처 사용을 직접 검토·확정한 뒤 다시 실행해 주세요');
-      await deps.selectSources(id, allSources.map(source => source.url), { allowWithoutOfficial: true });
-      finishStep(id, 'sources', '운영자가 확정한 보조 출처로 진행합니다.');
+      await deps.selectSources(id, allSources.filter(supportedSource).map(source => source.url), { allowWithoutOfficial: true, selectionMode: 'automatic' });
+      finishStep(id, 'sources', '보조 출처를 조사 근거로 선택했습니다. 문서 대조와 최종 승인은 별도로 필요합니다.');
     } else {
       throw new Error('근거 출처를 하나도 찾지 못했습니다. 주제를 조금 더 구체적으로 바꿔 다시 시도해 주세요');
     }

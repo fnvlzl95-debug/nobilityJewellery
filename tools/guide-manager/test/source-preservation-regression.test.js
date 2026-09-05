@@ -26,6 +26,42 @@ const sourcePlan = (instructions = preserve) => ({
 });
 const added = { label: '추가 검토 자료', url: 'https://www.gia.edu/source-preservation-check', note: '선택한 공식 문서의 확인 기준', official: true };
 
+async function reviewSelectedSources(generation) {
+  const express = require('express');
+  const app = express();
+  app.use(require('../server/lib/localSecurity').localSecurity());
+  app.use(express.json());
+  app.use('/api', require('../server/routes/api'));
+  app.use((error, req, res, next) => res.status(error.status || 500).json({ code: error.code, error: error.message }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  const base = `http://127.0.0.1:${server.address().port}/api`;
+  try {
+    const token = (await (await fetch(`${base}/session`)).json()).token;
+    const current = await (await fetch(`${base}/generations/${generation.id}`)).json();
+    const selectedUrls = current.research.official.sources.filter(source => source.selected).map(source => source.url);
+    const sourceReviews = selectedUrls.map(url => {
+      const context = current.sourceReviewContexts.find(item => item.url === url);
+      assert.ok(context.claims.length, '성공 fixture도 선택 출처와 연결된 주장이 있어야 합니다');
+      return { url, fingerprint: context.fingerprint, location: '격리 검증 문서 · 관리 기준 확인 문단',
+        note: 'fixture의 관리 기준 주장과 출처 문단을 대조했습니다. 가격·기간 보증으로 확대하지 않습니다.', confirmed: true };
+    });
+    const response = await fetch(`${base}/generations/${generation.id}/sources`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Guide-Manager-Token': token, 'If-Match': String(current.revision) },
+      body: JSON.stringify({ selectedUrls, sourceReviews }),
+    });
+    const reviewed = await response.json();
+    assert.equal(response.status, 200, JSON.stringify(reviewed));
+    assert.equal(reviewed.input.sourceReviewVersion, 1);
+    assert.ok(reviewed.sourceReviewContexts.filter(item => selectedUrls.includes(item.url)).every(item => item.status === 'operator_reviewed'));
+    return reviewed;
+  } finally {
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+  }
+}
+
+
 function syntheticGuide(t, plan = sourcePlan()) {
   const slug = `source-preservation-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
   const draft = makeDraft({ slug, title: '검증 전용 흑요석 장식 보관 기준', keyword: '검증 전용 흑요석 장식 보관', publishedAt: '2024-01-01' });
@@ -85,9 +121,9 @@ test('새 출처 병합은 기존 순서·URL·표시 내용을 고정하고 추
   assert.throws(() => policy.enforceDraftScope(generation, { sources: null }), { code: 'UPDATE_POLICY', status: 422 });
 });
 
-test('실제 저장·승인·반영 검사는 기존 출처 삭제·URL·설명 변경을 거부한다', t => {
+test('실제 저장·승인·반영 검사는 기존 출처 삭제·URL·설명 변경을 거부한다', async t => {
   const guide = syntheticGuide(t);
-  const generation = addResearch(generations.createGeneration(guide.input));
+  const generation = await reviewSelectedSources(addResearch(generations.createGeneration(guide.input)));
   const baseline = generation.input.updatePolicy.baselineDraft;
   for (const sources of [[], [added], [{ ...baseline.sources[0], url: added.url }], [{ ...baseline.sources[0], label: '변경한 이름' }], [{ ...baseline.sources[0], note: '변경한 설명' }]]) {
     const changed = { ...structuredClone(baseline), sources };
@@ -101,7 +137,7 @@ test('실제 저장·승인·반영 검사는 기존 출처 삭제·URL·설명 
   assert.equal(policy.assertUpdatePolicy(generation, { draft: valid, phase: 'apply' }).scope.preserveSourceUrls, true);
 });
 
-test('새 출처는 기존 출처와 병합해도 선택 및 비어 있지 않은 조사 주장 연결이 필수다', t => {
+test('새 출처는 기존 출처와 병합해도 선택 및 비어 있지 않은 조사 주장 연결이 필수다', async t => {
   const guide = syntheticGuide(t);
   let generation = generations.createGeneration(guide.input);
   const valid = policy.enforceDraftScope(generation, { sources: [added] });
@@ -110,13 +146,13 @@ test('새 출처는 기존 출처와 병합해도 선택 및 비어 있지 않�
   assert.throws(() => generations.saveDraft(generation.id, valid), { code: 'SOURCE_CLAIM_REQUIRED' });
   generation = addResearch(generation, { selected: false });
   assert.throws(() => generations.saveDraft(generation.id, valid), { code: 'SOURCE_NOT_SELECTED' });
-  generation = addResearch(generation);
+  generation = await reviewSelectedSources(addResearch(generation));
   assert.deepEqual(generations.saveDraft(generation.id, valid).draft.sources, [...generation.input.updatePolicy.baselineDraft.sources, added]);
 });
 
 test('출처 전용 생성은 writer 호출 없이 보존·추가하고 실제 공개 템플릿의 링크까지 렌더링한다', async t => {
   const guide = syntheticGuide(t);
-  const generation = addResearch(generations.createGeneration(guide.input));
+  const generation = await reviewSelectedSources(addResearch(generations.createGeneration(guide.input)));
   let writerCalls = 0;
   const result = await generations.executeWriterPolicy({ generation, write: async () => { writerCalls++; throw new Error('paid writer must not run'); }, inspect: () => ({ blocking: false, findings: [] }) });
   assert.equal(writerCalls, 0);

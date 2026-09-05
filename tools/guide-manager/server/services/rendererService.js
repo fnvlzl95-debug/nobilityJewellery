@@ -1,7 +1,7 @@
 const { extractObjectBlocks } = require('./inventoryService');
 const { stripSectionNumbering } = require('../lib/sectionTitle');
 const { koreaDate } = require('../lib/utils');
-const { constExpression } = require('./contentExtractorService');
+const { constExpression, LiteralParser } = require('./contentExtractorService');
 
 function js(value) {
   return JSON.stringify(value, null, 2).replace(/</g, '\\u003c');
@@ -325,10 +325,60 @@ function renderGuideSummary(draft) {
   }`;
 }
 
-function patchGuideIndex(source, draft, { isNew }) {
+function patchScopedSummary(block, draft, policy) {
+  // Card copy may intentionally differ from page metadata. Replace only selected
+  // values in the original literal, keeping comments, quotes and line endings.
+  const parser = new LiteralParser(block);
+  const entries = [];
+  parser.skip(); parser.index++;
+  while (parser.index < block.length) {
+    parser.skip();
+    if (block[parser.index] === '}') break;
+    const keyStart = parser.index;
+    const key = ['\'', '"', '`'].includes(block[parser.index]) ? parser.string() : parser.identifier();
+    parser.skip();
+    if (block[parser.index++] !== ':') throw new Error('가이드 목록 속성을 읽지 못했습니다');
+    parser.skip();
+    const start = parser.index;
+    const value = parser.value();
+    const end = parser.index;
+    parser.skip();
+    const comma = block[parser.index] === ',';
+    entries.push({ key, keyStart, start, end, value, comma });
+    if (comma) parser.index++;
+    else if (block[parser.index] !== '}') throw new Error('가이드 목록 구분자를 읽지 못했습니다');
+  }
+  const fields = new Set(policy.scope.fields);
+  const values = { updatedAt: draft.updatedAt || koreaDate() };
+  for (const field of ['title', 'description', 'keyword', 'category']) if (fields.has(field)) values[field] = draft[field];
+  if (fields.has('heroImage') && !(policy.scope.preserveHero ?? policy.scope.preserveImages)) values.image = draft.heroImage.path;
+  const edits = [];
+  for (const [key, value] of Object.entries(values)) {
+    const entry = entries.find(item => item.key === key);
+    if (!entry) {
+      if (key !== 'updatedAt') throw new Error(`guide-posts.ts에서 ${key} 속성을 찾지 못했습니다`);
+      const last = entries.at(-1);
+      const newline = block.includes('\r\n') ? '\r\n' : '\n';
+      const lineStart = block.lastIndexOf('\n', parser.index) + 1;
+      const multiline = /^[\t ]*$/.test(block.slice(lineStart, parser.index));
+      const first = entries[0];
+      const firstIndent = block.slice(block.lastIndexOf('\n', first.keyStart) + 1, first.keyStart);
+      const indent = /^[\t ]*$/.test(firstIndent) ? firstIndent : '    ';
+      const insertion = multiline ? lineStart : parser.index;
+      const text = multiline ? `${indent}updatedAt: ${quote(value)},${newline}` : ` updatedAt: ${quote(value)}, `;
+      if (!last.comma && last.end !== insertion) edits.push({ start: last.end, end: last.end, text: ',' });
+      edits.push({ start: insertion, end: insertion, text: `${!last.comma && last.end === insertion ? ',' : ''}${text}` });
+    } else if (entry.value !== value) {
+      edits.push({ start: entry.start, end: entry.end, text: block[entry.start] === '"' ? JSON.stringify(value) : quote(value) });
+    }
+  }
+  return edits.sort((a, b) => b.start - a.start).reduce((text, edit) => text.slice(0, edit.start) + edit.text + text.slice(edit.end), block);
+}
+
+function patchGuideIndex(source, draft, { isNew, policy = null }) {
   const blocks = extractObjectBlocks(source);
   const existing = blocks.find((block) => new RegExp(`\\bslug\\s*:\\s*'${draft.slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}'`).test(block.text));
-  const summary = renderGuideSummary(draft);
+  const summary = existing && !isNew && policy?.scope ? patchScopedSummary(existing.text, draft, policy) : renderGuideSummary(draft);
   if (existing) return `${source.slice(0, existing.start)}${summary}${source.slice(existing.end)}`;
   if (!isNew) throw new Error(`guide-posts.ts에서 ${draft.slug} 항목을 찾지 못했습니다`);
   const marker = 'export const guidePosts';

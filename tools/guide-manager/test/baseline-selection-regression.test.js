@@ -23,7 +23,7 @@ test.after(() => db.close());
 const deployedAt = '2024-02-01T10:00:00Z';
 let before;
 
-function report({ type = 'gsc_performance', start = '2024-03-01', end = '2024-03-28', summary = { sitewideEligible: true }, importedAt = '2024-06-01T00:00:00Z', clicks = 20, impressions = 200, position = 4 } = {}) {
+function report({ type = 'gsc_performance', start = '2024-03-01', end = '2024-03-28', summary = { sitewideEligible: true, property: 'https://noblessegold.com/', searchType: 'web' }, importedAt = '2024-06-01T00:00:00Z', clicks = 20, impressions = 200, position = 4 } = {}) {
   const id = Number(db.prepare(`INSERT INTO analytics_imports (source_type,file_name,file_hash,period_start,period_end,parser_version,summary_json,imported_at)
     VALUES (?,'synthetic.csv',?,?,?,'test',?,?)`).run(type, randomUUID(), start, end, JSON.stringify(summary), importedAt).lastInsertRowid);
   if (type.startsWith('gsc_performance')) db.prepare(`INSERT INTO gsc_pages (import_id,original_url,normalized_url,clicks,impressions,ctr,position)
@@ -86,8 +86,110 @@ test('same measured period uses the latest imported revision with deterministic 
   const newerImport = report({ importedAt: '2024-05-01T00:00:00Z' });
   report({ importedAt: '2024-04-01T00:00:00Z' });
   assert.equal(baseline.eligibleImport(before.gsc, 'gsc_performance', deployedAt).id, newerImport);
+  assert.equal(baseline.eligibleObservation('gsc_performance', deployedAt).id, newerImport);
   const sameStampLaterId = report({ importedAt: '2024-05-01T00:00:00Z' });
   assert.equal(baseline.eligibleImport(before.gsc, 'gsc_performance', deployedAt).id, sameStampLaterId);
+  assert.equal(baseline.eligibleObservation('gsc_performance', deployedAt).id, sameStampLaterId);
+});
+
+test('GSC comparisons keep the same verified property and search type, accepting only the root URL alias', () => {
+  const saved = storedBaseline();
+  report({ summary: { sitewideEligible: true, property: 'sc-domain:noblessegold.com', searchType: 'web' } });
+  report({ summary: { sitewideEligible: true, property: 'https://noblessegold.com/', searchType: 'image' } });
+  report({ summary: { sitewideEligible: true } });
+  assert.equal(baseline.eligibleImport(before.gsc, 'gsc_performance', deployedAt, 'fixture'), null);
+  const waiting = baseline.listComparisons().find(row => row.generationId === saved.id);
+  assert.equal(waiting.status, 'waiting');
+  assert.match(waiting.gscComparisonIssue, /전과 후의 속성·검색 유형/);
+  const alias = report({ summary: { sitewideEligible: true, property: 'https://noblessegold.com', searchType: 'web' } });
+  const result = baseline.listComparisons().find(row => row.generationId === saved.id);
+  assert.equal(result.after.gsc.importId, alias);
+  assert.deepEqual(result.after.gsc.sourceScope, { property: 'https://noblessegold.com/', searchType: 'web' });
+  assert.equal(result.gscComparisonIssue, null);
+});
+
+test('legacy before metrics must match the original aggregate and are never rewritten to make comparison pass', () => {
+  report();
+  const original = structuredClone(before);
+  for (const mismatch of [{ clicks: 999 }, { impressions: 999 }, { ctr: 0.8 }, { position: 1 }, { clicks: null }]) {
+    before = { ...original, gsc: { ...original.gsc, ...mismatch } };
+    const saved = storedBaseline();
+    const comparison = baseline.listComparisons().find(row => row.generationId === saved.id);
+    assert.equal(comparison.status, 'waiting');
+    assert.equal(comparison.changes, null);
+    assert.match(comparison.gscComparisonIssue, /수치.*재집계.*일치하지/);
+    assert.equal(db.prepare('SELECT snapshot_json FROM content_baselines WHERE generation_id=?').get(saved.id).snapshot_json, saved.snapshotJson);
+  }
+});
+
+test('new snapshots bind the original hash, aggregate fingerprint and source scope independently', () => {
+  before = baseline.metricSnapshot('fixture', { performance: { id: before.gsc.importId, periodStart: before.gsc.periodStart, periodEnd: before.gsc.periodEnd }, ga4: null });
+  const original = structuredClone(before);
+  assert.match(before.gsc.metricFingerprint, /^[a-f0-9]{64}$/);
+  assert.equal(before.gsc.timeZone, 'America/Los_Angeles');
+  assert.equal(before.gsc.timeZoneAssumed, false);
+  report();
+  for (const mismatch of [{ fileHash: 'different original' }, { sourceScope: { property: 'sc-domain:noblessegold.com', searchType: 'web' } }, { metricFingerprint: '0'.repeat(64) }]) {
+    before = { ...original, gsc: { ...original.gsc, ...mismatch } };
+    const saved = storedBaseline();
+    const comparison = baseline.listComparisons().find(row => row.generationId === saved.id);
+    assert.equal(comparison.after, null);
+    assert.ok(comparison.gscComparisonIssue);
+    assert.equal(db.prepare('SELECT snapshot_json FROM content_baselines WHERE generation_id=?').get(saved.id).snapshot_json, saved.snapshotJson);
+  }
+});
+
+test('GSC reports wait for Pacific midnight even when Korea has already entered the next day', t => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-09-13T15:30:00Z') });
+  const id = report({ start: '2026-09-07', end: '2026-09-13', importedAt: '2026-09-13T15:00:00Z' });
+  const deployed = '2026-09-05T17:55:00Z';
+  assert.equal(baseline.eligibleObservation('gsc_performance', deployed), null);
+  t.mock.timers.setTime(Date.parse('2026-09-14T06:59:59Z'));
+  assert.equal(baseline.eligibleObservation('gsc_performance', deployed), null);
+  t.mock.timers.setTime(Date.parse('2026-09-14T07:00:00Z'));
+  assert.equal(baseline.eligibleObservation('gsc_performance', deployed).id, id);
+});
+
+test('update comparisons also require the last Pacific day to finish and preserve the 28-day contract', t => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-10-04T15:30:00Z') });
+  before = { gsc: { importId: report({ start: '2026-08-07', end: '2026-09-03', clicks: 5, impressions: 100, position: 7 }),
+    periodStart: '2026-08-07', periodEnd: '2026-09-03', periodDays: 28, clicks: 5, impressions: 100, ctr: 0.05, position: 7 }, ga4: null };
+  const after = report({ start: '2026-09-07', end: '2026-10-04' });
+  const deployed = '2026-09-05T17:55:00Z';
+  assert.equal(baseline.eligibleImport(before.gsc, 'gsc_performance', deployed, 'fixture'), null);
+  t.mock.timers.setTime(Date.parse('2026-10-05T07:00:00Z'));
+  assert.equal(baseline.eligibleImport(before.gsc, 'gsc_performance', deployed, 'fixture').id, after);
+});
+
+test('Pacific deployment dates and both daylight-saving boundaries select complete days correctly', t => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-09-14T07:00:00Z') });
+  const nextPacificDay = report({ start: '2026-09-06', end: '2026-09-12' });
+  assert.equal(baseline.eligibleObservation('gsc_performance', '2026-09-05T17:55:00Z').id, nextPacificDay, 'September 6 is the first full Pacific day after the actual September 5 deployment');
+  for (const [deployed, start, end, midnight] of [
+    ['2026-03-01T20:00:00Z', '2026-03-02', '2026-03-08', '2026-03-09T07:00:00Z'],
+    ['2026-10-25T20:00:00Z', '2026-10-26', '2026-11-01', '2026-11-02T08:00:00Z'],
+  ]) {
+    db.prepare('DELETE FROM analytics_imports').run();
+    const id = report({ start, end });
+    t.mock.timers.setTime(Date.parse(midnight) - 1);
+    assert.equal(baseline.eligibleObservation('gsc_performance', deployed), null);
+    t.mock.timers.setTime(Date.parse(midnight));
+    assert.equal(baseline.eligibleObservation('gsc_performance', deployed).id, id);
+    assert.equal(baseline.observationReadyAt(deployed, 7, 'America/Los_Angeles'), new Date(midnight).toISOString());
+  }
+});
+
+test('new observations expose each platform period and the unknown GA4 time-zone assumption separately', () => {
+  const saved = storedBaseline('new');
+  const gscId = report({ start: '2024-03-22', end: '2024-03-28' });
+  const ga4Id = report({ type: 'ga4_overview', start: '2024-03-01', end: '2024-03-28', summary: {} });
+  const result = baseline.listComparisons().find(row => row.generationId === saved.id);
+  assert.equal(result.status, 'observed');
+  assert.equal(result.changes, null);
+  assert.deepEqual(result.measurementPeriods.gsc.after, { importId: gscId, sourceType: 'gsc_performance', periodStart: '2024-03-22', periodEnd: '2024-03-28', periodDays: 7, timeZone: 'America/Los_Angeles', timeZoneAssumed: false, property: 'https://noblessegold.com/', searchType: 'web' });
+  assert.deepEqual(result.measurementPeriods.ga4.after, { importId: ga4Id, sourceType: 'ga4_overview', periodStart: '2024-03-01', periodEnd: '2024-03-28', periodDays: 28, timeZone: 'Asia/Seoul', timeZoneAssumed: true, property: null, searchType: null });
+  assert.match(result.note, /GA4는 시간대 메타가 없어 한국 시간을 가정/);
+  assert.equal(db.prepare('SELECT snapshot_json FROM content_baselines WHERE generation_id=?').get(saved.id).snapshot_json, saved.snapshotJson);
 });
 
 test('the before reference must itself be a verified GSC import and must not borrow another report trust', () => {
@@ -136,6 +238,10 @@ test('explicit re-upload validates the same legacy original and opens update com
   db.prepare('UPDATE analytics_imports SET summary_json=?,parser_version=? WHERE id=?').run('{}', 'noblesse-analytics-v4', imported.id);
   const update = storedBaseline();
   const created = storedBaseline('new');
+  const unchangedBefore = before;
+  before = { ...before, gsc: { ...before.gsc, clicks: 999 } };
+  const mismatched = storedBaseline();
+  before = unchangedBefore;
   const after = report();
   let comparisons = baseline.listComparisons();
   assert.equal(comparisons.find(row => row.generationId === update.id).status, 'waiting');
@@ -152,5 +258,9 @@ test('explicit re-upload validates the same legacy original and opens update com
   assert.equal(comparison.status, 'comparable');
   assert.equal(comparison.gscComparisonIssue, null);
   assert.deepEqual(comparison.changes.clicks, { before: 5, after: 20, change: 15, rate: 3 });
-  for (const saved of [update, created]) assert.equal(db.prepare('SELECT snapshot_json FROM content_baselines WHERE generation_id=?').get(saved.id).snapshot_json, saved.snapshotJson);
+  const stillBlocked = comparisons.find(row => row.generationId === mismatched.id);
+  assert.equal(stillBlocked.status, 'waiting', 're-import cannot bless a snapshot with different preserved metrics');
+  assert.equal(stillBlocked.changes, null);
+  assert.match(stillBlocked.gscComparisonIssue, /수치.*재집계.*일치하지/);
+  for (const saved of [update, created, mismatched]) assert.equal(db.prepare('SELECT snapshot_json FROM content_baselines WHERE generation_id=?').get(saved.id).snapshot_json, saved.snapshotJson);
 });

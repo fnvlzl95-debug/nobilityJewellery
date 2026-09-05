@@ -16,6 +16,42 @@ const automation = require('../server/services/automationService');
 const jobs = require('../server/services/jobService');
 const images = require('../server/services/imageService');
 
+async function reviewSelectedSources(generation) {
+  const express = require('express');
+  const app = express();
+  app.use(require('../server/lib/localSecurity').localSecurity());
+  app.use(express.json());
+  app.use('/api', require('../server/routes/api'));
+  app.use((error, req, res, next) => res.status(error.status || 500).json({ code: error.code, error: error.message }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  const base = `http://127.0.0.1:${server.address().port}/api`;
+  try {
+    const token = (await (await fetch(`${base}/session`)).json()).token;
+    const current = await (await fetch(`${base}/generations/${generation.id}`)).json();
+    const selectedUrls = current.research.official.sources.filter(source => source.selected).map(source => source.url);
+    const sourceReviews = selectedUrls.map(url => {
+      const context = current.sourceReviewContexts.find(item => item.url === url);
+      assert.ok(context.claims.length, '성공 fixture도 선택 출처와 연결된 주장이 있어야 합니다');
+      return { url, fingerprint: context.fingerprint, location: '격리 검증 문서 · 관리 기준 확인 문단',
+        note: 'fixture의 관리 기준 주장과 출처 문단을 대조했습니다. 가격·기간 보증으로 확대하지 않습니다.', confirmed: true };
+    });
+    const response = await fetch(`${base}/generations/${generation.id}/sources`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Guide-Manager-Token': token, 'If-Match': String(current.revision) },
+      body: JSON.stringify({ selectedUrls, sourceReviews }),
+    });
+    const reviewed = await response.json();
+    assert.equal(response.status, 200, JSON.stringify(reviewed));
+    assert.equal(reviewed.input.sourceReviewVersion, 1);
+    assert.ok(reviewed.sourceReviewContexts.filter(item => selectedUrls.includes(item.url)).every(item => item.status === 'operator_reviewed'));
+    return reviewed;
+  } finally {
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+  }
+}
+
+
 function syntheticGuide(t, overrides = {}) {
   const slug = `integrity-check-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
   const draft = makeDraft({ slug, title: '검증 전용 흑요석 장식 보관 기준', keyword: '검증 전용 흑요석 장식 보관', publishedAt: '2025-01-01', ...overrides });
@@ -80,6 +116,7 @@ test('출처 수정은 writer·Humanizer 외부 요청 없이 구조화 원고�
   let generation = generations.createGeneration({ targetSlug: guide.slug });
   const source = { ...guide.draft.sources[0], selected: true, reason: '공식 교육 자료', domain: 'gia.edu' };
   generation = generations.updateGeneration(generation.id, { research_json: JSON.stringify({ official: { sources: [source], claims: [{ claim: '기존 본문 확인', sourceUrls: [source.url] }] } }) });
+  generation = await reviewSelectedSources(generation);
   let called = 0;
   const result = await generations.executeWriterPolicy({ generation, write: async () => { called++; throw new Error('writer must not run'); }, inspect: () => ({ blocking: false, findings: [] }) });
   assert.equal(called, 0);
@@ -218,7 +255,7 @@ test('수동 이미지 API도 보호 범위를 유료 호출·실행 기록 생�
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM image_assets WHERE generation_id=?').get(generation.id).count, before);
 });
 
-test('새 출처는 선택과 조사 주장 연결이 필요하며 그대로 둔 기존 출처는 허용한다', t => {
+test('새 출처는 선택과 조사 주장 연결이 필요하며 그대로 둔 기존 출처는 허용한다', async t => {
   const guide = syntheticGuide(t);
   let generation = generations.createGeneration({ targetSlug: guide.slug });
   const unchanged = enforceDraftScope(generation, generation.input.updatePolicy.baselineDraft);
@@ -231,6 +268,7 @@ test('새 출처는 선택과 조사 주장 연결이 필요하며 그대로 둔
   generation = generations.updateGeneration(generation.id, { research_json: JSON.stringify({ official: { sources: [{ ...added, selected: true }], claims: [] } }) });
   assert.throws(() => generations.saveDraft(generation.id, changed), { code: 'SOURCE_CLAIM_REQUIRED' });
   generation = generations.updateGeneration(generation.id, { research_json: JSON.stringify({ official: { sources: [{ ...added, selected: true }], claims: [{ claim: '선택 문서의 관리 기준 확인', sourceUrls: [added.url] }] } }) });
+  generation = await reviewSelectedSources(generation);
   assert.equal(generations.assertSelectedEvidence(generation, changed).checked, true);
   assert.equal(generations.saveDraft(generation.id, changed).draft.sources[0].url, added.url);
   assert.throws(() => generations.selectSources(generation.id, ['https://www.gia.edu/unknown']), { code: 'SOURCE_NOT_FOUND' });

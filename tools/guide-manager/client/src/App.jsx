@@ -8,6 +8,7 @@ import { api } from './api'
 import { DataQuality, DeploymentForm, MeasurementPage } from './Measurement'
 import { ContentAudits } from './ContentAudits'
 import { Editor } from './Editor'
+import { OperationQuality } from './OperationQuality'
 import {
   Badge, EmptyRow, ErrorNotice, ListToolbar, Pagination, RefreshStatus, SortHead, Spinner, SuccessNotice,
   dateTime, fmt, pct, useListState,
@@ -21,6 +22,7 @@ const NAV = [
   ['images', '이미지 작업실', ImagePlus],
   ['analytics', '분석 자료', BarChart3],
   ['history', '반영 이력', History],
+  ['quality', '제작 지표', Gauge],
   ['measurement', '상담 성과', Activity],
   ['settings', '설정', Settings],
 ]
@@ -475,6 +477,10 @@ function HistoryPage() {
         <Badge tone={item.status === 'comparable' ? 'success' : 'neutral'}>{item.status === 'comparable' ? '비교 가능' : item.status === 'observed' ? '신규 글 관찰' : item.status === 'awaiting_deployment' ? '배포일 미등록 · 비교 보류' : `${new Date(item.readyAt).toLocaleDateString('ko-KR')} 이후 자료 필요`}</Badge>
         {item.changes && <div className="change-strip">{[['노출', item.changes.impressions], ['클릭', item.changes.clicks], ['CTR', item.changes.ctr], ['조회', item.changes.views]].map(([label, value]) => value && <span key={label}>{label}<b>{label === 'CTR' ? `${(value.before * 100).toFixed(2)} → ${(value.after * 100).toFixed(2)}%` : `${fmt(value.before)} → ${fmt(value.after)}`}</b></span>)}</div>}
         {item.status === 'observed' && <div className="change-strip">{[['노출', item.after?.gsc?.impressions], ['클릭', item.after?.gsc?.clicks], ['조회', item.after?.ga4?.views]].map(([label, value]) => <span key={label}>{label}<b>{value == null ? '미확인' : fmt(value)}</b></span>)}</div>}
+        {Object.entries(item.measurementPeriods || {}).map(([platform, periods]) => <div className="comparison-periods" key={platform}>
+          <strong>{platform === 'gsc' ? 'Google 검색' : 'GA4 참여'} 측정 범위</strong>
+          {['before', 'after'].map(phase => { const period = periods[phase]; return <small key={phase}>{phase === 'before' ? '변경 전' : '배포 후'}: {period ? `${period.periodStart} ~ ${period.periodEnd} (${period.periodDays}일) · 자료 #${period.importId} · ${period.timeZone}${period.timeZoneAssumed ? ' 기준 가정' : ''}${period.property ? ` · ${period.property}` : ''}` : '사용 가능한 자료 없음'}</small> })}
+        </div>)}
         <p>{item.note}</p>
         {item.deployedAt ? <small>배포 {dateTime(item.deployedAt)} · {item.deploymentCommit}</small> : <DeploymentForm id={item.id} onSaved={load} onError={setError} />}
       </article>)}</div> : <div className="empty-inline"><Clock3 size={24} />성공적으로 반영된 작업부터 변경 전 기준선이 기록됩니다.</div>}
@@ -584,6 +590,7 @@ export default function App() {
       {view === 'editor' && <Editor seed={seed} clearSeed={() => setSeed(null)} />}
       {view === 'images' && <ImageStudio />}
       {view === 'analytics' && <Analytics />}
+      {view === 'quality' && <OperationQuality />}
       {view === 'history' && <HistoryPage />}
       {view === 'measurement' && <MeasurementPage />}
       {view === 'settings' && <SettingsPage />}

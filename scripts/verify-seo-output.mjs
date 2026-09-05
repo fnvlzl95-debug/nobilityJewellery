@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, resolve, sep } from 'node:path'
+import { verifyNotFoundDocument, verifyNotFoundResponses } from './verify-not-found.mjs'
 
 const args = process.argv.slice(2)
 const liveIndex = args.indexOf('--live')
@@ -274,6 +275,7 @@ const runPool = async (items, worker, concurrency = 8) => {
 }
 
 const verifyLive = async () => {
+  await verifyNotFoundResponses(liveOrigin)
   const sitemapUrl = new URL('/sitemap.xml', liveOrigin)
   const sitemapResponse = await fetch(sitemapUrl, { redirect: 'manual' })
   if (sitemapResponse.status !== 200) {
@@ -403,6 +405,10 @@ const listHtmlFiles = async (dir) => {
 
 const verifyLocal = async () => {
   const publicDir = findPublicDir()
+  // This top-level file is also a Pages routing setting: without it, unknown
+  // excluded asset routes silently fall back to the home page with HTTP 200.
+  verifyNotFoundDocument(await readFile(join(publicDir, '404.html'), 'utf8'), 'build/404.html')
+  if (process.env.SEO_LOCAL_RENDER_ORIGIN) await verifyNotFoundResponses(process.env.SEO_LOCAL_RENDER_ORIGIN)
   const sitemap = await readFile(join(publicDir, 'sitemap.xml'), 'utf8')
   const sitemapEntries = extractSitemapEntries(sitemap)
   const locations = sitemapEntries.map((entry) => entry.loc)

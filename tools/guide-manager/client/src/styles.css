@@ -789,6 +789,13 @@ textarea { resize: vertical; line-height: 1.6; }
 .fallback-toggle > span { color: var(--soft); font-size: 12px; }
 .source-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
 .source-actions small { margin-left: auto; }
+.source-review-entry { min-width: 0; padding-bottom: 18px; border-bottom: 1px solid var(--line); font-size: 12px; line-height: 1.65; }
+.source-review-entry a { color: var(--gold-strong); text-decoration: underline; overflow-wrap: anywhere; }
+.source-review-entry ul { padding-left: 18px; }
+.source-review-entry li + li { margin-top: 8px; }
+.source-review-form label:not(:last-child) { display: flex; flex-direction: column; cursor: default; }
+.source-review-form input:not([type=checkbox]), .source-review-form textarea { width: 100%; height: auto; min-height: 38px; padding: 9px; border: 1px solid var(--line); border-radius: 4px; }
+.source-review-form textarea { min-height: 88px; resize: vertical; }
 .checks-panel { display: grid; gap: 0; }
 .check-card { padding: 18px 0; border-bottom: 1px solid var(--line); }
 .check-card:first-child { padding-top: 0; }
@@ -906,3 +913,8 @@ textarea { resize: vertical; line-height: 1.6; }
 .preview-table-scroll{max-width:100%;overflow-x:auto;margin:20px 0;outline-offset:3px}.preview-table-scroll table{width:100%;min-width:420px;border-collapse:collapse;font-size:14px}.preview-table-scroll caption{text-align:left;font-weight:600;padding-bottom:10px}.preview-table-scroll th,.preview-table-scroll td{text-align:left;vertical-align:top;padding:12px;border:1px solid #ddd7ca}.preview-table-scroll th{background:#f4f0e7;font-weight:600}
 
 fieldset.draft-fields{min-width:0;margin:0;border:0}
+.operation-timing-table { overflow-x: auto; }
+.operation-timing-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.operation-timing-table th, .operation-timing-table td { padding: 12px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.operation-timing-table th:first-child { text-align: left; }
+.comparison-periods { display: grid; gap: 5px; margin: 12px 0; font-size: 12px; overflow-wrap: anywhere; }

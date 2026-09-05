@@ -602,6 +602,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/pearl-value-factors-hero.webp',
     publishedAt: '2026-07-21',
     category: '소재·보석',
+    updatedAt: '2026-09-06',
   },
   {
     slug: 'necklace-clasp-types',

@@ -19,8 +19,17 @@ const audits = require('../services/contentAuditService');
 const measurement = require('../services/measurementService');
 const jobs = require('../services/jobService');
 const { nowIso } = require('../lib/utils');
+const operationMetrics = require('../services/operationMetricsService');
 
 const router = express.Router();
+router.use((req, res, next) => {
+  const action = operationMetrics.decisionAction(req.method, req.path);
+  if (action) res.once('finish', () => {
+    try { operationMetrics.recordDecision(action, res.statusCode, res.locals.operationErrorCode); }
+    catch (error) { require('../lib/logger').warn('measurement', '운영 요청 지표 기록 실패', error); }
+  });
+  next();
+});
 // Writes lock only the generation they change; shared site operations retain exclusivity.
 function mutationKeys(req) {
   const keys = [];
@@ -217,6 +226,7 @@ router.post('/generations/:id/research/naver', background('generation-naver', as
 }));
 router.put('/generations/:id/sources', route((req) => generations.selectSources(Number(req.params.id), req.body.selectedUrls || [], {
   allowWithoutOfficial: typeof req.body.allowWithoutOfficial === 'boolean' ? req.body.allowWithoutOfficial : null,
+  sourceReviews: req.body.sourceReviews,
 })));
 router.post('/generations/:id/generate', background('generate', (req) => generations.generateDraft(Number(req.params.id), { forceModel: req.body.model || null })));
 router.post('/generations/:id/humanize', background('humanize', (req) => humanizer.humanizeGeneration(Number(req.params.id))));
@@ -229,6 +239,7 @@ router.post('/generations/:id/apply', background('apply', req => applies.apply(N
 
 router.post('/applies/:id/recover', route(req => applies.recoverApply(Number(req.params.id))));
 router.get('/applies', route(() => applies.listApplies()));
+router.get('/operations/quality', route(req => operationMetrics.qualityReport({ days: req.query.days || 28 })));
 router.get('/settings', route(() => settings.settingsStatus()));
 router.get('/settings/evaluations', route(() => evaluations.batchSummary()));
 router.post('/settings/evaluations', background('evaluation', () => evaluations.runBenchmark()));
@@ -236,5 +247,10 @@ router.put('/settings', route((req) => settings.updateSettings(req.body)));
 router.post('/settings/import-reference', route(() => settings.importReferenceCredentials({ force: true })));
 router.get('/humanizer/health', route(() => humanizer.health()));
 router.post('/humanizer/start', route(() => humanizer.startBackend()));
+
+router.use((error, req, res, next) => {
+  res.locals.operationErrorCode = error.code;
+  next(error);
+});
 
 module.exports = router;
