@@ -44,12 +44,15 @@ test('가이드 전부를 기간 분리 상태로 진단하고 재스캔 시 같
   assert.notEqual(after.snapshot.periods.gsc.importId, after.snapshot.periods.ga4.importId);
 });
 
-test('GSC 검색어 연결은 페이지별 실측이 아닌 추정값으로 표시한다', () => {
-  const rows = audits.report().rows;
-  const withHint = rows.map((row) => audits.detail(row.slug)).find((item) => item.snapshot.queryHints.length);
-  assert.ok(withHint);
-  assert.ok(withHint.snapshot.queryHints.every((item) => item.inferred === true));
-  assert.match(withHint.snapshot.caveats.join(' '), /추정/);
+test('사이트 전체 GSC 검색어를 페이지별 검색어·제목 변경 근거로 연결하지 않는다', () => {
+  const items = audits.report().rows.map(row => audits.detail(row.slug));
+  assert.ok(items.length);
+  for (const { snapshot } of items) {
+    assert.deepEqual(snapshot.queryHints, []);
+    assert.equal(snapshot.queryEvidence.pageQueryAvailable, false);
+    assert.equal(snapshot.queryEvidence.canRecommendTitleKeywords, false);
+    assert.ok(snapshot.sitewideQueryHints.every(row => row.evidenceScope === 'sitewide' && row.usableForTitle === false));
+  }
 });
 
 test('과거 슬래시 URL 변형만으로 현재 기술 우선 판정을 하지 않는다', () => {

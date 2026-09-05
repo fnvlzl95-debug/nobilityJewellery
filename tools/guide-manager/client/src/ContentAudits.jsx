@@ -54,16 +54,16 @@ function DetailSkeleton({ onBack }) {
 
 function SignalLedger({ snapshot }) {
   const { gsc, ga4, googleOrganic, naver, naverWeb } = snapshot.metrics
-  const topQuery = snapshot.queryHints?.[0]
+  const topReference = snapshot.sitewideQueryHints?.[0]
   return <section className="audit-section">
     <h3>판단 근거</h3>
     <dl className="signal-ledger">
       <div><dt>Google 검색</dt><dd><strong>노출 {fmt(gsc.impressions)} · 클릭 {fmt(gsc.clicks)}</strong><span>CTR {pct(gsc.ctr, 2)} · 평균 {gsc.position == null ? '순위 없음' : `${Number(gsc.position).toFixed(1)}위`} · 기대 CTR {pct(gsc.expectedCtr, 1)}</span></dd></div>
       <div><dt>GA4 참여</dt><dd><strong>{ga4.mapped ? `조회 ${fmt(ga4.views)} · 사용자 ${fmt(ga4.activeUsers)}` : '페이지 제목 정확 일치 매핑 없음'}</strong><span>{ga4.mapped ? `이벤트 ${fmt(ga4.events)} · 이탈 ${pct(ga4.bounceRate)}` : '0으로 평가하지 않고 미측정 상태로 보존합니다.'}</span></dd></div>
-      <div><dt>검색 후 참여</dt><dd><strong>{googleOrganic?.mapped ? `활성 사용자 ${fmt(googleOrganic.activeUsers)} · 참여 세션 ${fmt(googleOrganic.engagedSessions)}` : '자연 검색 방문 페이지 연결 없음'}</strong><span>{googleOrganic?.mapped ? `참여율 ${pct(googleOrganic.engagementRate, 1)} · 평균 참여 ${Number(googleOrganic.avgEngagementSeconds || 0).toFixed(1)}초 · 주요 이벤트 ${fmt(googleOrganic.keyEvents)}` : 'GSC 유입 뒤 GA4 행동을 같은 경로에서 확인합니다.'}</span></dd></div>
+      <div><dt>검색 후 참여</dt><dd><strong>{googleOrganic?.mapped ? `활성 사용자 ${fmt(googleOrganic.activeUsers)} · 참여 세션 ${fmt(googleOrganic.engagedSessions)}` : '자연 검색 방문 페이지 연결 없음'}</strong><span>{googleOrganic?.mapped ? `참여율 ${pct(googleOrganic.engagementRate, 1)} · 평균 참여 ${googleOrganic.avgEngagementSeconds == null ? '자료 없음' : `${Number(googleOrganic.avgEngagementSeconds).toFixed(1)}초`} · 주요 이벤트 ${fmt(googleOrganic.keyEvents)}` : 'GSC 유입 뒤 GA4 행동을 같은 경로에서 확인합니다.'}</span></dd></div>
       <div><dt>Naver 보조</dt><dd><strong>{naverLabel(naver)}</strong><span>{naver.measured ? `트렌드 ${naver.trendDirection || '자료 없음'} · 상대 지수 ${naver.trendRatio ?? '—'}${naver.competingUrl ? ` · 대신 노출 ${naver.competingRank}위 ${naver.competingUrl}` : ''}` : '주간 측정 후 목표 URL 정확 일치 순위·상대 트렌드가 연결됩니다.'}</span></dd></div>
       <div><dt>Naver 웹검색</dt><dd><strong>{naverWeb?.listed ? `노출 ${fmt(naverWeb.impressions)} · 클릭 ${fmt(naverWeb.clicks)}` : 'TOP 30 URL 목록 밖'}</strong><span>{naverWeb?.listed ? `CTR ${pct(naverWeb.ctr, 2)} · 웹검색 전체 ${pct(naverWeb.overallCtr, 1)}` : '목록 밖은 노출 0이 아니며 성과 부진으로 판정하지 않습니다.'}</span></dd></div>
-      <div><dt>관련 검색어</dt><dd><strong>{topQuery?.query || '추정 가능한 검색어 없음'}</strong><span>{topQuery ? `사이트 전체 검색어에서 유사도 ${Math.round(topQuery.similarity * 100)}%로 추정 · 노출 ${fmt(topQuery.impressions)}` : 'GSC 검색어 CSV는 페이지와 직접 연결되지 않습니다.'}</span></dd></div>
+      <div><dt>페이지별 검색어</dt><dd><strong>페이지와 검색어의 연결 자료 없음</strong>{topReference && <span>사이트 전체 참고: {topReference.query} · 전체 노출 {fmt(topReference.sitewideImpressions)}회. 이 페이지의 노출이나 제목 변경 근거로 쓰지 않습니다.</span>}<span>{snapshot.queryEvidence?.requiredEvidence || '사이트 전체 검색어를 이 페이지의 유입 검색어로 간주하지 않습니다. Search Console에서 해당 URL의 검색어를 직접 확인하세요.'}</span></dd></div>
       <div><dt>URL·색인</dt><dd><strong>원본 변형 {fmt(gsc.variants)}개 · self-canonical {snapshot.content.technical.selfCanonical ? '정상' : '확인 필요'}</strong><span>Coverage 미색인 {fmt(snapshot.metrics.coverage?.notIndexed)}개는 사이트 전체 값입니다.</span></dd></div>
     </dl>
   </section>
@@ -82,7 +82,7 @@ function Diagnosis({ item }) {
           <div><strong>유지할 강점</strong>{analysis.currentStrengths?.length ? <ul>{analysis.currentStrengths.map((value) => <li key={value}>{value}</li>)}</ul> : <p>별도 강점 기록 없음</p>}</div>
           <div><strong>해결할 문제</strong>{analysis.currentProblems?.length ? <ul>{analysis.currentProblems.map((value) => <li key={value}>{value}</li>)}</ul> : <p>차단 문제 없음</p>}</div>
         </div>
-      </> : <div className="deterministic-findings">{deterministic.map((entry) => <article key={entry.id}><span>{entry.priority}</span><div><strong>{entry.action}</strong><p>{entry.proposedState}</p><small>{entry.currentState}</small></div></article>)}</div>}
+      </> : <div className="deterministic-findings">{deterministic.filter(entry => entry.id !== 'preserve-and-monitor').map((entry) => <article key={entry.id}><span>{entry.priority}</span><div><strong>{entry.action}</strong><p>{entry.proposedState}</p><small>{entry.currentState}</small></div></article>)}{!deterministic.some(entry => entry.id !== 'preserve-and-monitor') && <p>현재 원문을 유지합니다. 아래 관찰 사유를 확인하고 다음 동일 길이의 측정기간을 비교하세요.</p>}</div>}
     </section>
     <section className="audit-section">
       <h3>본문·링크 구조</h3>
@@ -105,6 +105,13 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
     const exists = plan.internalLinks.some((item) => item.to === link.to)
     patch('internalLinks', exists ? plan.internalLinks.filter((item) => item.to !== link.to) : [...plan.internalLinks, { to: link.to, reason: link.reason }])
   }
+  if (!plan.changes.some(entry => !entry.lockedReason)) return <section className="audit-section plan-editor">
+    <div className="audit-section-head"><h3>현재 원문 유지·성과 관찰</h3><AuditBadge tone="success">원고 변경 없음</AuditBadge></div>
+    <ul>{(plan.observations || ['현재 확인된 실행 가능한 수정 항목이 없습니다.']).map(note => <li key={note}>{note}</li>)}</ul>
+    {recentHold && <p>최근 변경일 {snapshot.guards.changeDate} 기준 {snapshot.guards.observeUntil}까지 D+31 관찰을 유지합니다.</p>}
+    <p>관찰 계획으로 편집 작업을 생성하지 않습니다. 새로운 결함이나 근거가 확인되면 수정 범위를 다시 검토하세요.</p>
+    {!item.aiAnalysis && <button className="button button-quiet" type="button" onClick={onAnalyze} disabled={!!busy}>{busy === 'analyze-one' ? <Busy>Terra 정밀진단 중</Busy> : <><Sparkles size={15} />추가 근거를 위한 Terra 정밀진단</>}</button>}
+  </section>
   return <section className="audit-section plan-editor">
     <div className="audit-section-head"><div><h3>확정할 수정 계획</h3><p>체크된 항목만 원고 생성 지시로 전달됩니다.</p></div><AuditBadge tone={item.planStatus === 'edited' ? 'success' : 'neutral'}>{item.planStatus === 'edited' ? '사용자 편집 저장됨' : '제안 상태'}</AuditBadge></div>
     {!item.aiAnalysis && <button className="button button-quiet full" type="button" onClick={onAnalyze} disabled={!!busy}>{busy === 'analyze-one' ? <Busy>Terra 정밀진단 중</Busy> : <><Sparkles size={15} />이 글 Terra 정밀진단</>}</button>}
@@ -118,14 +125,15 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
       <div className="plan-subhead"><strong>상세 수정 항목</strong><span>{plan.changes.filter((entry) => entry.enabled).length}/{plan.changes.length}개 선택 · 눌러서 편집</span></div>
       <div className="change-plan-list">{plan.changes.map((entry, index) => <details key={entry.id || index} className={`change-item ${entry.enabled ? 'enabled' : ''}`}>
         <summary>
-          <input type="checkbox" checked={entry.enabled} onClick={(event) => event.stopPropagation()} onChange={(event) => patchChange(index, { enabled: event.target.checked })} />
+          <input type="checkbox" checked={entry.enabled} disabled={!!entry.lockedReason} onClick={(event) => event.stopPropagation()} onChange={(event) => patchChange(index, { enabled: event.target.checked })} />
           <span className="change-priority">{entry.priority}</span>
           <span className="change-summary-copy"><b>{entry.area}</b><small>{entry.action}</small></span>
           <ChevronRight size={14} className="chev" />
         </summary>
         <div className="change-item-body">
-          <label><span>작업</span><input value={entry.action} onChange={(event) => patchChange(index, { action: event.target.value })} /></label>
-          <label><span>상세 변경 내용</span><textarea rows="3" value={entry.proposedState} onChange={(event) => patchChange(index, { proposedState: event.target.value })} /></label>
+          <label><span>작업</span><input value={entry.action} disabled={!!entry.lockedReason} onChange={(event) => patchChange(index, { action: event.target.value })} /></label>
+          <label><span>상세 변경 내용</span><textarea rows="3" value={entry.proposedState} disabled={!!entry.lockedReason} onChange={(event) => patchChange(index, { proposedState: event.target.value })} /></label>
+          {entry.lockedReason && <small>{entry.lockedReason}</small>}
           <small>현재: {entry.currentState}</small><small>목표 지표: {entry.targetMetric || '—'}{entry.requiresOfficialSource ? ' · 공식 근거 필요' : ''}</small>
         </div>
       </details>)}</div>
@@ -144,6 +152,7 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
       <summary><strong>허용된 내부링크</strong><span>{plan.internalLinks.length ? `${plan.internalLinks.length}개 선택` : '선택 없음'}</span></summary>
       <div className="link-options">{item.allowedInternalLinks?.length ? item.allowedInternalLinks.map((link) => <label key={link.to}><input type="checkbox" checked={plan.internalLinks.some((item) => item.to === link.to)} onChange={() => toggleLink(link)} /><span><b>{link.label || link.to}</b><small>{link.to} · {link.reason}</small></span></label>) : <p className="plan-empty">연결할 수 있는 가이드 후보가 없습니다.</p>}</div>
     </details>
+    {!!plan.observations?.length && <div className="guard-note"><ShieldCheck size={16} /><span>{plan.observations.join(' ')}</span></div>}
     {snapshot.guards.keepSnippet && <div className="guard-note"><ShieldCheck size={16} /><span>현재 CTR이 기대치에 근접한 제목은 기본 보존됩니다. 제목 변경 항목은 자동으로 비활성 처리됩니다.</span></div>}
     {recentHold && <div className="guard-note"><ShieldCheck size={16} /><span>최근 변경일 {snapshot.guards.changeDate}부터 31일간 성과를 관찰합니다. {snapshot.guards.observeUntil}까지 분석은 보존하되 수정 작업은 만들지 않습니다.</span></div>}
     {readOnly ? <div className="guard-note"><ShieldCheck size={16} /><span>이 커스텀 가이드는 읽기 전용입니다. 분석은 저장하지만 자동 수정 작업은 만들지 않습니다.</span></div> : recentHold ? null : <div className="plan-actions">

@@ -7,8 +7,9 @@ const { expectedCtr, jaccard, businessScore } = require('./opportunityService');
 const { completeJson } = require('./openaiService');
 const generations = require('./generationService');
 const { loadGa4Metrics, groupGa4BySlug } = require('./analyticsMetricsService');
+const { buildQueryEvidence } = require('./queryEvidenceService');
 
-const ANALYSIS_VERSION = 'noblesse-content-audit-v5';
+const ANALYSIS_VERSION = 'noblesse-content-audit-v6';
 const CLASSIFICATIONS = ['기술 우선', 'CTR 개선', '출처 백필', '본문 보강', '내부링크 강화', '통합 검토', '유지'];
 const CHANGE_AREAS = ['기술', '제목·설명', '첫 화면', '본문', '내부링크', '출처', '통합'];
 const EVIDENCE_KEYS = new Set(['gsc', 'ga4', 'naver', 'content', 'technical', 'duplicate', 'coverage']);
@@ -84,7 +85,7 @@ function parseAuditRow(row) {
     coverageImportId: row.coverage_import_id,
     snapshot: parseJson(row.snapshot_json, {}),
     aiAnalysis: parseJson(row.ai_analysis_json),
-    plan: parseJson(row.plan_json),
+    plan: normalizeObservationPlan(parseJson(row.plan_json), parseJson(row.snapshot_json, {})),
     planStatus: row.plan_status,
     status: row.status,
     model: row.model,
@@ -158,31 +159,30 @@ function change(id, area, priority, action, currentState, proposedState, evidenc
 }
 
 function classify(snapshot) {
-  const { gsc, ga4 } = snapshot.metrics;
+  const { gsc } = snapshot.metrics;
   const currentTechnical = snapshot.technicalFindings.some((item) => item.severity === 'error');
   const ctrWeak = gsc.impressions >= 40 && gsc.position >= 3 && gsc.position <= 20 && gsc.ctr < gsc.expectedCtr * 0.7;
-  const bodyWeak = snapshot.scores.dimensions.answerCoverage < 62 || snapshot.scores.dimensions.trust < 45
-    || (ga4.mapped && ga4.views >= 5 && ga4.bounceRate != null && ga4.bounceRate >= 0.45);
+  // 페이지 조회수와 이탈률은 본문 결함의 원인을 입증하지 않는다.
+  const bodyWeak = snapshot.scores.dimensions.answerCoverage < 62 || snapshot.scores.dimensions.trust < 45;
   const duplicateRisk = snapshot.duplicates[0]?.similarity >= 0.72 && gsc.impressions < 40;
   if (currentTechnical) return '기술 우선';
   if (ctrWeak) return 'CTR 개선';
   if (duplicateRisk) return '통합 검토';
   if (snapshot.content.structure.officialSourceCount === 0) return '출처 백필';
   if (bodyWeak) return '본문 보강';
-  if (snapshot.links.inboundCount < 2 || (gsc.impressions < 40 && snapshot.scores.dimensions.answerCoverage >= 62)) return '내부링크 강화';
+  if (snapshot.links.inboundCount < 2 || snapshot.content.structure.relatedLinkCount < 3) return '내부링크 강화';
   return '유지';
 }
 
 function deterministicChanges(snapshot) {
   const changes = [];
-  const { content, metrics, links, queryHints, technicalFindings, scores } = snapshot;
-  const topQuery = queryHints[0]?.query || content.keyword;
+  const { content, metrics, links, scores } = snapshot;
   // slash_variants는 배포 전 측정기간의 과거 신호다. 현재 소스가
   // self-canonical이면 수정 작업으로 만들지 않고 기술 근거에만 보존한다.
   if (metrics.gsc.impressions >= 40 && metrics.gsc.position >= 3 && metrics.gsc.position <= 20 && metrics.gsc.ctr < metrics.gsc.expectedCtr * 0.7) changes.push(change(
     'improve-snippet', '제목·설명', 'P1', '검색 의도와 즉답을 제목·설명 앞부분에 배치',
     `“${content.pageTitle}” · 노출 ${metrics.gsc.impressions}회 · CTR ${(metrics.gsc.ctr * 100).toFixed(2)}% · 평균 ${metrics.gsc.position.toFixed(1)}위`,
-    `추정 관련 검색어 “${topQuery}”의 질문에 답하는 핵심 표현을 제목 앞 20자 안에 두고, 설명 첫 문장에 결론과 구분 기준을 씁니다. 제목만 먼저 바꾸고 본문 변경일과 분리 기록합니다.`,
+    'CTR은 검토 신호입니다. 이 페이지에 실제 연결된 검색어와 현재 제목·본문의 불일치를 확인한 뒤 수정 여부를 판단합니다. 사이트 전체 검색어를 제목에 삽입하지 않습니다.',
     ['gsc', 'content'], 'GSC CTR', false,
   ));
   if (content.structure.quickAnswerCount !== 3 || content.characterCount < 1200 || scores.dimensions.answerCoverage < 62) changes.push(change(
@@ -197,30 +197,61 @@ function deterministicChanges(snapshot) {
     '정부·표준기관·보석 교육기관·제조사 1차 자료를 조사한 뒤 숫자·순도·처리·관리 기준을 연결하고, 확인되지 않은 가격·기간·가능 여부는 넣지 않습니다.',
     ['content'], '신뢰성·사실성', true,
   ));
-  if (links.inboundCount < 2 || content.structure.relatedLinkCount < 3) changes.push(change(
+  // 이 글의 발신 링크를 늘려도 다른 글에서 들어오는 링크 부족은 해결되지 않는다.
+  if (content.structure.relatedLinkCount < 3 && links.recommended.length) changes.push(change(
     'strengthen-internal-links', '내부링크', 'P2', '이 글의 관련 링크를 검색 여정에 맞게 보강',
     `관련 링크 ${content.structure.relatedLinkCount}개 · 다른 가이드에서 들어오는 링크 ${links.inboundCount}개`,
     `이 글에서 다음 질문에 답하는 관련 글로 연결합니다. 실제 존재 경로 ${links.recommended.slice(0, 4).map((item) => item.to).join(', ') || '후보 조사 필요'} 안에서 관련 링크를 선택하고 링크 설명에 이 글 다음에 읽을 이유를 씁니다. 클러스터 편입은 별도 검토 항목입니다.`,
     ['content'], '크롤링·노출', false,
   ));
-  if (!changes.length) changes.push(change(
-    'preserve-and-monitor', '본문', 'P2', '현재 구조 유지 후 다음 동일 기간 측정',
-    '차단할 기술·스니펫·본문 문제가 현재 규칙에서 발견되지 않았습니다.',
-    '성과가 확인된 제목과 첫 화면을 유지하고, 28일 이후 같은 길이의 GSC·GA4 자료로 변화만 확인합니다.',
-    ['gsc', 'ga4', 'content'], '성과 유지', false,
-  ));
-  return changes;
+  return normalizeObservationPlan({ changes }, snapshot).changes;
+}
+
+function observationNotes(snapshot) {
+  const notes = [];
+  const ga4 = snapshot?.metrics?.ga4;
+  if (ga4?.mapped && ga4.views >= 5 && ga4.bounceRate >= 0.45) notes.push(`GA4 조회 ${ga4.views}회·이탈률 ${(ga4.bounceRate * 100).toFixed(1)}%는 참여 확인 신호입니다. 유입 의도·세션과 실제 본문 결함을 확인하기 전에는 이 수치만으로 본문을 재작성하지 않습니다.`);
+  if (snapshot?.links?.inboundCount < 2) notes.push(`다른 글에서 들어오는 링크가 ${snapshot.links.inboundCount}개입니다. 이 글의 관련 링크 수정으로는 유입 연결이 늘어나지 않으므로 공유 클러스터·기존 글의 연결을 별도로 검토합니다.`);
+  if (snapshot?.metrics?.gsc?.impressions < 40) notes.push(`GSC 노출 ${snapshot.metrics.gsc.impressions}회만으로 링크 부족이나 본문 결함을 판단하지 않습니다. 현재 연결과 내용을 유지하고 다음 동일 길이의 측정기간을 비교합니다.`);
+  if (!notes.length) notes.push('자동 편집할 구체적인 변경 사항이 없습니다. 현재 원문을 유지하고 다음 동일 길이의 측정기간에서 성과를 확인합니다.');
+  return notes;
+}
+
+function normalizeObservationPlan(plan, snapshot = {}) {
+  if (!plan) return plan;
+  const observations = [...(plan.observations || [])];
+  const changes = (plan.changes || []).filter(entry => {
+    if (entry.id !== 'preserve-and-monitor' && entry.action !== '현재 구조 유지 후 다음 동일 기간 측정') return true;
+    observations.push(entry.proposedState || '현재 원문을 유지하고 다음 동일 기간의 성과를 관찰합니다.');
+    return false;
+  });
+  const executableChanges = changes.map(entry => {
+    if (entry.area !== '제목·설명' || snapshot.queryEvidence?.canRecommendTitleKeywords === true) return entry;
+    if (entry.id !== 'improve-snippet' && !/추정 관련 검색어|사이트 전체 검색어|sitewide|inferredQueries/i.test(`${entry.action || ''} ${entry.proposedState || ''}`)) return entry;
+    const lockedReason = '페이지별 검색어 근거가 없습니다. CTR만으로 제목을 변경하지 않고 실제 검색어와 제목·본문의 불일치를 먼저 확인합니다.';
+    observations.push(lockedReason);
+    return { ...entry, enabled: false, lockedReason };
+  });
+  if (!executableChanges.some(entry => entry.enabled)) observations.push(...observationNotes(snapshot));
+  return { ...plan, changes: executableChanges, observations: [...new Set(observations)] };
+}
+
+function assertExecutablePlan(plan) {
+  if ((plan?.changes || []).some(entry => entry.enabled)) return;
+  if (plan?.observations?.length) throw Object.assign(new Error('관찰 전용 계획은 원고를 변경하지 않습니다. 실제 수정할 문제가 확인되면 새 계획을 검토해 주세요.'), { status: 422, code: 'MONITOR_ONLY_PLAN' });
+  throw Object.assign(new Error('적용할 수정 항목을 최소 1개 선택해 주세요'), { status: 422 });
 }
 
 function seedPlan(snapshot) {
   const keepSnippet = snapshot.guards.keepSnippet;
-  return {
+  return normalizeObservationPlan({
     classification: snapshot.classification,
     goal: snapshot.rationale.join(' '),
     proposedTitle: snapshot.content.title,
     proposedDescription: snapshot.content.description,
     quickAnswers: snapshot.content.quickAnswers.slice(0, 3),
     changes: snapshot.deterministicChanges,
+    observations: snapshot.deterministicChanges.length ? [] : observationNotes(snapshot),
     sectionPlan: [],
     internalLinks: snapshot.links.recommended.slice(0, 4).map((item) => ({ to: item.to, reason: item.reason })),
     preserve: [
@@ -229,11 +260,11 @@ function seedPlan(snapshot) {
       '가격·제작기간·수리 가능 여부에 대한 조건부 표현',
     ],
     risks: [
-      'GSC 검색어와 페이지 CSV는 직접 연결되지 않으므로 관련 검색어는 추정 근거입니다.',
+      'GSC 검색어와 페이지 CSV는 직접 연결되지 않습니다. 사이트 전체 검색어는 참고 자료이며 이 글의 유입이나 제목 변경 근거로 사용하지 않습니다.',
       'Coverage ZIP의 문제 수는 사이트 전체 값이며 이 페이지의 개별 오류로 단정하지 않습니다.',
     ],
     confidence: snapshot.metrics.gsc.impressions || snapshot.metrics.ga4.mapped ? 'medium' : 'low',
-  };
+  }, snapshot);
 }
 
 function buildSnapshots() {
@@ -347,9 +378,7 @@ function buildSnapshots() {
       reportUpdatedAt: naverWebImport?.summary?.reportUpdatedAt || null,
     };
     const intentText = `${content.title} ${content.keyword} ${content.sections.map((item) => item.title).join(' ')}`;
-    const queryHints = queryRows.map((row) => ({ ...row, similarity: Math.max(jaccard(row.query, content.keyword), coverageRatio(row.query, intentText) * 0.85) }))
-      .filter((row) => row.similarity >= 0.14).sort((a, b) => b.similarity - a.similarity || b.impressions - a.impressions).slice(0, 8)
-      .map((row) => ({ query: row.query, clicks: row.clicks, impressions: row.impressions, ctr: row.ctr, position: row.position, similarity: round(row.similarity, 2), inferred: true }));
+    const { queryHints, sitewideQueryHints, queryEvidence } = buildQueryEvidence({ content, queryRows, performance });
     const duplicates = guides.filter((item) => item.slug !== guide.slug).map((item) => {
       const other = contents.get(item.slug);
       return { slug: item.slug, path: item.path, title: item.title, similarity: Math.max(jaccard(content.keyword, other.keyword), jaccard(content.title, other.title), jaccard(intentText, `${other.title} ${other.keyword} ${other.sections.map((section) => section.title).join(' ')}`)) };
@@ -393,7 +422,7 @@ function buildSnapshots() {
         naverWeb: naverWebImport ? { start: naverWebImport.periodStart, end: naverWebImport.periodEnd, importId: naverWebImport.id, reportUpdatedAt: naverWebImport.summary?.reportUpdatedAt || null } : null,
         coverage: coverageImport ? { start: coverageImport.periodStart, end: coverageImport.periodEnd, importId: coverageImport.id } : null,
       },
-      metrics: { gsc, ga4, googleOrganic, naver, naverWeb, coverage }, content, queryHints, duplicates,
+      metrics: { gsc, ga4, googleOrganic, naver, naverWeb, coverage }, content, queryHints, sitewideQueryHints, queryEvidence, duplicates,
       links: { cluster: cluster ? { id: cluster.id, title: cluster.title, hubPath: cluster.hubPath } : null, inboundCount: inboundRows.length, inboundFrom: inboundRows, recommended: recommended.slice(0, 8) },
       technicalFindings: technical,
       scores: { priority, readiness, dimensions: { ...dimension, technical: round(technicalScore), measurement: round(measurement) }, weights: { gscCtr: 45, rank: 20, ga4: 15, naver: 10, business: 10 } },
@@ -408,7 +437,7 @@ function buildSnapshots() {
       caveats: [
         'GA4·GSC·Naver는 측정기간과 정의가 달라 절대값을 합산하지 않습니다.',
         'Google 자연 검색 방문 페이지 보고서는 GSC 유입 뒤 GA4 참여를 같은 경로에서 연결하며 기기 차원은 포함하지 않습니다.',
-        'GSC 관련 검색어는 익명화된 사이트 전체 검색어에서 제목·키워드 유사도로 추정한 값입니다.',
+        'GSC 검색어는 사이트 전체 참고 자료이며 페이지별 유입 검색어가 아닙니다. 페이지와 검색어를 함께 확인하기 전에는 제목 변경 근거로 사용하지 않습니다.',
         'Naver 트렌드는 절대 검색량이 아닌 동일 요청 안의 상대 지수입니다.',
         'Naver 웹검색 리포트는 전체 검색영역이 아니라 웹검색의 TOP 30 검색어·URL만 포함합니다. 목록 밖 URL을 0으로 해석하지 않습니다.',
         'Coverage는 개별 오류 URL이 없어 사이트 전체 기술 상태로만 사용합니다.',
@@ -423,7 +452,7 @@ function buildSnapshots() {
       `우선순위 ${priority}점 · 노출 준비도 ${readiness}점`,
       gsc.impressions ? `GSC 노출 ${gsc.impressions}회, CTR ${(gsc.ctr * 100).toFixed(2)}%, 평균 ${gsc.position?.toFixed(1) || '—'}위` : 'GSC 페이지 성과 신호 없음',
       ga4.mapped ? `GA4 조회 ${ga4.views}회, 이탈률 ${ga4.bounceRate == null ? '자료 없음' : `${(ga4.bounceRate * 100).toFixed(1)}%`}` : 'GA4 페이지 제목 정확 일치 매핑 없음',
-      googleOrganic.mapped ? `Google 자연 검색 활성 사용자 ${googleOrganic.activeUsers}명, 참여율 ${googleOrganic.engagementRate == null ? '자료 없음' : `${(googleOrganic.engagementRate * 100).toFixed(1)}%`}` : 'Google 자연 검색 방문 페이지 연결 없음',
+      googleOrganic.mapped ? `Google 자연 검색 ${googleOrganic.activeUsers == null ? '고유 사용자 합계 자료 없음' : `활성 사용자 ${googleOrganic.activeUsers}명`}, 참여율 ${googleOrganic.engagementRate == null ? '자료 없음' : `${(googleOrganic.engagementRate * 100).toFixed(1)}%`}` : 'Google 자연 검색 방문 페이지 연결 없음',
       naver.measured ? (naver.available === false ? 'Naver 웹문서 순위 API 비활성' : naver.found ? `Naver ${naver.rank}위` : `Naver ${naver.depth || 100}위 밖`) : 'Naver 순위·트렌드 미측정',
       naverWeb.listed ? `Naver 웹검색 TOP 30 노출 ${naverWeb.impressions}회, CTR ${(naverWeb.ctr * 100).toFixed(1)}%` : 'Naver 웹검색 TOP 30 URL 목록 밖',
     ];
@@ -434,7 +463,7 @@ function buildSnapshots() {
       periods: { gsc: snapshot.periods.gsc, ga4: snapshot.periods.ga4, naverWeb: snapshot.periods.naverWeb, coverage: snapshot.periods.coverage, googleOrganic: snapshot.periods.googleOrganic },
       gsc: snapshot.metrics.gsc, ga4: snapshot.metrics.ga4, googleOrganic: snapshot.metrics.googleOrganic, naver: snapshot.metrics.naver, naverWeb: snapshot.metrics.naverWeb,
       content: { title: snapshot.content.title, description: snapshot.content.description, structure: snapshot.content.structure, characterCount: snapshot.content.characterCount },
-      queryHints: snapshot.queryHints, duplicates: snapshot.duplicates, links: snapshot.links,
+      queryHints: snapshot.queryHints, queryEvidence: snapshot.queryEvidence, sitewideQueryHints: snapshot.sitewideQueryHints, duplicates: snapshot.duplicates, links: snapshot.links,
     }));
     return snapshot;
   });
@@ -578,7 +607,7 @@ const auditSchema = {
               goal: { type: 'string' }, proposedTitle: { type: 'string' }, proposedDescription: { type: 'string' },
               quickAnswers: { type: 'array', minItems: 3, maxItems: 3, items: { type: 'string' } },
               changes: {
-                type: 'array', minItems: 1, maxItems: 10,
+                type: 'array', minItems: 0, maxItems: 10,
                 items: {
                   type: 'object', additionalProperties: false,
                   required: ['area', 'priority', 'enabled', 'action', 'currentState', 'proposedState', 'evidenceKeys', 'targetMetric', 'requiresOfficialSource'],
@@ -614,7 +643,7 @@ function aiContext(item) {
     slug: s.guide.slug, path: s.guide.path, protectedReadOnly: s.guide.isCustom,
     title: s.content.title, pageTitle: s.content.pageTitle, description: s.content.description, keyword: s.content.keyword, category: s.content.category,
     body: s.content.bodyText, structure: s.content.structure,
-    metrics: s.metrics, periods: s.periods, inferredQueries: s.queryHints, nearestGuides: s.duplicates,
+    metrics: s.metrics, periods: s.periods, pageQueryEvidence: s.queryEvidence, sitewideQueryReferences: s.sitewideQueryHints || [], nearestGuides: s.duplicates,
     internalLinks: s.links, technicalFindings: s.technicalFindings, scores: s.scores,
     deterministicClassification: s.classification, deterministicChanges: s.deterministicChanges,
     serverGuards: s.guards, allowedInternalLinks: s.links.recommended,
@@ -640,7 +669,7 @@ function sanitizePlan(input, item) {
   const internalLinks = (Array.isArray(value.internalLinks) ? value.internalLinks : fallback.internalLinks).slice(0, 6)
     .map((link) => ({ to: pathOnly(link?.to), reason: String(link?.reason || '').trim().slice(0, 400) }))
     .filter((link) => knownPaths.has(link.to) && link.to !== item.snapshot.guide.path);
-  return {
+  return normalizeObservationPlan({
     classification: CLASSIFICATIONS.includes(value.classification) ? value.classification : fallback.classification,
     goal: String(value.goal || fallback.goal || '').trim().slice(0, 1200),
     proposedTitle: String(value.proposedTitle || fallback.proposedTitle || '').trim().replace(/\s*\|\s*귀족\s*$/, '').slice(0, 90),
@@ -651,11 +680,13 @@ function sanitizePlan(input, item) {
       heading: String(section?.heading || '').trim().slice(0, 160), detail: String(section?.detail || '').trim().slice(0, 1400),
     })).filter((section) => section.heading && section.detail),
     internalLinks, preserve: sanitizeStrings(value.preserve?.length ? value.preserve : fallback.preserve),
+    observations: sanitizeStrings(value.observations?.length ? value.observations : fallback.observations),
     risks: sanitizeStrings(value.risks?.length ? value.risks : fallback.risks), confidence: ['high', 'medium', 'low'].includes(value.confidence) ? value.confidence : fallback.confidence,
-  };
+  }, item.snapshot);
 }
 
 function applyServerGuards(plan, item) {
+  plan = normalizeObservationPlan(plan, item.snapshot);
   const addRisk = (message) => {
     if (!plan.risks.includes(message)) plan.risks.unshift(message);
   };
@@ -726,7 +757,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
     rows = rows.filter((row) => selected.has(row.guideSlug));
   } else {
     // Observation-held and read-only pages do not need paid rewriting plans by default.
-    rows = rows.filter(row => !row.snapshot.guide.isCustom && !row.snapshot.guards.recentObservationHold);
+    rows = rows.filter(row => !row.snapshot.guide.isCustom && !row.snapshot.guards.recentObservationHold && seedPlan(row.snapshot).changes.some(entry => entry.enabled));
     if (!all) rows = rows.filter((row) => force || row.status !== 'ready').slice(0, Math.max(1, Math.min(30, Number(limit) || 10)));
   }
   if (!force) rows = rows.filter((row) => row.status !== 'ready');
@@ -751,7 +782,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
         instructions: [
           '귀족 종로 귀금속 사이트의 기존 가이드 노출 가능성을 정밀 진단합니다.',
           '입력의 숫자는 서버가 계산한 사실입니다. 숫자를 새로 만들거나 서로 다른 플랫폼 수치를 합산하지 마세요.',
-          'GSC inferredQueries는 사이트 전체 검색어를 텍스트 유사도로 연결한 추정치입니다. 페이지별 실제 검색어라고 단정하지 마세요.',
+          'pageQueryEvidence.pageQueryAvailable=false이면 이 페이지의 검색어가 확인되지 않았습니다. sitewideQueryReferences는 사이트 전체 참고 자료이며 이 페이지의 유입·노출이나 제목 변경 근거로 사용하지 마세요. CTR 저하만으로 키워드 삽입·제목 재작성을 지시하지 말고 필요한 근거를 caveats에 남기세요.',
           'Coverage는 개별 URL 정보가 없으므로 페이지 오류로 단정하지 마세요.',
           'technicalFindings의 state가 historical이면 과거 측정 신호입니다. 현재 오류로 분류하거나 기술 수정 작업을 제안하지 마세요.',
           'Naver 트렌드는 상대 지수이고 미측정·API 비활성은 성과 부진으로 간주하지 마세요.',
@@ -759,6 +790,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
       '제목·설명, 첫 화면, 본문 섹션, 내부링크, 출처를 실제로 어떻게 고칠지 문장 수준으로 제안하세요.',
       '공식 출처가 0개인 페이지는 출처 백필을 독립 작업으로 다루고, 기존 성과 제목과 본문은 유지한 채 출처·검토 신호만 보강하세요.',
           '각 항목은 실행에 필요한 구체성을 유지하되 같은 근거와 주의를 반복하지 말고 밀도 있게 작성하세요.',
+          '관찰·측정·현상 유지 자체는 원고 변경 항목이 아닙니다. 구체적인 수정이 필요하지 않으면 changes를 빈 배열로 반환하고 이유를 caveats에 기록하세요.',
           '가격·제작 기간·수리 가능성·보석 등급·인증은 입력 근거 없이 만들지 말고 requiresOfficialSource를 true로 표시하세요.',
           'allowedInternalLinks에 없는 내부 링크를 제안하지 마세요.',
           '자동 편집은 이 글의 제목·설명, 첫 화면, 본문(비교표 포함), 출처, 관련 링크만 바꿀 수 있습니다. 다른 글에서 들어오는 링크, URL 통합·리디렉션·서버 설정 수정은 자동 변경 항목으로 만들지 말고 caveats에 별도 검토로 남기세요.',
@@ -834,7 +866,7 @@ function savePlan(slug, input) {
   if (!item) throw Object.assign(new Error('진단할 가이드를 찾을 수 없습니다'), { status: 404 });
   const plan = applyServerGuards(sanitizePlan(input, item), item);
   require('./updatePolicyService').validatePlanCapabilities(plan);
-  if (!plan.changes.some((entry) => entry.enabled)) throw Object.assign(new Error('적용할 수정 항목을 최소 1개 선택해 주세요'), { status: 422 });
+  assertExecutablePlan(plan);
   db.prepare(`UPDATE content_audits SET plan_json=?, plan_status='edited', updated_at=? WHERE id=?`).run(JSON.stringify(plan), nowIso(), item.id);
   return detail(slug);
 }
@@ -853,7 +885,7 @@ function createUpdate(slug, input = {}) {
   if (item.status !== 'ready' && !explicitlyReviewed) throw Object.assign(new Error('현재 원문과 지표를 확인한 뒤 검토 확인을 선택하거나 최신 AI 분석을 실행해 주세요'), { status: 409, code: 'AUDIT_REVIEW_REQUIRED' });
   const plan = applyServerGuards(structuredClone(item.plan), item);
   require('./updatePolicyService').validatePlanCapabilities(plan);
-  if (!plan?.changes?.some((entry) => entry.enabled)) throw Object.assign(new Error('확정할 수정 항목이 없습니다'), { status: 422 });
+  assertExecutablePlan(plan);
   db.prepare(`UPDATE content_audits SET plan_status=?, plan_json=?, updated_at=? WHERE id=?`).run(explicitlyReviewed ? 'reviewed_current' : 'confirmed', JSON.stringify(plan), nowIso(), item.id);
   const generation = generations.createGeneration({
     targetSlug: slug, topic: item.snapshot.content.keyword || item.snapshot.guide.keyword,
@@ -868,5 +900,5 @@ function createUpdate(slug, input = {}) {
 module.exports = {
   ANALYSIS_VERSION, CLASSIFICATIONS, auditSchema, buildSnapshots, scanAll, report, detail, analyze, startAnalyze, jobStatus, savePlan, createUpdate,
   sanitizePlan, applyServerGuards, reconcileServerGuards, scoreContent, deterministicChanges, observationWindow,
-  classify,
+  classify, seedPlan, normalizeObservationPlan,
 };

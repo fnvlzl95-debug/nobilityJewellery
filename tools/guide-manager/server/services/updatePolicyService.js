@@ -17,6 +17,9 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 function validatePlanCapabilities(plan) {
   for (const change of plan?.changes || []) {
     if (!change.enabled) continue;
+    // Match normalizeObservationPlan's semantic guards too: submitted or legacy IDs are not trusted.
+    if (change.id === 'preserve-and-monitor' || change.action === '현재 구조 유지 후 다음 동일 기간 측정') fail('관찰 전용 계획은 원고를 변경하지 않습니다. 실제 수정 항목이 있을 때만 새 계획을 확정해 주세요.', 'MONITOR_ONLY_PLAN');
+    if (change.id === 'improve-snippet' || change.area === '제목·설명' && /추정 관련 검색어|사이트 전체 검색어|sitewide|inferredQueries/i.test(`${change.action || ''} ${change.proposedState || ''}`)) fail('이 자동 CTR 제안에는 해당 페이지와 검색어를 함께 확인한 근거가 없습니다. 페이지별 검색어 자료를 확인한 뒤 구체적인 수정 계획을 확정해 주세요.', 'PAGE_QUERY_EVIDENCE_REQUIRED');
     if (!AREA_FIELDS[change.area]) fail(`“${change.area}” 작업은 원고 필드로 반영할 수 없습니다. 해당 항목은 별도 코드 작업으로 처리하고 이 계획에서는 해제해 주세요.`, 'UNSUPPORTED_PLAN');
     if (/역링크|인바운드|backlink|다른\s*(?:글|페이지).*링크|형제\s*(?:글|페이지).*링크|다중\s*파일/i.test(`${change.action} ${change.proposedState}`)) {
       fail('다른 페이지에서 들어오는 링크 수정은 이 단일 글 편집에서 지원하지 않습니다. 이 글의 관련 링크만 선택해 주세요.', 'UNSUPPORTED_PLAN');
@@ -36,13 +39,18 @@ function deriveScope(input = {}) {
     return ['sections', ...(/FAQ|자주\s*묻는|질문\s*답변/i.test(text) ? ['faqItems'] : []), ...(/주의|금지|caution/i.test(text) ? ['cautions'] : [])];
   }))];
   const preserve = (plan?.preserve || []).map(String);
+  // A reference to existing source URLs protects those entries; it does not forbid
+  // adding evidence. Any separate reference to the sources field still locks it.
+  const sourceUrlReference = /출처\s*(?:URLs?\b|주소)|\bsources?\s+URLs?\b/gi;
+  const preserveSourceUrls = preserve.some(text => text.replace(sourceUrlReference, '') !== text);
   const explicitPreserve = [
     ['title', /제목|\btitle\b/i], ['description', /메타\s*설명|검색\s*설명|\bdescription\b/i],
     ['lead', /첫\s*문단|도입\s*문단|\blead\b/i], ['quickAnswers', /빠른\s*답변|핵심\s*답변|quickAnswers/i],
     ['sections', /(?:기존|전체)\s*본문(?:\s*전체)?(?:을|은)?\s*(?:유지|보존|그대로)|^\s*sections\s*$/i],
     ['faqItems', /FAQ|자주\s*묻는|faqItems/i], ['cautions', /주의\s*사항|cautions/i],
-    ['relatedLinks', /관련\s*링크|relatedLinks/i], ['sources', /출처(?:\s|$)|\bsources\b/i],
+    ['relatedLinks', /관련\s*링크|relatedLinks/i],
   ].filter(([, pattern]) => preserve.some(text => pattern.test(text))).map(([field]) => field);
+  if (preserve.some(text => /출처(?:\s|$)|\bsources\b/i.test(text.replace(sourceUrlReference, '')))) explicitPreserve.push('sources');
   fields = fields.filter(field => !explicitPreserve.includes(field));
   const visualText = enabled.filter(item => item.area === '본문' || item.area === '이미지').map(item => `${item.action || ''} ${item.proposedState || ''}`).join(' ');
   const visualChange = /(?:이미지|사진|image|비주얼)/i.test(visualText) && /추가|교체|생성|새로|보강|개선|replace|generate/i.test(visualText);
@@ -55,7 +63,11 @@ function deriveScope(input = {}) {
     fields, sectionPlan: fields.includes('sections') ? clone(plan?.sectionPlan || []) : [],
     preserveImages: !heroChange && !bodyChange, preserveHero: !heroChange, preserveBodyImages: !bodyChange,
     preserveFields: explicitPreserve,
-    reviewNotes: preserve.length ? ['보존 지시의 명시 필드는 서버가 잠급니다. 사실·의도 등 자유 문장 조건은 원문과 근거를 함께 최종 검토해야 합니다.'] : [],
+    preserveSourceUrls,
+    reviewNotes: [
+      ...(preserve.length ? ['보존 지시의 명시 필드는 서버가 잠급니다. 사실·의도 등 자유 문장 조건은 원문과 근거를 함께 최종 검토해야 합니다.'] : []),
+      ...(preserveSourceUrls && fields.includes('sources') ? ['기존 출처 항목은 그대로 보존하고 선택·검토한 새 출처만 추가합니다.'] : []),
+    ],
     mode: plan ? 'audit' : input.updateScope || 'sources',
   };
 }
@@ -147,12 +159,26 @@ function policyFor(generation) {
   return generation.input?.updatePolicy || assertCreateUpdatePolicy(generation.target_slug, generation.input);
 }
 
+function appendSources(baseline, proposed) {
+  if (!Array.isArray(baseline) || !Array.isArray(proposed)) fail('출처는 기존 항목을 보존한 배열로 제출해 주세요.');
+  const result = clone(baseline);
+  const urls = new Set(baseline.map(source => source.url));
+  for (const source of proposed) {
+    if (!source || typeof source.url !== 'string') fail('출처 항목에는 URL이 필요합니다.');
+    if (urls.has(source.url)) continue;
+    urls.add(source.url);
+    result.push(clone(source));
+  }
+  return result;
+}
+
 function enforceDraftScope(generation, proposed) {
   const policy = policyFor(generation);
   if (!policy) return proposed;
   const { baselineDraft: baseline, scope } = policy;
   const result = clone(baseline);
   for (const field of scope.fields) if (Object.hasOwn(proposed, field)) result[field] = clone(proposed[field]);
+  if (scope.preserveSourceUrls && scope.fields.includes('sources')) result.sources = appendSources(baseline.sources, result.sources);
   if (scope.fields.includes('sections')) result.sections = mergeSections(baseline.sections, proposed.sections || baseline.sections, scope);
   if (scope.preserveHero ?? scope.preserveImages) result.heroImage = clone(baseline.heroImage);
   result.updatedAt = koreaDate();
