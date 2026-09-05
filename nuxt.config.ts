@@ -125,11 +125,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        // Preconnect for font CDN
-        { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
-        { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
-        // Pretendard (본문 가독성용 고딕 — 동적 서브셋)
-        { rel: 'preload', as: 'style', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css', onload: "this.onload=null;this.rel='stylesheet'" },
+        // First-party subset preserves the existing typeface with fewer font requests.
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/noblesse-ui-home.woff2', crossorigin: '' },
       ],
       script: [
         // .reveal 등 JS 의존 스타일의 게이트 클래스 — JS 미실행 시 콘텐츠가 숨지 않도록
@@ -138,7 +135,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/fonts.css', '~/assets/css/main.css'],
 
   compatibilityDate: '2024-12-01',
 

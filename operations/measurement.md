@@ -23,4 +23,8 @@ GA4 페이지 조회는 향상된 측정의 브라우저 방문 기록 변경 �
 
 이미지 변환은 Cloudflare 정적 배포에서도 작동하도록 Nuxt Image `ipxStatic`을 명시한다. 새로운 동적 이미지 표시를 추가할 때 프리렌더에 모든 필요한 변환 파일이 포함되는지 확인한다.
 
+글꼴은 기존 Pretendard의 디자인을 유지한 OFL 서브셋 `Noblesse UI`를 자체 제공한다. 홈·공통 문자와 나머지 콘텐츠 문자를 분리했다. 새 콘텐츠의 글자를 추가할 때 `public/fonts/README.md`의 재생성 절차를 따른다. 미포함 문자는 시스템 글꼴로 표시되며, 프로덕션 빌드는 외부 폰트 다운로드나 Python에 의존하지 않는다.
+
+GA4에는 `page_view → form_start → generate_lead` 웹 접수 퍼널과 이벤트 맥락 측정기준 8개를 등록했다. 웹 퍼널은 카카오 실문의·전화 통화·매장 계약을 포함하지 않는다. 운영 대장과 같은 기간으로 대조한다.
+
 참고: [Nuxt Image 설정](https://image.nuxt.com/get-started/configuration), [GA4 페이지 조회](https://developers.google.com/analytics/devguides/collection/ga4/views), [GA4 향상된 측정](https://support.google.com/analytics/answer/9216061).

@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   useInquiryContext().capture()
   if (!shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search)) return
 
-  // Queues are ready before mounted CTA handlers; third-party execution waits for the first paint.
+  // Queues are ready before mounted CTA handlers; scripts are added after app mounting.
   window.dataLayer ||= []
   window.gtag = function () { window.dataLayer!.push(arguments) }
   window.gtag('js', new Date())

@@ -7,7 +7,7 @@
    Premium Luxury Dark Theme
    ============================================ */
 
-/* 본문/제목 모두 Pretendard 사용 (nuxt.config.ts에서 CDN 로드) */
+/* 기존 글꼴의 OFL 서브셋을 자체 제공한다. 라이선스: public/fonts/OFL.txt */
 
 @layer base {
   :root {
@@ -24,12 +24,12 @@
     --gray-dark: #444444;
     --gray-darker: #2a2a2a;
 
-    /* Typography — 전체 Pretendard(고딕) 통일 */
-    --font-display: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    /* Typography — Noblesse UI (기존 글꼴의 콘텐츠별 서브셋) */
+    --font-display: 'Noblesse UI', -apple-system, BlinkMacSystemFont,
       'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-    --font-body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    --font-body: 'Noblesse UI', -apple-system, BlinkMacSystemFont,
       'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-    --font-accent: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    --font-accent: 'Noblesse UI', -apple-system, BlinkMacSystemFont,
       'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
 
     /* Spacing */
