@@ -235,7 +235,10 @@ async function apply(id) {
     scanInventory();
     reconcileGa4Mappings();
     recordBaseline(id, draft.slug, baseline);
-    return { applyId, state: 'done', validation, files: previewData.files.map((file) => file.path), images: previewData.images };
+    const warnings = [];
+    try { require('./contentAuditService').invalidateAudits(); }
+    catch (_) { warnings.push('파일 반영은 완료됐습니다. 진단 갱신 예약에 실패했으므로 기존 글 진단에서 수치를 다시 계산해 주세요.'); }
+    return { applyId, state: 'done', validation, files: previewData.files.map((file) => file.path), images: previewData.images, warnings };
   } catch (error) {
     try { if (backup) restore(backup.manifest); }
     catch (recoveryError) {

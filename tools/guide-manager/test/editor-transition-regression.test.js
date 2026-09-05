@@ -14,30 +14,31 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
 // Run the real Editor component and its event-handler closures without a browser,
 // database, or network. State changes are rendered explicitly to control request order.
 async function editorHarness(t) {
-  const hooks = [];
-  const effectDeps = [];
-  let cursor = 0;
-  let pendingEffects = [];
+  const freshFrame = () => ({ hooks: [], effectDeps: [], cursor: 0, pendingEffects: [] });
+  const parentFrame = freshFrame();
+  const draftFrames = new Map();
+  let frame = parentFrame;
   const react = {
     useState(initial) {
-      const index = cursor++;
-      if (!(index in hooks)) hooks[index] = typeof initial === 'function' ? initial() : initial;
-      return [hooks[index], value => { hooks[index] = typeof value === 'function' ? value(hooks[index]) : value; }];
+      const owner = frame, index = owner.cursor++;
+      if (!(index in owner.hooks)) owner.hooks[index] = typeof initial === 'function' ? initial() : initial;
+      return [owner.hooks[index], value => { owner.hooks[index] = typeof value === 'function' ? value(owner.hooks[index]) : value; }];
     },
-    useRef(initial) { const index = cursor++; return hooks[index] ||= { current: initial }; },
-    useMemo(fn) { cursor++; return fn(); },
+    useRef(initial) { const index = frame.cursor++; return frame.hooks[index] ||= { current: initial }; },
+    useMemo(fn) { frame.cursor++; return fn(); },
     useEffect(fn, deps) {
-      const index = cursor++;
-      if (!effectDeps[index] || deps.some((value, i) => value !== effectDeps[index][i])) {
-        effectDeps[index] = deps;
-        pendingEffects.push(fn);
+      const index = frame.cursor++;
+      if (!frame.effectDeps[index] || deps.some((value, i) => value !== frame.effectDeps[index][i])) {
+        frame.effectDeps[index] = deps;
+        frame.pendingEffects.push(fn);
       }
     },
   };
   const stored = new Map();
+  const listeners = new Map();
   const globals = {
     localStorage: { getItem: key => stored.get(key) ?? null, setItem: (key, value) => stored.set(key, value), removeItem: key => stored.delete(key) },
-    window: { addEventListener() {}, removeEventListener() {}, location: { search: '' } },
+    window: { addEventListener(name, callback) { listeners.set(name, callback); }, removeEventListener(name) { listeners.delete(name); }, location: { search: '' } },
     confirm: () => true,
   };
   for (const [name, value] of Object.entries(globals)) {
@@ -86,14 +87,14 @@ async function editorHarness(t) {
   loaded._compile(compiled, editorFile);
   let tree;
   const render = () => {
-    cursor = 0;
+    frame = parentFrame; frame.cursor = 0;
     tree = loaded.exports.Editor({ seed: null, clearSeed() {} });
-    const effects = pendingEffects;
-    pendingEffects = [];
+    const effects = frame.pendingEffects;
+    frame.pendingEffects = [];
     effects.forEach(fn => fn());
     return tree;
   };
-  const nodes = () => {
+  const nodes = (root = tree) => {
     const output = [];
     function visit(node) {
       if (Array.isArray(node)) { node.forEach(visit); return; }
@@ -101,10 +102,20 @@ async function editorHarness(t) {
       output.push(node);
       visit(node.props?.children);
     }
-    visit(tree);
+    visit(root);
     return output;
   };
   const draft = () => nodes().find(node => typeof node.type === 'function' && node.type.name === 'DraftTab');
+  const renderDraft = () => {
+    const node = draft();
+    assert.ok(node, 'open the draft tab first');
+    if (!draftFrames.has(node.props.generationId)) draftFrames.set(node.props.generationId, freshFrame());
+    frame = draftFrames.get(node.props.generationId); frame.cursor = 0;
+    const result = node.type(node.props);
+    const effects = frame.pendingEffects; frame.pendingEffects = [];
+    effects.forEach(fn => fn());
+    return result;
+  };
   const openDraft = () => {
     nodes().find(node => node.type === 'button' && node.props.role === 'tab' && node.props.children === '원고 편집').props.onClick();
     render();
@@ -128,7 +139,7 @@ async function editorHarness(t) {
   render();
   const initialDraft = openDraft();
   assert.equal(initialDraft.props.generationId, 1);
-  return { render, nodes, draft, openDraft, select, takeRequest, generation, initialDraft, stored, mutations };
+  return { render, renderDraft, nodes, draft, openDraft, select, takeRequest, generation, initialDraft, stored, mutations, listeners };
 }
 
 test('수동 검색어 교정안은 유료 작업 대신 검사·비교·승인으로 안내하고 기존 버튼 콜백도 요청하지 않는다', async t => {
@@ -210,4 +221,79 @@ test('새 글 요청이 실패해도 이전 글을 새 ID로 편집할 수 없�
   assert.ok(editor.nodes().some(node => node.type === 'button' && node.props.children === '다시 불러오기'));
   await editor.initialDraft.props.onSave({ title: '실패 후 남은 이전 원고' });
   assert.equal(editor.mutations.length, 0);
+});
+
+function editRaw(editor, text) {
+  editor.openDraft();
+  editor.renderDraft();
+  let tree = editor.renderDraft();
+  const open = editor.nodes(tree).find(node => node.type === 'button' && node.props.children === '구조 JSON 편집');
+  if (open) { open.props.onClick(); tree = editor.renderDraft(); }
+  editor.nodes(tree).find(node => node.type === 'textarea' && node.props.className === 'json-editor').props.onChange({ target: { value: text } });
+  editor.render();
+}
+
+test('미완성 JSON도 상위 미저장 상태와 새로고침 보호에 포함하고 승인·반영을 막는다', async t => {
+  const editor = await editorHarness(t);
+  editRaw(editor, '{ "title": ');
+  assert.equal(editor.draft().props.hasRawDraft, true);
+  let protectedUnload = false;
+  editor.listeners.get('beforeunload')({ preventDefault() { protectedUnload = true; } });
+  assert.equal(protectedUnload, true);
+  const rail = editor.nodes().find(node => node.type?.name === 'StepRail');
+  await rail.props.onStep({ key: 'approve' });
+  await rail.props.onStep({ key: 'apply' });
+  assert.equal(editor.mutations.length, 0);
+  assert.equal(JSON.parse(editor.stored.get('guide-manager-raw-draft-v1:1')).raw, '{ "title": ');
+});
+
+test('일반 원고 저장은 다른 고급 JSON 임시본을 지우지 않고 최신 버전과 비교하도록 보관한다', async t => {
+  const editor = await editorHarness(t);
+  const raw = JSON.stringify({ ...editor.generation(1).draft, title: 'JSON에만 남긴 수정' });
+  editRaw(editor, raw);
+  const before = editor.stored.get('guide-manager-raw-draft-v1:1');
+  const save = editor.draft().props.onSave({ ...editor.generation(1).draft, description: '기본 화면에서만 수정한 설명' });
+  await tick(); editor.takeRequest(1).resolve({ ...editor.generation(1), revision: 2 }); await save;
+  editor.render();
+  assert.equal(editor.stored.get('guide-manager-raw-draft-v1:1'), before);
+  assert.equal(editor.draft().props.hasRawDraft, true);
+  editor.renderDraft();
+  assert.ok(editor.nodes(editor.renderDraft()).some(node => node.type === 'strong' && node.props.children === '임시 JSON의 기준 원고와 서버 버전이 다릅니다.'));
+  assert.equal(editor.mutations[0][1].draft.title, '원고 1');
+});
+
+test('작업 전환 뒤 JSON을 복원하고 서버가 바뀐 경우 전송 전에 원고 비교로 연결한다', async t => {
+  const editor = await editorHarness(t);
+  editRaw(editor, JSON.stringify({ ...editor.generation(1).draft, title: '복원할 JSON 제목' }));
+  let change = editor.select(2); editor.takeRequest(2).resolve(editor.generation(2)); await change;
+  editor.render(); assert.equal(editor.openDraft().props.hasRawDraft, false);
+  change = editor.select(1); editor.takeRequest(1).resolve({ ...editor.generation(1), revision: 2 }); await change;
+  editor.render(); assert.equal(editor.openDraft().props.hasRawDraft, true);
+  editor.renderDraft();
+  const tree = editor.renderDraft();
+  assert.equal(editor.nodes(tree).find(node => node.props.className === 'json-editor').props.value.includes('복원할 JSON 제목'), true);
+  await editor.nodes(tree).find(node => node.type === 'button' && Array.isArray(node.props.children) && node.props.children.includes('JSON 비교·확인')).props.onClick();
+  editor.render();
+  assert.equal(editor.mutations.length, 0);
+  assert.equal(editor.draft().props.draft.title, '복원할 JSON 제목');
+  assert.ok(editor.nodes().some(node => node.type === 'button' && node.props.children === '최신 원고 확인 · 내 편집 유지'));
+  assert.ok(editor.stored.has('guide-manager-raw-draft-v1:1'));
+});
+
+test('JSON 저장 성공은 전송한 버퍼만 지우며 명시 폐기는 상위 미저장 상태도 해제한다', async t => {
+  const editor = await editorHarness(t);
+  const edited = { ...editor.generation(1).draft, title: 'JSON 저장한 제목' };
+  editRaw(editor, JSON.stringify(edited));
+  const tree = editor.renderDraft();
+  const save = editor.nodes(tree).find(node => node.type === 'button' && Array.isArray(node.props.children) && node.props.children.includes('JSON 저장·재검사')).props.onClick();
+  await tick(); editor.takeRequest(1).resolve({ ...editor.generation(1), draft: edited, revision: 2 }); await save;
+  editor.render();
+  assert.equal(editor.mutations[0][1].draft.title, edited.title);
+  assert.equal(editor.stored.has('guide-manager-raw-draft-v1:1'), false);
+  assert.equal(editor.draft().props.hasRawDraft, false);
+  editRaw(editor, '{ unfinished');
+  editor.nodes(editor.renderDraft()).find(node => node.type === 'button' && node.props.children === 'JSON 입력 폐기').props.onClick();
+  editor.render();
+  assert.equal(editor.stored.has('guide-manager-raw-draft-v1:1'), false);
+  assert.equal(editor.draft().props.hasRawDraft, false);
 });

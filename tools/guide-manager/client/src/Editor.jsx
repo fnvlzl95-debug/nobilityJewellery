@@ -143,8 +143,8 @@ function GuidePreview({ draft, generation }) {
   </article>
 }
 
-function DraftTab({ draft, generationId, baseRevision, generationRevision, serverDraft, onChange, onRestore, onSave, busy, isUpdate = false }) {
-  const [advanced, setAdvanced] = useState(false)
+function DraftTab({ draft, generationId, baseRevision, generationRevision, serverDraft, onChange, onRestore, onSave, onRawChange, hasRawDraft = false, busy, isUpdate = false }) {
+  const [advanced, setAdvanced] = useState(hasRawDraft)
   const [rawState, setRawState] = useState({ raw: '', baseRevision: null, baseDraft: null })
   const raw = rawState.raw
   const rawKey = 'guide-manager-raw-draft-v1:' + generationId
@@ -161,6 +161,7 @@ function DraftTab({ draft, generationId, baseRevision, generationRevision, serve
   const retainRaw = text => {
     const record = { ...rawState, version: 2, raw: text }
     setRawState(record)
+    onRawChange?.(generationId, true)
     try { localStorage.setItem(rawKey, JSON.stringify(record)) }
     catch { alert('임시 보관 공간이 부족합니다. JSON을 복사해 보관해 주세요.') }
   }
@@ -174,8 +175,7 @@ function DraftTab({ draft, generationId, baseRevision, generationRevision, serve
     try { parsed = JSON.parse(raw) } catch (_) { alert('JSON 형식을 확인해 주세요.'); return }
     onRestore(parsed, rawState.baseRevision)
     if (rawConflict) { setAdvanced(false); return }
-    const result = await onSave(parsed, { baseRevision: rawState.baseRevision })
-    if (result) localStorage.removeItem(rawKey)
+    await onSave(parsed, { baseRevision: rawState.baseRevision, rawText: raw })
   }
   return <fieldset className="tab-panel draft-fields" disabled={!!busy}>
     <div className="panel-head">
@@ -188,7 +188,7 @@ function DraftTab({ draft, generationId, baseRevision, generationRevision, serve
         {rawState.baseDraft && <details><summary>JSON 편집을 시작한 기준 원고</summary><pre>{JSON.stringify(rawState.baseDraft, null, 2)}</pre></details>}
       </div>}
       <textarea className="json-editor" value={raw} onChange={event => retainRaw(event.target.value)} spellCheck={false} />
-      <button type="button" className="button button-quiet" onClick={() => { if (confirm('미저장 JSON 입력을 폐기할까요?')) { localStorage.removeItem(rawKey); setRawState({ version: 2, raw: JSON.stringify(draft, null, 2), baseRevision, baseDraft: serverDraft }) } }}>JSON 입력 폐기</button>
+      <button type="button" className="button button-quiet" onClick={() => { if (confirm('미저장 JSON 입력을 폐기할까요?')) { localStorage.removeItem(rawKey); onRawChange?.(generationId, false); setRawState({ version: 2, raw: JSON.stringify(draft, null, 2), baseRevision, baseDraft: serverDraft }) } }}>JSON 입력 폐기</button>
       <button type="button" className="button button-primary" onClick={saveRaw} disabled={!!busy}><Save size={15} />{rawConflict ? 'JSON 비교·확인' : 'JSON 저장·재검사'}</button>
     </> : <>
       <div className="edit-grid">
@@ -483,6 +483,18 @@ export function Editor({ seed, clearSeed }) {
   const selectionMatches = generation?.id === selectedId && selectedId != null
   const [loadingGeneration, setLoadingGeneration] = useState(false)
   const [dirty, setDirty] = useState(false)
+  const [rawDirty, setRawDirty] = useState(false)
+  const rawStateRef = useRef({ id: null, dirty: false })
+  const rawKey = id => 'guide-manager-raw-draft-v1:' + id
+  const markRawDirty = (id, value) => {
+    if (id !== selectedRef.current) return
+    rawStateRef.current = { id, dirty: value }; setRawDirty(value)
+  }
+  const restoreRawDirty = id => {
+    let retained = false
+    try { retained = !!localStorage.getItem(rawKey(id)) } catch { /* storage warning is shown when writing */ }
+    markRawDirty(id, retained)
+  }
   const [draftConflict, setDraftConflict] = useState(false)
   const draftKey = id => 'guide-manager-draft-v1:' + id
   const loadLocalDraft = id => { try { return JSON.parse(localStorage.getItem(draftKey(id)) || 'null') } catch { return null } }
@@ -528,7 +540,7 @@ export function Editor({ seed, clearSeed }) {
   const loadGeneration = async (id) => {
     if (id !== selectedRef.current) return null
     const sequence = ++loadSequence.current
-    if (!id) { setGeneration(null); useServerDraft(null); setLoadingGeneration(false); setRefreshedAt(new Date().toISOString()); return null }
+    if (!id) { setGeneration(null); useServerDraft(null); markRawDirty(null, false); setLoadingGeneration(false); setRefreshedAt(new Date().toISOString()); return null }
     setLoadingGeneration(true)
     try {
       const value = await api.get(`/generations/${id}`)
@@ -539,6 +551,7 @@ export function Editor({ seed, clearSeed }) {
         draftState.current = { id, ...local, dirty: true }
         setDraft(local.draft); setDirty(true); setDraftConflict(local.baseRevision !== value.revision)
       } else useServerDraft(value)
+      restoreRawDirty(id)
       setSelectedSources(value.research?.official?.sources?.filter((source) => source.selected).map((source) => source.url) || [])
       setSourceReviews(Object.fromEntries((value.sourceReviewContexts || []).map(item => [item.url, { fingerprint: item.fingerprint, location: item.review?.location || '', note: item.review?.note || '', confirmed: item.status === 'operator_reviewed' }])))
       setAllowWithoutOfficial(!!value.input?.allowWithoutOfficial)
@@ -579,7 +592,7 @@ export function Editor({ seed, clearSeed }) {
   }, [seed])
 
   useEffect(() => {
-    const protect = event => { if (draftState.current.dirty) { event.preventDefault(); event.returnValue = '' } }
+    const protect = event => { if (draftState.current.dirty || rawStateRef.current.dirty) { event.preventDefault(); event.returnValue = '' } }
     window.addEventListener('beforeunload', protect)
     return () => window.removeEventListener('beforeunload', protect)
   }, [])
@@ -604,8 +617,8 @@ export function Editor({ seed, clearSeed }) {
     if (isManualSnippet(generation) && (['auto', 'official', 'draft', 'polish'].includes(label) || label.startsWith('image-'))) { setError('입력한 교정안으로 원고 검사·변경 비교·최종 승인을 진행해 주세요.'); return null }
     const independentAction = ['create', 'topics', 'prepare', 'prune'].includes(label) || label.startsWith('delete-')
     if (!independentAction && (!selectionMatches || selectedRef.current !== selectedId)) { setError('선택한 원고가 아직 준비되지 않았습니다. 불러오기가 끝난 뒤 실행해 주세요.'); return null }
-    if (draftState.current.dirty && !['save', 'sources', 'official', 'select', 'topics', 'create', 'prepare', 'diff'].includes(label)) {
-      setError('먼저 미저장 원고를 저장하거나 폐기해 주세요. 임시 편집은 이 브라우저에 보관돼 있습니다.'); return null
+    if ((draftState.current.dirty || rawStateRef.current.dirty) && !['save', 'sources', 'official', 'select', 'topics', 'create', 'prepare', 'diff'].includes(label)) {
+      setError('먼저 미저장 원고와 JSON 입력을 저장하거나 폐기해 주세요. 임시 편집은 이 브라우저에 보관돼 있습니다.'); return null
     }
     const runningId = selectedId
     setBusy(label); setError(''); setMessage('')
@@ -613,7 +626,7 @@ export function Editor({ seed, clearSeed }) {
     let failed = false
     try {
       result = await fn()
-      if (success) setMessage(success)
+      if (success) setMessage([success, ...(Array.isArray(result?.warnings) ? result.warnings : [])].join(' '))
     } catch (value) { setError(value.message); failed = true }
     setBusy('')
     // 이미지·검사처럼 다른 모양의 응답이 와도 화면 선택은 바뀌지 않는다.
@@ -666,14 +679,20 @@ export function Editor({ seed, clearSeed }) {
   const saveCluster = (clusterId, baseRevision) => run('cluster', () => api.put(`/generations/${selectedId}/cluster`, { clusterId }, { headers: { 'If-Match': String(baseRevision) } }), { success: '연결 선택을 저장했습니다. 연결될 페이지를 확인하고 다시 승인해 주세요.' })
   const researchSources = (emphasizeOfficial) => run('official', () => api.post(`/generations/${selectedId}/research/official`, { emphasizeOfficial }),
     { success: emphasizeOfficial ? '정부·표준기관 중심으로 출처를 다시 조사했습니다.' : '공식 출처 후보를 찾았습니다.' })
-  const saveDraft = (value, { baseRevision: explicitRevision } = {}) => {
+  const saveDraft = (value, { baseRevision: explicitRevision, rawText } = {}) => {
     if (!selectionMatches || selectedRef.current !== selectedId || draftState.current.id !== selectedId) { setError('선택한 원고를 확인한 뒤 저장해 주세요. 다른 글의 내용을 저장하지 않았습니다.'); return null }
     if ((explicitRevision != null && explicitRevision !== generation.revision) || (explicitRevision == null && draftConflict)) { setError('서버 원고가 바뀌었습니다. 아래 최신 원고를 비교한 뒤 적용 여부를 정해 주세요.'); return null }
     const id = selectedId
     return run('save', async () => {
       const result = await api.put('/generations/' + id + '/draft', { draft: value }, { headers: { 'If-Match': String(explicitRevision ?? draftState.current.baseRevision ?? generation.revision) } })
       localStorage.removeItem(draftKey(id))
-      localStorage.removeItem('guide-manager-raw-draft-v1:' + id)
+      if (typeof rawText === 'string') {
+        try {
+          const record = JSON.parse(localStorage.getItem(rawKey(id)) || 'null')
+          if (record?.raw === rawText && record.baseRevision === explicitRevision) localStorage.removeItem(rawKey(id))
+        } catch { /* a different or incomplete raw buffer must remain available */ }
+      }
+      restoreRawDirty(id)
       if (selectedRef.current === id) useServerDraft(result)
       return result
     }, { success: '원고를 저장하고 다시 검사했습니다.' })
@@ -726,7 +745,7 @@ export function Editor({ seed, clearSeed }) {
   }
 
   const sourceRows = generation?.research?.official?.sources || []
-  const steps = guideSteps(generation, draft, { compared: !dirty && comparedDraft?.id === generation?.id && comparedDraft?.revision === generation?.revision })
+  const steps = guideSteps(generation, draft, { compared: !dirty && !rawDirty && comparedDraft?.id === generation?.id && comparedDraft?.revision === generation?.revision })
   const currentIndex = steps.findIndex((step) => !step.done)
   const currentStep = currentIndex === -1 ? null : steps[currentIndex]
   const autoEligible = currentStep && ['official', 'select', 'draft', 'image', 'polish'].includes(currentStep.key)
@@ -844,6 +863,7 @@ export function Editor({ seed, clearSeed }) {
       <section className="workspace">
         <ErrorNotice message={error} onClose={() => setError('')} />
         <SuccessNotice message={message} onClose={() => setMessage('')} />
+        {rawDirty && panel === 'work' && selectionMatches && <section className="draft-retained" role="status"><strong>미저장 JSON 입력 · 형식이 미완성이어도 보관됨</strong><p>일반 원고 저장으로 이 입력을 지우지 않습니다. 원고 편집의 구조 JSON에서 저장·비교하거나 명시적으로 폐기한 뒤 승인·반영하세요.</p><button type="button" className="button button-quiet" onClick={() => setTab('draft')}>원고 편집에서 JSON 확인</button></section>}
         {dirty && panel === 'work' && selectionMatches && <section className="draft-retained" role="status"><strong>미저장 원고 · 이 브라우저에 임시 보관됨</strong><p>새로고침·작업 이동 후에도 복원됩니다. 출처 저장이나 검사 결과가 내 편집을 덮어쓰지 않습니다.</p>
           {draftConflict && <><p className="error-copy">서버 원고가 변경됐습니다. 저장하려면 두 원고를 먼저 비교해 주세요.</p><details><summary>서버의 최신 원고 확인</summary><pre>{JSON.stringify(generation?.humanized || generation?.draft, null, 2)}</pre></details><button className="button button-quiet" onClick={() => { if (confirm('서버의 최신 원고와 내 편집을 비교했으며, 다음 저장 시 내 편집을 적용할까요?')) { preserveDraft(selectedId, draft, generation.revision); setDraftConflict(false) } }}>최신 원고 확인 · 내 편집 유지</button></>}
           <div className="draft-retained-actions"><button className="button button-primary" disabled={!!busy || draftConflict} onClick={() => saveDraft(draft)}>원고 저장</button><button className="button button-quiet" disabled={!!busy} onClick={discardDraft}>미저장 편집 폐기</button></div>
@@ -898,7 +918,7 @@ export function Editor({ seed, clearSeed }) {
 
           <div className="tab-body">
             {tab === 'preview' && <GuidePreview draft={draft} generation={generation} />}
-            {tab === 'draft' && <DraftTab key={generation.id} generationId={generation.id} baseRevision={draftState.current.baseRevision} generationRevision={generation.revision} serverDraft={generation.humanized || generation.draft} draft={draft} onRestore={(value, revision) => { if (preserveDraft(selectedId, value, revision)) setDraftConflict(revision == null || revision !== generation.revision) }} onChange={editDraft} onSave={saveDraft} busy={busy} isUpdate={generation?.kind === 'update'} />}
+            {tab === 'draft' && <DraftTab key={generation.id} generationId={generation.id} baseRevision={draftState.current.baseRevision} generationRevision={generation.revision} serverDraft={generation.humanized || generation.draft} draft={draft} onRestore={(value, revision) => { if (preserveDraft(selectedId, value, revision)) setDraftConflict(revision == null || revision !== generation.revision) }} onChange={editDraft} onSave={saveDraft} onRawChange={markRawDirty} hasRawDraft={rawDirty} busy={busy} isUpdate={generation?.kind === 'update'} />}
             {tab === 'sources' && !isManualSnippet(generation) && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} contexts={generation.sourceReviewContexts || []} reviews={sourceReviews} setReviews={setSourceReviews} selected={selectedSources} setSelected={setSelectedSources}
               allowWithoutOfficial={allowWithoutOfficial} setAllowWithoutOfficial={setAllowWithoutOfficial}
               onSave={saveSources} onResearch={researchSources} busy={busy} />}

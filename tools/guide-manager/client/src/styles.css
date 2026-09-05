@@ -918,3 +918,15 @@ fieldset.draft-fields{min-width:0;margin:0;border:0}
 .operation-timing-table th, .operation-timing-table td { padding: 12px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
 .operation-timing-table th:first-child { text-align: left; }
 .comparison-periods { display: grid; gap: 5px; margin: 12px 0; font-size: 12px; overflow-wrap: anywhere; }
+.control-reason-input { display: grid; gap: 8px; margin: 20px 0; }
+.control-reason-input textarea { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: white; color: inherit; resize: vertical; }
+.control-result { padding-top: 20px; border-top: 1px solid var(--line); }
+.control-reason { white-space: pre-wrap; }
+.control-periods { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin: 16px 0; }
+.control-table-wrap { overflow-x: auto; margin: 22px 0; outline-offset: 4px; }
+.control-table-wrap table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 13px; }
+.control-table-wrap caption { text-align: left; font-weight: 600; padding-bottom: 10px; }
+.control-table-wrap th, .control-table-wrap td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.control-table-wrap thead th { background: #f7f5ef; }
+.control-table-wrap th:first-child { text-align: left; }
+.control-preview, .control-limitations { font-size: 13px; line-height: 1.7; }

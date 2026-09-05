@@ -12,6 +12,7 @@ const humanizer = require('../services/humanizerService');
 const images = require('../services/imageService');
 const applies = require('../services/applyService');
 const baselines = require('../services/baselineService');
+const comparisonControls = require('../services/comparisonControlService');
 const evaluations = require('../services/evaluationService');
 const topics = require('../services/topicService');
 const automation = require('../services/automationService');
@@ -153,6 +154,11 @@ router.post('/measurement/outcomes', route(req => measurement.saveOutcome(req.bo
 router.get('/analytics/imports', route(() => analytics.listImports()));
 router.post('/analytics/comparisons/:id/deployment', route(req => baselines.recordDeployment(Number(req.params.id), req.body)));
 router.get('/analytics/comparisons', route(() => baselines.listComparisons()));
+router.get('/analytics/comparison-controls', route(() => comparisonControls.listControls()));
+router.get('/analytics/comparisons/:id/control', route(req => req.query.slug
+  ? comparisonControls.previewControl(Number(req.params.id), req.query.slug)
+  : comparisonControls.getControl(Number(req.params.id))));
+router.post('/analytics/comparisons/:id/control', route(req => comparisonControls.registerControl(Number(req.params.id), req.body)));
 router.post('/analytics/import', upload.single('file'), route((req) => {
   if (!req.file) throw new Error('가져올 파일을 선택해 주세요');
   const options = {};

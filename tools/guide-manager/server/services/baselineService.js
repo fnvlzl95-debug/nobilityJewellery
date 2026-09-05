@@ -146,12 +146,23 @@ function gscBaselineIssue(base, slug) {
   return null;
 }
 
-function eligibleImport(base, type, appliedAt, slug) {
+function eligibleImport(base, type, appliedAt, slug, { expectedPeriod = null } = {}) {
   if (!base || !appliedAt || !base.periodDays || base.periodDays < 1) return null;
   const isGsc = (Array.isArray(type) ? type : [type]).includes('gsc_performance');
   if (isGsc && gscBaselineIssue(base, slug)) return null;
   const baseScope = isGsc ? scopeOf(importById(base.importId)) : null;
-  return postDeploymentImports(base, type, appliedAt).find(row => !isGsc || sameScope(baseScope, scopeOf(row))) || null;
+  return postDeploymentImports(base, type, appliedAt).find(row => (!isGsc || sameScope(baseScope, scopeOf(row)))
+    && (!expectedPeriod || (row.periodStart === expectedPeriod.periodStart && row.periodEnd === expectedPeriod.periodEnd))) || null;
+}
+
+function firstObservationPeriod(deployedAt, periodDays, platform = 'gsc') {
+  if (!deployedAt || !Number.isInteger(periodDays) || periodDays < 1) return null;
+  const timeZone = platform === 'gsc' ? GSC_ZONE : GA4_ZONE;
+  const day = dateInZone(deployedAt, timeZone);
+  const start = Date.parse(`${day}T00:00:00Z`) + 86400000;
+  return { periodStart: new Date(start).toISOString().slice(0, 10),
+    periodEnd: new Date(start + (periodDays - 1) * 86400000).toISOString().slice(0, 10),
+    periodDays, timeZone, timeZoneAssumed: platform !== 'gsc' };
 }
 
 function postDeploymentImports(base, type, appliedAt) {
@@ -254,4 +265,4 @@ function recordDeployment(id, { deployedAt, commit } = {}) {
   return { ok: true };
 }
 
-module.exports = { recordDeployment, daysInclusive, metricSnapshot, recordBaseline, listComparisons, eligibleImport, eligibleObservation, observationReadyAt };
+module.exports = { recordDeployment, daysInclusive, metricSnapshot, recordBaseline, listComparisons, eligibleImport, eligibleObservation, observationReadyAt, firstObservationPeriod };

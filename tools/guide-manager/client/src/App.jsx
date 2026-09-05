@@ -9,6 +9,7 @@ import { DataQuality, DeploymentForm, MeasurementPage } from './Measurement'
 import { ContentAudits } from './ContentAudits'
 import { Editor } from './Editor'
 import { OperationQuality } from './OperationQuality'
+import { ComparisonControlsPage } from './ComparisonControls'
 import {
   Badge, EmptyRow, ErrorNotice, ListToolbar, Pagination, RefreshStatus, SortHead, Spinner, SuccessNotice,
   dateTime, fmt, pct, useListState,
@@ -22,6 +23,7 @@ const NAV = [
   ['images', '이미지 작업실', ImagePlus],
   ['analytics', '분석 자료', BarChart3],
   ['history', '반영 이력', History],
+  ['controls', '대조 글 관찰', BarChart3],
   ['quality', '제작 지표', Gauge],
   ['measurement', '상담 성과', Activity],
   ['settings', '설정', Settings],
@@ -592,6 +594,7 @@ export default function App() {
       {view === 'analytics' && <Analytics />}
       {view === 'quality' && <OperationQuality />}
       {view === 'history' && <HistoryPage />}
+      {view === 'controls' && <ComparisonControlsPage />}
       {view === 'measurement' && <MeasurementPage />}
       {view === 'settings' && <SettingsPage />}
     </div>

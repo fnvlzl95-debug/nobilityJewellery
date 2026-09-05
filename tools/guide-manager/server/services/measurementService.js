@@ -28,10 +28,17 @@ function listOutcomes() {
 }
 
 function saveOutcome(input = {}) {
-  const { reference, guideSlug, stage, occurredOn } = input;
+  const { reference, guideSlug, stage, occurredOn, mode } = input;
+  if (mode != null && !['create', 'update'].includes(mode)) throw Object.assign(new Error('상담 등록·수정 방식을 확인해 주세요'), { status: 422 });
   if (!/^[a-zA-Z0-9_-]{6,64}$/.test(reference || '') || !['inquiry', 'qualified', 'contract', 'closed'].includes(stage)) throw Object.assign(new Error('식별번호와 상담 단계를 확인해 주세요'), { status: 422 });
   if (!db.prepare('SELECT slug FROM guides WHERE slug=?').get(guideSlug)) throw Object.assign(new Error('유입 가이드를 선택해 주세요'), { status: 422 });
   if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn || '') || !Number.isFinite(Date.parse(occurredOn)) || new Date(occurredOn).toISOString().slice(0, 10) !== occurredOn || occurredOn > koreaDate()) throw Object.assign(new Error('오늘까지의 유효한 상담일을 입력해 주세요'), { status: 422 });
+  const existing = db.prepare('SELECT guide_slug,stage,occurred_on FROM guide_outcomes WHERE reference=?').get(reference);
+  if (mode === 'create' && existing) {
+    if (existing.guide_slug === guideSlug && existing.stage === stage && existing.occurred_on === occurredOn) return listOutcomes();
+    throw Object.assign(new Error('이미 등록된 접수번호입니다. 기존 상담 항목을 선택해 확인한 뒤 수정해 주세요.'), { status: 409, code: 'OUTCOME_EXISTS' });
+  }
+  if (mode === 'update' && !existing) throw Object.assign(new Error('수정할 상담 기록이 없습니다. 목록을 새로고침해 주세요.'), { status: 404, code: 'OUTCOME_NOT_FOUND' });
   db.prepare(`INSERT INTO guide_outcomes VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(reference)
     DO UPDATE SET guide_slug=excluded.guide_slug, stage=excluded.stage, occurred_on=excluded.occurred_on, updated_at=excluded.updated_at`)
     .run(reference, guideSlug, stage, occurredOn, nowIso(), nowIso());

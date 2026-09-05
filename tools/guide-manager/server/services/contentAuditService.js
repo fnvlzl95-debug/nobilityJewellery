@@ -16,6 +16,13 @@ const CHANGE_AREAS = ['기술', '제목·설명', '첫 화면', '본문', '내�
 const EVIDENCE_KEYS = new Set(['gsc', 'ga4', 'naver', 'content', 'technical', 'duplicate', 'coverage']);
 const BATCH_SIZE = 2;
 let activeJob = null;
+let auditsInvalidated = false;
+
+function invalidateAudits() {
+  // Derived audit data is refreshed on the next read. This marker needs no DB
+  // write; the source fingerprint check also survives a server restart.
+  auditsInvalidated = true;
+}
 
 const round = (value, digits = 0) => {
   const factor = 10 ** digits;
@@ -535,13 +542,16 @@ function scanAll() {
       update.run(JSON.stringify(snapshot), JSON.stringify(nextPlan), nextStatus, stamp, existing.id);
     }
   })();
+  auditsInvalidated = false;
   return { total: snapshots.length, scannedAt: stamp };
 }
 
 function ensureCurrentAudits() {
-  const guideCount = db.prepare('SELECT COUNT(*) AS count FROM guides').get().count;
-  const auditCount = new Set(currentAuditRows().map((row) => row.guideSlug)).size;
-  if (!guideCount || auditCount !== guideCount) scanAll();
+  const guides = db.prepare('SELECT slug, source_hash AS sourceHash FROM guides').all();
+  const rows = currentAuditRows();
+  const fingerprint = sha256(guides.map(guide => `${guide.slug}:${guide.sourceHash}`).sort().join('|'));
+  const outdated = rows.some(row => row.snapshot.inventoryFingerprint !== fingerprint || row.snapshot.analysisVersion !== ANALYSIS_VERSION);
+  if (auditsInvalidated || !guides.length || new Set(rows.map(row => row.guideSlug)).size !== guides.length || outdated) scanAll();
 }
 
 // 진단 화면에서 글별 편집 작업 진행·반영 상태를 구분해 보여주기 위한 조회.
@@ -940,7 +950,7 @@ function createUpdate(slug, input = {}) {
 }
 
 module.exports = {
-  ANALYSIS_VERSION, CLASSIFICATIONS, auditSchema, buildSnapshots, scanAll, report, detail, analyze, startAnalyze, jobStatus, savePlan, createUpdate,
+  ANALYSIS_VERSION, CLASSIFICATIONS, auditSchema, buildSnapshots, scanAll, invalidateAudits, report, detail, analyze, startAnalyze, jobStatus, savePlan, createUpdate,
   sanitizePlan, applyServerGuards, reconcileServerGuards, scoreContent, deterministicChanges, observationWindow,
   classify, seedPlan, normalizeObservationPlan,
 };
