@@ -12,7 +12,7 @@ const { renderNewGuide, patchExistingGuide, patchGuideIndex } = require('./rende
 const { lintDraft } = require('./lintService');
 const { reconcileGa4Mappings } = require('./analyticsService');
 const { metricSnapshot, recordBaseline } = require('./baselineService');
-const { clusterFilePath, buildClusterChange } = require('./clusterService');
+const { clusterFilePath, buildClusterChange, assertNewGuideConnection } = require('./clusterService');
 
 function atomicWrite(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -194,6 +194,7 @@ async function apply(id) {
   const draft = generation.humanized || generation.draft;
   require('./updatePolicyService').assertUpdatePolicy(generation, { draft, phase: 'apply' });
   assertSelectedEvidence(generation, draft);
+  assertNewGuideConnection(generation, draft);
   const lint = lintDraft(draft, { targetSlug: generation.target_slug, generationId: generation.id, requireImage: true, allowWithoutOfficial: !!generation.input?.allowWithoutOfficial });
   if (lint.blocking) throw new Error('차단 검사가 남아 있어 반영할 수 없습니다');
   assertDraftImages(generation);

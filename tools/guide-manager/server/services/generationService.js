@@ -97,6 +97,7 @@ function createGeneration(input) {
   const topic = String(input.topic || target?.keyword || '').trim();
   if (!topic) throw new Error('주제를 입력해 주세요');
   const updatePolicy = target ? assertCreateUpdatePolicy(target.slug, input) : null;
+  const selectedCluster = target ? null : require('./clusterService').validateClusterSelection(input.topicDecision?.cluster ?? input.cluster);
   assertUniqueIntent({ topic, primaryKeyword: input.topicDecision?.primaryKeyword || topic, slug: input.slug || target?.slug, workingTitle: input.topicDecision?.workingTitle }, { targetSlug: target?.slug });
   const stamp = nowIso();
   const payload = {
@@ -108,7 +109,7 @@ function createGeneration(input) {
     baseIndexEntryHash: target ? sha256(parseGuidePosts(fs.readFileSync(guideIndexPath(), 'utf8')).find(post => post.slug === target.slug)?.block || '') : null,
     baseClusterHash: fileHash(path.join(siteRoot(), 'data', 'guide-clusters.ts')),
     existingSource: target?.source || '',
-    topicDecision: input.topicDecision || null,
+    topicDecision: target ? input.topicDecision || null : { ...(input.topicDecision || {}), cluster: selectedCluster?.id || null },
     auditId: input.auditId ? Number(input.auditId) : null,
     auditPlan: input.auditPlan && typeof input.auditPlan === 'object' ? input.auditPlan : null,
     reviewedContextFingerprint: input.reviewedContextFingerprint || null,
@@ -136,6 +137,40 @@ function updateGeneration(id, fields) {
   db.prepare(`UPDATE generations SET ${entries.map(([key]) => `${key} = ?`).join(', ')}, revision = revision + 1, updated_at = ? WHERE id = ?`)
     .run(...entries.map(([, value]) => value), nowIso(), id);
   return getGeneration(id);
+}
+
+function generationConnection(id) {
+  const generation = getGeneration(id);
+  if (!generation) throw Object.assign(new Error('생성 작업을 찾을 수 없습니다'), { status: 404 });
+  if (generation.kind !== 'new') return { required: false, ready: true, proposal: null };
+  const draft = generation.humanized || generation.draft;
+  try {
+    const proposal = require('./clusterService').assertNewGuideConnection(generation, draft || {
+      title: generation.topic, keyword: generation.topic, category: generation.input.category,
+      slug: generation.input.desiredSlug || 'new-guide',
+    });
+    return { required: true, ready: true, provisional: !draft, proposal };
+  } catch (error) {
+    if (!['CLUSTER_REQUIRED', 'INVALID_CLUSTER', 'CLUSTER_CONFLICT'].includes(error.code)) throw error;
+    return { required: true, ready: false, provisional: !draft, proposal: null, error: error.message, code: error.code };
+  }
+}
+
+function selectGenerationCluster(id, clusterId, { expectedRevision } = {}) {
+  return db.transaction(() => {
+    const generation = getGeneration(id);
+    if (!generation) throw Object.assign(new Error('생성 작업을 찾을 수 없습니다'), { status: 404 });
+    if (!Number.isInteger(expectedRevision) || generation.revision !== expectedRevision) throw Object.assign(new Error('작업이 변경됐습니다. 최신 연결 정보를 확인한 뒤 다시 저장해 주세요'), { status: 409, code: 'STALE_REVISION' });
+    if (generation.kind !== 'new' || generation.status === 'applied' || generation.archived_at) throw Object.assign(new Error('반영 전 새 글에서만 가이드 묶음을 변경할 수 있습니다'), { status: 409, code: 'CLUSTER_SELECTION_LOCKED' });
+    const cluster = require('./clusterService').validateClusterSelection(clusterId);
+    const nextId = cluster?.id || null;
+    const currentId = generation.input?.topicDecision?.cluster;
+    if (nextId === (currentId === 'other' ? null : currentId || null)) return generation;
+    return updateGeneration(id, {
+      input_json: JSON.stringify({ ...generation.input, topicDecision: { ...(generation.input.topicDecision || {}), cluster: nextId } }),
+      error: null,
+    });
+  })();
 }
 
 // 정부·공공 도메인. gov.uk·gov.au처럼 국가코드가 뒤에 붙는 형태까지 포함한다.
@@ -441,6 +476,7 @@ function approveGeneration(id) {
   if (!draft) throw new Error('승인할 원고가 없습니다');
   assertUpdatePolicy(generation, { draft, phase: 'approve' });
   assertSelectedEvidence(generation, draft);
+  const connection = require('./clusterService').assertNewGuideConnection(generation, draft);
   assertUniqueIntent({ topic: generation.topic, primaryKeyword: draft.keyword, slug: draft.slug, workingTitle: draft.title }, { targetSlug: generation.target_slug, generationId: generation.id });
   const lint = lintDraft(draft, { ...lintOptions(generation), requireImage: true });
   if (lint.blocking) {
@@ -450,11 +486,19 @@ function approveGeneration(id) {
     throw error;
   }
   assertDraftImages(generation);
-  return updateGeneration(id, { lint_json: JSON.stringify(lint), status: 'approved', approved_at: nowIso(), error: null });
+  return db.transaction(() => {
+    // Pin the reviewed automatic proposal so later publications cannot silently
+    // change the group chosen between approval and final application.
+    if (connection && generation.input?.topicDecision?.cluster !== connection.clusterId) {
+      updateGeneration(id, { input_json: JSON.stringify({ ...generation.input, topicDecision: { ...(generation.input.topicDecision || {}), cluster: connection.clusterId } }) });
+    }
+    return updateGeneration(id, { lint_json: JSON.stringify(lint), status: 'approved', approved_at: nowIso(), error: null });
+  })();
 }
 
 module.exports = {
   assertDraftImages, assertSelectedEvidence, parseGeneration, getGeneration, listGenerations, createGeneration, updateGeneration,
+  generationConnection, selectGenerationCluster,
   deleteGeneration, deleteGenerations,
   researchOfficial, selectSources, generateDraft, saveDraft, lintGeneration, approveGeneration,
   officialDomain, writerInstructions, normalizeDraft, executeWriterPolicy,

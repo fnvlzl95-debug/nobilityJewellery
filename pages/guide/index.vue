@@ -65,6 +65,8 @@ const activeCategory = computed<CategoryFilter>(() => (
   categoryOptions.find((category) => category === rawCategory.value) ?? '전체'
 ))
 const activeCategoryContext = computed(() => categoryContexts[activeCategory.value])
+const contextualHeading = computed(() => activeCategory.value === '전체' ? '귀금속 가이드' : `귀금속 가이드 ${activeCategory.value}`)
+const contextualDescription = computed(() => activeCategory.value === '전체' ? pageDescription : activeCategoryContext.value)
 const searchTerm = computed(() => String(Array.isArray(route.query.q) ? route.query.q[0] || '' : route.query.q || '').trim().slice(0, 100))
 const searchInput = ref(searchTerm.value)
 watch(searchTerm, value => { searchInput.value = value })
@@ -115,7 +117,7 @@ const categoryCount = (category: CategoryFilter) => category === '전체'
 
 const canonicalUrl = computed(() => guideUrl(currentPage.value))
 const contextualPageTitle = computed(() => {
-  const categoryTitle = activeCategory.value === '전체' ? '귀금속 가이드' : `귀금속 가이드 ${activeCategory.value}`
+  const categoryTitle = contextualHeading.value
   if (currentPage.value > 1) {
     return `${categoryTitle} ${currentPage.value}페이지 | 귀족`
   }
@@ -189,15 +191,15 @@ useHead(() => ({
   meta: [
     // 2페이지 이후는 목록 이동용이므로 색인에서 제외해 /guide 1페이지로 검색 신호를 모은다.
     { name: 'robots', content: searchTerm.value || currentPage.value > 1 ? 'noindex, follow' : 'index, follow' },
-    { name: 'description', content: pageDescription },
+    { name: 'description', content: contextualDescription.value },
     { property: 'og:title', content: contextualPageTitle.value },
-    { property: 'og:description', content: pageDescription },
+    { property: 'og:description', content: contextualDescription.value },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: canonicalUrl.value },
     { property: 'og:image', content: ogImage },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: contextualPageTitle.value },
-    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:description', content: contextualDescription.value },
     { name: 'twitter:image', content: ogImage },
   ],
   script: [
@@ -206,22 +208,22 @@ useHead(() => ({
       innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
         { name: '홈', path: '/' },
         { name: '귀금속 가이드', path: '/guide' },
-      ])),
+      ])).replace(/</g, '\\u003c'),
     },
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: basePageTitle,
-        description: pageDescription,
-        url: `${siteConfig.url}${pagePath}`,
+        name: contextualPageTitle.value,
+        description: contextualDescription.value,
+        url: canonicalUrl.value,
         hasPart: paginatedPosts.value.map((post) => ({
           '@type': 'Article',
           headline: post.title,
           url: `${siteConfig.url}${post.path}`,
         })),
-      }),
+      }).replace(/</g, '\\u003c'),
     },
   ],
 }))
@@ -233,7 +235,7 @@ useHead(() => ({
     <section class="guide-list-wrap">
       <header class="guide-header">
         <p class="guide-label">Guide</p>
-        <h1>귀금속 가이드</h1>
+        <h1>{{ contextualHeading }}</h1>
         <p>가격, 수리, 관리, 선택, 제작 기간 등 자주 물어보시는 내용을 주제별로 모았습니다. 읽어보시고 궁금한 점이 있으면 편하게 문의해주세요.</p>
         <div class="guide-header-cta">
           <a

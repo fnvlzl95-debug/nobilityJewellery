@@ -15,7 +15,7 @@ test('GA4 복합 CSV의 기간과 기준선을 분리해 읽는다', () => {
   const blocks = parseGa4Blocks(buffer.toString('utf8'));
   assert.ok(blocks.length >= 5);
   const result = importBuffer(buffer, path.basename(file));
-  assert.deepEqual(result.summary, {
+  assert.deepEqual(Object.fromEntries(['activeUsers', 'newUsers', 'avgEngagementSeconds', 'events', 'pageRows'].map(key => [key, result.summary[key]])), {
     activeUsers: 562,
     newUsers: 558,
     avgEngagementSeconds: 39.186832740213525,
@@ -31,7 +31,7 @@ test('GSC Performance ZIP 기준선과 슬래시 중복군을 계산한다', () 
   assert.ok(entries.has('검색어 수.csv'));
   assert.ok(entries.has('페이지.csv'));
   const result = importBuffer(buffer, path.basename(file));
-  assert.deepEqual(result.summary, {
+  assert.deepEqual(Object.fromEntries(['clicks', 'impressions', 'pageRows', 'queryRows', 'duplicateGroups', 'duplicateImpressions'].map(key => [key, result.summary[key]])), {
     clicks: 146,
     impressions: 5673,
     pageRows: 126,
@@ -39,6 +39,11 @@ test('GSC Performance ZIP 기준선과 슬래시 중복군을 계산한다', () 
     duplicateGroups: 54,
     duplicateImpressions: 5257,
   });
+  assert.equal(result.sourceType, 'gsc_performance');
+  assert.equal(result.summary.scope, '사이트 전체 웹검색');
+  assert.equal(result.summary.property, 'https://noblessegold.com/');
+  assert.equal(result.summary.collectionMethod, 'official-export');
+  assert.equal(result.summary.completeness.daily.complete, true);
   assert.equal(normalizeUrl('https://noblessegold.com/guide/example/'), 'https://noblessegold.com/guide/example');
 });
 

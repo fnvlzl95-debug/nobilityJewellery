@@ -26,6 +26,8 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 비용', description: '작업별 견적 기준' },
       { to: '/guide/jongno-ring-size-repair', label: '반지 사이즈 수리', description: '줄이기·늘리기 전 확인' },
       { to: '/guide/necklace-bracelet-chain-repair', label: '목걸이·팔찌 체인 수리', description: '가능 여부와 기간' },
+      { to: '/guide/thin-necklace-breakage-causes', label: '얇은 목걸이 끊어짐 원인', description: '장력·마모·연결부 손상 점검' },
+      { to: '/guide/necklace-untangling-guide', label: '엉킨 목걸이 푸는 법', description: '체인 손상 확인과 중단 기준' },
       { to: '/guide/gold-plating-repair', label: '화이트골드 도금 수리', description: '변색·광택·재도금 기준' },
       { to: '/guide/ring-cubic-stone-repair', label: '반지 큐빅 빠짐 수리', description: '재세팅과 발 보강' },
       { to: '/guide/earring-post-bent-repair', label: '귀걸이 침 수리', description: '휘어짐·부러짐 점검' },
@@ -42,6 +44,7 @@ export const guideClusters: GuideCluster[] = [
     hubPath: '/wedding',
     hubLabel: '결혼예물 전체 안내',
     links: [
+      { to: '/guide/wedding-jewelry-budget-allocation', label: '결혼예물 예산 배분', description: '반지·다이아·혼주 품목 우선순위' },
       { to: '/guide/wedding-jewelry-set-composition', label: '결혼예물 세트 구성', description: '신부·신랑·양가 범위' },
       { to: '/guide/wedding-ring-production-time', label: '결혼반지 제작기간', description: '촬영·예식일 역산' },
       { to: '/guide/platinum-vs-white-gold-difference', label: '화이트골드·백금 차이', description: '무게·변색·관리 비교' },
@@ -77,6 +80,8 @@ export const guideClusters: GuideCluster[] = [
     hubLabel: '소재·보석 가이드 전체 보기',
     links: [
       { to: '/guide/gemstone-mohs-hardness-guide', label: '보석 경도 순위표', description: '긁힘과 충격 차이' },
+      { to: '/guide/diamond-hardness-vs-toughness-guide', label: '다이아몬드 경도와 인성', description: '긁힘 저항과 충격 손상 구분' },
+      { to: '/guide/pearl-hardness-daily-wear-guide', label: '진주 경도와 일상 착용', description: '표면 손상 위험과 관리 기준' },
       { to: '/guide/gemstone-grading-vs-identification-report', label: '감정서·감별서 차이', description: '보고서 목적 구분' },
       { to: '/guide/cubic-moissanite-diamond-difference', label: '큐빅·모이사나이트·다이아', description: '메인스톤 비교' },
       { to: '/guide/lab-grown-diamond-natural-difference', label: '랩그로운·천연 다이아', description: '생성 방식과 선택 기준' },
@@ -140,6 +145,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/gold-necklace-length-guide', label: '목걸이 길이 추천', description: '42·45·50cm 비교' },
       { to: '/guide/necklace-chain-types-guide', label: '목걸이 체인 종류', description: '베네치안·커브·로프 차이' },
       { to: '/guide/bracelet-size-measuring-guide', label: '팔찌 사이즈 재는 법', description: '손목 둘레 측정 기준' },
+      { to: '/guide/mother-necklace-price', label: '어머니 금목걸이 가격', description: '예산·순도·중량별 선택 기준' },
       { to: '/guide/mother-necklace-design-consulting', label: '어머니 목걸이 상담', description: '선물용 디자인 기준' },
       { to: '/gallery', label: '주문제작 갤러리', description: '실제 제작 디자인 보기' },
       { to: '/guide/jongno-jewelry-quote-comparison-tips', label: '종로 금은방 견적 비교 기록법', description: '금속 정보·비용 항목·환불 조건을 같은 기준으로 비교하는 방법' },

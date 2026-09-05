@@ -197,6 +197,8 @@ router.get('/generations/:id', route((req) => {
   return item;
 }));
 router.put('/generations/:id/draft', route((req) => generations.saveDraft(Number(req.params.id), req.body.draft)));
+router.get('/generations/:id/connection', route((req) => generations.generationConnection(Number(req.params.id))));
+router.put('/generations/:id/cluster', route((req) => generations.selectGenerationCluster(Number(req.params.id), req.body.clusterId, { expectedRevision: Number(req.headers['if-match']) })));
 router.post('/generations/:id/research/official', background('official', (req) => generations.researchOfficial(Number(req.params.id), {
   emphasizeOfficial: !!req.body.emphasizeOfficial,
 })));

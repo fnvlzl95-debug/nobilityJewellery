@@ -64,7 +64,7 @@ function Dashboard({ data, onNavigate, refresh, refreshing, message, clearMessag
         value={fmt(ga4?.sourceType === 'ga4_path_device' ? g.views : g.activeUsers)}
         note={ga4?.sourceType === 'ga4_path_device'
           ? `${ga4?.periodStart || '—'} ~ ${ga4?.periodEnd || '—'} · 경로 ${fmt(g.uniquePaths)}`
-          : `평균 참여 ${Number(g.avgEngagementSeconds || 0).toFixed(1)}초`}
+          : g.avgEngagementSeconds == null ? '평균 참여 시간 미확인' : `평균 참여 ${Number(g.avgEngagementSeconds).toFixed(1)}초`}
       />
       <Metric label="Naver 웹검색 CTR" value={n.overallCtr == null ? '—' : `${(Number(n.overallCtr) * 100).toFixed(1)}%`} note={`${naver?.periodStart || '—'} ~ ${naver?.periodEnd || '—'} · TOP 30`} />
       <Metric label="Google 검색 후 참여" value={fmt(organic?.summary?.engagedSessions)} note={`${organic?.periodStart || '—'} ~ ${organic?.periodEnd || '—'} · 고유 사용자 집계 불가(페이지 간 중복)`} />
@@ -294,7 +294,13 @@ function ImageStudio() {
   </main>
 }
 
-const IMPORT_LABELS = { gsc_performance: 'GSC 성과', gsc_coverage: 'GSC 색인', ga4_overview: 'GA4 개요', ga4_path_device: 'GA4 경로·기기', ga4_organic_landing: 'Google 검색 후 참여', naver_web_performance: 'Naver 웹검색' }
+const IMPORT_LABELS = { gsc_performance: 'GSC 성과', gsc_performance_scoped: 'GSC 범위 제한 자료', gsc_coverage: 'GSC 색인', ga4_overview: 'GA4 개요', ga4_path_device: 'GA4 경로·기기', ga4_organic_landing: 'Google 검색 후 참여', naver_web_performance: 'Naver 웹검색' }
+const IMPORT_METRICS = {
+  clicks: '클릭', impressions: '노출', activeUsers: '활성 사용자', newUsers: '새 사용자',
+  views: '조회', events: '이벤트', keyEvents: '주요 이벤트', engagedSessions: '참여 세션',
+  pageRows: '페이지 행', queryRows: '검색어 행', indexed: '색인', notIndexed: '미색인',
+  topQueryClicks: '표 내 검색어 클릭', topQueryImpressions: '표 내 검색어 노출',
+}
 
 function Analytics() {
   const [imports, setImports] = useState([])
@@ -303,6 +309,7 @@ function Analytics() {
   const [refreshing, setRefreshing] = useState(false)
   const [refreshedAt, setRefreshedAt] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const load = async () => { const rows = await api.get('/analytics/imports'); setImports(rows); setRefreshedAt(new Date().toISOString()); return rows }
   useEffect(() => { load().catch((value) => setError(value.message)) }, [])
 
@@ -323,8 +330,12 @@ function Analytics() {
 
   const upload = async (event) => {
     event.preventDefault(); if (!file) return
-    setBusy(true); setError('')
-    try { await api.upload('/analytics/import', file); setFile(null); await load() } catch (value) { setError(value.message) } finally { setBusy(false) }
+    setBusy(true); setError(''); setMessage('')
+    try {
+      const result = await api.upload('/analytics/import', file)
+      setMessage(result.revalidated ? '기존 원본의 범위를 다시 검증했습니다. 중복 행은 추가하지 않았습니다.' : result.duplicate ? '이미 가져온 원본입니다. 중복 적재하지 않았습니다.' : result.sourceType === 'gsc_performance_scoped' ? '원본을 보관했습니다. 범위가 제한되거나 확인되지 않아 사이트 전체 추천·성과 비교에는 사용하지 않습니다.' : '자료를 가져왔습니다. 최신 측정 기간을 기준으로 분석에 반영합니다.')
+      setFile(null); await load()
+    } catch (value) { setError(value.message) } finally { setBusy(false) }
   }
   const refresh = async () => {
     setRefreshing(true); setError('')
@@ -337,6 +348,7 @@ function Analytics() {
       <button className="button button-quiet" onClick={refresh} disabled={busy || refreshing}>{refreshing ? <Spinner label="확인 중" /> : <><RefreshCcw size={16} />새로고침</>}</button>
     </div></header>
     <ErrorNotice message={error} onClose={() => setError('')} />
+    <SuccessNotice message={message} onClose={() => setMessage('')} />
     <form className="upload-zone" onSubmit={upload}><Upload size={28} /><div><strong>GA4 CSV 또는 Search Console ZIP</strong><p>같은 파일은 해시로 감지해 중복 적재하지 않습니다.</p></div><input type="file" accept=".csv,.zip" onChange={(event) => setFile(event.target.files?.[0] || null)} /><button className="button button-primary" disabled={!file || busy}>{busy ? <Spinner /> : file ? `${file.name} 가져오기` : '파일 선택'}</button></form>
 
     <ListToolbar state={list} placeholder="파일 이름 검색" label="출처" />
@@ -348,9 +360,25 @@ function Analytics() {
         <SortHead state={list} id="importedAt">가져온 시각</SortHead>
       </div>
       {list.view.map((item) => <div className="table-row" key={item.id}>
-        <div><Badge tone={item.sourceType === 'gsc_coverage' ? 'danger' : item.sourceType.startsWith('ga4_') ? 'gold' : 'neutral'}>{IMPORT_LABELS[item.sourceType] || item.sourceType}</Badge><small>{item.fileName}</small><small>SHA-256 {item.fileHash?.slice(0, 12) || '—'} · {item.parserVersion || '—'}</small></div>
+        <div><Badge tone={item.sourceType === 'gsc_coverage' || item.sourceType === 'gsc_performance_scoped' ? 'danger' : item.sourceType.startsWith('ga4_') ? 'gold' : 'neutral'}>{IMPORT_LABELS[item.sourceType] || item.sourceType}</Badge><small>{item.fileName}</small><small>SHA-256 {item.fileHash?.slice(0, 12) || '—'} · {item.parserVersion || '—'}</small>
+          {item.sourceType.startsWith('gsc_performance') && <details><summary>{item.summary?.scope || '기존 자료 · 범위 메타 없음'}</summary>
+            {item.sourceType === 'gsc_performance_scoped' && <p>사이트 전체 추천과 배포 전후 비교에는 사용하지 않습니다.</p>}
+            <small>{item.summary?.property || '속성 미확인'} · {item.summary?.searchType || '검색 유형 미확인'}</small>
+            {item.summary?.coverageNote && <small>{item.summary.coverageNote}</small>}
+            {item.summary?.scopeReasons?.map(reason => <small key={reason}>{reason}</small>)}
+            {Object.entries(item.summary?.completeness || {}).map(([key, value]) => <small key={key}>{({ daily: '일별', queries: '검색어', pages: '페이지' })[key] || key} {fmt(value.rows)}행 · {value.complete ? '전체 표 확인' : '일부·미확인'}</small>)}
+          </details>}
+          {item.summary?.mappingMethod === 'exact_page_title' && <details><summary>가져올 때 제목 연결 {fmt(item.summary.mappedRows)}행 · 미연결 {fmt(item.summary.unmappedRows)}행</summary>
+            {item.summary.mappingLimitations?.map(note => <small key={note}>{note}</small>)}
+            {item.summary.unmappedExamples?.map(row => <small key={row.pageTitle}>{row.pageTitle} · 조회 {fmt(row.views)}회</small>)}
+          </details>}
+          {!!item.summary?.comparisonPeriods?.length && <details><summary>별도 비교 기간 {item.summary.comparisonPeriods.length}개</summary>
+            <small>추천·페이지 지표에는 최신 기간만 사용합니다.</small>
+            {item.summary.comparisonPeriods.map(period => <small key={`${period.periodStart}-${period.periodEnd}`}>{period.periodStart} ~ {period.periodEnd}</small>)}
+          </details>}
+        </div>
         <div><strong>{item.periodStart || '—'}</strong><small>~ {item.periodEnd || '—'}</small></div>
-        <div className="summary-chips">{Object.entries(item.summary || {}).filter(([, value]) => typeof value !== 'object').slice(0, 4).map(([key, value]) => <span key={key}>{key} <b>{fmt(value)}</b></span>)}</div>
+        <div className="summary-chips">{Object.entries(IMPORT_METRICS).filter(([key]) => Object.hasOwn(item.summary || {}, key) && !(item.sourceType === 'ga4_organic_landing' && key === 'activeUsers')).slice(0, 4).map(([key, label]) => <span key={key}>{label} <b>{fmt(item.summary[key])}</b></span>)}{item.sourceType === 'ga4_organic_landing' && <small>페이지 간 중복으로 전체 고유 사용자는 집계하지 않습니다.</small>}</div>
         <div>{dateTime(item.importedAt)}</div>
       </div>)}
       {!list.view.length && <EmptyRow title="가져온 자료가 없습니다" hint="위에서 CSV 또는 ZIP을 올려주세요." />}

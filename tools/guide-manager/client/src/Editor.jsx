@@ -65,6 +65,43 @@ function StepRail({ steps, currentIndex, busy, onStep }) {
   </ol>
 }
 
+function ConnectionPanel({ generation, clusters, guides, busy, onSave }) {
+  const savedId = generation.input?.topicDecision?.cluster === 'other' ? '' : generation.input?.topicDecision?.cluster || ''
+  const [selection, setSelection] = useState({ value: savedId, baseRevision: generation.revision, dirty: false })
+  const [connection, setConnection] = useState(null)
+  const [loadError, setLoadError] = useState('')
+  useEffect(() => {
+    setSelection(current => current.dirty ? current : { value: savedId, baseRevision: generation.revision, dirty: false })
+    let cancelled = false
+    setConnection(null); setLoadError('')
+    api.get(`/generations/${generation.id}/connection`).then(value => { if (!cancelled) setConnection(value) })
+      .catch(error => { if (!cancelled) setLoadError(error.message) })
+    return () => { cancelled = true }
+  }, [generation.id, generation.revision, savedId])
+  const conflict = selection.dirty && selection.baseRevision !== generation.revision
+  const proposal = connection?.proposal
+  const save = async () => {
+    const result = await onSave(selection.value || null, selection.baseRevision)
+    if (result) setSelection({ value: result.input?.topicDecision?.cluster || '', baseRevision: result.revision, dirty: false })
+  }
+  const pageLabel = path => guides.find(guide => guide.path === path)?.title || clusters.find(cluster => cluster.hubPath === path)?.hubLabel || path
+  return <section className="tab-panel" aria-label="가이드 연결">
+    <div className="panel-head"><div><h2>가이드 연결</h2><p>관련 가이드와 안내 페이지에서 이 글로 이동할 수 있도록 연결합니다. 묶음을 바꾸면 최종 승인이 해제됩니다.</p></div></div>
+    <div className="edit-grid"><label className="span-2"><span>연결할 가이드 묶음</span>
+      <select value={selection.value} disabled={!!busy || generation.status === 'applied'} onChange={event => setSelection(current => ({ value: event.target.value, baseRevision: current.dirty ? current.baseRevision : generation.revision, dirty: true }))}>
+        <option value="">원고 내용으로 제안받기</option>{clusters.map(cluster => <option key={cluster.id} value={cluster.id}>{cluster.title}</option>)}
+      </select></label></div>
+    {selection.dirty && <p className="muted">저장하지 않은 선택입니다. 아래 연결 정보는 저장된 원고와 선택을 기준으로 합니다.</p>}
+    {conflict && <div className="draft-retained"><p>다른 화면에서 작업이 변경됐습니다. 현재 서버 선택: {clusters.find(cluster => cluster.id === savedId)?.title || '원고 내용으로 제안받기'}</p>
+      <button type="button" className="button button-quiet" onClick={() => setSelection({ value: savedId, baseRevision: generation.revision, dirty: false })}>최신 선택 불러오기</button></div>}
+    {generation.status !== 'applied' && <button type="button" className="button button-quiet" disabled={!!busy || !selection.dirty || conflict} onClick={save}>{busy === 'cluster' ? <Spinner /> : <><Save size={15} />연결 선택 저장</>}</button>}
+    {loadError ? <p className="error-copy" role="alert">{loadError}</p> : !connection ? <p className="muted">연결될 페이지를 확인하고 있습니다.</p> : proposal ? <div>
+      <p><strong>{proposal.clusterTitle}</strong> · 기존 페이지 {proposal.inboundPaths?.length || 0}곳에서 이 글로 연결됩니다.{connection.provisional ? ' 원고 생성 후 다시 확인합니다.' : ''}</p>
+      <details><summary>연결되는 기존 페이지 확인</summary><ul>{proposal.inboundPaths?.map(path => <li key={path}><a href={`https://noblessegold.com${path}`} target="_blank" rel="noreferrer">{pageLabel(path)}</a></li>)}</ul></details>
+    </div> : <p className="error-copy" role="status">{connection.error || '가이드 묶음을 선택해 주세요.'} 연결이 준비돼야 최종 승인과 반영이 가능합니다.</p>}
+  </section>
+}
+
 function GuidePreview({ draft, generation }) {
   if (!draft) return <div className="empty-preview"><Gem size={34} /><strong>원고 미리보기</strong><p>근거를 선택하고 원고를 생성하면 실제 가이드 구조가 이곳에 나타납니다.</p></div>
   const heroAsset = generation?.images?.find((image) => image.slot === 'hero' && image.status === 'active')
@@ -562,7 +599,7 @@ export function Editor({ seed, clearSeed }) {
     if (mode === 'new' && justification.length < 20) { setError('신규 글의 선정 이유를 20자 이상 적어 주세요. 기존 글과 어떤 질문이 다른지 기록하면 좋습니다.'); return }
     const payload = mode === 'update' ? create : {
       ...create, targetSlug: '',
-      topicDecision: { selectionMode: 'editorial', editorialJustification: justification, topic: create.topic, primaryKeyword: create.topic, cluster: create.cluster || 'other', automaticEligible: false, decisionStatus: 'editorial_review' },
+      topicDecision: { selectionMode: 'editorial', editorialJustification: justification, topic: create.topic, primaryKeyword: create.topic, cluster: create.cluster || null, automaticEligible: false, decisionStatus: 'editorial_review' },
     }
     const result = await run('create', () => api.post('/generations', payload), { success: '새 작업을 만들었습니다.', focus: 'result' })
     if (result?.id) { setPanel('work'); setTab('preview'); setCreate(EMPTY_CREATE) }
@@ -587,6 +624,7 @@ export function Editor({ seed, clearSeed }) {
   const autoAdvance = () => run('auto', () => api.post('/automation/prepare', { generationId: selectedId, businessFacts: create.businessFacts, imagePolicy }),
     { success: '남은 단계를 자동으로 끝냈습니다. 미리보기 확인 후 최종 승인만 하면 됩니다.' })
   const saveSources = () => run('sources', () => api.put(`/generations/${selectedId}/sources`, { selectedUrls: selectedSources, allowWithoutOfficial }), { success: '출처 선택을 저장했습니다.' })
+  const saveCluster = (clusterId, baseRevision) => run('cluster', () => api.put(`/generations/${selectedId}/cluster`, { clusterId }, { headers: { 'If-Match': String(baseRevision) } }), { success: '연결 선택을 저장했습니다. 연결될 페이지를 확인하고 다시 승인해 주세요.' })
   const researchSources = (emphasizeOfficial) => run('official', () => api.post(`/generations/${selectedId}/research/official`, { emphasizeOfficial }),
     { success: emphasizeOfficial ? '정부·표준기관 중심으로 출처를 다시 조사했습니다.' : '공식 출처 후보를 찾았습니다.' })
   const saveDraft = (value, { baseRevision: explicitRevision } = {}) => {
@@ -802,6 +840,8 @@ export function Editor({ seed, clearSeed }) {
             <StepRail steps={steps} currentIndex={currentIndex} busy={busy} onStep={stepAction} />
             {!currentStep && <div className="guide-done"><CheckCircle2 size={17} />모든 단계 완료 — ‘반영 이력’에서 검사 로그를 확인할 수 있습니다.</div>}
           </section>
+
+          {generation.kind === 'new' && <ConnectionPanel key={generation.id} generation={generation} clusters={clusters} guides={guides} busy={busy} onSave={saveCluster} />}
 
           <nav className="workspace-tabs" role="tablist">
             {tabs.map((item) => <button type="button" key={item.id} role="tab" aria-selected={tab === item.id} className={`${tab === item.id ? 'active' : ''} ${item.flag || ''}`} onClick={() => setTab(item.id)}>{item.label}</button>)}
