@@ -23,6 +23,7 @@ const statusGroup = (status) => STATUS_META[status]?.group || 'progress'
 const statusTone = (status) => status === 'applied' ? 'success' : ['ready', 'approved'].includes(status) ? 'gold' : status === 'review' ? 'danger' : 'neutral'
 
 function kindLabel(kind) { return kind === 'update' ? '기존 글 수정' : '새 글 작성' }
+const isManualSnippet = generation => generation?.input?.draftMode === 'reviewed_page_query_snippet'
 
 function KindTag({ kind, size = 'md' }) {
   return <span className={`kind-tag ${kind === 'update' ? 'update' : 'new'} ${size}`}>
@@ -30,12 +31,21 @@ function KindTag({ kind, size = 'md' }) {
   </span>
 }
 
-export function guideSteps(generation, draft) {
+export function guideSteps(generation, draft, { compared = false } = {}) {
   const sources = generation?.research?.official?.sources || []
   const heroActive = (generation?.images || []).some((image) => image.slot === 'hero' && image.status === 'active')
   const heroReady = heroActive || !!draft?.heroImage?.path
   const lintOk = !!generation?.lint && !generation.lint.blocking
   const humanizeSkipped = !!generation?.research?.automation?.humanizeSkipped
+  if (isManualSnippet(generation)) {
+    const approved = ['approved', 'applied'].includes(generation?.status)
+    return [
+      { key: 'lint', label: '원고 검사', done: lintOk, hint: '입력한 제목·설명과 보존 범위를 검사합니다.', action: '교정안 검사' },
+      { key: 'compare', label: '변경 비교', done: compared || approved, hint: '현재 원문과 입력한 교정안의 차이를 확인하세요.', action: '파일 변경 미리보기' },
+      { key: 'approve', label: '최종 승인', done: approved, hint: '검색어와 원문을 대조한 교정안이 맞는지 검토하고 승인하세요.', action: '최종 승인' },
+      { key: 'apply', label: '저장소 반영', done: generation?.status === 'applied', hint: '승인한 제목·설명 교정안을 반영하고 검사를 실행합니다.', action: '저장소에 반영' },
+    ]
+  }
   return [
     { key: 'official', label: '출처 조사', done: !!generation?.research?.official, hint: '주제에 맞는 공식·권위 출처 후보를 찾습니다.', action: '출처 조사 실행' },
     { key: 'select', label: '출처 선택', done: sources.some((source) => source.selected), hint: '찾은 후보 중 원고 근거로 쓸 출처를 고릅니다. ‘출처’ 탭에서 직접 고르거나 공식 출처만 한 번에 선택할 수 있습니다.', action: '공식 출처 모두 선택' },
@@ -109,7 +119,7 @@ function GuidePreview({ draft, generation }) {
   return <article className="guide-preview">
     <header><span>{draft.category}</span><h1>{draft.title}</h1><p>{draft.lead}</p>
       <small>{draft.publishedAt} 최초 작성{draft.updatedAt ? ` · ${draft.updatedAt} 최종 검토` : ''}</small>
-      {heroUrl ? <img src={heroUrl} className="preview-image-fallback" alt={draft.heroImage?.alt || draft.title} /> : <div className="image-placeholder"><ImagePlus size={24} />대표 이미지 생성 대기</div>}
+      {heroUrl ? <img src={heroUrl} className="preview-image-fallback" alt={draft.heroImage?.alt || draft.title} /> : <div className="image-placeholder"><ImagePlus size={24} />{isManualSnippet(generation) ? '기존 대표 이미지 유지' : '대표 이미지 생성 대기'}</div>}
       {heroUrl && draft.heroImage?.caption && <p className="muted">{draft.heroImage.caption}</p>}
     </header>
     <section className="quick-preview"><h2>먼저 확인하세요</h2><ul>{draft.quickAnswers?.map((answer) => <li key={answer}>{answer}</li>)}</ul></section>
@@ -314,7 +324,7 @@ function ChecksTab({ generation, draft, busy, onAction, onDiff, onApprove, onApp
       {automation.state === 'review' && generation.error && <p className="automation-error">{generation.error}</p>}
     </section>}
 
-    <section className="check-card">
+    {!isManualSnippet(generation) && <section className="check-card">
       <div className="check-head"><WandSparkles size={16} /><strong>문장 다듬기</strong></div>
       <p className="muted">수치·단위·등급·URL을 잠그고 설명 문단만 Humanizer V9으로 다듬습니다.</p>
       {latestHumanize && <details className="humanizer-result">
@@ -322,7 +332,7 @@ function ChecksTab({ generation, draft, busy, onAction, onDiff, onApprove, onApp
         <div className="humanizer-diff"><div><small>전</small><p>{latestHumanize.beforeText}</p></div><div><small>후</small><p>{latestHumanize.afterText || '사실 잠금 또는 구조 검사로 원문을 유지했습니다.'}</p></div></div>
         {latestHumanize.error && <small className="error-copy">{latestHumanize.error}</small>}
       </details>}
-    </section>
+    </section>}
 
     <section className="check-card apply-card">
       <div className="check-head"><CheckCircle2 size={16} /><strong>승인과 반영</strong></div>
@@ -475,7 +485,9 @@ export function Editor({ seed, clearSeed }) {
   const [selectedSources, setSelectedSources] = useState([])
   const [allowWithoutOfficial, setAllowWithoutOfficial] = useState(false)
   const [diff, setDiff] = useState(null)
+  const [comparedDraft, setComparedDraft] = useState(null)
   const [tab, setTab] = useState('preview')
+  useEffect(() => { if (isManualSnippet(generation) && ['sources', 'images'].includes(tab)) setTab('checks') }, [generation?.id, generation?.input?.draftMode, tab])
   const [panel, setPanel] = useState('work')
   const [mode, setMode] = useState('new')
   const [create, setCreate] = useState(EMPTY_CREATE)
@@ -570,6 +582,7 @@ export function Editor({ seed, clearSeed }) {
 
   const run = async (label, fn, { success = '', focus = null } = {}) => {
     if (busy) return null
+    if (isManualSnippet(generation) && (['auto', 'official', 'draft', 'polish'].includes(label) || label.startsWith('image-'))) { setError('입력한 교정안으로 원고 검사·변경 비교·최종 승인을 진행해 주세요.'); return null }
     const independentAction = ['create', 'topics', 'prepare', 'prune'].includes(label) || label.startsWith('delete-')
     if (!independentAction && (!selectionMatches || selectedRef.current !== selectedId)) { setError('선택한 원고가 아직 준비되지 않았습니다. 불러오기가 끝난 뒤 실행해 주세요.'); return null }
     if (draftState.current.dirty && !['save', 'sources', 'official', 'select', 'topics', 'create', 'prepare', 'diff'].includes(label)) {
@@ -652,8 +665,10 @@ export function Editor({ seed, clearSeed }) {
     caption: item.plan?.caption || '',
   }), { success: '이미지를 생성했습니다.' })
   const previewDiff = async () => {
+    const comparedId = selectedId
+    const comparedRevision = generation?.revision
     const result = await run('diff', () => api.get(`/generations/${selectedId}/diff`))
-    if (result) setDiff(result)
+    if (result && selectedRef.current === comparedId) { setDiff(result); setComparedDraft({ id: comparedId, revision: comparedRevision }) }
   }
   const removeWork = async (item, event) => {
     event.stopPropagation()
@@ -685,12 +700,14 @@ export function Editor({ seed, clearSeed }) {
   }
 
   const sourceRows = generation?.research?.official?.sources || []
-  const steps = guideSteps(generation, draft)
+  const steps = guideSteps(generation, draft, { compared: !dirty && comparedDraft?.id === generation?.id && comparedDraft?.revision === generation?.revision })
   const currentIndex = steps.findIndex((step) => !step.done)
   const currentStep = currentIndex === -1 ? null : steps[currentIndex]
   const autoEligible = currentStep && ['official', 'select', 'draft', 'image', 'polish'].includes(currentStep.key)
 
   const stepAction = (step) => {
+    if (step.key === 'lint') return doAction('lint', '/lint', { requireImage: false }, '교정안 검사를 갱신했습니다.')
+    if (step.key === 'compare') return previewDiff()
     if (step.key === 'official') return researchSources(false)
     if (step.key === 'select') {
       const claimUrls = new Set((generation.research?.official?.claims || []).filter(claim => String(claim.claim || '').trim()).flatMap(claim => claim.sourceUrls || []))
@@ -750,7 +767,7 @@ export function Editor({ seed, clearSeed }) {
     { id: 'sources', label: `출처${sourceRows.length ? ` ${selectedSources.length}/${sourceRows.length}` : ''}` },
     { id: 'images', label: `이미지${activeImages ? ` ${activeImages}` : ''}` },
     { id: 'checks', label: '검사·반영', flag: generation?.lint?.blocking ? 'danger' : null },
-  ]
+  ].filter(item => !isManualSnippet(generation) || !['sources', 'images'].includes(item.id))
 
   return <main className="editor-page page-enter">
     <header className="editor-topbar">
@@ -828,6 +845,8 @@ export function Editor({ seed, clearSeed }) {
 
           {busy === 'auto' && <p className="guide-running">출처 → 원고 → 이미지 → 다듬기 → SEO 검사 → 파일 변경 순으로 자동 진행 중입니다. 진행 상황은 아래 순서와 ‘검사·반영’ 탭에 실시간 반영됩니다.</p>}
 
+          {isManualSnippet(generation) && <div className="guard-note" role="note"><ShieldCheck size={16} /><p>페이지 검색어를 검토해 입력한 제목·설명 교정안입니다. 기존 본문·출처·이미지를 보존하며 원고 검사와 변경 비교 후 승인할 수 있습니다.</p></div>}
+
           {generation.input?.auditPlan && <details className="audit-plan-banner"><summary>진단에서 확정한 수정안 · 활성 작업 {(generation.input.auditPlan.changes || []).filter((entry) => entry.enabled).length}개</summary>
             <p>{generation.input.auditPlan.goal}</p>
             {(generation.input.auditPlan.changes || []).filter((entry) => entry.enabled).map((entry) => <div key={entry.id}><b>{entry.priority} · {entry.area}</b><span>{entry.action}</span></div>)}
@@ -850,10 +869,10 @@ export function Editor({ seed, clearSeed }) {
           <div className="tab-body">
             {tab === 'preview' && <GuidePreview draft={draft} generation={generation} />}
             {tab === 'draft' && <DraftTab key={generation.id} generationId={generation.id} baseRevision={draftState.current.baseRevision} generationRevision={generation.revision} serverDraft={generation.humanized || generation.draft} draft={draft} onRestore={(value, revision) => { if (preserveDraft(selectedId, value, revision)) setDraftConflict(revision == null || revision !== generation.revision) }} onChange={editDraft} onSave={saveDraft} busy={busy} isUpdate={generation?.kind === 'update'} />}
-            {tab === 'sources' && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} selected={selectedSources} setSelected={setSelectedSources}
+            {tab === 'sources' && !isManualSnippet(generation) && <SourcesTab rows={sourceRows} claims={generation.research?.official?.claims || []} selected={selectedSources} setSelected={setSelectedSources}
               allowWithoutOfficial={allowWithoutOfficial} setAllowWithoutOfficial={setAllowWithoutOfficial}
               onSave={saveSources} onResearch={researchSources} busy={busy} />}
-            {tab === 'images' && <ImagesTab generation={generation} draft={draft} busy={busy} onGenerate={generateImage} />}
+            {tab === 'images' && !isManualSnippet(generation) && <ImagesTab generation={generation} draft={draft} busy={busy} onGenerate={generateImage} />}
             {tab === 'checks' && <ChecksTab generation={generation} draft={draft} busy={busy}
               onAction={() => doAction('lint', '/lint', { requireImage: false }, '검사를 갱신했습니다.')}
               onDiff={previewDiff}

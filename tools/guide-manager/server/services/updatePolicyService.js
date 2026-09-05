@@ -13,13 +13,30 @@ const MANUAL_SCOPES = { sources: '출처', snippet: '제목·설명', intro: '�
 const clone = (value) => structuredClone(value);
 const fail = (message, code = 'UPDATE_POLICY') => { throw Object.assign(new Error(message), { status: 422, code }); };
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const PAGE_QUERY_CHANGE_ID = 'reviewed-page-query-snippet';
+const pageQueryIdentity = (evidence) => Object.fromEntries(['importId', 'pageUrl', 'periodStart', 'periodEnd', 'fingerprint'].map(key => [key, evidence?.[key] ?? null]));
+
+function validatePageQueryReview(plan, { queryEvidence, titleKeywordCandidates = [], contextFingerprint } = {}) {
+  if (!plan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID)) return null;
+  const review = plan.pageQueryReview;
+  if (!queryEvidence?.canRecommendTitleKeywords || !queryEvidence?.pageQueryAvailable) fail('현재 페이지·기간과 일치하는 유효한 검색어 근거가 없습니다. 자료를 다시 확인해 주세요.', 'PAGE_QUERY_EVIDENCE_REQUIRED');
+  if (!review || review.confirmed !== true || String(review.mismatch || '').trim().length < 20) fail('검색어와 현재 제목·본문 사이에서 확인한 실제 불일치를 구체적으로 적고 검토를 확인해 주세요.', 'PAGE_QUERY_REVIEW_REQUIRED');
+  if (!contextFingerprint || review.contextFingerprint !== contextFingerprint || !same(pageQueryIdentity(review.evidence), pageQueryIdentity(queryEvidence))) fail('검토한 검색어 자료 또는 감사 기준이 바뀌었습니다. 현재 자료로 다시 검토해 주세요.', 'STALE_PAGE_QUERY_EVIDENCE');
+  const candidates = new Set(titleKeywordCandidates.map(row => row.query));
+  const selected = review.selectedQueries;
+  if (!Array.isArray(selected) || !selected.length || selected.length > 5 || new Set(selected).size !== selected.length || selected.some(query => typeof query !== 'string' || !candidates.has(query))) fail('현재 페이지 자료에 있는 관련 검색어 후보를 1~5개 선택해 주세요.', 'PAGE_QUERY_REVIEW_REQUIRED');
+  return { ...pageQueryIdentity(queryEvidence), selectedQueries: clone(selected), mismatch: String(review.mismatch).trim(), contextFingerprint };
+}
 
 function validatePlanCapabilities(plan) {
+  if (plan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID)
+    && plan.changes.some(change => change.enabled && change.area !== '제목·설명')) fail('페이지 검색어에 따른 수동 제목 교정은 제목·설명만 수정하는 단독 작업입니다. 다른 범위는 별도 계획으로 검토해 주세요.', 'PAGE_QUERY_SCOPE_CONFLICT');
   for (const change of plan?.changes || []) {
     if (!change.enabled) continue;
     // Match normalizeObservationPlan's semantic guards too: submitted or legacy IDs are not trusted.
     if (change.id === 'preserve-and-monitor' || change.action === '현재 구조 유지 후 다음 동일 기간 측정') fail('관찰 전용 계획은 원고를 변경하지 않습니다. 실제 수정 항목이 있을 때만 새 계획을 확정해 주세요.', 'MONITOR_ONLY_PLAN');
     if (change.id === 'improve-snippet' || change.area === '제목·설명' && /추정 관련 검색어|사이트 전체 검색어|sitewide|inferredQueries/i.test(`${change.action || ''} ${change.proposedState || ''}`)) fail('이 자동 CTR 제안에는 해당 페이지와 검색어를 함께 확인한 근거가 없습니다. 페이지별 검색어 자료를 확인한 뒤 구체적인 수정 계획을 확정해 주세요.', 'PAGE_QUERY_EVIDENCE_REQUIRED');
+    if (change.id === PAGE_QUERY_CHANGE_ID && change.area !== '제목·설명') fail('페이지 검색어 검토는 제목·설명 수정 범위에만 사용할 수 있습니다.', 'UNSUPPORTED_PLAN');
     if (!AREA_FIELDS[change.area]) fail(`“${change.area}” 작업은 원고 필드로 반영할 수 없습니다. 해당 항목은 별도 코드 작업으로 처리하고 이 계획에서는 해제해 주세요.`, 'UNSUPPORTED_PLAN');
     if (/역링크|인바운드|backlink|다른\s*(?:글|페이지).*링크|형제\s*(?:글|페이지).*링크|다중\s*파일/i.test(`${change.action} ${change.proposedState}`)) {
       fail('다른 페이지에서 들어오는 링크 수정은 이 단일 글 편집에서 지원하지 않습니다. 이 글의 관련 링크만 선택해 주세요.', 'UNSUPPORTED_PLAN');
@@ -124,8 +141,25 @@ function assertCreateUpdatePolicy(targetSlug, input = {}) {
     const analytics = require('./analyticsService');
     const current = { gsc: analytics.latestImport('gsc_performance'), ga4: analytics.latestGa4PagesImport(), googleOrganic: analytics.latestImport('ga4_organic_landing'), naverWeb: analytics.latestImport('naver_web_performance'), coverage: analytics.latestImport('gsc_coverage') };
     for (const key of Object.keys(current)) if ((periods[key]?.importId || 0) !== (current[key]?.id || 0)) fail('분석 자료가 바뀌었습니다. 최신 자료로 재진단한 뒤 계획을 확정해 주세요.', 'STALE_AUDIT');
+    if (input.auditPlan.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID)) {
+      const snapshot = JSON.parse(audit.snapshot_json || '{}');
+      if (!input.reviewedContextFingerprint || input.reviewedContextFingerprint !== snapshot.contextFingerprint) fail('현재 원문·지표의 검토 확인이 필요합니다.', 'STALE_PAGE_QUERY_EVIDENCE');
+      const pageUrl = `https://noblessegold.com${guide.path || `/guide/${guide.slug}`}`;
+      const pageQueryBundle = analytics.selectPageQueryEvidence(pageUrl, current.gsc);
+      const { buildQueryEvidence } = require('./queryEvidenceService');
+      const evidence = buildQueryEvidence({ content: extractGuideContent(guide, guide.source), queryRows: [], performance: current.gsc, pageQueryBundle, pageUrl });
+      if (!same(pageQueryIdentity(snapshot.queryEvidence), pageQueryIdentity(evidence.queryEvidence))) fail('페이지 검색어 자료가 교체되었거나 기간·URL이 바뀌었습니다. 새 자료로 다시 진단해 주세요.', 'STALE_PAGE_QUERY_EVIDENCE');
+      validatePageQueryReview(input.auditPlan, { ...evidence, contextFingerprint: snapshot.contextFingerprint });
+    }
   }
   const baselineDraft = readOriginalDraft(guide);
+  if (input.auditPlan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID)) {
+    const plan = input.auditPlan;
+    if (typeof plan.proposedTitle !== 'string' || !plan.proposedTitle.trim() || typeof plan.proposedDescription !== 'string' || !plan.proposedDescription.trim()) fail('검토한 제목과 검색 설명을 직접 입력해 주세요. 자동 재작성은 실행하지 않습니다.', 'SNIPPET_TEXT_REQUIRED');
+    const proposed = { title: plan.proposedTitle.trim(), description: plan.proposedDescription.trim() };
+    if (proposed.title === baselineDraft.title && proposed.description === baselineDraft.description) fail('현재 원문과 제목·설명이 같습니다. 변경할 내용이 없어 편집 작업을 만들지 않습니다.', 'NO_SNIPPET_CHANGE');
+    if (Object.keys(proposed).some(field => !scope.fields.includes(field) && proposed[field] !== baselineDraft[field])) fail('보존하도록 지정한 제목·설명은 변경할 수 없습니다. 선택한 범위만 교정해 주세요.', 'UPDATE_SCOPE_DRIFT');
+  }
   return { version: 1, scope, baselineDraft, baselineHash: sha256(JSON.stringify(baselineDraft)), sourceHash: fileHash(guide.sourcePath) };
 }
 
@@ -194,6 +228,8 @@ function assertUpdatePolicy(generation, { draft = null, phase = 'review' } = {})
     const merged = enforceDraftScope(generation, draft);
     const changed = Object.keys(policy.baselineDraft).filter(key => key !== 'updatedAt' && !same(draft[key], merged[key]));
     if (changed.length) fail(`선택하지 않은 영역이 변경됐습니다 (${changed.join(', ')}). 원문을 복원한 뒤 ${phase === 'apply' ? '반영' : '승인'}해 주세요.`, 'UPDATE_SCOPE_DRIFT');
+    if (['approve', 'apply'].includes(phase) && generation.input.auditPlan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID)
+      && draft.title === policy.baselineDraft.title && draft.description === policy.baselineDraft.description) fail('검토한 제목·설명에 실제 변경이 없습니다. 이 항목을 해제하거나 확인한 불일치만 수정해 주세요.', 'NO_SNIPPET_CHANGE');
   }
   return policy;
 }
@@ -203,4 +239,4 @@ function needsHumanizer(generation) {
   return !policy || policy.scope.fields.includes('lead') || policy.scope.fields.includes('sections');
 }
 
-module.exports = { AREA_FIELDS, MANUAL_SCOPES, deriveScope, validatePlanCapabilities, readOriginalDraft, assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor, needsHumanizer };
+module.exports = { AREA_FIELDS, MANUAL_SCOPES, PAGE_QUERY_CHANGE_ID, pageQueryIdentity, validatePageQueryReview, deriveScope, validatePlanCapabilities, readOriginalDraft, assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor, needsHumanizer };

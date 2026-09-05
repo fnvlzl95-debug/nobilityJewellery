@@ -146,7 +146,12 @@ router.post('/analytics/comparisons/:id/deployment', route(req => baselines.reco
 router.get('/analytics/comparisons', route(() => baselines.listComparisons()));
 router.post('/analytics/import', upload.single('file'), route((req) => {
   if (!req.file) throw new Error('가져올 파일을 선택해 주세요');
-  return analytics.importBuffer(req.file.buffer, req.file.originalname);
+  const options = {};
+  if (req.body?.pageQueryConfirmation != null) {
+    try { options.pageQueryConfirmation = JSON.parse(req.body.pageQueryConfirmation); }
+    catch (_) { throw Object.assign(new Error('페이지 검색어 확인 정보를 다시 입력해 주세요'), { status: 422, code: 'PAGE_QUERY_CONFIRMATION' }); }
+  }
+  return analytics.importBuffer(req.file.buffer, req.file.originalname, options);
 }));
 router.get('/opportunities', route(() => ({ ...opportunities.summary(), freshness: freshness() })));
 router.get('/audits', route(() => audits.report()));

@@ -51,9 +51,10 @@ export const api = {
   post: (path, body = {}, options = {}) => request(path, { ...options, method: 'POST', body }),
   put: (path, body = {}, options = {}) => request(path, { ...options, method: 'PUT', body }),
   del: (path) => request(path, { method: 'DELETE' }),
-  upload: (path, file) => {
+  upload: (path, file, fields = {}) => {
     const body = new FormData()
     body.append('file', file)
+    for (const [key, value] of Object.entries(fields)) if (value != null) body.append(key, typeof value === 'string' ? value : JSON.stringify(value))
     return request(path, { method: 'POST', body })
   },
 }

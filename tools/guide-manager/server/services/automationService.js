@@ -194,6 +194,7 @@ async function prepareBest(input = {}, dependencyOverrides = {}) {
     ...dependencyOverrides,
   };
   let generation = input.generationId ? deps.getGeneration(Number(input.generationId)) : null;
+  if (generation?.input?.draftMode === 'reviewed_page_query_snippet') throw Object.assign(new Error('입력한 제목·설명 교정안이 준비돼 있습니다. 자동 준비 대신 원고 검사·변경 비교·최종 승인으로 진행해 주세요.'), { status: 422, code: 'MANUAL_DRAFT_MODE' });
   let candidate = generation?.input?.topicDecision || null;
   // Caller-supplied report flags are not authorization. Only a dependency-injected
   // test harness can bypass fetching the current server-scored report.

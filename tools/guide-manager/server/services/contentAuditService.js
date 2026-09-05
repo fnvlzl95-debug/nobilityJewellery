@@ -9,7 +9,8 @@ const generations = require('./generationService');
 const { loadGa4Metrics, groupGa4BySlug } = require('./analyticsMetricsService');
 const { buildQueryEvidence } = require('./queryEvidenceService');
 
-const ANALYSIS_VERSION = 'noblesse-content-audit-v6';
+const ANALYSIS_VERSION = 'noblesse-content-audit-v7';
+const PAGE_QUERY_CHANGE_ID = 'reviewed-page-query-snippet';
 const CLASSIFICATIONS = ['기술 우선', 'CTR 개선', '출처 백필', '본문 보강', '내부링크 강화', '통합 검토', '유지'];
 const CHANGE_AREAS = ['기술', '제목·설명', '첫 화면', '본문', '내부링크', '출처', '통합'];
 const EVIDENCE_KEYS = new Set(['gsc', 'ga4', 'naver', 'content', 'technical', 'duplicate', 'coverage']);
@@ -225,15 +226,31 @@ function normalizeObservationPlan(plan, snapshot = {}) {
     observations.push(entry.proposedState || '현재 원문을 유지하고 다음 동일 기간의 성과를 관찰합니다.');
     return false;
   });
+  const pageQueryReady = snapshot.queryEvidence?.canRecommendTitleKeywords === true;
+  if (pageQueryReady && !changes.some(entry => entry.id === PAGE_QUERY_CHANGE_ID)) changes.push({
+    ...change(PAGE_QUERY_CHANGE_ID, '제목·설명', 'P2', '페이지 검색어와 현재 제목·본문의 불일치 검토',
+      '페이지·기간이 확인된 검색어 자료가 있습니다. 자료의 존재만으로 제목 결함이나 개선 효과가 입증되지는 않습니다.',
+      '실제 검색어와 원문을 대조해 확인한 불일치를 기록하고, 그 범위 안에서 제목·설명 수정 여부를 판단합니다.', ['gsc', 'content'], '검토 후 GSC CTR 비교'),
+    enabled: false,
+  });
   const executableChanges = changes.map(entry => {
-    if (entry.area !== '제목·설명' || snapshot.queryEvidence?.canRecommendTitleKeywords === true) return entry;
+    if (entry.id === PAGE_QUERY_CHANGE_ID) {
+      const { lockedReason, ...candidate } = entry;
+      return pageQueryReady ? candidate : { ...candidate, enabled: false, lockedReason: '현재 페이지·기간과 일치하는 충분한 관련 검색어 근거를 먼저 확인해 주세요.' };
+    }
+    if (entry.area !== '제목·설명') return entry;
     if (entry.id !== 'improve-snippet' && !/추정 관련 검색어|사이트 전체 검색어|sitewide|inferredQueries/i.test(`${entry.action || ''} ${entry.proposedState || ''}`)) return entry;
-    const lockedReason = '페이지별 검색어 근거가 없습니다. CTR만으로 제목을 변경하지 않고 실제 검색어와 제목·본문의 불일치를 먼저 확인합니다.';
+    const lockedReason = pageQueryReady ? '이전 사이트 전체 검색어 기반 제안은 사용할 수 없습니다. 현재 페이지 검색어와 원문을 대조하는 새 항목에서 검토해 주세요.' : '페이지별 검색어 근거가 없습니다. CTR만으로 제목을 변경하지 않고 실제 검색어와 제목·본문의 불일치를 먼저 확인합니다.';
     observations.push(lockedReason);
     return { ...entry, enabled: false, lockedReason };
   });
   if (!executableChanges.some(entry => entry.enabled)) observations.push(...observationNotes(snapshot));
-  return { ...plan, changes: executableChanges, observations: [...new Set(observations)] };
+  const evidence = snapshot.queryEvidence || {};
+  const pageQueryReview = plan.pageQueryReview || (pageQueryReady ? {
+    confirmed: false, mismatch: '', selectedQueries: [], contextFingerprint: snapshot.contextFingerprint || null,
+    evidence: Object.fromEntries(['importId', 'pageUrl', 'periodStart', 'periodEnd', 'fingerprint'].map(key => [key, evidence[key] ?? null])),
+  } : null);
+  return { ...plan, changes: executableChanges, observations: [...new Set(observations)], pageQueryReview };
 }
 
 function assertExecutablePlan(plan) {
@@ -275,6 +292,7 @@ function buildSnapshots() {
   const guides = inventory.listGuides().map((guide) => inventory.getGuide(guide.slug, { includeSource: true }));
   const contents = new Map(guides.map((guide) => [guide.slug, extractGuideContent(guide, guide.source)]));
   const performance = analytics.latestImport('gsc_performance');
+  const pageQueryMap = analytics.pageQueryEvidenceMap(performance);
   const ga4Import = analytics.latestGa4PagesImport();
   const naverWebImport = analytics.latestImport('naver_web_performance');
   const organicImport = analytics.latestImport('ga4_organic_landing');
@@ -378,7 +396,9 @@ function buildSnapshots() {
       reportUpdatedAt: naverWebImport?.summary?.reportUpdatedAt || null,
     };
     const intentText = `${content.title} ${content.keyword} ${content.sections.map((item) => item.title).join(' ')}`;
-    const { queryHints, sitewideQueryHints, queryEvidence } = buildQueryEvidence({ content, queryRows, performance });
+    const pageUrl = `https://noblessegold.com${guide.path}`;
+    const pageQueryBundle = analytics.selectPageQueryEvidence(pageUrl, performance, pageQueryMap);
+    const { queryHints, sitewideQueryHints, queryEvidence, titleKeywordCandidates } = buildQueryEvidence({ content, queryRows, performance, pageQueryBundle, pageUrl, pageMetrics: gsc });
     const duplicates = guides.filter((item) => item.slug !== guide.slug).map((item) => {
       const other = contents.get(item.slug);
       return { slug: item.slug, path: item.path, title: item.title, similarity: Math.max(jaccard(content.keyword, other.keyword), jaccard(content.title, other.title), jaccard(intentText, `${other.title} ${other.keyword} ${other.sections.map((section) => section.title).join(' ')}`)) };
@@ -422,7 +442,7 @@ function buildSnapshots() {
         naverWeb: naverWebImport ? { start: naverWebImport.periodStart, end: naverWebImport.periodEnd, importId: naverWebImport.id, reportUpdatedAt: naverWebImport.summary?.reportUpdatedAt || null } : null,
         coverage: coverageImport ? { start: coverageImport.periodStart, end: coverageImport.periodEnd, importId: coverageImport.id } : null,
       },
-      metrics: { gsc, ga4, googleOrganic, naver, naverWeb, coverage }, content, queryHints, sitewideQueryHints, queryEvidence, duplicates,
+      metrics: { gsc, ga4, googleOrganic, naver, naverWeb, coverage }, content, queryHints, sitewideQueryHints, queryEvidence, titleKeywordCandidates, duplicates,
       links: { cluster: cluster ? { id: cluster.id, title: cluster.title, hubPath: cluster.hubPath } : null, inboundCount: inboundRows.length, inboundFrom: inboundRows, recommended: recommended.slice(0, 8) },
       technicalFindings: technical,
       scores: { priority, readiness, dimensions: { ...dimension, technical: round(technicalScore), measurement: round(measurement) }, weights: { gscCtr: 45, rank: 20, ga4: 15, naver: 10, business: 10 } },
@@ -437,7 +457,7 @@ function buildSnapshots() {
       caveats: [
         'GA4·GSC·Naver는 측정기간과 정의가 달라 절대값을 합산하지 않습니다.',
         'Google 자연 검색 방문 페이지 보고서는 GSC 유입 뒤 GA4 참여를 같은 경로에서 연결하며 기기 차원은 포함하지 않습니다.',
-        'GSC 검색어는 사이트 전체 참고 자료이며 페이지별 유입 검색어가 아닙니다. 페이지와 검색어를 함께 확인하기 전에는 제목 변경 근거로 사용하지 않습니다.',
+        queryEvidence.reason,
         'Naver 트렌드는 절대 검색량이 아닌 동일 요청 안의 상대 지수입니다.',
         'Naver 웹검색 리포트는 전체 검색영역이 아니라 웹검색의 TOP 30 검색어·URL만 포함합니다. 목록 밖 URL을 0으로 해석하지 않습니다.',
         'Coverage는 개별 오류 URL이 없어 사이트 전체 기술 상태로만 사용합니다.',
@@ -463,7 +483,8 @@ function buildSnapshots() {
       periods: { gsc: snapshot.periods.gsc, ga4: snapshot.periods.ga4, naverWeb: snapshot.periods.naverWeb, coverage: snapshot.periods.coverage, googleOrganic: snapshot.periods.googleOrganic },
       gsc: snapshot.metrics.gsc, ga4: snapshot.metrics.ga4, googleOrganic: snapshot.metrics.googleOrganic, naver: snapshot.metrics.naver, naverWeb: snapshot.metrics.naverWeb,
       content: { title: snapshot.content.title, description: snapshot.content.description, structure: snapshot.content.structure, characterCount: snapshot.content.characterCount },
-      queryHints: snapshot.queryHints, queryEvidence: snapshot.queryEvidence, sitewideQueryHints: snapshot.sitewideQueryHints, duplicates: snapshot.duplicates, links: snapshot.links,
+      // 원본·적격 여부가 같으면 단순 경과 일수만으로 검토를 무효화하지 않는다.
+      queryHints: snapshot.queryHints, queryEvidence: { ...snapshot.queryEvidence, ageDays: undefined }, titleKeywordCandidates: snapshot.titleKeywordCandidates, sitewideQueryHints: snapshot.sitewideQueryHints, duplicates: snapshot.duplicates, links: snapshot.links,
     }));
     return snapshot;
   });
@@ -643,7 +664,7 @@ function aiContext(item) {
     slug: s.guide.slug, path: s.guide.path, protectedReadOnly: s.guide.isCustom,
     title: s.content.title, pageTitle: s.content.pageTitle, description: s.content.description, keyword: s.content.keyword, category: s.content.category,
     body: s.content.bodyText, structure: s.content.structure,
-    metrics: s.metrics, periods: s.periods, pageQueryEvidence: s.queryEvidence, sitewideQueryReferences: s.sitewideQueryHints || [], nearestGuides: s.duplicates,
+    metrics: s.metrics, periods: s.periods, pageQueryEvidence: s.queryEvidence, pageQueries: s.queryHints || [], titleKeywordCandidates: s.titleKeywordCandidates || [], sitewideQueryReferences: s.sitewideQueryHints || [], nearestGuides: s.duplicates,
     internalLinks: s.links, technicalFindings: s.technicalFindings, scores: s.scores,
     deterministicClassification: s.classification, deterministicChanges: s.deterministicChanges,
     serverGuards: s.guards, allowedInternalLinks: s.links.recommended,
@@ -681,6 +702,13 @@ function sanitizePlan(input, item) {
     })).filter((section) => section.heading && section.detail),
     internalLinks, preserve: sanitizeStrings(value.preserve?.length ? value.preserve : fallback.preserve),
     observations: sanitizeStrings(value.observations?.length ? value.observations : fallback.observations),
+    pageQueryReview: value.pageQueryReview && typeof value.pageQueryReview === 'object' ? {
+      confirmed: value.pageQueryReview.confirmed === true,
+      mismatch: String(value.pageQueryReview.mismatch || '').trim().slice(0, 1400),
+      selectedQueries: sanitizeStrings(value.pageQueryReview.selectedQueries, 5, 500),
+      contextFingerprint: String(value.pageQueryReview.contextFingerprint || ''),
+      evidence: require('./updatePolicyService').pageQueryIdentity(value.pageQueryReview.evidence),
+    } : fallback.pageQueryReview,
     risks: sanitizeStrings(value.risks?.length ? value.risks : fallback.risks), confidence: ['high', 'medium', 'low'].includes(value.confidence) ? value.confidence : fallback.confidence,
   }, item.snapshot);
 }
@@ -743,7 +771,18 @@ function storeAnalysis(item, analysis) {
     currentStrengths: sanitizeStrings(analysis.currentStrengths, 6), currentProblems: sanitizeStrings(analysis.currentProblems, 8),
     confidence: ['high', 'medium', 'low'].includes(analysis.confidence) ? analysis.confidence : 'medium', caveats: sanitizeStrings(analysis.caveats, 6),
   };
-  const plan = applyServerGuards(sanitizePlan({ ...analysis.plan, classification: safe.classification, confidence: safe.confidence }, item), item);
+  let changes = analysis.plan?.changes;
+  if (item.snapshot.queryEvidence?.canRecommendTitleKeywords && Array.isArray(changes)) {
+    let keptTitle = false;
+    changes = changes.filter(entry => {
+      if (entry.area !== '제목·설명') return true;
+      if (keptTitle) return false;
+      keptTitle = true;
+      return true;
+    })
+      .map(entry => entry.area === '제목·설명' ? { ...entry, id: PAGE_QUERY_CHANGE_ID, enabled: false } : entry);
+  }
+  const plan = applyServerGuards(sanitizePlan({ ...analysis.plan, changes, classification: safe.classification, confidence: safe.confidence }, item), item);
   db.prepare(`
     UPDATE content_audits SET ai_analysis_json=?, plan_json=?, plan_status='suggested', status='ready', model='gpt-5.6-terra', error=NULL, updated_at=? WHERE id=?
   `).run(JSON.stringify(safe), JSON.stringify(plan), nowIso(), item.id);
@@ -783,6 +822,7 @@ async function analyze({ slugs = null, limit = 10, all = false, force = false, o
           '귀족 종로 귀금속 사이트의 기존 가이드 노출 가능성을 정밀 진단합니다.',
           '입력의 숫자는 서버가 계산한 사실입니다. 숫자를 새로 만들거나 서로 다른 플랫폼 수치를 합산하지 마세요.',
           'pageQueryEvidence.pageQueryAvailable=false이면 이 페이지의 검색어가 확인되지 않았습니다. sitewideQueryReferences는 사이트 전체 참고 자료이며 이 페이지의 유입·노출이나 제목 변경 근거로 사용하지 마세요. CTR 저하만으로 키워드 삽입·제목 재작성을 지시하지 말고 필요한 근거를 caveats에 남기세요.',
+          'pageQueryEvidence.pageQueryAvailable=true인 pageQueries만 해당 URL·기간에서 보고서에 표시된 실제 검색어입니다. 표시행 수가 0이어도 익명화·누락이 가능하므로 검색 수요가 0이라고 단정하지 마세요. 제목 수정은 검색어와 원문의 실제 불일치가 확인될 때만 검토하고, 사용자 검토 전에는 제목·설명 변경을 enabled=false로 제안하세요.',
           'Coverage는 개별 URL 정보가 없으므로 페이지 오류로 단정하지 마세요.',
           'technicalFindings의 state가 historical이면 과거 측정 신호입니다. 현재 오류로 분류하거나 기술 수정 작업을 제안하지 마세요.',
           'Naver 트렌드는 상대 지수이고 미측정·API 비활성은 성과 부진으로 간주하지 마세요.',
@@ -866,6 +906,7 @@ function savePlan(slug, input) {
   if (!item) throw Object.assign(new Error('진단할 가이드를 찾을 수 없습니다'), { status: 404 });
   const plan = applyServerGuards(sanitizePlan(input, item), item);
   require('./updatePolicyService').validatePlanCapabilities(plan);
+  require('./updatePolicyService').validatePageQueryReview(plan, { ...item.snapshot, contextFingerprint: item.snapshot.contextFingerprint });
   assertExecutablePlan(plan);
   db.prepare(`UPDATE content_audits SET plan_json=?, plan_status='edited', updated_at=? WHERE id=?`).run(JSON.stringify(plan), nowIso(), item.id);
   return detail(slug);
@@ -885,6 +926,7 @@ function createUpdate(slug, input = {}) {
   if (item.status !== 'ready' && !explicitlyReviewed) throw Object.assign(new Error('현재 원문과 지표를 확인한 뒤 검토 확인을 선택하거나 최신 AI 분석을 실행해 주세요'), { status: 409, code: 'AUDIT_REVIEW_REQUIRED' });
   const plan = applyServerGuards(structuredClone(item.plan), item);
   require('./updatePolicyService').validatePlanCapabilities(plan);
+  require('./updatePolicyService').validatePageQueryReview(plan, { ...item.snapshot, contextFingerprint: item.snapshot.contextFingerprint });
   assertExecutablePlan(plan);
   db.prepare(`UPDATE content_audits SET plan_status=?, plan_json=?, updated_at=? WHERE id=?`).run(explicitlyReviewed ? 'reviewed_current' : 'confirmed', JSON.stringify(plan), nowIso(), item.id);
   const generation = generations.createGeneration({

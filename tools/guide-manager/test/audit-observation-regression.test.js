@@ -16,7 +16,7 @@ function harness() {
       if (name === './generationService') return { createGeneration: () => { calls.generations++; return { id: 1 }; } };
       if (name === './openaiService') return { completeJson: async () => { calls.paid++; throw new Error('Paid calls forbidden'); } };
       if (name === './jobService') return { register() {}, throwIfCancelled() {} };
-      if (name === './updatePolicyService') return { validatePlanCapabilities: value => value };
+      if (name === './updatePolicyService') return { validatePlanCapabilities: value => value, validatePageQueryReview: () => null };
       if (name === './queryEvidenceService') return require('../server/services/queryEvidenceService');
       if (['./analyticsService', './contentExtractorService', './opportunityService', './analyticsMetricsService'].includes(name)) return {};
       throw new Error(`Unexpected dependency: ${name}`);
@@ -162,5 +162,20 @@ test('default analysis makes no paid request for CTR-only plans, including legac
   const result = await audits.analyze({ all: true });
   assert.equal(result.skipped, true);
   assert.equal(result.requested, 0);
+  assert.deepEqual(calls, { writes: 0, generations: 0, paid: 0 });
+});
+
+test('verified page evidence adds a manual review option without activating paid analysis', async () => {
+  const { audits, calls } = harness();
+  const s = snapshot();
+  s.metrics.gsc.impressions = 122;
+  s.queryEvidence = { pageQueryAvailable: true, canRecommendTitleKeywords: true, importId: 12, pageUrl: 'https://noblessegold.com/guide/example', periodStart: '2026-08-07', periodEnd: '2026-09-03', fingerprint: 'a'.repeat(64) };
+  const item = itemFor(audits, s);
+  assert.ok(item.plan.changes.some(entry => entry.id === 'reviewed-page-query-snippet'));
+  assert.ok(item.plan.changes.every(entry => !entry.enabled));
+  assert.equal(item.plan.pageQueryReview.confirmed, false);
+  audits.useFixture(item);
+  const result = await audits.analyze({ all: true });
+  assert.equal(result.skipped, true);
   assert.deepEqual(calls, { writes: 0, generations: 0, paid: 0 });
 });

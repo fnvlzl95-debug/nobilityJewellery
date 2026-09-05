@@ -59,6 +59,7 @@ async function editorHarness(t) {
     get(target) {
       if (target === '/generations') return Promise.resolve(rows);
       if (target === '/guides' || target === '/clusters') return Promise.resolve([]);
+      if (/^\/generations\/\d+\/diff$/.test(target)) return Promise.resolve({ files: [], images: [] });
       assert.match(target, /^\/generations\/\d+$/);
       return new Promise((resolve, reject) => requests.push({ target, resolve, reject }));
     },
@@ -129,6 +130,33 @@ async function editorHarness(t) {
   assert.equal(initialDraft.props.generationId, 1);
   return { render, nodes, draft, openDraft, select, takeRequest, generation, initialDraft, stored, mutations };
 }
+
+test('수동 검색어 교정안은 유료 작업 대신 검사·비교·승인으로 안내하고 기존 버튼 콜백도 요청하지 않는다', async t => {
+  const editor = await editorHarness(t);
+  const manual = { ...editor.generation(1), kind: 'update', input: { draftMode: 'reviewed_page_query_snippet' }, lint: { blocking: false, findings: [] } };
+  const pending = editor.select(1);
+  editor.takeRequest(1).resolve(manual);
+  await pending;
+  editor.render();
+  const rail = () => editor.nodes().find(node => typeof node.type === 'function' && node.type.name === 'StepRail');
+  assert.deepEqual(rail().props.steps.map(step => step.key), ['lint', 'compare', 'approve', 'apply']);
+  assert.equal(rail().props.steps[rail().props.currentIndex].key, 'compare');
+  const tabs = editor.nodes().filter(node => node.props.role === 'tab').map(node => node.props.children);
+  assert.deepEqual(tabs, ['미리보기', '원고 편집', '검사·반영']);
+  for (const key of ['official', 'draft', 'polish', 'image']) await rail().props.onStep({ key });
+  assert.equal(editor.mutations.length, 0, '남아 있는 재작성·조사 콜백도 유료 요청을 만들지 않음');
+
+  const compare = rail().props.onStep({ key: 'compare' });
+  await tick();
+  editor.takeRequest(1).resolve(manual);
+  await compare;
+  editor.render();
+  assert.equal(rail().props.steps[rail().props.currentIndex].key, 'approve');
+  editor.openDraft().props.onChange({ ...manual.draft, description: '비교 뒤 수정한 설명' });
+  editor.render();
+  assert.equal(rail().props.steps[rail().props.currentIndex].key, 'compare', '비교 뒤 편집하면 최신 원고를 다시 비교하도록 안내');
+  assert.equal(editor.mutations.length, 0);
+});
 
 test('글 전환 응답 대기 중 이전 글의 편집 폼을 표시하지 않는다', async t => {
   const editor = await editorHarness(t);

@@ -10,7 +10,7 @@ const { getGuide, guideIndexPath, listGuides, siteRoot, parseGuidePosts } = requ
 const { jaccard } = require('./opportunityService');
 const { stripSectionNumbering, stripDraftSectionNumbering } = require('../lib/sectionTitle');
 const { assertUniqueIntent } = require('./intentService');
-const { assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor } = require('./updatePolicyService');
+const { assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor, PAGE_QUERY_CHANGE_ID } = require('./updatePolicyService');
 const jobs = require('./jobService');
 
 function parseGeneration(row) {
@@ -117,10 +117,15 @@ function createGeneration(input) {
     updatePolicy,
     automationRequested: !!input.automationRequested,
   };
+  const manualSnippet = !!target && payload.auditPlan?.changes?.some(change => change.enabled && change.id === PAGE_QUERY_CHANGE_ID);
+  if (manualSnippet) payload.draftMode = 'reviewed_page_query_snippet';
+  const preview = { kind: target ? 'update' : 'new', target_slug: target?.slug || null, topic, input: payload };
+  const initialDraft = manualSnippet ? reviewedSnippetDraft(preview) : null;
+  const initialLint = initialDraft ? lintDraft(initialDraft, lintOptions(preview)) : null;
   const result = db.prepare(`
-    INSERT INTO generations (target_slug, kind, topic, status, input_json, base_source_hash, created_at, updated_at)
-    VALUES (?, ?, ?, 'idea', ?, ?, ?, ?)
-  `).run(target?.slug || null, target ? 'update' : 'new', topic, JSON.stringify(payload), updatePolicy?.sourceHash || target?.sourceHash || null, stamp, stamp);
+    INSERT INTO generations (target_slug, kind, topic, status, input_json, base_source_hash, draft_json, lint_json, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(target?.slug || null, target ? 'update' : 'new', topic, initialDraft ? initialLint.blocking ? 'review' : 'draft' : 'idea', JSON.stringify(payload), updatePolicy?.sourceHash || target?.sourceHash || null, initialDraft ? JSON.stringify(initialDraft) : null, initialLint ? JSON.stringify(initialLint) : null, stamp, stamp);
   const id = Number(result.lastInsertRowid);
   jobs.claimGeneration(id);
   return getGeneration(id);
@@ -206,6 +211,7 @@ function reclassifySources(bundle) {
 async function researchOfficial(id, { emphasizeOfficial = false } = {}) {
   const generation = getGeneration(id);
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
+  if (generation.input?.draftMode === 'reviewed_page_query_snippet') throw Object.assign(new Error('페이지 검색어를 검토해 입력한 제목·설명 교정안입니다. 출처 재조사 없이 원고 검사·변경 비교·최종 승인으로 진행해 주세요.'), { status: 422, code: 'MANUAL_DRAFT_MODE' });
   assertUpdatePolicy(generation);
   const result = await completeJson({
     generationId: id,
@@ -385,8 +391,19 @@ async function callWriter(generation, { model, stage, fallbackReason = null, rep
   return normalizeDraft(generation, result.parsed, evidence);
 }
 
+function reviewedSnippetDraft(generation) {
+  return enforceDraftScope(generation, {
+    title: generation.input.auditPlan.proposedTitle.trim(),
+    description: generation.input.auditPlan.proposedDescription.trim(),
+  });
+}
+
 async function executeWriterPolicy({ generation, forceModel = null, write = callWriter, inspect = lintDraft }) {
   const scope = generation.input?.updatePolicy?.scope;
+  if (generation.kind === 'update' && generation.input.draftMode === 'reviewed_page_query_snippet') {
+    const draft = reviewedSnippetDraft(generation);
+    return { draft, lint: inspect(draft, lintOptions(generation)) };
+  }
   if (generation.kind === 'update' && scope?.fields.every(field => ['sources', 'sourceNote'].includes(field))) {
     const evidence = sourceBundle(generation);
     const draft = enforceDraftScope(generation, {
@@ -423,6 +440,11 @@ async function generateDraft(id, { forceModel = null } = {}) {
   if (!generation) throw new Error('생성 작업을 찾을 수 없습니다');
   assertUpdatePolicy(generation);
   assertUniqueIntent({ topic: generation.topic, primaryKeyword: generation.input?.topicDecision?.primaryKeyword || generation.topic, slug: generation.input?.desiredSlug }, { targetSlug: generation.target_slug, generationId: generation.id });
+  if (generation.input.draftMode === 'reviewed_page_query_snippet') {
+    const { draft, lint } = await executeWriterPolicy({ generation });
+    if (!generation.humanized && JSON.stringify(generation.draft) === JSON.stringify(draft) && JSON.stringify(generation.lint) === JSON.stringify(lint)) return generation;
+    return updateGeneration(id, { draft_json: JSON.stringify(draft), humanized_json: null, lint_json: JSON.stringify(lint), status: lint.blocking ? 'review' : 'draft', error: lint.blocking ? `수동 교정안의 차단 검사를 확인해 주세요 — ${blockingSummary(lint)}` : null });
+  }
   updateGeneration(id, { status: 'generating', error: null });
   try {
     const { draft, lint } = await executeWriterPolicy({ generation, forceModel });

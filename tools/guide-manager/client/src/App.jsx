@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Activity, ArrowRight, BarChart3, BookOpen, Check, ChevronRight,
   ClipboardCheck, Clock3, Gauge, Gem, History, ImagePlus,
@@ -294,7 +294,7 @@ function ImageStudio() {
   </main>
 }
 
-const IMPORT_LABELS = { gsc_performance: 'GSC 성과', gsc_performance_scoped: 'GSC 범위 제한 자료', gsc_coverage: 'GSC 색인', ga4_overview: 'GA4 개요', ga4_path_device: 'GA4 경로·기기', ga4_organic_landing: 'Google 검색 후 참여', naver_web_performance: 'Naver 웹검색' }
+const IMPORT_LABELS = { gsc_performance: 'GSC 성과', gsc_performance_scoped: 'GSC 페이지·제한 자료', gsc_coverage: 'GSC 색인', ga4_overview: 'GA4 개요', ga4_path_device: 'GA4 경로·기기', ga4_organic_landing: 'Google 검색 후 참여', naver_web_performance: 'Naver 웹검색' }
 const IMPORT_METRICS = {
   clicks: '클릭', impressions: '노출', activeUsers: '활성 사용자', newUsers: '새 사용자',
   views: '조회', events: '이벤트', keyEvents: '주요 이벤트', engagedSessions: '참여 세션',
@@ -305,6 +305,9 @@ const IMPORT_METRICS = {
 function Analytics() {
   const [imports, setImports] = useState([])
   const [file, setFile] = useState(null)
+  const fileInput = useRef(null)
+  const [pageQueryMode, setPageQueryMode] = useState(false)
+  const [pageQueryForm, setPageQueryForm] = useState({ pageUrl: '', periodStart: '', periodEnd: '', exactMatch: false, completeExport: false })
   const [busy, setBusy] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [refreshedAt, setRefreshedAt] = useState('')
@@ -315,9 +318,10 @@ function Analytics() {
 
   const list = useListState({
     rows: imports,
-    search: (row) => `${row.fileName} ${row.sourceType}`,
+    search: (row) => `${row.fileName} ${row.sourceType} ${row.summary?.pageQueryScope?.pageFilterUrl || ''}`,
     filters: [
       { id: 'all', label: '전체' },
+      { id: 'page_queries', label: '페이지별 검색어', test: row => row.summary?.pageQueryEligible === true },
       ...Object.entries(IMPORT_LABELS).map(([id, label]) => ({ id, label, test: (row) => row.sourceType === id })),
     ],
     sorters: [
@@ -332,9 +336,11 @@ function Analytics() {
     event.preventDefault(); if (!file) return
     setBusy(true); setError(''); setMessage('')
     try {
-      const result = await api.upload('/analytics/import', file)
-      setMessage(result.revalidated ? '기존 원본의 범위를 다시 검증했습니다. 중복 행은 추가하지 않았습니다.' : result.duplicate ? '이미 가져온 원본입니다. 중복 적재하지 않았습니다.' : result.sourceType === 'gsc_performance_scoped' ? '원본을 보관했습니다. 범위가 제한되거나 확인되지 않아 사이트 전체 추천·성과 비교에는 사용하지 않습니다.' : '자료를 가져왔습니다. 최신 측정 기간을 기준으로 분석에 반영합니다.')
-      setFile(null); await load()
+      const result = await api.upload('/analytics/import', file, pageQueryMode ? { pageQueryConfirmation: pageQueryForm } : {})
+      const receipt = result.revalidated ? '기존 원본의 범위를 다시 검증했습니다. 중복 행은 추가하지 않았습니다.' : result.duplicate ? '이미 가져온 원본입니다. 중복 적재하지 않았습니다.' : '자료를 가져왔습니다.'
+      setMessage(result.summary?.pageQueryEligible ? `${receipt} 정확한 페이지 범위를 확인했습니다. 기존 글 진단에서 수치를 새로 계산하면 같은 측정 기간의 검색어 자료가 연결됩니다. 검색어 연결만으로 제목 변경이 실행되지는 않습니다.` : result.sourceType === 'gsc_performance_scoped' ? `${receipt} 범위가 제한되거나 확인되지 않아 사이트 전체 추천·성과 비교에는 사용하지 않습니다.` : `${receipt} 최신 측정 기간을 기준으로 분석에 반영합니다.`)
+      setFile(null); if (fileInput.current) fileInput.current.value = ''
+      setPageQueryForm(current => ({ ...current, exactMatch: false, completeExport: false })); await load()
     } catch (value) { setError(value.message) } finally { setBusy(false) }
   }
   const refresh = async () => {
@@ -349,7 +355,24 @@ function Analytics() {
     </div></header>
     <ErrorNotice message={error} onClose={() => setError('')} />
     <SuccessNotice message={message} onClose={() => setMessage('')} />
-    <form className="upload-zone" onSubmit={upload}><Upload size={28} /><div><strong>GA4 CSV 또는 Search Console ZIP</strong><p>같은 파일은 해시로 감지해 중복 적재하지 않습니다.</p></div><input type="file" accept=".csv,.zip" onChange={(event) => setFile(event.target.files?.[0] || null)} /><button className="button button-primary" disabled={!file || busy}>{busy ? <Spinner /> : file ? `${file.name} 가져오기` : '파일 선택'}</button></form>
+    <form className="upload-zone" onSubmit={upload}>
+      <Upload size={28} /><div><strong>GA4 CSV 또는 Search Console ZIP</strong><p>같은 파일은 해시로 감지해 중복 적재하지 않습니다.</p></div>
+      <input ref={fileInput} type="file" aria-label="분석 자료 파일" accept={pageQueryMode ? '.zip' : '.csv,.zip'} disabled={busy} onChange={(event) => { setFile(event.target.files?.[0] || null); setPageQueryForm(current => ({ ...current, exactMatch: false, completeExport: false })) }} />
+      <button className="button button-primary" disabled={!file || busy || pageQueryMode && (!pageQueryForm.pageUrl || !pageQueryForm.periodStart || !pageQueryForm.periodEnd || !pageQueryForm.exactMatch || !pageQueryForm.completeExport)}>{busy ? <Spinner /> : file ? `${file.name} 가져오기` : '파일 선택'}</button>
+      <label className="page-query-import-toggle"><input type="checkbox" checked={pageQueryMode} disabled={busy} onChange={event => { setPageQueryMode(event.target.checked); setPageQueryForm(current => ({ ...current, exactMatch: false, completeExport: false })) }} /><span>특정 글의 페이지별 검색어 연결</span></label>
+      {pageQueryMode && <fieldset className="page-query-import-fields" disabled={busy}>
+        <legend>Search Console에서 확인한 범위</legend>
+        <p>웹검색에서 ‘페이지 → 정확한 URL’을 선택하고 국가·기기·검색어 등 추가 필터 없이 전체 보고서를 ZIP으로 내보내세요. 현재 사이트 전체 분석과 같은 기간을 선택하면 해당 글의 진단에 연결됩니다.</p>
+        <div className="page-query-import-grid">
+          <label><span>정확한 페이지 URL</span><input type="url" required value={pageQueryForm.pageUrl} placeholder="https://noblessegold.com/guide/…" onChange={event => setPageQueryForm(current => ({ ...current, pageUrl: event.target.value, exactMatch: false }))} /></label>
+          <label><span>측정 시작일</span><input type="date" required value={pageQueryForm.periodStart} max={pageQueryForm.periodEnd || undefined} onChange={event => setPageQueryForm(current => ({ ...current, periodStart: event.target.value, completeExport: false }))} /></label>
+          <label><span>측정 종료일</span><input type="date" required value={pageQueryForm.periodEnd} min={pageQueryForm.periodStart || undefined} onChange={event => setPageQueryForm(current => ({ ...current, periodEnd: event.target.value, completeExport: false }))} /></label>
+        </div>
+        <label className="page-query-import-check"><input type="checkbox" checked={pageQueryForm.exactMatch} onChange={event => setPageQueryForm(current => ({ ...current, exactMatch: event.target.checked }))} /><span>필터가 ‘정확한 URL’이며 입력한 페이지와 일치함을 확인했습니다.</span></label>
+        <label className="page-query-import-check"><input type="checkbox" checked={pageQueryForm.completeExport} onChange={event => setPageQueryForm(current => ({ ...current, completeExport: event.target.checked }))} /><span>위 기간의 일별·페이지·검색어 표를 포함한 전체 공식 내보내기 파일입니다.</span></label>
+        <p>원본 파일은 그대로 보관합니다. 확인 내용이 파일의 URL·기간·필터와 다르면 연결하지 않습니다. 검색어가 공개되지 않은 경우에는 노출 수로 검색어를 추정하지 않습니다.</p>
+      </fieldset>}
+    </form>
 
     <ListToolbar state={list} placeholder="파일 이름 검색" label="출처" />
     <section className="data-table import-table">
@@ -360,12 +383,19 @@ function Analytics() {
         <SortHead state={list} id="importedAt">가져온 시각</SortHead>
       </div>
       {list.view.map((item) => <div className="table-row" key={item.id}>
-        <div><Badge tone={item.sourceType === 'gsc_coverage' || item.sourceType === 'gsc_performance_scoped' ? 'danger' : item.sourceType.startsWith('ga4_') ? 'gold' : 'neutral'}>{IMPORT_LABELS[item.sourceType] || item.sourceType}</Badge><small>{item.fileName}</small><small>SHA-256 {item.fileHash?.slice(0, 12) || '—'} · {item.parserVersion || '—'}</small>
-          {item.sourceType.startsWith('gsc_performance') && <details><summary>{item.summary?.scope || '기존 자료 · 범위 메타 없음'}</summary>
+        <div><Badge tone={item.summary?.pageQueryEligible ? 'success' : item.sourceType === 'gsc_coverage' || item.sourceType === 'gsc_performance_scoped' ? 'danger' : item.sourceType.startsWith('ga4_') ? 'gold' : 'neutral'}>{item.summary?.pageQueryEligible ? 'GSC 페이지별 검색어' : IMPORT_LABELS[item.sourceType] || item.sourceType}</Badge><small>{item.fileName}</small><small>SHA-256 {item.fileHash?.slice(0, 12) || '—'} · {item.parserVersion || '—'}</small>
+          {item.sourceType.startsWith('gsc_performance') && <details><summary>{item.summary?.pageQueryEligible ? '정확한 페이지 범위 확인' : item.summary?.scope || '기존 자료 · 범위 메타 없음'}</summary>
             {item.sourceType === 'gsc_performance_scoped' && <p>사이트 전체 추천과 배포 전후 비교에는 사용하지 않습니다.</p>}
+            {item.summary?.pageQueryEligible && <>
+              <small>{item.summary.pageQueryScope.pageFilterUrl}</small>
+              <small>정확한 URL 한 개 · {item.summary.pageQueryScope.periodStart} ~ {item.summary.pageQueryScope.periodEnd}</small>
+              <small>표에 공개된 검색어 {fmt(item.summary.pageQueryScope.queryRows)}행. 익명 검색어 때문에 페이지 실적과 검색어 합계는 다를 수 있습니다.</small>
+              <small>최신 사이트 전체 보고서와 기간이 같을 때 해당 글의 진단에 연결하며, 원문 검토와 기존 관찰·성과 보호를 유지합니다.</small>
+            </>}
             <small>{item.summary?.property || '속성 미확인'} · {item.summary?.searchType || '검색 유형 미확인'}</small>
             {item.summary?.coverageNote && <small>{item.summary.coverageNote}</small>}
-            {item.summary?.scopeReasons?.map(reason => <small key={reason}>{reason}</small>)}
+            {!item.summary?.pageQueryEligible && item.summary?.scopeReasons?.map(reason => <small key={reason}>{reason}</small>)}
+            {item.sourceType === 'gsc_performance_scoped' && !item.summary?.pageQueryEligible && item.summary?.pageQueryReasons?.map(reason => <small key={reason}>페이지별 연결: {reason}</small>)}
             {Object.entries(item.summary?.completeness || {}).map(([key, value]) => <small key={key}>{({ daily: '일별', queries: '검색어', pages: '페이지' })[key] || key} {fmt(value.rows)}행 · {value.complete ? '전체 표 확인' : '일부·미확인'}</small>)}
           </details>}
           {item.summary?.mappingMethod === 'exact_page_title' && <details><summary>가져올 때 제목 연결 {fmt(item.summary.mappedRows)}행 · 미연결 {fmt(item.summary.unmappedRows)}행</summary>

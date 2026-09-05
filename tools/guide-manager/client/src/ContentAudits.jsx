@@ -7,6 +7,7 @@ import { api } from './api'
 import { Badge as AuditBadge, EmptyRow, ListToolbar, Pagination, RefreshStatus, SortHead, fmt, pct, shortDate, useListState } from './ui'
 
 const CLASSIFICATIONS = ['전체', '기술 우선', 'CTR 개선', '출처 백필', '본문 보강', '내부링크 강화', '통합 검토', '유지']
+const PAGE_QUERY_CHANGE_ID = 'reviewed-page-query-snippet'
 
 function Busy({ children }) {
   return <span className="spinner-label"><LoaderCircle size={15} className="spin" />{children}</span>
@@ -55,15 +56,27 @@ function DetailSkeleton({ onBack }) {
 function SignalLedger({ snapshot }) {
   const { gsc, ga4, googleOrganic, naver, naverWeb } = snapshot.metrics
   const topReference = snapshot.sitewideQueryHints?.[0]
+  const pageEvidence = snapshot.queryEvidence
   return <section className="audit-section">
     <h3>판단 근거</h3>
     <dl className="signal-ledger">
-      <div><dt>Google 검색</dt><dd><strong>노출 {fmt(gsc.impressions)} · 클릭 {fmt(gsc.clicks)}</strong><span>CTR {pct(gsc.ctr, 2)} · 평균 {gsc.position == null ? '순위 없음' : `${Number(gsc.position).toFixed(1)}위`} · 기대 CTR {pct(gsc.expectedCtr, 1)}</span></dd></div>
+      <div><dt>Google 검색</dt><dd><strong>노출 {fmt(gsc.impressions)} · 클릭 {fmt(gsc.clicks)}</strong><span>CTR {pct(gsc.ctr, 2)} · 평균 {gsc.position == null ? '순위 없음' : `${Number(gsc.position).toFixed(1)}위`} · 기대 CTR {pct(gsc.expectedCtr, 1)}</span>{gsc.variants > 1 && <span>사이트 전체 보고서의 URL 변형 {fmt(gsc.variants)}개를 정규화해 합산한 값입니다.</span>}</dd></div>
       <div><dt>GA4 참여</dt><dd><strong>{ga4.mapped ? `조회 ${fmt(ga4.views)} · 사용자 ${fmt(ga4.activeUsers)}` : '페이지 제목 정확 일치 매핑 없음'}</strong><span>{ga4.mapped ? `이벤트 ${fmt(ga4.events)} · 이탈 ${pct(ga4.bounceRate)}` : '0으로 평가하지 않고 미측정 상태로 보존합니다.'}</span></dd></div>
       <div><dt>검색 후 참여</dt><dd><strong>{googleOrganic?.mapped ? `활성 사용자 ${fmt(googleOrganic.activeUsers)} · 참여 세션 ${fmt(googleOrganic.engagedSessions)}` : '자연 검색 방문 페이지 연결 없음'}</strong><span>{googleOrganic?.mapped ? `참여율 ${pct(googleOrganic.engagementRate, 1)} · 평균 참여 ${googleOrganic.avgEngagementSeconds == null ? '자료 없음' : `${Number(googleOrganic.avgEngagementSeconds).toFixed(1)}초`} · 주요 이벤트 ${fmt(googleOrganic.keyEvents)}` : 'GSC 유입 뒤 GA4 행동을 같은 경로에서 확인합니다.'}</span></dd></div>
       <div><dt>Naver 보조</dt><dd><strong>{naverLabel(naver)}</strong><span>{naver.measured ? `트렌드 ${naver.trendDirection || '자료 없음'} · 상대 지수 ${naver.trendRatio ?? '—'}${naver.competingUrl ? ` · 대신 노출 ${naver.competingRank}위 ${naver.competingUrl}` : ''}` : '주간 측정 후 목표 URL 정확 일치 순위·상대 트렌드가 연결됩니다.'}</span></dd></div>
       <div><dt>Naver 웹검색</dt><dd><strong>{naverWeb?.listed ? `노출 ${fmt(naverWeb.impressions)} · 클릭 ${fmt(naverWeb.clicks)}` : 'TOP 30 URL 목록 밖'}</strong><span>{naverWeb?.listed ? `CTR ${pct(naverWeb.ctr, 2)} · 웹검색 전체 ${pct(naverWeb.overallCtr, 1)}` : '목록 밖은 노출 0이 아니며 성과 부진으로 판정하지 않습니다.'}</span></dd></div>
-      <div><dt>페이지별 검색어</dt><dd><strong>페이지와 검색어의 연결 자료 없음</strong>{topReference && <span>사이트 전체 참고: {topReference.query} · 전체 노출 {fmt(topReference.sitewideImpressions)}회. 이 페이지의 노출이나 제목 변경 근거로 쓰지 않습니다.</span>}<span>{snapshot.queryEvidence?.requiredEvidence || '사이트 전체 검색어를 이 페이지의 유입 검색어로 간주하지 않습니다. Search Console에서 해당 URL의 검색어를 직접 확인하세요.'}</span></dd></div>
+      <div><dt>페이지별 검색어</dt><dd>
+        <strong>{pageEvidence?.pageQueryAvailable ? `수입 #${pageEvidence.importId} · 보고서 표시행 ${fmt(pageEvidence.pageQueryCount)}개` : '페이지와 검색어의 연결 자료 없음'}</strong>
+        {pageEvidence?.pageQueryAvailable && <>
+          <span>{pageEvidence.pageUrl}</span>
+          <span>{pageEvidence.periodStart} ~ {pageEvidence.periodEnd}</span>
+          <span>정확한 URL 보고서 합계: 노출 {fmt(pageEvidence.pageTotals?.impressions)} · 클릭 {fmt(pageEvidence.pageTotals?.clicks)}</span>
+          <span>검색어 표시행 합계: 노출 {fmt(pageEvidence.observedQueryTotals?.impressions)} · 클릭 {fmt(pageEvidence.observedQueryTotals?.clicks)}. 익명화·행 제한으로 위 합계와 다를 수 있습니다.</span>
+        </>}
+        {!pageEvidence?.pageQueryAvailable && topReference && <span>사이트 전체 참고: {topReference.query} · 전체 노출 {fmt(topReference.sitewideImpressions)}회. 이 페이지의 노출이나 제목 변경 근거로 쓰지 않습니다.</span>}
+        <span>{pageEvidence?.requiredEvidence || '사이트 전체 검색어를 이 페이지의 유입 검색어로 간주하지 않습니다. Search Console에서 해당 URL의 검색어를 직접 확인하세요.'}</span>
+        {pageEvidence?.pageQueryAvailable && pageEvidence.pageQueryCount === 0 && <span>표시행 0개는 검색 수요 0을 뜻하지 않습니다. 익명화되거나 보고서에 생략된 검색어가 있을 수 있습니다.</span>}
+      </dd></div>
       <div><dt>URL·색인</dt><dd><strong>원본 변형 {fmt(gsc.variants)}개 · self-canonical {snapshot.content.technical.selfCanonical ? '정상' : '확인 필요'}</strong><span>Coverage 미색인 {fmt(snapshot.metrics.coverage?.notIndexed)}개는 사이트 전체 값입니다.</span></dd></div>
     </dl>
   </section>
@@ -98,13 +111,30 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
   const snapshot = item.snapshot
   const readOnly = snapshot.guide.isCustom
   const recentHold = snapshot.guards?.recentObservationHold
+  const pageEvidence = snapshot.queryEvidence
+  const pageReview = plan.pageQueryReview
+  const reviewCurrent = pageReview?.contextFingerprint === snapshot.contextFingerprint && pageReview?.evidence?.fingerprint === pageEvidence?.fingerprint
+  const reviewReady = reviewCurrent && pageReview?.confirmed && String(pageReview.mismatch || '').trim().length >= 20 && pageReview.selectedQueries?.length > 0
   const patch = (key, value) => setPlan((current) => ({ ...current, [key]: value }))
-  const patchChange = (index, values) => patch('changes', plan.changes.map((entry, current) => current === index ? { ...entry, ...values } : entry))
+  const patchChange = (index, values) => setPlan(current => ({ ...current, changes: current.changes.map((entry, position) => {
+    if (position === index) return { ...entry, ...values }
+    if (values.enabled && (current.changes[index].id === PAGE_QUERY_CHANGE_ID || entry.id === PAGE_QUERY_CHANGE_ID)) return { ...entry, enabled: false }
+    return entry
+  }) }))
   const patchSection = (index, values) => patch('sectionPlan', plan.sectionPlan.map((entry, current) => current === index ? { ...entry, ...values } : entry))
   const toggleLink = (link) => {
     const exists = plan.internalLinks.some((item) => item.to === link.to)
     patch('internalLinks', exists ? plan.internalLinks.filter((item) => item.to !== link.to) : [...plan.internalLinks, { to: link.to, reason: link.reason }])
   }
+  const patchPageReview = (values) => setPlan(current => ({
+    ...current,
+    pageQueryReview: {
+      ...current.pageQueryReview, confirmed: false, ...values,
+      contextFingerprint: snapshot.contextFingerprint,
+      evidence: Object.fromEntries(['importId', 'pageUrl', 'periodStart', 'periodEnd', 'fingerprint'].map(key => [key, pageEvidence?.[key] ?? null])),
+    },
+    changes: current.changes.map(entry => entry.id === PAGE_QUERY_CHANGE_ID && values.confirmed !== true ? { ...entry, enabled: false } : entry),
+  }))
   if (!plan.changes.some(entry => !entry.lockedReason)) return <section className="audit-section plan-editor">
     <div className="audit-section-head"><h3>현재 원문 유지·성과 관찰</h3><AuditBadge tone="success">원고 변경 없음</AuditBadge></div>
     <ul>{(plan.observations || ['현재 확인된 실행 가능한 수정 항목이 없습니다.']).map(note => <li key={note}>{note}</li>)}</ul>
@@ -115,6 +145,15 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
   return <section className="audit-section plan-editor">
     <div className="audit-section-head"><div><h3>확정할 수정 계획</h3><p>체크된 항목만 원고 생성 지시로 전달됩니다.</p></div><AuditBadge tone={item.planStatus === 'edited' ? 'success' : 'neutral'}>{item.planStatus === 'edited' ? '사용자 편집 저장됨' : '제안 상태'}</AuditBadge></div>
     {!item.aiAnalysis && <button className="button button-quiet full" type="button" onClick={onAnalyze} disabled={!!busy}>{busy === 'analyze-one' ? <Busy>Terra 정밀진단 중</Busy> : <><Sparkles size={15} />이 글 Terra 정밀진단</>}</button>}
+    {pageEvidence?.canRecommendTitleKeywords && <div className="plan-subsection">
+      <div className="plan-subhead"><strong>페이지 검색어와 원문 대조</strong><span>수입 #{pageEvidence.importId} · {pageEvidence.periodStart} ~ {pageEvidence.periodEnd}</span></div>
+      <p>{pageEvidence.pageUrl}</p>
+      <p>보고서에 표시된 검색어가 있다는 이유만으로 제목을 바꾸지 않습니다. 실제 불일치를 기록하고 아래 제안 제목·설명을 직접 교정하세요. 이 항목을 선택하면 다른 수정 항목은 해제되며 입력한 문구만 원문에 병합합니다. AI 재작성 비용은 발생하지 않습니다.</p>
+      <div className="link-options">{(snapshot.titleKeywordCandidates || []).map(row => <label key={row.query}><input type="checkbox" checked={!!pageReview?.selectedQueries?.includes(row.query)} onChange={event => patchPageReview({ selectedQueries: event.target.checked ? [...(pageReview?.selectedQueries || []), row.query].slice(0, 5) : (pageReview?.selectedQueries || []).filter(query => query !== row.query) })} /><span><b>{row.query}</b><small>이 페이지의 검색어 표시행 · 노출 {fmt(row.impressions)} · 클릭 {fmt(row.clicks)} · CTR {pct(row.ctr, 2)}</small></span></label>)}</div>
+      <label><span>원문에서 확인한 불일치와 수정 범위</span><textarea rows="3" value={pageReview?.mismatch || ''} placeholder="검색어가 요구하는 내용과 현재 제목·설명·본문의 어떤 표현이 어긋나는지 구체적으로 기록하세요. (20자 이상)" onChange={event => patchPageReview({ mismatch: event.target.value })} /></label>
+      {!reviewCurrent && pageReview?.confirmed && <p>검토 기준이 바뀌었습니다. 현재 검색어와 원문을 다시 확인해 주세요.</p>}
+      <label className="guard-note"><input type="checkbox" checked={!!pageReview?.confirmed && reviewCurrent} disabled={String(pageReview?.mismatch || '').trim().length < 20 || !pageReview?.selectedQueries?.length} onChange={event => patchPageReview({ confirmed: event.target.checked })} /><span>선택한 검색어의 URL·기간과 현재 원문을 대조했습니다. 위에 기록한 불일치 범위만 수정합니다.</span></label>
+    </div>}
     <div className="plan-fields">
       <label><span>수정 방향</span><select value={plan.classification} onChange={(event) => patch('classification', event.target.value)}>{CLASSIFICATIONS.slice(1).map((value) => <option key={value}>{value}</option>)}</select></label>
       <label><span>이번 수정 목표</span><textarea rows="2" value={plan.goal} onChange={(event) => patch('goal', event.target.value)} /></label>
@@ -125,7 +164,7 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
       <div className="plan-subhead"><strong>상세 수정 항목</strong><span>{plan.changes.filter((entry) => entry.enabled).length}/{plan.changes.length}개 선택 · 눌러서 편집</span></div>
       <div className="change-plan-list">{plan.changes.map((entry, index) => <details key={entry.id || index} className={`change-item ${entry.enabled ? 'enabled' : ''}`}>
         <summary>
-          <input type="checkbox" checked={entry.enabled} disabled={!!entry.lockedReason} onClick={(event) => event.stopPropagation()} onChange={(event) => patchChange(index, { enabled: event.target.checked })} />
+          <input type="checkbox" checked={entry.enabled} disabled={!!entry.lockedReason || entry.id === PAGE_QUERY_CHANGE_ID && (!reviewReady || recentHold || readOnly || snapshot.guards.keepSnippet || snapshot.guards.keepNaverSnippet)} onClick={(event) => event.stopPropagation()} onChange={(event) => patchChange(index, { enabled: event.target.checked })} />
           <span className="change-priority">{entry.priority}</span>
           <span className="change-summary-copy"><b>{entry.area}</b><small>{entry.action}</small></span>
           <ChevronRight size={14} className="chev" />
@@ -157,7 +196,7 @@ function PlanEditor({ item, plan, setPlan, onSave, onCreate, onAnalyze, busy, co
     {recentHold && <div className="guard-note"><ShieldCheck size={16} /><span>최근 변경일 {snapshot.guards.changeDate}부터 31일간 성과를 관찰합니다. {snapshot.guards.observeUntil}까지 분석은 보존하되 수정 작업은 만들지 않습니다.</span></div>}
     {readOnly ? <div className="guard-note"><ShieldCheck size={16} /><span>이 커스텀 가이드는 읽기 전용입니다. 분석은 저장하지만 자동 수정 작업은 만들지 않습니다.</span></div> : recentHold ? null : <div className="plan-actions">
       <button className="button button-quiet" type="button" onClick={onSave} disabled={!!busy}>{busy === 'save' ? <Busy>저장 중</Busy> : <><Check size={15} />수정안 저장</>}</button>
-      <button className="button button-primary" type="button" onClick={onCreate} disabled={!!busy || !plan.changes.some((entry) => entry.enabled)}>{busy === 'create' ? <Busy>작업 생성 중</Busy> : <><FilePenLine size={15} />수정안 확정·편집 시작</>}</button>
+      <button className="button button-primary" type="button" onClick={onCreate} disabled={!!busy || !plan.changes.some((entry) => entry.enabled)}>{busy === 'create' ? <Busy>작업 생성 중</Busy> : <><FilePenLine size={15} />{plan.changes.some(entry => entry.id === PAGE_QUERY_CHANGE_ID && entry.enabled) ? '수동 교정안 검수 시작' : '수정안 확정·편집 시작'}</>}</button>
     </div>}
     {(!item.aiAnalysis || item.status === 'stale' || item.status === 'measured') && <label className="guard-note"><input type="checkbox" checked={confirmCurrent} onChange={event => setConfirmCurrent(event.target.checked)} /><span>현재 원문·지표와 수정 범위를 직접 검토했습니다. 최신 진단 없이 진행하는 검토 기록을 남깁니다.</span></label>}
     <small className="apply-boundary">편집 작업 생성은 저장소를 바꾸지 않습니다. 원고·이미지·diff 확인 후 별도 최종 승인과 반영 절차가 필요합니다.</small>

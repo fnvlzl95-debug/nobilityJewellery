@@ -6,8 +6,9 @@ const { db } = require('../lib/db');
 const { config } = require('../lib/config');
 const { sha256, nowIso, normalizeUrl, parseNumber } = require('../lib/utils');
 const log = require('../lib/logger');
+const pageQueryScope = require('./pageQueryScopeService');
 
-const PARSER_VERSION = 'noblesse-analytics-v6';
+const PARSER_VERSION = 'noblesse-analytics-v7';
 
 // Search Console의 화면 내보내기에는 접근성용 동작 문구가 URL 뒤에
 // 공백으로 붙는 경우가 있다. 원본 ZIP은 별도 보존하므로 분석 테이블에는
@@ -394,14 +395,45 @@ function sumGsc(rows, key) {
   return rows.length && rows.every(row => row[key] != null) ? rows.reduce((total, row) => total + row[key], 0) : null;
 }
 
-function gscScope(entries, fileName, tables) {
+function confirmedPageManifest(manifest, filters, tables, confirmation, { confirmedAt = null } = {}) {
+  if (!confirmation || typeof confirmation !== 'object' || Array.isArray(confirmation)
+    || confirmation.exactMatch !== true || confirmation.completeExport !== true) invalidGsc('정확한 URL 일치 필터와 전체 공식 내보내기 자료임을 각각 확인해 주세요');
+  const pageUrl = pageQueryScope.canonicalPageUrl(confirmation.pageUrl);
+  if (!pageUrl || !pageQueryScope.validPeriod(confirmation.periodStart, confirmation.periodEnd)) invalidGsc('확인할 페이지 URL과 측정 시작일·종료일을 확인해 주세요');
+  const pageFilters = filters.filter(row => /^(페이지|Page)$/i.test(row.filter));
+  const page = pageFilters.length === 1 ? pageQueryScope.filterPage(pageFilters[0]) : null;
+  if (!page || page.url !== pageUrl || page.operator && page.operator !== 'equals') invalidGsc('확인한 URL·정확 일치 조건이 원본 페이지 필터와 다릅니다');
+  const expected = { page_filter_url: pageUrl, page_filter_operator: 'equals', range_start: confirmation.periodStart, range_end: confirmation.periodEnd };
+  for (const [key, value] of Object.entries(expected)) if (manifest[key] != null && manifest[key] !== value) invalidGsc(`확인값과 원본 manifest의 ${key} 항목이 다릅니다`);
+  const dates = tables.daily.map(row => row.dimension).sort();
+  const days = (Date.parse(confirmation.periodEnd) - Date.parse(confirmation.periodStart)) / 86400000 + 1;
+  if (dates.length !== days || dates[0] !== confirmation.periodStart || dates.at(-1) !== confirmation.periodEnd) invalidGsc('확인한 측정 기간과 원본 일별 표의 날짜·행 수가 다릅니다');
+  const effective = { ...manifest, ...expected };
+  if (effective.active_filters == null) effective.active_filters = JSON.stringify([{ dimension: 'page', operator: 'equals', expression: pageUrl }]);
+  for (const dimension of ['daily', 'queries', 'pages']) {
+    if (manifest[`${dimension}_complete`] != null && manifest[`${dimension}_complete`] !== 'true'
+      || manifest[`${dimension}_total_rows`] != null && (!/^\d+$/.test(manifest[`${dimension}_total_rows`]) || Number(manifest[`${dimension}_total_rows`]) !== tables[dimension].length)) invalidGsc(`확인한 전체 내보내기와 원본 ${dimension} 행 수·수집 상태가 다릅니다`);
+    effective[`${dimension}_complete`] = 'true';
+    effective[`${dimension}_total_rows`] = String(tables[dimension].length);
+  }
+  return { effective, operatorConfirmation: { pageUrl, exactMatch: true, completeExport: true,
+    periodStart: confirmation.periodStart, periodEnd: confirmation.periodEnd,
+    confirmedAt: confirmedAt || nowIso(), source: 'operator-upload-confirmation' } };
+}
+
+function gscScope(entries, fileName, tables, { confirmation = null, confirmedAt = null } = {}) {
   const filterRows = parseCsvText(entries.get('필터.csv') || '');
-  const filters = filterRows.map(row => ({ filter: row['필터'] || row.Filter || '', value: row['값'] || row.Value || '' }));
+  const filters = filterRows.map(row => ({ filter: row['필터'] || row.Filter || '', value: row['값'] || row.Value || '',
+    ...((row['연산자'] || row.Operator) ? { operator: row['연산자'] || row.Operator } : {}),
+  }));
   if (filterRows.some((row, i) => !filters[i].filter)) invalidGsc('필터.csv 머리글을 확인해 주세요');
   const manifestRows = parseCsvText(entries.get('manifest.csv') || '');
-  const manifest = Object.fromEntries(manifestRows.map(row => [row.key || row.field, row.value]));
+  const originalManifest = Object.fromEntries(manifestRows.map(row => [row.key || row.field, row.value]));
+  let manifest = originalManifest;
   if (manifestRows.some(row => !(row.key || row.field) || row.value == null)) invalidGsc('manifest.csv는 key,value 형식이어야 합니다');
   if (Object.keys(manifest).length !== manifestRows.length) invalidGsc('manifest에 중복 항목이 있습니다');
+  let operatorConfirmation = null;
+  if (confirmation) ({ effective: manifest, operatorConfirmation } = confirmedPageManifest(manifest, filters, tables, confirmation, { confirmedAt }));
   if (Boolean(manifest.range_start) !== Boolean(manifest.range_end)) invalidGsc('manifest의 시작일과 종료일을 함께 입력해 주세요');
   const filterValue = pattern => filters.find(row => pattern.test(row.filter))?.value;
   const dateFilter = filterValue(/^(날짜|Date)$/i);
@@ -425,6 +457,7 @@ function gscScope(entries, fileName, tables) {
   // An unlabelled reconstructed ZIP must never acquire official-export provenance.
   const officialName = /^https___noblessegold\.com_(?:_|-).*Performance-on-Search-/i.test(fileName);
   const collectionMethod = declaredMethod || (officialName && entries.has('필터.csv') ? 'official-export' : 'unknown');
+  if (operatorConfirmation && collectionMethod === 'unknown') invalidGsc('공식 GSC 내보내기 ZIP 또는 수집 방식이 기록된 자료를 선택해 주세요');
   const reconstructed = ['dom-table', 'google-sheets-export'].includes(collectionMethod);
   const property = manifest.property || filterValue(/^(속성|Property)$/i) || (officialName ? 'https://noblessegold.com/' : null);
   if (manifest.property && filterValue(/^(속성|Property)$/i) && manifest.property.replace(/\/$/, '') !== filterValue(/^(속성|Property)$/i).replace(/\/$/, '')) invalidGsc('manifest와 속성 필터가 다릅니다');
@@ -450,7 +483,7 @@ function gscScope(entries, fileName, tables) {
     if (declaredComplete === 'true' && (declaredRows == null || actualRows !== Number(declaredRows))) invalidGsc(`${dimension} 전체 수집 선언과 실제 행 수가 다릅니다`);
     const tablePresent = entries.has({ daily: '차트.csv', queries: '검색어 수.csv', pages: '페이지.csv' }[dimension]);
     const complete = reconstructed
-      ? declaredComplete === 'true' && declaredRows != null && actualRows === Number(declaredRows)
+      ? tablePresent && declaredComplete === 'true' && declaredRows != null && actualRows === Number(declaredRows)
       : collectionMethod === 'official-export' && tablePresent && declaredComplete !== 'false';
     completeness[dimension] = { rows: actualRows, totalRows: declaredRows == null ? null : Number(declaredRows), complete };
   }
@@ -461,7 +494,7 @@ function gscScope(entries, fileName, tables) {
   const reasons = [];
   if (!['https://noblessegold.com', 'https://noblessegold.com/', 'sc-domain:noblessegold.com'].includes(property)) reasons.push('대상 사이트 전체 속성 확인 필요');
   if (searchType !== 'web') reasons.push('웹검색 전체 보고서가 아님');
-  if (activeFilters.length || declaredFilters?.length) reasons.push('검색어·페이지·국가·기기 등의 필터 적용');
+  if (activeFilters.length || declaredFilters?.length || manifest.page_filter_operator || manifest.page_filter_url) reasons.push('검색어·페이지·국가·기기 등의 필터 적용');
   if (collectionMethod === 'unknown' || (reconstructed ? declaredFilters == null : !entries.has('필터.csv'))) reasons.push('필터와 수집 방식 확인 필요');
   if (!periodDays || !Object.values(completeness).every(item => item.complete)) reasons.push('기간 또는 표의 전체 수집 확인 필요');
   if (tables.pages.some(row => { try { return new URL(row.dimension).hostname !== 'noblessegold.com'; } catch (_) { return true; } })) reasons.push('대상 속성 외 페이지 포함');
@@ -470,7 +503,9 @@ function gscScope(entries, fileName, tables) {
     sitewideEligible: reasons.length === 0,
     scope: reasons.length ? '범위 제한·미확인 자료' : '사이트 전체 웹검색',
     property, propertySource, searchType, filters, activeFilters: [...activeFilters, ...(declaredFilters || [])],
-    collectionMethod, completeness, scopeReasons: reasons, manifest,
+    collectionMethod, completeness, scopeReasons: reasons, manifest: originalManifest,
+    ...(operatorConfirmation ? { operatorConfirmation } : {}),
+    ...pageQueryScope.inspectPageQueryScope({ manifest, filters, declaredFilters, property, searchType, collectionMethod, completeness, periodStart, periodEnd, periodDays, tables }),
     coverageNote: {
       'official-export': '공식 내보내기 범위이며 익명 검색어·내보내기 행 제한으로 차원별 합계는 전체 합계와 다를 수 있습니다.',
       'google-sheets-export': 'GSC 공식 Google Sheets 내보내기를 XLSX를 거쳐 CSV로 변환한 자료입니다. 익명 검색어·내보내기 행 제한으로 차원별 합계는 전체 합계와 다를 수 있습니다.',
@@ -480,16 +515,22 @@ function gscScope(entries, fileName, tables) {
   } };
 }
 
-function importGscPerformance(buffer, fileName, entries) {
+function importGscPerformance(buffer, fileName, entries, options = {}) {
+  const existing = db.prepare('SELECT id, source_type, summary_json FROM analytics_imports WHERE file_hash=?').get(sha256(buffer));
+  const priorSummary = JSON.parse(existing?.summary_json || '{}');
   const readTable = (file, dimension) => {
     if (!entries.has(file)) return [];
     const text = entries.get(file);
-    const records = parse(text, { skip_empty_lines: true, trim: true });
+    let records;
+    try { records = parse(text, { skip_empty_lines: true, trim: true, relax_column_count_less: true }); }
+    catch (_) { invalidGsc(`${file} 행의 열 수 또는 CSV 형식을 확인해 주세요`); }
     if (!records[0] || ![dimension, '클릭수', '노출'].every(key => records[0].includes(key))) invalidGsc(`${file} 머리글을 확인해 주세요`);
+    if (records.slice(1).some(row => [dimension, '클릭수', '노출'].some(key => records[0].indexOf(key) >= row.length))) invalidGsc(`${file} 필수 열이 누락됐습니다`);
     const rows = parseCsvText(text).map(row => ({
       dimension: dimension === '인기 페이지' ? cleanGscPageUrl(row[dimension]) : row[dimension],
       clicks: gscNumber(row['클릭수'], `${file} 클릭수`), impressions: gscNumber(row['노출'], `${file} 노출`),
       ctr: gscNumber(row.CTR, `${file} CTR`, true), position: gscNumber(row['게재 순위'], `${file} 게재 순위`),
+      ctrTolerance: Math.min(0.005, 0.5 * 10 ** -(String(row.CTR || '').replace(/%$/, '').split('.')[1]?.length || 0) / (String(row.CTR || '').includes('%') ? 100 : 1)) + 1e-9,
     }));
     if (rows.some(row => !row.dimension)) invalidGsc(`${file}에 빈 ${dimension} 행이 있습니다`);
     if (new Set(rows.map(row => row.dimension)).size !== rows.length) invalidGsc(`${file}에 중복 ${dimension} 행이 있습니다`);
@@ -500,7 +541,15 @@ function importGscPerformance(buffer, fileName, entries) {
   const queries = readTable('검색어 수.csv', '인기 검색어');
   const pages = readTable('페이지.csv', '인기 페이지');
   const devices = readTable('기기.csv', '기기');
-  const scope = gscScope(entries, fileName, { daily, queries, pages, devices });
+  const explicitConfirmation = Object.hasOwn(options, 'pageQueryConfirmation');
+  if (explicitConfirmation && !options.pageQueryConfirmation) invalidGsc('페이지 검색어 확인 정보가 비어 있습니다');
+  if (explicitConfirmation && priorSummary.operatorConfirmation
+    && ['pageUrl', 'periodStart', 'periodEnd', 'exactMatch', 'completeExport'].some(key => options.pageQueryConfirmation[key] !== priorSummary.operatorConfirmation[key])) invalidGsc('같은 원본에 저장된 페이지·기간 확인값과 다릅니다. 원본 필터에 맞는 자료를 다시 선택해 주세요');
+  const scope = gscScope(entries, fileName, { daily, queries, pages, devices }, {
+    confirmation: explicitConfirmation ? options.pageQueryConfirmation : priorSummary.operatorConfirmation,
+    confirmedAt: explicitConfirmation ? null : priorSummary.operatorConfirmation?.confirmedAt,
+  });
+  if (scope.metadata.operatorConfirmation) scope.metadata.pageQueryScope.filterEvidence = 'operator-confirmation-and-export-filters';
   const normalizedGroups = new Map();
   for (const row of pages) {
     const url = normalizeUrl(row.dimension);
@@ -513,14 +562,15 @@ function importGscPerformance(buffer, fileName, entries) {
     impressions: sumGsc(daily, 'impressions'),
     pageRows: pages.length,
     queryRows: queries.length,
+    queryClicks: sumGsc(queries, 'clicks'), queryImpressions: sumGsc(queries, 'impressions'),
     duplicateGroups: duplicates.length,
     duplicateImpressions: duplicates.length ? sumGsc(duplicates.flat(), 'impressions') : 0,
     ...scope.metadata,
   };
+  if (summary.pageQueryEligible) summary.scope = '단일 페이지 웹검색';
   const sourceType = scope.sitewide ? 'gsc_performance' : 'gsc_performance_scoped';
-  const existing = db.prepare('SELECT id, source_type, summary_json FROM analytics_imports WHERE file_hash=?').get(sha256(buffer));
   const revalidate = existing && ['gsc_performance', 'gsc_performance_scoped'].includes(existing.source_type)
-    && typeof JSON.parse(existing.summary_json || '{}').sitewideEligible !== 'boolean';
+    && (typeof priorSummary.sitewideEligible !== 'boolean' || priorSummary.pageQueryScopeVersion !== 1 || explicitConfirmation);
   let meta;
   if (revalidate) {
     // Explicitly re-uploading a retained original may validate legacy evidence.
@@ -637,11 +687,14 @@ function importNaverWebPerformance(buffer, fileName, entries) {
   return meta;
 }
 
-function importBufferUnchecked(buffer, fileName) {
+function importBufferUnchecked(buffer, fileName, options = {}) {
+  if (Object.hasOwn(options, 'pageQueryConfirmation') && !/\.zip$/i.test(fileName)) invalidGsc('페이지 검색어 확인은 GSC 실적 ZIP에만 사용할 수 있습니다');
   if (/\.zip$/i.test(fileName)) {
     const entries = zipEntries(buffer);
+    if (entries.has('검색어 수.csv') && entries.has('페이지.csv')) return importGscPerformance(buffer, fileName, entries, options);
+    if (Object.hasOwn(options, 'pageQueryConfirmation')) invalidGsc('페이지 검색어 확인은 검색어·페이지 표가 포함된 GSC 실적 ZIP에만 사용할 수 있습니다');
     if (entries.has('검색 키워드.csv') && entries.has('검색 웹문서.csv')) return importNaverWebPerformance(buffer, fileName, entries);
-    if (entries.has('검색어 수.csv') && entries.has('페이지.csv')) return importGscPerformance(buffer, fileName, entries);
+    if (entries.has('검색어 수.csv') || entries.has('페이지.csv')) invalidGsc('검색어 수.csv와 페이지.csv 표를 함께 가져와 주세요');
     if (entries.has('심각한 문제.csv')) return importGscCoverage(buffer, fileName, entries);
     throw new Error('지원하는 Search Console ZIP 형식이 아닙니다');
   }
@@ -653,8 +706,8 @@ function importBufferUnchecked(buffer, fileName) {
   throw new Error('CSV 또는 ZIP 파일만 가져올 수 있습니다');
 }
 
-function importBuffer(buffer, fileName) {
-  return db.transaction(() => importBufferUnchecked(buffer, fileName))();
+function importBuffer(buffer, fileName, options = {}) {
+  return db.transaction(() => importBufferUnchecked(buffer, fileName, options))();
 }
 
 function initialImport() {
@@ -710,6 +763,57 @@ function latestGa4PagesImport() {
     ORDER BY period_end DESC, imported_at DESC, id DESC LIMIT 1
   `).get();
   return row ? { ...row, summary: JSON.parse(row.summaryJson || '{}'), summaryJson: undefined } : null;
+}
+
+function pageQueryEvidenceMap(performance) {
+  const result = new Map();
+  if (!performance?.summary?.sitewideEligible || !pageQueryScope.validPeriod(performance.periodStart, performance.periodEnd)) return result;
+  const imports = db.prepare(`
+    SELECT i.id, i.file_hash AS fileHash, i.period_start AS periodStart, i.period_end AS periodEnd,
+      i.imported_at AS importedAt, i.summary_json AS summaryJson,
+      p.original_url AS pageUrl, p.clicks AS pageClicks, p.impressions AS pageImpressions,
+      COUNT(p.import_id) OVER (PARTITION BY i.id) AS pageCount
+    FROM analytics_imports i LEFT JOIN gsc_pages p ON p.import_id=i.id
+    WHERE i.source_type='gsc_performance_scoped' AND json_extract(i.summary_json, '$.pageQueryEligible')=1
+      AND i.period_start=? AND i.period_end=?
+    ORDER BY i.period_end DESC, i.imported_at DESC, i.id DESC
+  `).all(performance.periodStart, performance.periodEnd);
+  const candidates = [];
+  for (const item of imports) {
+    const summary = JSON.parse(item.summaryJson || '{}');
+    const scope = summary.pageQueryScope;
+    if (!pageQueryScope.eligibleSummary(summary, performance) || item.pageCount !== 1 || item.pageUrl !== scope.pageFilterUrl
+      || item.pageClicks !== scope.pageClicks || item.pageImpressions !== scope.pageImpressions) continue;
+    candidates.push({ ...item, summary, scope });
+  }
+  if (!candidates.length) return result;
+  // Two queries serve every guide; no SELECT per page or per import.
+  const rows = db.prepare(`SELECT import_id AS importId, query, clicks, impressions, ctr, position FROM gsc_queries
+    WHERE import_id IN (SELECT value FROM json_each(?)) ORDER BY import_id, impressions DESC, clicks DESC, query COLLATE BINARY`)
+    .all(JSON.stringify(candidates.map(item => item.id)));
+  const byImport = new Map(candidates.map(item => [item.id, []]));
+  for (const { importId, ...row } of rows) byImport.get(importId)?.push(row);
+  for (const item of candidates) {
+    if (result.has(item.pageUrl)) continue;
+    const queryRows = byImport.get(item.id);
+    if (queryRows.length !== item.scope.queryRows || new Set(queryRows.map(row => row.query)).size !== queryRows.length
+      || queryRows.some(row => !String(row.query || '').trim()) || !pageQueryScope.metricIntegrity(queryRows)
+      || ['clicks', 'impressions'].some(key => queryRows.reduce((sum, row) => sum + row[key], 0) > item.scope[key === 'clicks' ? 'pageClicks' : 'pageImpressions'])) continue;
+    const fingerprint = sha256(JSON.stringify({ fileHash: item.fileHash, scope: item.scope, summary: item.summary, queryRows }));
+    result.set(item.pageUrl, {
+      verified: true, pageUrl: item.pageUrl, periodStart: item.periodStart, periodEnd: item.periodEnd,
+      importId: item.id, fingerprint, scope: item.scope, queryRows, sourceSummary: item.summary,
+    });
+  }
+  return result;
+}
+
+function selectPageQueryEvidence(pageUrl, performance, evidenceMap = null) {
+  const url = pageQueryScope.canonicalPageUrl(pageUrl);
+  if (!url) return null;
+  const bundle = (evidenceMap || pageQueryEvidenceMap(performance)).get(url);
+  return bundle?.pageUrl === url && bundle.periodStart === performance?.periodStart && bundle.periodEnd === performance?.periodEnd
+    && pageQueryScope.eligibleSummary(bundle.sourceSummary, performance) ? bundle : null;
 }
 
 function reconcileGa4Mappings() {
@@ -799,5 +903,6 @@ function reconcileGscPageUrls() {
 module.exports = {
   PARSER_VERSION, parseCsvText, parseGa4Blocks, importBuffer, initialImport,
   listImports, latestImport, latestGa4PagesImport, zipEntries, cleanGscPageUrl, cleanGa4PagePath,
+  pageQueryEvidenceMap, selectPageQueryEvidence, canonicalPageUrl: pageQueryScope.canonicalPageUrl,
   reconcileGscPageUrls, reconcileGa4Mappings, reconcileGa4OrganicMappings, importNaverWebPerformance, importGscIndexingSnapshot,
 };
