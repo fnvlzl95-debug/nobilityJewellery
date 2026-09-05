@@ -216,6 +216,8 @@ const repairServices = [
 
         <GuideClusterLinks cluster-id="repair" current-path="/repair" />
 
+        <ConsultationNextStep path="/repair" />
+
         <!-- CTA -->
         <LandingCTA
           title="수리 문의하기"

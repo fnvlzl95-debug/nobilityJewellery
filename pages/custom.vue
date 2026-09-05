@@ -248,6 +248,8 @@ const advantages = [
         <!-- 주문제작 가이드 클러스터 -->
         <GuideClusterLinks cluster-id="custom" />
 
+        <ConsultationNextStep path="/custom" />
+
         <!-- CTA -->
         <LandingCTA
           title="주문제작 상담"

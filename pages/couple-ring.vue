@@ -249,6 +249,8 @@ const engravingOptions = [
         <!-- 커플링 가이드 클러스터 -->
         <GuideClusterLinks cluster-id="couple-ring" />
 
+        <ConsultationNextStep path="/couple-ring" />
+
         <!-- CTA -->
         <LandingCTA
           title="커플링 상담"

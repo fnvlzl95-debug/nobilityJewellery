@@ -7,7 +7,7 @@ const pageTitle = '화이트골드 변색 원인과 도금 관리, 반지·목�
 const pageDescription = '화이트골드 변색은 로듐 도금 마모, 생활 스크래치, 세제·땀·화장품 접촉으로 생길 수 있습니다. 반지·목걸이 재도금과 관리 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/white-gold-discoloration-comparison.webp`
 const publishedAt = '2026-05-19'
-const updatedAt = '2026-08-28'
+const updatedAt = '2026-09-05'
 
 const faqItems = [
   {

@@ -7,6 +7,7 @@ const pageTitle = '은반지 수리 비용, 변색·찌그러짐·사이즈별 �
 const pageDescription = '은반지 수리 비용은 광택, 형태 복원, 사이즈 조절, 땜 여부에 따라 달라져요. 맡기기 전 확인할 내용을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN0401.webp`
 const publishedAt = '2026-03-28'
+const updatedAt = '2026-09-05'
 const faqItems = [
   {
     question: '변색된 은반지는 세척만으로도 괜찮아지나요?',
@@ -55,7 +56,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,6 +83,7 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt"
     category="비용"
     keyword="은반지 수리 비용"
     inquiry-type="repair"

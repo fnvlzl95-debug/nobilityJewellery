@@ -7,6 +7,7 @@ const pageTitle = '금반지 수리 비용: 작업별로 달라지는 기준 | �
 const pageDescription = '금반지 수리 비용은 사이즈 조절, 땜, 재세팅 등 작업마다 달라져요. 맡기기 전에 확인해두면 좋은 점을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/NN1301.webp`
 const publishedAt = '2026-02-14'
+const updatedAt = '2026-09-05'
 const faqItems = [
   {
     question: '금반지 사이즈 수리는 당일 가능한가요?',
@@ -55,7 +56,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,6 +83,7 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt"
     category="비용"
     keyword="금반지 수리 비용"
     inquiry-type="repair"

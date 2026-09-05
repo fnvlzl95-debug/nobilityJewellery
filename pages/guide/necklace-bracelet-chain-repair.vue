@@ -7,7 +7,7 @@ const pageTitle = '목걸이 끊어짐 수리: 체인·잠금장식 확인 기�
 const pageDescription = '목걸이가 끊어졌다면 체인 중간, 연결 고리, 잠금장식 중 손상 위치를 먼저 구분하세요. 사진 상담 준비와 실물 확인 전 주의점을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/necklace-bracelet-chain-repair-hero.webp`
 const publishedAt = '2026-05-28'
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 const faqItems = [
   {
     "question": "목걸이가 끊어졌는데 사진만으로 상담할 수 있나요?",

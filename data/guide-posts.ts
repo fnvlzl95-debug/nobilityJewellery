@@ -539,7 +539,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '팔찌 사이즈 재는 법',
     image: '/Image/guide/bracelet-size-measurement-hero.webp',
     publishedAt: '2026-07-22',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '선택',
   },
   {
@@ -771,7 +771,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금목걸이 길이 추천',
     image: '/Image/guide/necklace-length-guide-hero.webp',
     publishedAt: '2026-07-07',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '선택',
   },
   {
@@ -804,7 +804,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '백금 화이트골드 차이',
     image: '/Image/guide/platinum-white-gold.webp',
     publishedAt: '2026-06-03',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '선택',
   },
   {
@@ -867,7 +867,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '목걸이 끊어짐 팔찌 잠금장식 수리',
     image: '/Image/guide/necklace-bracelet-chain-repair-hero.webp',
     publishedAt: '2026-05-28',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '수리',
   },
   {
@@ -898,7 +898,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '화이트골드 변색',
     image: '/Image/guide/white-gold-discoloration-comparison.webp',
     publishedAt: '2026-05-19',
-    updatedAt: '2026-08-28',
+    updatedAt: '2026-09-05',
     category: '관리',
   },
   {
@@ -920,6 +920,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/gold-jewelry-remodeling-cost.webp',
     publishedAt: '2026-05-18',
     category: '비용',
+    updatedAt: '2026-09-05',
   },
   {
     slug: 'ring-size-measuring-method',
@@ -950,7 +951,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '14K 18K 커플링 가격 차이',
     image: '/Image/guide/couple-ring-14k-18k-comparison.webp',
     publishedAt: '2026-05-18',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '가격',
   },
   {
@@ -1026,6 +1027,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/ring/NN0401.webp',
     publishedAt: '2026-03-28',
     category: '비용',
+    updatedAt: '2026-09-05',
   },
   {
     slug: 'baby-ring-price',
@@ -1068,6 +1070,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/ring/NN1301.webp',
     publishedAt: '2026-02-14',
     category: '비용',
+    updatedAt: '2026-09-05',
   },
   {
     slug: 'baby-ring-production-time',
@@ -1088,7 +1091,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '금 1돈 몇 g',
     image: '/Image/ring/SB0105.webp',
     publishedAt: '2026-03-31',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-09-05',
     category: '가격',
   },
 ]

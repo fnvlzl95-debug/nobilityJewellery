@@ -153,7 +153,7 @@ const relatedLinks = [
   }
 ]
 
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 // guide-manager:data:start
 const gmArticleTitle = '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정'
 const gmArticleLead = '팔찌 사이즈는 손목 둘레에 일정한 숫자만 더해서 정하기 어렵습니다. 체인형 팔찌는 손목 둘레와 실제 체결 길이를 따로 살펴봐야 하며, 폐쇄형 뱅글은 손을 통과하는 가장 넓은 부분과 제품 안쪽 치수를 확인해야 합니다.'

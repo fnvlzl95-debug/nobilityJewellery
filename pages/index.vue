@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
-import Lenis from 'lenis'
+
 import { galleryItems, categories } from '~/data/gallery-items'
 import { faqItems } from '~/data/faq-items'
 import { siteConfig } from '~/config/site'
@@ -243,12 +243,12 @@ useHead({
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
-const heroLoaded = ref(false)
+const heroLoaded = ref(true)
 const mapLoaded = ref(false)
 const mapWrapper = ref<HTMLElement | null>(null)
 
-let lenis: Lenis | null = null
-let rafId: number | null = null
+
+
 let revealObserver: IntersectionObserver | null = null
 let fallbackScrollHandler: (() => void) | null = null
 
@@ -257,9 +257,7 @@ const scrollTo = (id: string) => {
   // Reset body scroll lock when menu closes
   document.body.style.overflow = ''
   const target = document.getElementById(id)
-  if (target && lenis) {
-    lenis.scrollTo(target)
-  } else if (target) {
+  if (target) {
     target.scrollIntoView({ behavior: 'smooth' })
   }
 }
@@ -290,34 +288,10 @@ const resetTilt = (el: HTMLElement) => {
 }
 
 onMounted(() => {
-  // Hero animation
-  setTimeout(() => heroLoaded.value = true, 100)
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  if (!reduceMotion) {
-    lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-    })
-
-    function raf(time: number) {
-      lenis?.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
-
-    lenis.on('scroll', ({ scroll }: { scroll: number }) => {
-      isScrolled.value = scroll > 80
-    })
-  } else {
-    fallbackScrollHandler = () => { isScrolled.value = window.scrollY > 80 }
-    window.addEventListener('scroll', fallbackScrollHandler, { passive: true })
-    fallbackScrollHandler()
-  }
+  // Native scroll leaves mobile interaction independent of a continuous animation loop.
+  fallbackScrollHandler = () => { isScrolled.value = window.scrollY > 80 }
+  window.addEventListener('scroll', fallbackScrollHandler, { passive: true })
+  fallbackScrollHandler()
 
   // Reveal animation observer
   revealObserver = new IntersectionObserver(
@@ -356,8 +330,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (rafId) cancelAnimationFrame(rafId)
-  lenis?.destroy()
   revealObserver?.disconnect()
   revealObserver = null
   if (fallbackScrollHandler) {
@@ -909,8 +881,8 @@ const handleNaverMapClick = () => {
   height: auto;
   object-fit: cover;
   object-position: center center;
-  opacity: 0;
-  transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* 모바일 히어로 최적화 */

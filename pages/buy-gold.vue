@@ -280,6 +280,8 @@ const relatedGuides = [
           </div>
         </section>
 
+        <ConsultationNextStep path="/buy-gold" />
+
         <!-- CTA -->
         <LandingCTA
           title="매입 상담 문의"

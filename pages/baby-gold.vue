@@ -252,6 +252,8 @@ const processSteps = [
         <!-- 돌반지 가이드 클러스터 -->
         <GuideClusterLinks cluster-id="baby-gold" />
 
+        <ConsultationNextStep path="/baby-gold" />
+
         <!-- CTA -->
         <LandingCTA
           title="돌반지 상담"

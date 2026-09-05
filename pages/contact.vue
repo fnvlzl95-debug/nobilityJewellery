@@ -2,9 +2,10 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
+import { cleanPath } from '~/utils/analytics-policy'
 
 type InquiryType = 'wholesale' | 'custom' | 'repair' | 'other'
-type InquirySource = 'home' | 'gallery' | 'guide_article'
+type InquirySource = 'home' | 'gallery' | 'guide_article' | 'service'
 
 useHead({
   title: '도매·주문제작·수리 상담 | 종로 | 귀족',
@@ -93,6 +94,7 @@ const inquirySourceLabels: Record<InquirySource, string> = {
   home: '홈',
   gallery: '갤러리',
   guide_article: '가이드',
+  service: '서비스 안내',
 }
 
 const getQueryValue = (value: string | null | Array<string | null> | undefined) => {
@@ -107,7 +109,7 @@ const parseQueryType = (): InquiryType | '' => {
 
 const parseQuerySource = (): InquirySource | '' => {
   const source = getQueryValue(route.query.source)
-  return source === 'home' || source === 'gallery' || source === 'guide_article'
+  return source === 'home' || source === 'gallery' || source === 'guide_article' || source === 'service'
     ? source
     : ''
 }
@@ -120,6 +122,8 @@ const buildInitialFormData = () => ({
   consent: false,
   source: parseQuerySource(),
   topic: getQueryValue(route.query.topic).trim().slice(0, 120),
+  sourcePath: cleanPath(getQueryValue(route.query.from)),
+  discoverySource: '',
   honeypot: '',
 })
 
@@ -184,6 +188,7 @@ onUnmounted(() => {
 })
 
 const handleSubmit = async () => {
+  if (isSubmitting.value) return
   formError.value = ''
 
   if (!formData.value.type) {
@@ -204,10 +209,10 @@ const handleSubmit = async () => {
   try {
     const response = await $fetch<{ ok: boolean, inquiryId?: string }>('/api/inquiry', {
       method: 'POST',
-      body: formData.value,
+      body: { ...submissionSnapshot, acquisition: useInquiryContext().capture() },
     })
 
-    if (!response.inquiryId) {
+    if (!response.ok || !response.inquiryId) {
       throw new Error('접수번호를 확인할 수 없습니다.')
     }
 
@@ -224,7 +229,7 @@ const handleSubmit = async () => {
     successHeadingRef.value?.focus()
   } catch (e: any) {
     const errorMessage = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
-    const errorCode = e.data?.data?.code || e.data?.code || errorMessage
+    const errorCode = e.data?.data?.code || e.data?.code || 'SUBMISSION_FAILED'
     trackFormError('contact', errorCode, e.statusCode ? 'api_error' : 'submission')
     formError.value = errorMessage
   } finally {
@@ -331,7 +336,7 @@ const handleSubmit = async () => {
               </svg>
             </div>
             <h2 ref="successHeadingRef" tabindex="-1" class="success-title">문의가 접수되었습니다</h2>
-            <p class="success-desc">24시간 내 연락드리겠습니다</p>
+            <p class="success-desc">확인 후 영업시간 내 순서대로 연락드리겠습니다.</p>
             <p v-if="submittedInquiryId" class="success-id">접수번호 {{ submittedInquiryId }}</p>
             <button @click="isSubmitted = false; submittedInquiryId = ''" class="btn-reset">
               <span>추가 문의하기</span>
@@ -407,6 +412,20 @@ const handleSubmit = async () => {
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="form-label" for="inquiry-discovery">귀족을 처음 알게 된 경로 <span>(선택)</span></label>
+              <select id="inquiry-discovery" v-model="formData.discoverySource" class="form-input">
+                <option value="">선택하지 않음</option>
+                <option value="naver_search">네이버 검색</option>
+                <option value="google_search">구글 검색</option>
+                <option value="naver_place">네이버 지도·플레이스</option>
+                <option value="ai">ChatGPT 등 AI 검색</option>
+                <option value="recommendation">지인 추천</option>
+                <option value="returning">이전 이용</option>
+                <option value="other">기타</option>
+              </select>
+            </div>
+
             <!-- Message -->
             <div class="form-group">
               <label class="form-label" for="inquiry-message">문의 내용</label>
@@ -415,6 +434,8 @@ const handleSubmit = async () => {
                 v-model="formData.message"
                 class="form-textarea"
                 placeholder="문의하실 내용을 입력해주세요"
+                minlength="10"
+                maxlength="2000"
                 required
               ></textarea>
             </div>
@@ -451,6 +472,7 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
+select.form-input { color-scheme: dark; }
 /* ===== Base ===== */
 .page {
   min-height: 100vh;

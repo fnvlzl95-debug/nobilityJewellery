@@ -7,6 +7,7 @@ const pageTitle = '금 리폼 비용, 오래된 금제품을 새 반지·목걸�
 const pageDescription = '금 리폼 비용은 기존 금 중량, 순도, 새 디자인, 세공 공임, 추가 금 사용 여부에 따라 달라집니다. 오래된 금제품 리폼 전 확인할 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/gold-jewelry-remodeling-cost.webp`
 const publishedAt = '2026-05-18'
+const updatedAt = '2026-09-05'
 
 const faqItems = [
   {
@@ -165,7 +166,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -192,6 +193,7 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt"
     category="비용"
     keyword="금 리폼 비용"
     inquiry-type="custom"

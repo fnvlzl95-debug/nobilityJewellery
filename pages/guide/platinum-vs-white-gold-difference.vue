@@ -7,7 +7,7 @@ const pageTitle = '백금·화이트골드 차이: 가격·무게·변색·예�
 const pageDescription = '백금(플래티넘)과 화이트골드는 색·무게·관리·가격이 달라요. 소재 차이부터 재도금, 예물 반지를 고를 때 보면 좋은 기준까지 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/platinum-white-gold.webp`
 const publishedAt = '2026-06-03'
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 const faqItems = [
   {
     question: '백금이 화이트골드보다 무조건 좋나요?',

@@ -1,6 +1,7 @@
 import { defineEventHandler, readBody, createError, getRequestHeader, getRequestIP } from 'h3'
 import { useRuntimeConfig } from '#imports'
 import { sendMail } from '../utils/mail'
+import { cleanPath, sanitizeAcquisition } from '../../utils/analytics-policy'
 
 interface InquiryBody {
   name: string
@@ -11,6 +12,9 @@ interface InquiryBody {
   source?: string
   topic?: string
   honeypot?: string // Spam prevention
+  sourcePath?: string
+  discoverySource?: string
+  acquisition?: unknown
 }
 
 // Simple rate limiting store (in production, use Redis or similar)
@@ -86,6 +90,12 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody<InquiryBody>(event)
 
+  if (!body || typeof body !== 'object' || typeof body.name !== 'string' ||
+      typeof body.phone !== 'string' || typeof body.message !== 'string' ||
+      typeof body.type !== 'string' || !Object.hasOwn(typeLabels, body.type)) {
+    throw createError({ statusCode: 400, message: '문의 내용을 확인해주세요.', data: { code: 'INVALID_INQUIRY' } })
+  }
+
   // Honeypot check (spam prevention)
   if (body.honeypot) {
     // Silently accept but don't process
@@ -93,7 +103,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Validation
-  if (!body.name || body.name.length < 2 || body.name.length > 100) {
+  if (body.name.trim().length < 2 || body.name.length > 100) {
     throw createError({
       statusCode: 400,
       message: '이름을 올바르게 입력해주세요.',
@@ -107,14 +117,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (!body.message || body.message.length < 10 || body.message.length > 2000) {
+  if (body.message.trim().length < 10 || body.message.length > 2000) {
     throw createError({
       statusCode: 400,
       message: '문의 내용을 10자 이상 입력해주세요.',
     })
   }
 
-  if (!body.consent) {
+  if (body.consent !== true) {
     throw createError({
       statusCode: 400,
       message: '개인정보 수집에 동의해주세요.',
@@ -132,11 +142,14 @@ export default defineEventHandler(async (event) => {
     message: body.message.trim(),
     source: typeof body.source === 'string' ? body.source.trim().slice(0, 40) : '',
     topic: typeof body.topic === 'string' ? body.topic.trim().slice(0, 120) : '',
+    sourcePath: cleanPath(body.sourcePath),
+    discoverySource: ['naver_search', 'google_search', 'naver_place', 'ai', 'recommendation', 'returning', 'other'].includes(body.discoverySource || '') ? body.discoverySource! : '',
+    acquisition: sanitizeAcquisition(body.acquisition),
     submittedAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
     ip: ip.split(',')[0].trim(),
   }
 
-  console.log('New inquiry received:', inquiry)
+  console.log('Inquiry received:', { inquiryId: inquiry.id, type: inquiry.type })
 
   // Send email notification
   try {
@@ -209,6 +222,18 @@ export default defineEventHandler(async (event) => {
               <td style="padding: 12px; border-bottom: 1px solid #eee;">${escapeHtml(inquiry.topic)}</td>
             </tr>
             ` : ''}
+            <tr>
+              <td style="padding:12px;background:#f5f5f5;font-weight:bold">상담 페이지</td>
+              <td style="padding:12px">${escapeHtml(inquiry.sourcePath || '직접 문의')}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px;background:#f5f5f5;font-weight:bold">처음 안 경로</td>
+              <td style="padding:12px">${escapeHtml(inquiry.discoverySource || '미응답')}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px;background:#f5f5f5;font-weight:bold">사이트 유입</td>
+              <td style="padding:12px">착지: ${escapeHtml(inquiry.acquisition.landingPath || '미상')}<br>참조 호스트: ${escapeHtml(inquiry.acquisition.referrerHost || '미상')}<br>캠페인: ${escapeHtml([inquiry.acquisition.utmSource, inquiry.acquisition.utmMedium, inquiry.acquisition.utmCampaign].filter(Boolean).join(' / ') || '없음')}</td>
+            </tr>
           </table>
 
           <div style="margin: 20px 0;">
@@ -226,9 +251,9 @@ ${escapeHtml(inquiry.message)}
     })
     console.log('Inquiry email sent:', { inquiryId: inquiry.id, mailId: mailResult.id })
   } catch (error) {
-    console.error('Failed to send email:', error)
     const message = error instanceof Error ? error.message : ''
     const code = message.includes('not configured') ? 'MAIL_NOT_CONFIGURED' : 'MAIL_PROVIDER_REJECTED'
+    console.error('Inquiry delivery failed:', { inquiryId: inquiry.id, code })
     throw createError({
       statusCode: code === 'MAIL_NOT_CONFIGURED' ? 503 : 502,
       message: '문의 전송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해주세요.',

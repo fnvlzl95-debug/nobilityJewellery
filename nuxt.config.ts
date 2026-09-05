@@ -42,7 +42,9 @@ const buildPrerenderRoutes = (): string[] => [
 ]
 
 const seoUpdatedAt = '2026-08-25'
-const consultationPagesUpdatedAt = '2026-08-29'
+// All gallery detail pages now include a design-specific inquiry path.
+const galleryTemplateUpdatedAt = '2026-09-05'
+const consultationPagesUpdatedAt = '2026-09-05'
 const sitemapUrls = [
   ...guidePosts.map((guide) => ({
     loc: guide.path,
@@ -50,14 +52,14 @@ const sitemapUrls = [
   })),
   ...galleryItems.map((item) => ({
     loc: `/gallery/${item.slug}`,
-    lastmod: seoUpdatedAt,
+    lastmod: galleryTemplateUpdatedAt,
   })),
   { loc: '/guide', lastmod: seoUpdatedAt },
   { loc: '/gallery', lastmod: seoUpdatedAt },
   { loc: '/wedding', lastmod: consultationPagesUpdatedAt },
-  { loc: '/buy-gold', lastmod: seoUpdatedAt },
+  ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: consultationPagesUpdatedAt })),
   { loc: '/contact', lastmod: consultationPagesUpdatedAt },
-  { loc: '/wholesale', lastmod: consultationPagesUpdatedAt },
+  { loc: '/wholesale', lastmod: '2026-08-29' },
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -78,6 +80,7 @@ export default defineNuxtConfig({
   ],
 
   image: {
+    provider: 'ipxStatic',  // Cloudflare has no Node image server; ship generated variants.
     format: ['webp', 'png', 'jpg'],
     quality: 85,  // 모바일 전송량 절감 — 갤러리 상세 원본(raw img)은 영향 없음
     screens: {
@@ -125,40 +128,11 @@ export default defineNuxtConfig({
         { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
         // Pretendard (본문 가독성용 고딕 — 동적 서브셋)
         { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css' },
-        // Preconnect for Naver Analytics (LCP 개선)
-        { rel: 'preconnect', href: 'https://nam.veta.naver.com' },
-        { rel: 'preconnect', href: 'https://ssl.pstatic.net' },
-        // Preconnect for Google
-        { rel: 'preconnect', href: 'https://www.googletagmanager.com' },
-        { rel: 'preconnect', href: 'https://maps.googleapis.com' },
-        // Preconnect for Meta Pixel
-        { rel: 'preconnect', href: 'https://connect.facebook.net', crossorigin: '' },
       ],
       script: [
         // .reveal 등 JS 의존 스타일의 게이트 클래스 — JS 미실행 시 콘텐츠가 숨지 않도록
         { innerHTML: 'document.documentElement.classList.add("js-enabled")' },
-        ...(process.env.NODE_ENV === 'production' ? [
-        // Google Analytics 4
-        { src: `https://www.googletagmanager.com/gtag/js?id=${siteConfig.analytics.ga4}`, async: true },
-        { innerHTML: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${siteConfig.analytics.ga4}');` },
-        // Naver Analytics
-        { innerHTML: `if(!window.wcs_add) window.wcs_add = {}; wcs_add['wa'] = '${siteConfig.analytics.naver}'; var _nasa={}; if(window.wcs) wcs.inflow('${siteConfig.domain}');` },
-        { src: 'https://wcs.pstatic.net/wcslog.js', async: true },
-        { innerHTML: `(function check(){if(window.wcs){wcs.inflow('${siteConfig.domain}');wcs_do(_nasa);}else{setTimeout(check,100);}})();` },
-        // Meta Pixel
-        {
-          key: 'meta-pixel',
-          innerHTML: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${siteConfig.analytics.metaPixel}');fbq('track','PageView');`,
-        },
-      ] : []),
       ],
-      noscript: process.env.NODE_ENV === 'production' ? [
-        {
-          key: 'meta-pixel-noscript',
-          innerHTML: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${siteConfig.analytics.metaPixel}&ev=PageView&noscript=1" alt="">`,
-          tagPosition: 'bodyOpen',
-        },
-      ] : [],
     },
   },
 

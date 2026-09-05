@@ -310,6 +310,8 @@ const processSteps = [
           </div>
         </div>
 
+        <ConsultationNextStep path="/wedding" />
+
         <!-- CTA -->
         <LandingCTA
           title="예물 상담"

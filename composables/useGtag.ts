@@ -1,4 +1,9 @@
 import { siteConfig } from '~/config/site'
+import { shouldTrackAnalytics, analyticsEventVersion, cleanPath } from '~/utils/analytics-policy'
+
+const submittedLeadIds = new Set<string>()
+const trackingAllowed = () => typeof window !== 'undefined' &&
+  shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search)
 
 // GA4 이벤트 추적 composable
 export const useGtag = () => {
@@ -24,7 +29,7 @@ export const useGtag = () => {
     eventName: MetaStandardEvent | string,
     params?: MetaEventParams,
   ) => {
-    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+    if (trackingAllowed() && typeof window.fbq === 'function') {
       if (params) {
         (window as any).fbq(method, eventName, params)
       } else {
@@ -42,6 +47,8 @@ export const useGtag = () => {
   }
 
   const trackEvent = (eventName: string, params?: Record<string, string | number>) => {
+    if (!trackingAllowed()) return
+    params = { ...params, event_version: analyticsEventVersion, page_path: cleanPath(window.location.pathname) }
     if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
       (window as any).gtag('event', eventName, params)
     }
@@ -85,10 +92,6 @@ export const useGtag = () => {
       phone_number: siteConfig.phone,
       ...conversionParams,
     })
-    trackEvent('click_phone', {
-      phone_number: siteConfig.phone,
-      ...conversionParams,
-    })
     trackMetaEvent('Contact', { contact_method: 'phone', ...conversionParams })
     trackCtaClick('phone_call', pageName, { ...params, destination })
   }
@@ -98,8 +101,6 @@ export const useGtag = () => {
     const destination = params?.destination || '/contact'
     const conversionParams = buildConversionParams(pageName, { ...params, destination })
     trackEvent('inquiry_click', conversionParams)
-    trackEvent('click_consultation', conversionParams)
-    trackMetaEvent('Contact', { contact_method: 'inquiry_form', ...conversionParams })
     trackCtaClick('online_inquiry', pageName, { ...params, destination })
   }
 
@@ -108,7 +109,6 @@ export const useGtag = () => {
     const destination = params?.destination || siteConfig.social.kakaoOpenChat
     const conversionParams = buildConversionParams(pageName, { ...params, destination })
     trackEvent('kakao_click', conversionParams)
-    trackEvent('click_kakao', conversionParams)
     trackMetaEvent('Contact', { contact_method: 'kakao', ...conversionParams })
     trackCtaClick('kakao_chat', pageName, { ...params, destination })
   }
@@ -128,10 +128,6 @@ export const useGtag = () => {
       destination,
     })
     trackEvent(`${mapType}_map_click`, conversionParams)
-    trackEvent('click_directions', {
-      map_type: mapType,
-      ...conversionParams,
-    })
     trackMetaEvent('FindLocation', { map_type: mapType, ...conversionParams })
     trackCtaClick('directions', pageName, {
       ...params,
@@ -140,18 +136,7 @@ export const useGtag = () => {
     })
   }
 
-  const pageInquiryEvents: Record<string, string> = {
-    gallery: 'gallery_inquiry_click',
-    repair: 'repair_inquiry_click',
-    custom: 'custom_inquiry_click',
-    wholesale: 'wholesale_inquiry_click',
-  }
-
   const trackPageInquiryClick = (pageName: string, params?: ConversionParams) => {
-    const eventName = pageInquiryEvents[pageName]
-    if (eventName) {
-      trackEvent(eventName, buildConversionParams(pageName, params))
-    }
     trackInquiryClick(pageName, params)
   }
 
@@ -161,6 +146,8 @@ export const useGtag = () => {
     leadTopic?: string,
     leadId?: string,
   ) => {
+    if (!trackingAllowed() || !leadId || submittedLeadIds.has(leadId)) return
+    submittedLeadIds.add(leadId)
     const leadParams = withOptionalParams({
       lead_type: leadType,
       lead_source: leadSource,

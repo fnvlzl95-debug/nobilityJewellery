@@ -37,5 +37,6 @@ export async function sendMail(options: MailOptions) {
   }
 
   const result = await response.json().catch(() => null) as { id?: string } | null
-  return { id: result?.id || '' }
+  if (!result?.id) throw new Error('Mail provider did not confirm receipt')
+  return { id: result.id }
 }

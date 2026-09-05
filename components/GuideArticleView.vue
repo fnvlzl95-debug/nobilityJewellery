@@ -85,6 +85,7 @@ const contactLink = computed(() => ({
     type: props.inquiryType,
     source: 'guide_article',
     topic: props.inquiryTopic || props.keyword,
+    from: route.path,
   },
 }))
 
@@ -120,7 +121,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   if (!link) return
 
   const url = new URL(link.href, window.location.origin)
-  if (url.origin !== window.location.origin || !servicePaths.has(url.pathname)) return
+  if (url.origin !== window.location.origin || (!servicePaths.has(url.pathname) && !url.pathname.startsWith('/gallery/'))) return
 
   const placement = link.closest('.related-card')
     ? 'related_links'
@@ -230,6 +231,8 @@ const handleGuideLinkClick = (event: MouseEvent) => {
           </figure>
         </section>
       </article>
+
+      <ConsultationNextStep :path="route.path" />
 
       <section v-if="props.cautions?.length" class="guide-caution">
         <h2>알아두시면 좋아요</h2>

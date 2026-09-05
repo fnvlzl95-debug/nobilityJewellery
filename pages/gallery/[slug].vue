@@ -3,6 +3,7 @@ import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { getItemBySlug, getRelatedItems, getLandingLinkForItem, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
+import { galleryConsultation } from '~/data/gallery-consultation'
 
 const route = useRoute()
 const slug = computed(() => String(route.params.slug ?? ''))
@@ -17,12 +18,14 @@ if (!item) {
 }
 
 const product = item
+const consultation = galleryConsultation[product.slug]
+const contactLink = { path: '/contact', query: { type: 'custom', source: 'gallery', topic: product.title, from: `/gallery/${product.slug}` } }
 const category = categories.find((c) => c.id === product.category)
 const categoryLabel = category?.label ?? '컬렉션'
 const relatedItems = getRelatedItems(product, 3)
 const landingLink = getLandingLinkForItem(product)
 
-const { trackKakaoClick, trackPhoneClick, trackEvent, trackMetaEvent } = useGtag()
+const { trackKakaoClick, trackPhoneClick, trackInquiryClick, trackEvent, trackMetaEvent } = useGtag()
 
 const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
 const heroImageUrl = `${siteConfig.url}${product.images[0]}`
@@ -287,6 +290,11 @@ onUnmounted(() => {
             </dl>
           </div>
 
+          <section v-if="consultation" class="design-consultation" aria-label="디자인 상담 안내">
+            <h2>{{ consultation.title }}</h2>
+            <ul><li v-for="point in consultation.points" :key="point">{{ point }}</li></ul>
+          </section>
+
           <div class="cta">
             <a
               :href="siteConfig.social.kakaoOpenChat"
@@ -301,6 +309,7 @@ onUnmounted(() => {
               </svg>
             </a>
             <div class="cta-actions">
+              <NuxtLink :to="contactLink" class="cta-secondary" @click="trackInquiryClick('gallery_detail', { placement: 'product_cta', intent: 'custom', topic: product.title })">이 디자인으로 문의 남기기</NuxtLink>
               <a :href="`tel:${siteConfig.phone}`" class="cta-secondary" @click="handlePhone">
                 전화 문의
               </a>
@@ -380,6 +389,10 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.design-consultation { margin:24px 0; padding:22px 0; border-top:1px solid rgba(201,162,39,.35); }
+.design-consultation h2 { font-size:19px; line-height:1.55; color:#e4cf8d; margin-bottom:12px; }
+.design-consultation ul { padding-left:19px; list-style:disc; }
+.design-consultation li { color:rgba(250,250,250,.8); font-size:14px; line-height:1.8; margin:8px 0; }
 .page {
   background: var(--black);
   min-height: 100vh;

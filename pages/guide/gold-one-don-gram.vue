@@ -7,7 +7,7 @@ const pageTitle = '금 1돈은 몇 g? 3.75g·2돈·3돈 무게 환산표 | 귀�
 const pageDescription = '금 1돈은 3.75g, 2돈은 7.5g, 3돈은 11.25g입니다. 돈·그램 환산표와 순도·공임까지 함께 비교하는 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0105.webp`
 const publishedAt = '2026-03-31'
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 const faqItems = [
   {
     question: '금 1돈은 정확히 몇 g인가요?',

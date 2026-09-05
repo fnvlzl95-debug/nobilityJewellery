@@ -7,7 +7,7 @@ const pageTitle = '남자·여자 목걸이 길이 추천: 42·45·50cm 비교 |
 const pageDescription = '금목걸이 길이 추천 기준을 42cm, 45cm, 50cm 중심으로 정리했습니다. 체형, 펜던트 크기, 체인 굵기, 선물용 상담 전 확인할 내용을 안내합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/necklace-length-guide-hero.webp`
 const publishedAt = '2026-07-07'
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 
 const faqItems = [
   {

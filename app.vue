@@ -8,7 +8,7 @@ useHead({
 </script>
 
 <template>
-  <CustomCursor />
+  <ClientOnly><CustomCursor /></ClientOnly>
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>

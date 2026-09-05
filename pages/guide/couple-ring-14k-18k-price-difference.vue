@@ -148,7 +148,7 @@ const relatedLinks = [
   }
 ]
 
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-09-05'
 // guide-manager:data:start
 const gmArticleTitle = '14K·18K 커플링 가격 차이: 금 함량·중량·공임 비교'
 const gmArticleLead = '14K·18K 커플링 가격 차이는 금 함량만으로 정해지지 않습니다. 같은 디자인도 완성 중량, 폭·두께, 세팅, 당일 금 시세와 공임 조건이 다르면 견적을 그대로 비교할 수 없습니다. 상담 전에는 두 소재의 견적을 같은 중량·규격·세팅 기준으로 요청하세요.'
