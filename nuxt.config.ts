@@ -65,6 +65,8 @@ const sitemapUrls = [
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
+  // First paint should not wait for small global/component CSS requests.
+  features: { inlineStyles: true },
 
   runtimeConfig: {
     // Server-only (환경변수에서 읽어옴)
@@ -127,7 +129,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'dns-prefetch', href: 'https://cdn.jsdelivr.net' },
         // Pretendard (본문 가독성용 고딕 — 동적 서브셋)
-        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css' },
+        { rel: 'preload', as: 'style', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css', onload: "this.onload=null;this.rel='stylesheet'" },
       ],
       script: [
         // .reveal 등 JS 의존 스타일의 게이트 클래스 — JS 미실행 시 콘텐츠가 숨지 않도록
