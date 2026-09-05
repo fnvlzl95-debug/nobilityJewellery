@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'plated-jewelry-discoloration-care-guide',
+    path: '/guide/plated-jewelry-discoloration-care-guide',
+    title: '도금 변색, 닦기 전 원인 확인',
+    description: '도금 반지와 목걸이가 변색됐을 때 오염과 도금 마모를 구분하고, 닦기 전에 피해야 할 방법과 상담 준비 사항을 정리합니다.',
+    keyword: '도금 반지 목걸이 변색 관리',
+    image: '/Image/guide/plated-jewelry-discoloration-care-guide-hero-77e889ed.webp',
+    publishedAt: '2026-09-05',
+    category: '관리',
+  },
+  {
     slug: 'jongno-couple-ring-price-consultation-prep',
     path: '/guide/jongno-couple-ring-price-consultation-prep',
     title: '종로 커플링 가격 상담 전 정할 것',
