@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, CircleAlert, CheckCircle2, Clock3, LoaderCircle, Search, X } from 'lucide-react'
 
 const nf = new Intl.NumberFormat('ko-KR')
@@ -16,6 +16,63 @@ export function Spinner({ label = '처리 중' }) {
 
 export function Badge({ children, tone = 'neutral' }) {
   return <span className={`badge badge-${tone}`}>{children}</span>
+}
+
+export function Modal({ title, eyebrow, onClose, returnFocusTo, children, className = 'diff-modal' }) {
+  const titleId = useId()
+  const dialogRef = useRef(null)
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog) return
+    const doc = dialog.ownerDocument
+    const trigger = returnFocusTo?.() || doc.activeElement
+    const focusable = () => [...dialog.querySelectorAll('a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]')]
+      .filter((element) => element.tabIndex >= 0 && !element.matches(':disabled')
+        && !element.closest('[hidden], [inert], [aria-hidden="true"]') && element.getClientRects().length
+        && doc.defaultView.getComputedStyle(element).visibility !== 'hidden')
+    const focusFirst = () => (focusable()[0] || dialog).focus({ preventScroll: true })
+    const onKeyDown = (event) => {
+      if (event.defaultPrevented || event.isComposing) return
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        event.stopPropagation()
+        closeRef.current?.()
+      } else if (event.key === 'Tab') {
+        const items = focusable()
+        const first = items[0], last = items[items.length - 1]
+        if (!items.length) {
+          event.preventDefault()
+          dialog.focus({ preventScroll: true })
+        } else if (!dialog.contains(doc.activeElement) || doc.activeElement === dialog
+          || (event.shiftKey ? doc.activeElement === first : doc.activeElement === last)) {
+          event.preventDefault()
+          ;(event.shiftKey ? last : first).focus({ preventScroll: true })
+        }
+      }
+    }
+    const onFocusIn = (event) => { if (!dialog.contains(event.target)) focusFirst() }
+    doc.addEventListener('keydown', onKeyDown)
+    doc.addEventListener('focusin', onFocusIn)
+    focusFirst()
+    return () => {
+      doc.removeEventListener('keydown', onKeyDown)
+      doc.removeEventListener('focusin', onFocusIn)
+      const target = trigger?.isConnected ? trigger : returnFocusTo?.()
+      if (target?.isConnected && typeof target.focus === 'function') target.focus({ preventScroll: true })
+    }
+  }, [])
+
+  return <div className="modal-backdrop" onClick={(event) => { if (event.target === event.currentTarget) onClose?.() }}>
+    <div ref={dialogRef} className={className} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} onClick={(event) => event.stopPropagation()}>
+      <div className="modal-head"><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h2 id={titleId}>{title}</h2></div>
+        <button type="button" aria-label="대화상자 닫기" onClick={onClose}><X aria-hidden="true" /></button>
+      </div>
+      {children}
+    </div>
+  </div>
 }
 
 export function ErrorNotice({ message, onClose }) {

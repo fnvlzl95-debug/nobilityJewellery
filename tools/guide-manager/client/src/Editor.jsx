@@ -4,7 +4,7 @@ import {
   Gem, ImagePlus, Lock, Play, RefreshCcw, Save, Search, ShieldCheck, Sparkles, Trash2, WandSparkles, X,
 } from 'lucide-react'
 import { api } from './api'
-import { Badge, EmptyRow, ErrorNotice, ListToolbar, Pagination, RefreshStatus, Spinner, SuccessNotice, dateTime, fmt, shortDate, useListState } from './ui'
+import { Badge, EmptyRow, ErrorNotice, ListToolbar, Modal, Pagination, RefreshStatus, Spinner, SuccessNotice, dateTime, fmt, shortDate, useListState } from './ui'
 
 const STATUS_META = {
   idea: { label: '기획', group: 'progress' },
@@ -32,9 +32,14 @@ function KindTag({ kind, size = 'md' }) {
 }
 
 export function guideSteps(generation, draft, { compared = false } = {}) {
+  // Applied records may have intentionally preserved prose and images. Their
+  // publication is complete even when optional generation artifacts are absent.
+  if (generation?.status === 'applied') return [
+    { key: 'approve', label: '최종 승인', done: true },
+    { key: 'apply', label: '저장소 반영', done: true },
+  ]
   const sources = generation?.research?.official?.sources || []
-  const heroActive = (generation?.images || []).some((image) => image.slot === 'hero' && image.status === 'active')
-  const heroReady = heroActive || !!draft?.heroImage?.path
+  const heroReady = !!draft?.heroImage?.path
   const lintOk = !!generation?.lint && !generation.lint.blocking
   const humanizeSkipped = !!generation?.research?.automation?.humanizeSkipped
   if (isManualSnippet(generation)) {
@@ -69,7 +74,7 @@ function StepRail({ steps, currentIndex, busy, onStep }) {
           {state === 'current' && <p>{step.hint}</p>}
         </div>
         {state === 'current'
-          ? <button type="button" className="step-action" disabled={!!busy} onClick={() => onStep(step)}>{busy.startsWith(step.key) ? <Spinner label="진행 중" /> : step.action}</button>
+          ? <button type="button" className="step-action" disabled={!!busy} onClick={(event) => onStep(step, event)}>{busy.startsWith(step.key) ? <Spinner label="진행 중" /> : step.action}</button>
           : <span className="step-state">{step.done ? '완료' : '대기'}</span>}
       </li>
     })}
@@ -113,10 +118,22 @@ function ConnectionPanel({ generation, clusters, guides, busy, onSave }) {
   </section>
 }
 
-function GuidePreview({ draft, generation }) {
+function previewImageUrl(generation, plan) {
+  // The manager serves generated assets only; preserved paths belong to the
+  // public website. Keep their case and use the same path as the article.
+  const savedPath = plan?.path
+  if (typeof savedPath !== 'string' || !/^\/(?!\/)/.test(savedPath) || /[\\\r\n]/.test(savedPath)) return null
+  const url = new URL(savedPath, 'https://noblessegold.com')
+  if (url.origin !== 'https://noblessegold.com') return null
+  // Apply copies only active assets referenced by exact draft path. A section
+  // can move slots, and an old active asset can remain after removing an image.
+  const asset = generation?.images?.find(image => image.status === 'active' && image.publicPath === savedPath)
+  return asset ? `/generated-images/${generation.id}/${asset.publicPath.split('/').at(-1)}` : url.href
+}
+
+export function GuidePreview({ draft, generation }) {
   if (!draft) return <div className="empty-preview"><Gem size={34} /><strong>원고 미리보기</strong><p>근거를 선택하고 원고를 생성하면 실제 가이드 구조가 이곳에 나타납니다.</p></div>
-  const heroAsset = generation?.images?.find((image) => image.slot === 'hero' && image.status === 'active')
-  const heroUrl = heroAsset?.publicPath ? `/generated-images/${generation.id}/${heroAsset.publicPath.split('/').at(-1)}` : null
+  const heroUrl = previewImageUrl(generation, draft.heroImage)
   return <article className="guide-preview">
     <header><span>{draft.category}</span><h1>{draft.title}</h1><p>{draft.lead}</p>
       <small>{draft.publishedAt} 최초 작성{draft.updatedAt ? ` · ${draft.updatedAt} 최종 검토` : ''}</small>
@@ -125,8 +142,7 @@ function GuidePreview({ draft, generation }) {
     </header>
     <section className="quick-preview"><h2>먼저 확인하세요</h2><ul>{draft.quickAnswers?.map((answer) => <li key={answer}>{answer}</li>)}</ul></section>
     {draft.sections?.map((section, index) => {
-      const asset = generation?.images?.find((image) => image.slot === `section-${index + 1}` && image.status === 'active')
-      const url = asset?.publicPath ? `/generated-images/${generation.id}/${asset.publicPath.split('/').at(-1)}` : null
+      const url = previewImageUrl(generation, section.image)
       return <section className="preview-section" key={`${section.title}-${index}`}>
         <h2><span>{String(index + 1).padStart(2, '0')}</span>{section.title}</h2>
         {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
@@ -285,10 +301,10 @@ function ImagesTab({ generation, draft, busy, onGenerate }) {
   return <div className="tab-panel">
     <div className="panel-head"><div><h2>이미지</h2><p>대표 이미지와 본문 섹션별로 만들거나 다시 만들 수 있습니다. 원고에 계획이 없던 섹션도 여기서 직접 추가할 수 있습니다.</p></div></div>
     <div className="slot-grid">{slots.map((item) => {
-      const active = (generation?.images || []).find((image) => image.slot === item.slot && image.status === 'active')
-      const url = active?.publicPath ? `/generated-images/${generation.id}/${active.publicPath.split('/').at(-1)}` : null
+      const active = (generation?.images || []).find((image) => image.publicPath === item.plan.path && image.status === 'active')
+      const url = previewImageUrl(generation, item.plan)
       const label = `image-${item.slot}`
-      const reused = !url && !!item.plan.path
+      const reused = !active?.publicPath && !!item.plan.path
       return <article key={item.slot} className={`slot-card ${item.required ? 'required' : ''}`}>
         {url ? <img src={url} alt={item.plan.alt || item.fallbackAlt} /> : <div className="slot-empty"><ImagePlus size={22} />{busy === label ? '생성 중' : reused ? '기존 이미지 유지' : '미생성'}</div>}
         <div>
@@ -515,6 +531,8 @@ export function Editor({ seed, clearSeed }) {
   const [sourceReviews, setSourceReviews] = useState({})
   const [allowWithoutOfficial, setAllowWithoutOfficial] = useState(false)
   const [diff, setDiff] = useState(null)
+  const editorRef = useRef(null)
+  const diffTriggerRef = useRef(null)
   const [comparedDraft, setComparedDraft] = useState(null)
   const [tab, setTab] = useState('preview')
   useEffect(() => { if (isManualSnippet(generation) && ['sources', 'images'].includes(tab)) setTab('checks') }, [generation?.id, generation?.input?.draftMode, tab])
@@ -666,7 +684,7 @@ export function Editor({ seed, clearSeed }) {
       { success: '원고·이미지·검사와 파일 변경 묶음까지 준비를 마쳤습니다.', focus: 'result' })
     if (result?.id) { setPanel('work'); setTab('preview') }
   }
-  const autoAdvance = () => run('auto', () => api.post('/automation/prepare', { generationId: selectedId, businessFacts: create.businessFacts, imagePolicy }),
+  const autoAdvance = () => generation?.status === 'applied' ? undefined : run('auto', () => api.post('/automation/prepare', { generationId: selectedId, businessFacts: create.businessFacts, imagePolicy }),
     { success: '남은 단계를 자동으로 끝냈습니다. 미리보기 확인 후 최종 승인만 하면 됩니다.' })
   const saveSources = () => {
     const reviews = selectedSources.map(url => ({ url, ...sourceReviews[url] }))
@@ -709,7 +727,11 @@ export function Editor({ seed, clearSeed }) {
     altText: item.plan?.alt || item.fallbackAlt,
     caption: item.plan?.caption || '',
   }), { success: '이미지를 생성했습니다.' })
-  const previewDiff = async () => {
+  const diffReturnFocus = () => diffTriggerRef.current?.isConnected
+    ? diffTriggerRef.current : editorRef.current?.querySelector('.step-action, [role="tab"][aria-selected="true"]')
+  const previewDiff = async (event) => {
+    // Busy buttons can lose focus before the asynchronous preview is mounted.
+    diffTriggerRef.current = event?.currentTarget || (typeof document !== 'undefined' ? document.activeElement : null)
     const comparedId = selectedId
     const comparedRevision = generation?.revision
     const result = await run('diff', () => api.get(`/generations/${selectedId}/diff`))
@@ -750,10 +772,11 @@ export function Editor({ seed, clearSeed }) {
   const currentStep = currentIndex === -1 ? null : steps[currentIndex]
   const autoEligible = currentStep && ['official', 'select', 'draft', 'image', 'polish'].includes(currentStep.key)
 
-  const stepAction = (step) => {
+  const stepAction = (step, event) => {
+    if (generation?.status === 'applied') return undefined
     if (step.key === 'source-review') { setTab('sources'); return undefined }
     if (step.key === 'lint') return doAction('lint', '/lint', { requireImage: false }, '교정안 검사를 갱신했습니다.')
-    if (step.key === 'compare') return previewDiff()
+    if (step.key === 'compare') return previewDiff(event)
     if (step.key === 'official') return researchSources(false)
     if (step.key === 'select') {
       const claimUrls = new Set((generation.research?.official?.claims || []).filter(claim => String(claim.claim || '').trim()).flatMap(claim => claim.sourceUrls || []))
@@ -818,7 +841,7 @@ export function Editor({ seed, clearSeed }) {
     { id: 'checks', label: '검사·반영', flag: generation?.lint?.blocking ? 'danger' : null },
   ].filter(item => !isManualSnippet(generation) || !['sources', 'images'].includes(item.id))
 
-  return <main className="editor-page page-enter">
+  return <main ref={editorRef} className="editor-page page-enter">
     <header className="editor-topbar">
       <div className="editor-title"><p className="eyebrow">GUIDE WORKBENCH</p><h1>가이드 편집</h1></div>
       {panel === 'work' && selectionMatches && <div className="editor-current">
@@ -933,13 +956,10 @@ export function Editor({ seed, clearSeed }) {
       </section>
     </div>
 
-    {diff?.files && <div className="modal-backdrop" onClick={() => setDiff(null)}>
-      <div className="diff-modal" onClick={(event) => event.stopPropagation()}>
-        <div className="modal-head"><div><p className="eyebrow">CHANGESET</p><h2>파일 변경 미리보기</h2></div><button type="button" onClick={() => setDiff(null)}><X /></button></div>
+    {diff?.files && <Modal title="파일 변경 미리보기" eyebrow="CHANGESET" onClose={() => setDiff(null)} returnFocusTo={diffReturnFocus}>
         {diff.files.map((file) => <section key={file.path}><h3>{file.added ? '신규 · ' : ''}{file.path}</h3>
-          <pre>{file.changes?.slice(0, 18).map((part, index) => <span key={index} className={part.added ? 'added' : part.removed ? 'removed' : ''}>{part.value}</span>)}</pre>
+          <pre tabIndex={0} aria-label={`${file.path} 파일 변경 내용`}>{file.changes?.slice(0, 18).map((part, index) => <span key={index} className={part.added ? 'added' : part.removed ? 'removed' : ''}>{part.value}</span>)}</pre>
         </section>)}
-      </div>
-    </div>}
+    </Modal>}
   </main>
 }
