@@ -114,7 +114,6 @@ useHead({
 
 let lenis: Lenis | null = null
 let rafId: number | null = null
-let revealObserver: IntersectionObserver | null = null
 let fallbackScrollHandler: (() => void) | null = null
 
 const isScrolled = ref(false)
@@ -167,25 +166,11 @@ onMounted(() => {
     fallbackScrollHandler()
   }
 
-  // Reveal animations
-  revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed')
-        }
-      })
-    },
-    { threshold: 0.1 }
-  )
-  document.querySelectorAll('.reveal').forEach((el) => revealObserver!.observe(el))
 })
 
 onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   lenis?.destroy()
-  revealObserver?.disconnect()
-  revealObserver = null
   if (fallbackScrollHandler) {
     window.removeEventListener('scroll', fallbackScrollHandler)
     fallbackScrollHandler = null
@@ -198,7 +183,7 @@ onUnmounted(() => {
 
     <div class="main">
       <div class="gallery-container">
-        <header class="gallery-header reveal">
+        <header class="gallery-header">
           <div>
             <p class="gallery-label">Collection</p>
             <h1 class="gallery-title">귀금속 갤러리</h1>
@@ -209,7 +194,7 @@ onUnmounted(() => {
           </div>
         </header>
 
-        <nav class="tab-bar reveal" aria-label="갤러리 카테고리">
+        <nav class="tab-bar" aria-label="갤러리 카테고리">
           <a
             v-for="category in availableCategories"
             :key="category.id"
@@ -225,7 +210,7 @@ onUnmounted(() => {
           v-for="section in categorySections"
           :id="categorySectionId(section.id)"
           :key="section.id"
-          class="category-section reveal"
+          class="category-section"
         >
           <div class="category-header">
             <div>
@@ -245,7 +230,7 @@ onUnmounted(() => {
 
           <div class="product-grid">
             <article
-              v-for="item in section.items"
+              v-for="(item, itemIndex) in section.items"
               :key="item.id"
               class="product-card"
             >
@@ -258,7 +243,8 @@ onUnmounted(() => {
                   <img
                     :src="item.images[0]"
                     :alt="item.imageAlts[0] ?? item.title"
-                    loading="lazy"
+                    :loading="section.id === availableCategories[0]?.id && itemIndex < 4 ? 'eager' : 'lazy'"
+                    :fetchpriority="section.id === availableCategories[0]?.id && itemIndex < 4 ? 'high' : 'auto'"
                   />
                   <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
                 </div>
@@ -294,7 +280,7 @@ onUnmounted(() => {
           </div>
         </section>
 
-        <section class="gallery-help reveal">
+        <section class="gallery-help">
           <div class="gallery-help-card">
             <h2>상담 전에 알려주시면 좋은 내용</h2>
             <ul>
@@ -319,7 +305,7 @@ onUnmounted(() => {
           </div>
         </section>
 
-        <div class="gallery-footer reveal">
+        <div class="gallery-footer">
           <p class="footer-note">
             모든 제품은 도매가로 제공됩니다.<br>
             상세 문의는 전화 또는 방문 상담을 이용해주세요.
@@ -772,19 +758,6 @@ onUnmounted(() => {
 
 .footer-cta:hover {
   gap: 12px;
-}
-
-/* ===== Reveal Animation ===== */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  will-change: opacity, transform;
-}
-
-.reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ===== Tablet ===== */
