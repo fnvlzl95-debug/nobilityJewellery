@@ -13,6 +13,7 @@ const images = require('../services/imageService');
 const applies = require('../services/applyService');
 const baselines = require('../services/baselineService');
 const comparisonControls = require('../services/comparisonControlService');
+const publicChecks = require('../services/publicCheckService');
 const evaluations = require('../services/evaluationService');
 const topics = require('../services/topicService');
 const automation = require('../services/automationService');
@@ -169,6 +170,8 @@ router.post('/inventory/refresh', route(() => {
   return { ...result, ga4Mappings: analytics.reconcileGa4Mappings(), organicMappings: analytics.reconcileGa4OrganicMappings() };
 }));
 router.get('/guides', route(() => inventory.listGuides()));
+router.get('/public-checks', route(() => publicChecks.listLatest()));
+router.post('/guides/:slug/public-check', route(req => publicChecks.checkGuide(req.params.slug)));
 router.get('/clusters', route(() => inventory.listClusters()));
 router.get('/guides/:slug', route((req) => {
   const guide = inventory.getGuide(req.params.slug, { includeSource: req.query.source === '1' });

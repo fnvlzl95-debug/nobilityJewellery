@@ -10,6 +10,7 @@ import { ContentAudits } from './ContentAudits'
 import { Editor } from './Editor'
 import { OperationQuality } from './OperationQuality'
 import { ComparisonControlsPage } from './ComparisonControls'
+import { PublicCheckStatus, usePublicChecks } from './PublicCheckStatus'
 import {
   Badge, EmptyRow, ErrorNotice, ListToolbar, Pagination, RefreshStatus, SortHead, Spinner, SuccessNotice,
   dateTime, fmt, pct, useListState,
@@ -427,8 +428,9 @@ function HistoryPage() {
   const [refreshing, setRefreshing] = useState(false)
   const [refreshedAt, setRefreshedAt] = useState('')
   const [error, setError] = useState('')
+  const publicChecks = usePublicChecks()
   const load = async () => {
-    const [applyRows, comparisonRows] = await Promise.all([api.get('/applies'), api.get('/analytics/comparisons')])
+    const [applyRows, comparisonRows] = await Promise.all([api.get('/applies'), api.get('/analytics/comparisons'), publicChecks.loadSaved()])
     setRows(applyRows); setComparisons(comparisonRows); setRefreshedAt(new Date().toISOString())
   }
   useEffect(() => { load().catch((value) => setError(value.message)) }, [])
@@ -485,6 +487,8 @@ function HistoryPage() {
         </div>)}
         <p>{item.note}</p>
         {item.deployedAt ? <small>배포 {dateTime(item.deployedAt)} · {item.deploymentCommit}</small> : <DeploymentForm id={item.id} onSaved={load} onError={setError} />}
+        <PublicCheckStatus guideSlug={item.guideSlug} result={publicChecks.results.get(item.guideSlug)} busy={publicChecks.busy.has(item.guideSlug)}
+          error={publicChecks.errors.get(item.guideSlug)} loadError={publicChecks.loadError} onCheck={publicChecks.check} />
       </article>)}</div> : <div className="empty-inline"><Clock3 size={24} />성공적으로 반영된 작업부터 변경 전 기준선이 기록됩니다.</div>}
     </section>
   </main>

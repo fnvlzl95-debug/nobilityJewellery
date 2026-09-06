@@ -528,6 +528,18 @@ textarea { resize: vertical; line-height: 1.6; }
 .comparison-list article > div:first-child strong { font-size: 14px; color: var(--ink); }
 .comparison-list article > div:first-child small { margin-top: 5px; color: var(--muted); font-size: 11px; }
 .comparison-list article > p { grid-column: 1/-1; margin: 0; color: var(--muted); font-size: 11px; }
+.public-check-status { grid-column: 1/-1; border-top: 1px solid var(--line); padding-top: 14px; min-width: 0; }
+.public-check-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.public-check-head > strong { font-size: 14px; color: var(--ink); }
+.public-check-head > .button { margin-left: auto; }
+.public-check-status p, .public-check-status > small { margin: 7px 0; color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.public-check-status .public-check-warning { color: var(--gold-strong); }
+.public-check-status .error-copy { color: var(--danger); }
+.public-check-status details { margin-top: 10px; font-size: 12px; }
+.public-check-status summary { cursor: pointer; width: fit-content; padding: 5px 0; color: var(--soft); }
+.public-check-status ul { list-style: none; margin: 8px 0 0; padding: 0; }
+.public-check-status li { padding: 8px 0; border-top: 1px solid var(--line); }
+.public-check-status li > div { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .change-strip { grid-column: 1/-1; display: flex; flex-wrap: wrap; gap: 18px; }
 .change-strip span { display: grid; gap: 3px; color: var(--muted); font-size: 11px; }
 .change-strip b { color: var(--soft); font-size: 12px; font-variant-numeric: tabular-nums; }
