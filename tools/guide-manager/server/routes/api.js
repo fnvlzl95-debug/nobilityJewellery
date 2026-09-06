@@ -23,8 +23,30 @@ const { nowIso } = require('../lib/utils');
 const operationMetrics = require('../services/operationMetricsService');
 
 const router = express.Router();
+function generationNumber(value) {
+  const id = Number(value);
+  if (!Number.isSafeInteger(id) || id < 1) throw Object.assign(new Error('유효한 생성 작업 번호가 필요합니다'), { status: 422, code: 'INVALID_GENERATION_ID' });
+  return id;
+}
+
+function mutationPath(value) {
+  // Express accepts case/trailing-slash aliases and decodes route parameters
+  // once. Use the same numeric identity as the handlers without rewriting URLs
+  // or decoding opaque identifiers such as background-job UUIDs.
+  const normalized = value.toLowerCase().replace(/\/+$/, '') || '/';
+  return normalized.replace(/^\/generations\/([^/]+)(?=\/|$)/, (match, encoded) => {
+    if (encoded === 'bulk-delete') return match;
+    let decoded;
+    try { decoded = decodeURIComponent(encoded); }
+    catch { throw Object.assign(new Error('작업 번호의 URL 인코딩이 올바르지 않습니다'), { status: 400, code: 'INVALID_GENERATION_ID' }); }
+    return '/generations/' + generationNumber(decoded);
+  });
+}
+
 router.use((req, res, next) => {
-  const action = operationMetrics.decisionAction(req.method, req.path);
+  try { req.mutationPath = ['GET', 'HEAD', 'OPTIONS'].includes(req.method) ? req.path : mutationPath(req.path); }
+  catch (error) { return next(error); }
+  const action = operationMetrics.decisionAction(req.method, req.mutationPath);
   if (action) res.once('finish', () => {
     try { operationMetrics.recordDecision(action, res.statusCode, res.locals.operationErrorCode); }
     catch (error) { require('../lib/logger').warn('measurement', '운영 요청 지표 기록 실패', error); }
@@ -34,22 +56,27 @@ router.use((req, res, next) => {
 // Writes lock only the generation they change; shared site operations retain exclusivity.
 function mutationKeys(req) {
   const keys = [];
-  const generationId = req.path.match(/^\/generations\/(\d+)(?:\/|$)/)?.[1] || (req.path === '/automation/prepare' ? req.body?.generationId : null);
+  const routePath = req.mutationPath;
+  const bodyId = routePath === '/automation/prepare' ? req.body?.generationId : null;
+  const generationId = routePath.match(/^\/generations\/(\d+)(?:\/|$)/)?.[1]
+    || (bodyId == null || bodyId === '' ? null : generationNumber(bodyId));
+  req.mutationGenerationId = generationId == null ? null : Number(generationId);
   if (generationId) keys.push('generation:' + Number(generationId));
-  if (req.path === '/generations/bulk-delete') for (const id of req.body.ids || []) keys.push('generation:' + Number(id));
-  if (req.path === '/generations' || /\/create-update$/.test(req.path)) keys.push('generation-create');
-  if (req.path === '/automation/prepare' && !generationId) keys.push('candidate:' + (req.body.candidateId || 'automatic'));
-  if (/\/apply$/.test(req.path) || /^\/applies\/.*\/recover$/.test(req.path) || req.path === '/inventory/refresh' || req.path === '/settings') keys.push('site');
-  if (req.path.startsWith('/audits/')) keys.push('audits');
-  if (req.path === '/automation/topics') keys.push('topics');
+  if (routePath === '/generations/bulk-delete') for (const id of req.body.ids || []) keys.push('generation:' + generationNumber(id));
+  if (routePath === '/generations' || /\/create-update$/.test(routePath)) keys.push('generation-create');
+  if (routePath === '/automation/prepare' && !generationId) keys.push('candidate:' + (req.body.candidateId || 'automatic'));
+  if (/\/apply$/.test(routePath) || /^\/applies\/.*\/recover$/.test(routePath) || routePath === '/inventory/refresh' || routePath === '/settings') keys.push('site');
+  if (routePath.startsWith('/audits/')) keys.push('audits');
+  if (routePath === '/automation/topics') keys.push('topics');
   return [...new Set(keys)];
 }
 router.use((req, res, next) => {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
   try {
-    if (req.path === '/audits/analyze/start' && audits.jobStatus().state === 'running') return res.json({ ...audits.jobStatus(), alreadyRunning: true });
-    if (req.path.startsWith('/audits/') && audits.jobStatus().state === 'running') throw Object.assign(new Error('기존 글 분석이 진행 중입니다. 해당 분석이 끝나면 계획을 저장해 주세요'), { status: 409, code: 'AUDIT_IN_PROGRESS' });
-    const generationId = req.path.match(/^\/generations\/(\d+)\//)?.[1];
+    const routePath = req.mutationPath;
+    if (routePath === '/audits/analyze/start' && audits.jobStatus().state === 'running') return res.json({ ...audits.jobStatus(), alreadyRunning: true });
+    if (routePath.startsWith('/audits/') && audits.jobStatus().state === 'running') throw Object.assign(new Error('기존 글 분석이 진행 중입니다. 해당 분석이 끝나면 계획을 저장해 주세요'), { status: 409, code: 'AUDIT_IN_PROGRESS' });
+    const generationId = routePath.match(/^\/generations\/(\d+)\//)?.[1];
     if (generationId) {
       const row = db.prepare('SELECT revision FROM generations WHERE id=?').get(Number(generationId));
       if (!row) return res.status(404).json({ error: '작업을 찾을 수 없습니다' });
@@ -75,7 +102,7 @@ function route(handler) {
 function background(action, handler, options = {}) {
   jobs.register(action, payload => handler({ ...payload, query: payload.query || {} }));
   return route((req, res) => {
-    const generationId = Number(req.params.id || req.body.generationId) || null;
+    const generationId = req.mutationGenerationId ?? null;
     const expectedRevision = generationId ? db.prepare('SELECT revision FROM generations WHERE id=?').get(generationId)?.revision : null;
     req.releaseMutation?.();
     const job = jobs.submit(action, { params: req.params, body: req.body, query: req.query }, {
