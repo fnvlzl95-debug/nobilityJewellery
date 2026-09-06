@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'necklace-chain-replacement-guide',
+      path: '/guide/necklace-chain-replacement-guide',
+      title: '목걸이 줄 교체와 펜던트 호환',
+      description: '목걸이 줄을 바꿀 때 손상 위치와 금속 표시를 확인하고, 펜던트 고리와 잠금장치가 새 체인에 맞는지 상담하는 방법을 안내합니다.',
+      keyword: '목걸이 줄 교체 펜던트 호환',
+      image: '/Image/guide/necklace-chain-replacement-guide-hero-c433543b.webp',
+      publishedAt: '2026-09-06',
+      category: '수리',
+    },
+  {
       slug: 'zircon-vs-cubic-zirconia',
       path: '/guide/zircon-vs-cubic-zirconia',
       title: '지르콘과 큐빅 지르코니아 차이',

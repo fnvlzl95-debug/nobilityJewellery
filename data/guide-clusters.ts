@@ -35,6 +35,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-ring-polishing-cost', label: '반지 광택·마감', description: '세척과 폴리싱 차이' },
       { to: '/guide/white-gold-discoloration-care', label: '화이트골드 변색 관리', description: '재도금 전 확인 기준' },
       { to: '/guide/plated-jewelry-discoloration-care-guide', label: '도금 변색, 닦기 전 원인 확인', description: '오염과 도금 마모 구분법' },
+      { to: '/guide/necklace-chain-replacement-guide', label: '목걸이 줄 교체와 펜던트 호환', description: '체인·잠금장치 손상과 펜던트 고리 호환 확인' },
     ],
   },
   {
