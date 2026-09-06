@@ -7,6 +7,7 @@ const pageTitle = '종로 금은방 방문 예약, 상담 전 준비하면 좋�
 const pageDescription = '종로 금은방 방문 예약이 필요한 경우와 상담 전 준비할 사진, 예산, 희망 수령일, 수리·주문제작·예물 상담 체크리스트를 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/jongno-jewelry-visit-consultation.webp`
 const publishedAt = '2026-07-08'
+const updatedAt = '2026-09-06'
 
 const faqItems = [
   {
@@ -119,6 +120,8 @@ const relatedLinks = [
   { to: '/contact', label: '방문 상담 문의', description: '사진과 일정으로 먼저 상담하기' },
   { to: '/custom', label: '주문제작 안내', description: '원하는 디자인 제작 기준 보기' },
   { to: '/repair', label: '수리·AS 안내', description: '수리 가능 여부와 상담 방법' },
+  { to: '/guide/silver-buying', label: '은 매입 상담 준비', description: '은제품의 순도·중량과 방문 전 확인할 내용' },
+  { to: '/guide/jongno-jewelry-wholesale-method', label: '도매 거래 상담 준비', description: '품목·수량·소재와 희망 납기를 정리하는 방법' },
 ]
 
 useHead({
@@ -154,7 +157,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -188,6 +191,7 @@ useHead({
     title="종로 금은방 방문 예약, 상담 전 준비하면 좋은 것"
     lead="종로 금은방 방문 예약을 꼭 해야 하는지, 그냥 가도 되는지 헷갈릴 때가 많습니다. 예물·커플링·주문제작·수리·매입 상담은 준비한 사진과 예산, 희망 수령일에 따라 상담 속도와 정확도가 크게 달라집니다."
     :published-at="publishedAt"
+    :updated-at="updatedAt"
     :hero-image="ogImage"
     hero-alt="종로 금은방 방문 예약 전 주얼리 상담 준비 이미지"
     :quick-answers="quickAnswers"

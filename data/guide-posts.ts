@@ -781,6 +781,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '종로 금은방 방문 예약',
     image: '/Image/guide/jongno-jewelry-visit-consultation.webp',
     publishedAt: '2026-07-08',
+    updatedAt: '2026-09-06',
     category: '주문',
   },
   {
