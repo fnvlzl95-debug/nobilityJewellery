@@ -26,12 +26,14 @@ Express 라우터는 대소문자·끝 슬래시가 다른 주소와 디코딩�
 | 전체 회귀 | **285/285 통과**, 실패·취소·skip 0, **61.010초**. `.tmp/route-integrity-2026-09-06/admin-tests.log` |
 | 화면 빌드 | 클라이언트·의존성은 `710aa1e`와 동일함을 Git으로 확인. 앞서 검증한 `index-D-8EbrXl.js`·`index-DeqVPl6R.css`를 그대로 사용 |
 | 운영 배포·보존 | **09:03 KST**, 배포 스크립트 종료 코드 0, **PID 20628**, 백업 `Desktop/귀족가이드관리/data/backups/upgrade-20260906-090302`. 서버·라우트·빌드·README 8개 파일 해시 일치, JS/CSS 200. 기준선 **65건**, 원고 작업 **64건**의 전체 API 값과 상담 집계 불변, 공개 파일 5개 해시 불변, 실행 중 작업 0개 |
-| 커밋·푸시 | 최종 코드 커밋과 원격 확인 결과 기록 예정 |
+| 커밋·푸시 | 코드 **`b7d2d4d24b29f16a73cb0b3e68764c7a5b7cfc59`** 커밋·`origin/main` 푸시 완료, 원격 SHA 일치 확인. 후속 문서는 이 검증 기록만 갱신 |
 | 공개 배포 범위 | 이번 제품 변경은 관리자 API와 회귀 파일이다. 공개 사이트·관리자 클라이언트 입력은 바뀌지 않았다. `[CF-Pages-Skip]` 접두어로 불필요한 공개 재빌드를 생략하며 이미 배포한 공개 글·기준선은 그대로 유지한다. 이는 전체 관리자 테스트나 바탕화면 관리자 배포를 생략하는 설정이 아니다. [Cloudflare의 커밋별 배포 제어](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/#skipping-a-build-via-a-commit-message)를 사용한다. |
 
 원보고서 1~3번을 현재 소스·기존 회귀·운영 반영 기록과 대조한 범위에서 이 문제 외 추가 확정 미충족 경로는 찾지 못했다. 이것은 모든 가능한 실패가 없다는 증명은 아니다. 실제 외부 모델 제공자의 장애를 발생시켜 재개 비용이 0임을 확인한 시험도 아니며, 격리 재개·완료 이미지 보존 회귀와 구분한다.
 
 배포·운영 보존 결과는 `.tmp/route-integrity-2026-09-06/local-deploy.log`, `verified-local.json`에 보관했다. 새 원고·상담·유료 작업은 생성하지 않았다.
+
+푸시 뒤 Cloudflare 목록에서 새 코드의 레코드는 `Idle`, 직전 성공 공개 배포는 `710aa1e`의 `90d13eb4`로 확인했다. 생략 대상의 `Idle`을 신규 공개 배포 성공으로 표현하지 않는다. 해당 목록은 `.tmp/route-integrity-2026-09-06/public-deployments.json`에 보관했다.
 
 ## 실제 검색 효과의 남은 조건
 
