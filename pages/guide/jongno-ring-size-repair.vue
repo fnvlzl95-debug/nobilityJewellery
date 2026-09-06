@@ -22,6 +22,16 @@ const faqItems = [
   },
 ]
 
+const gmSourceNote = 'GIA 자료는 보석이 있는 백금 밴드를 늘릴 때의 구조적 위험을 설명합니다. 모든 소재의 사이즈 조절 범위나 수리 가능 여부를 보장하는 자료는 아니며, 실제 작업은 소재와 세팅을 확인한 뒤 판단합니다.'
+const gmSources = [
+  {
+    "label": "GIA — 백금 밴드 사이즈 확대 시 주의점",
+    "url": "https://www.gia.edu/gia-website/quality-assurance-benchmark/sizing-up-a-platinum-band-by-stretching",
+    "note": "보석이 있는 백금 밴드의 스트레칭과 보석 탈락 위험"
+  }
+]
+
+const updatedAt = '2026-09-06'
 useHead({
   title: pageTitle,
   link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
@@ -55,7 +65,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -82,6 +92,9 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt || undefined"
+    :sources="gmSources"
+    :source-note="gmSourceNote"
     category="수리"
     keyword="종로 반지 사이즈 줄이기 늘리기"
     inquiry-type="repair"

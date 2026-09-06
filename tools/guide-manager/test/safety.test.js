@@ -11,6 +11,26 @@ const { guideIndexPath, parseGuidePosts, getGuide } = require('../server/service
 const { patchGuideIndex } = require('../server/services/rendererService');
 const { makeDraft } = require('./fixture');
 
+test('FAQ 질문의 보장 표현은 검토 경고이고 답변·출처의 보장 주장은 차단한다', () => {
+  const draft = makeDraft();
+  draft.faqItems[0] = { question: '반지는 무조건 늘릴 수 있나요?', answer: '소재와 세팅에 따라 가능 범위가 달라집니다.' };
+  let findings = lintDraft(draft).findings.filter(item => item.code === 'banned_claim');
+  assert.deepEqual(findings.map(item => [item.severity, item.path]), [['warning', 'faqItems.0.question']]);
+  draft.quickAnswers[0] = '깊은 찍힘을 무조건 지우면 두께가 줄 수 있어 안전한 마감 범위를 정합니다.';
+  assert.ok(lintDraft(draft).findings.some(item => item.code === 'banned_claim' && item.severity === 'warning' && item.path === 'quickAnswers.0'));
+  draft.quickAnswers[0] = '깊은 찍힘을 무조건 지웁니다.';
+  assert.ok(lintDraft(draft).findings.some(item => item.code === 'banned_claim' && item.severity === 'error' && item.path === 'quickAnswers.0'));
+  draft.quickAnswers[0] = '무조건 가능합니다. 무조건 지우면 두께가 줄어듭니다.';
+  assert.ok(lintDraft(draft).findings.some(item => item.code === 'banned_claim' && item.severity === 'error' && item.path === 'quickAnswers.0'));
+  draft.faqItems[0].answer = '무조건 가능합니다.';
+  draft.sourceNote = '100% 보장';
+  findings = lintDraft(draft).findings.filter(item => item.code === 'banned_claim');
+  assert.ok(findings.some(item => item.severity === 'error' && item.path === 'faqItems.0.answer'));
+  assert.ok(findings.some(item => item.severity === 'error' && item.path === 'sourceNote'));
+  draft.faqItems[0].question = '무조건 가능합니다';
+  assert.ok(lintDraft(draft).findings.some(item => item.code === 'banned_claim' && item.severity === 'error' && item.path === 'faqItems.0.question'));
+});
+
 test('콘텐츠 날짜는 자정 이후에도 한국시간 날짜를 사용한다', () => {
   assert.equal(koreaDate(new Date('2026-08-06T16:00:00.000Z')), '2026-08-07');
 });

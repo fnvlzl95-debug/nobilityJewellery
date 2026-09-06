@@ -325,6 +325,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/jongno-ring-polishing-cost-hero.webp',
     publishedAt: '2026-08-05',
     category: '비용',
+    updatedAt: '2026-09-06',
   },
   {
     slug: 'gold-anklet-size-guide',
@@ -762,6 +763,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/earring-back-types-hero.webp',
     publishedAt: '2026-07-09',
     category: '수리',
+    updatedAt: '2026-09-06',
   },
   {
     slug: 'birthstone-necklace-gift-guide',
@@ -890,6 +892,7 @@ export const guidePosts: GuidePostSummary[] = [
     image: '/Image/guide/ring-size-measuring-method.webp',
     publishedAt: '2026-05-28',
     category: '수리',
+    updatedAt: '2026-09-06',
   },
   {
     slug: 'necklace-bracelet-chain-repair',

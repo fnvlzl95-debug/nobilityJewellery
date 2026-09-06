@@ -141,6 +141,16 @@ const relatedLinks = [
   { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 비용', description: '사이즈·땜·재세팅 추가 작업을 비교하세요' },
 ]
 
+const gmSourceNote = 'GIA 자료는 백금 반지의 폴리싱·버핑과 마감 품질을 다룹니다. 금속마다 작업 방식이 같다는 뜻은 아니며, 이 자료로 매장의 광택 가격이나 흠집 제거 가능 범위를 확정할 수는 없습니다.'
+const gmSources = [
+  {
+    "label": "GIA — 백금 반지의 폴리싱과 버핑",
+    "url": "https://www.gia.edu/quality-assurance-benchmark/prefinish-polish-buff-platinum",
+    "note": "백금 제품에 적용되는 표면 마감 작업과 품질 확인 자료"
+  }
+]
+
+const updatedAt = '2026-09-06'
 useHead({
   title: pageTitle,
   link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
@@ -175,7 +185,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
         publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
@@ -199,6 +209,9 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt || undefined"
+    :sources="gmSources"
+    :source-note="gmSourceNote"
     category="비용"
     keyword="종로 반지 광택 비용"
     inquiry-type="repair"

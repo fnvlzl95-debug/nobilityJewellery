@@ -12,6 +12,7 @@ const { stripSectionNumbering, stripDraftSectionNumbering } = require('../lib/se
 const { assertUniqueIntent } = require('./intentService');
 const { assertCreateUpdatePolicy, assertUpdatePolicy, enforceDraftScope, policyFor, PAGE_QUERY_CHANGE_ID } = require('./updatePolicyService');
 const jobs = require('./jobService');
+const { researchInput } = require('./researchPrompt');
 
 function parseGeneration(row) {
   if (!row) return null;
@@ -247,13 +248,14 @@ async function researchOfficial(id, { emphasizeOfficial = false } = {}) {
       '검색 결과 스니펫이나 블로그를 사실 근거로 사용하지 마세요.',
       '가격, 재고, 제작 기간, 수리 가능 여부는 사용자 제공 사실이 없으면 주장하지 마세요.',
       '각 claim에는 직접 뒷받침하는 sourceUrls를 연결하세요.',
+      '공식 도메인이라는 이유만으로 주제와 무관한 문서를 추가하지 마세요. 자료의 재질·제품·공정 적용 범위를 명시하고 확인되지 않은 주장은 제외하세요.',
       '한국어 요약·출처 설명에는 중국어 간체·번체나 일본어 한자를 섞지 마세요. 기관명은 공식 영문명 또는 자연스러운 한국어로 적으세요.',
       '출처 선택은 운영자가 검토하므로 selected는 모두 false로 반환하세요.',
       emphasizeOfficial
-        ? '지난 조사에서 승인 가능한 권위 출처가 없었습니다. 이번에는 정부(.go.kr, .gov, gov.uk), 표준기관(ISO, KATS), 교육기관(.edu, .ac.kr), 국제 보석 협회(GIA, IGI, CIBJO) 도메인의 문서를 최소 2개 이상 반드시 포함하세요. 해당 도메인에서 근거를 찾지 못하면 주제 범위를 넓혀서라도 찾으세요.'
+        ? '지난 조사에서 승인 가능한 권위 출처가 없었습니다. 기존 주장의 범위 안에서 관련 1차 문서를 다시 찾으세요. 개수를 채우려고 주제를 넓히지 말고, 근거가 없으면 해당 주장과 출처를 제외하세요.'
         : '',
     ].filter(Boolean).join('\n'),
-    input: `주제: ${generation.topic}\n사업자 제공 사실: ${generation.input.businessFacts || '없음'}\n한국어 가이드에 필요한 최소 사실만 조사하세요.`,
+    input: researchInput(generation),
     maxOutputTokens: 7000,
   });
   const evidence = result.parsed;

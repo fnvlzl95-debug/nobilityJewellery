@@ -121,6 +121,16 @@ const relatedLinks = [
   { to: '/guide/jongno-jewelry-store-visit-guide', label: '방문 전 준비물', description: '매장 상담 전 사진 준비 기준' },
 ]
 
+const gmSourceNote = 'GIA 자료는 마찰식 귀걸이 뒷마개가 침을 잡는 원리와 장력의 영향을 설명합니다. 모든 종류의 뒷마개가 서로 호환된다는 뜻은 아니며, 교체할 때는 침과 잠금 구조에 맞는 부속인지 확인해야 합니다.'
+const gmSources = [
+  {
+    "label": "GIA — 마찰식 귀걸이 뒷마개의 구조와 장력",
+    "url": "https://www.gia.edu/bench-tip-how-to-adjust-earring-back",
+    "note": "마찰식 뒷마개의 고정 원리와 느슨하거나 과도한 장력의 영향"
+  }
+]
+
+const updatedAt = '2026-09-06'
 useHead({
   title: pageTitle,
   link: [{ rel: 'canonical', href: `${siteConfig.url}${pagePath}` }],
@@ -154,7 +164,7 @@ useHead({
         description: pageDescription,
         image: ogImage,
         datePublished: publishedAt,
-        dateModified: publishedAt,
+        dateModified: updatedAt || publishedAt,
         mainEntityOfPage: `${siteConfig.url}${pagePath}`,
         author: { '@type': 'Organization', name: siteConfig.name },
         publisher: { '@type': 'Organization', name: siteConfig.name },
@@ -181,6 +191,9 @@ useHead({
 
 <template>
   <GuideArticleView
+    :updated-at="updatedAt || undefined"
+    :sources="gmSources"
+    :source-note="gmSourceNote"
     category="수리"
     keyword="귀걸이 뒷마개 분실"
     inquiry-type="repair"

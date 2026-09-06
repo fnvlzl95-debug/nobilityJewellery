@@ -104,7 +104,17 @@ function lintDraft(draft, { targetSlug = null, generationId = null, requireImage
     .sort((a, b) => b.similarity - a.similarity)[0];
   if (similarDescription?.similarity >= 0.7) add('warning', 'description_similarity', `검색 설명이 기존 “${similarDescription.title}”과 비슷합니다 (${similarDescription.similarity.toFixed(2)}). 이 글만의 답과 구분 기준을 앞부분에 넣으세요.`, 'description');
   const text = allText(draft);
-  for (const word of BANNED) if (text.includes(word)) add('error', 'banned_claim', `과장·보장 표현 “${word}”을 제거하거나 근거 있는 조건형으로 바꾸세요.`);
+  for (const entry of visibleTextEntries(draft)) {
+    for (const word of BANNED) {
+      if (!entry.text.includes(word)) continue;
+      const question = /^faqItems\.\d+\.question$/.test(entry.path) && /(?:나요|까요|습니까)\?\s*$/.test(entry.text);
+      const conditional = word === '무조건' && [...entry.text.matchAll(/무조건/g)].every(match =>
+        /^무조건[^.!?\n]{1,60}(?:하면|으면|지우면|늘리면|줄이면)\s/.test(entry.text.slice(match.index)));
+      add(question || conditional ? 'warning' : 'error', 'banned_claim', question || conditional
+        ? `질문·조건문에 “${word}” 표현이 있습니다. 문맥이 가능 조건과 한계를 명확히 설명하는지 검토하세요.`
+        : `과장·보장 표현 “${word}”을 제거하거나 근거 있는 조건형으로 바꾸세요.`, entry.path);
+    }
+  }
   const exactPriceOrTime = /(?:\d[\d,]*\s*원|\d+\s*(?:일|시간)\s*(?:이면|만에|소요|완료))/g;
   const risky = text.match(exactPriceOrTime) || [];
   const hasOfficial = (draft.sources || []).some(source => source.official && require('./generationService').officialDomain(source.url));
