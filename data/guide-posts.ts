@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'silver-ring-rhodium-plating-guide',
+      path: '/guide/silver-ring-rhodium-plating-guide',
+      title: '은반지 로듐 도금과 재도금 기준',
+      description: '은반지에 로듐 도금을 하는 목적과 도금이 벗겨졌을 때 확인할 외관 변화, 재도금 상담 전 준비할 내용을 정리했습니다.',
+      keyword: '은반지 로듐 도금 재도금',
+      image: '/Image/guide/silver-ring-rhodium-plating-guide-hero-bef01257.webp',
+      publishedAt: '2026-09-07',
+      category: '관리',
+    },
+  {
       slug: 'necklace-chain-replacement-guide',
       path: '/guide/necklace-chain-replacement-guide',
       title: '목걸이 줄 교체와 펜던트 호환',
