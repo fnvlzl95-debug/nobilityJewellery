@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'mens-necklace-45cm-50cm-fit',
+    path: '/guide/mens-necklace-45cm-50cm-fit',
+    title: '남자 목걸이 45·50cm 선택법',
+    description: '남자 목걸이 45cm와 50cm 중 어떤 길이가 맞는지 목둘레, 펜던트 유무, 착용 위치를 기준으로 비교합니다.',
+    keyword: '남자 목걸이 45cm 50cm',
+    image: '/Image/guide/mens-necklace-45cm-50cm-fit-hero-e636a584.webp',
+    publishedAt: '2026-09-08',
+    category: '선택',
+  },
+  {
       slug: 'silver-ring-rhodium-plating-guide',
       path: '/guide/silver-ring-rhodium-plating-guide',
       title: '은반지 로듐 도금과 재도금 기준',
