@@ -114,6 +114,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/find-girlfriend-ring-size-guide', label: '몰래 반지 사이즈 재기', description: '선물 준비 전 확인' },
       { to: '/gallery', label: '커플링 디자인 갤러리', description: '실제 제작 디자인 보기' },
       { to: '/guide/jongno-couple-ring-price-consultation-prep', label: '종로 커플링 가격 상담 전 정할 것', description: '종로 커플링 상담에서 예산만 말하지 않고 금속, 폭, 보석, 세팅, 착용감과 두 반지의 통일 정도' },
+      { to: '/guide/couple-ring-finger-placement', label: '커플링은 어느 손가락에 낄까', description: '커플링과 결혼반지는 착용 손가락만으로 확정해 구분하기 어렵습니다' },
     ],
   },
   {

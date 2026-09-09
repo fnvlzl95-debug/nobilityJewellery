@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+    slug: 'couple-ring-finger-placement',
+    path: '/guide/couple-ring-finger-placement',
+    title: '커플링은 어느 손가락에 낄까',
+    description: '커플링과 결혼반지는 착용 손가락만으로 확정해 구분하기 어렵습니다. 대표적인 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.',
+    keyword: '커플링 손가락',
+    image: '/Image/guide/couple-ring-finger-placement-hero-5e9b2e70.webp',
+    publishedAt: '2026-09-09',
+    category: '선택',
+  },
+  {
     slug: 'mens-necklace-45cm-50cm-fit',
     path: '/guide/mens-necklace-45cm-50cm-fit',
     title: '남자 목걸이 45·50cm 선택법',
