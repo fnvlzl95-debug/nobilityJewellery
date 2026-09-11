@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'cast-vs-handmade-custom-ring-consultation',
+      path: '/guide/cast-vs-handmade-custom-ring-consultation',
+      title: '주물 반지와 핸드메이드 차이, 제작·마감 확인법',
+      description: '주물 반지와 핸드메이드를 비교할 때 기본 형태를 만드는 공정과 수작업 마감을 나누어 확인하세요. 제작 범위, 표면 질감, 주문 기록에 남길 질문을 정리했습니다.',
+      keyword: '주물 반지 핸드메이드 차이',
+      image: '/Image/guide/cast-vs-handmade-custom-ring-consultation-hero-262a3ec2.webp',
+      publishedAt: '2026-09-11',
+      category: '주문',
+    },
+  {
     slug: 'couple-ring-finger-placement',
     path: '/guide/couple-ring-finger-placement',
     title: '커플링은 어느 손가락에 낄까',

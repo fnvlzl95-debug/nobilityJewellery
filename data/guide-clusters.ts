@@ -155,6 +155,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/earring-style-by-face-shape', label: '얼굴형별 귀걸이 고르는 법', description: '얼굴형과 헤어스타일에 따라 스터드형, 후프형, 드롭형 귀걸이를 고르는 기준을 정리했습니다' },
       { to: '/guide/stud-earring-meaning-selection-guide', label: '스터드 귀걸이 뜻과 선택 기준', description: '형태·잠금 방식·소재·무게·크기·관리 기준' },
       { to: '/guide/mens-necklace-45cm-50cm-fit', label: '남자 목걸이 45·50cm 선택법', description: '남자 목걸이 45cm와 50cm 중 어떤 길이가 맞는지 목둘레, 펜던트 유무, 착용 위치를 기준으로 비교합니다' },
+      { to: '/guide/cast-vs-handmade-custom-ring-consultation', label: '주물 반지와 핸드메이드 차이, 제작·마감 확인법', description: '주물 반지와 핸드메이드를 비교할 때 기본 형태를 만드는 공정과 수작업 마감을 나누어 확인하세요' },
     ],
   },
 ]
