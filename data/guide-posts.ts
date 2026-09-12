@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'layered-necklace-tangling-prevention',
+      path: '/guide/layered-necklace-tangling-prevention',
+      title: '목걸이 레이어드 엉킴, 길이·체인 조합 확인법',
+      description: '목걸이 두 개를 겹쳐 착용할 때 자꾸 엉킨다면 길이 차이, 체인 형태, 펜던트 위치를 살펴보세요. 겹치는 위치별 조정 방법과 외출 전 착용 확인 순서를 정리했습니다.',
+      keyword: '목걸이 레이어드 엉킴',
+      image: '/Image/guide/layered-necklace-tangling-prevention-hero-69a9f516.webp',
+      publishedAt: '2026-09-12',
+      category: '선택',
+    },
+  {
       slug: 'cast-vs-handmade-custom-ring-consultation',
       path: '/guide/cast-vs-handmade-custom-ring-consultation',
       title: '주물 반지와 핸드메이드 차이, 제작·마감 확인법',
