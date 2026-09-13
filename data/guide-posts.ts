@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'tennis-bracelet-structure-selection-guide',
+      path: '/guide/tennis-bracelet-structure-selection-guide',
+      title: '테니스 팔찌 뜻, 세팅·잠금장치 선택법',
+      description: '테니스 팔찌는 보석을 연속으로 연결한 디자인입니다. 프롱·베젤·채널 세팅 차이, 총 캐럿과 한 알 크기, 잠금장치를 확인하는 순서를 정리했습니다.',
+      keyword: '테니스 팔찌 뜻',
+      image: '/Image/guide/tennis-bracelet-structure-selection-guide-hero-b83a683e.webp',
+      publishedAt: '2026-09-13',
+      category: '선택',
+    },
+  {
       slug: 'layered-necklace-tangling-prevention',
       path: '/guide/layered-necklace-tangling-prevention',
       title: '목걸이 레이어드 엉킴, 길이·체인 조합 확인법',
