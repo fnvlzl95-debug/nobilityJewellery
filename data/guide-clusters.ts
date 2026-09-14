@@ -158,6 +158,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/cast-vs-handmade-custom-ring-consultation', label: '주물 반지와 핸드메이드 차이, 제작·마감 확인법', description: '주물 반지와 핸드메이드를 비교할 때 기본 형태를 만드는 공정과 수작업 마감을 나누어 확인하세요' },
       { to: '/guide/layered-necklace-tangling-prevention', label: '목걸이 레이어드 엉킴, 길이·체인 조합 확인법', description: '목걸이 두 개를 겹쳐 착용할 때 자꾸 엉킨다면 길이 차이, 체인 형태, 펜던트 위치를 살펴보세요' },
       { to: '/guide/tennis-bracelet-structure-selection-guide', label: '테니스 팔찌 뜻, 세팅·잠금장치 선택법', description: '테니스 팔찌는 보석을 연속으로 연결한 디자인입니다' },
+      { to: '/guide/aquamarine-vs-blue-topaz-difference', label: '아쿠아마린·블루 토파즈 차이, 색보다 먼저 볼 것', description: '비슷한 푸른색의 아쿠아마린과 블루 토파즈는 다른 광물입니다' },
     ],
   },
 ]

@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'aquamarine-vs-blue-topaz-difference',
+      path: '/guide/aquamarine-vs-blue-topaz-difference',
+      title: '아쿠아마린·블루 토파즈 차이, 색보다 먼저 볼 것',
+      description: '비슷한 푸른색의 아쿠아마린과 블루 토파즈는 다른 광물입니다. 색 처리와 합성의 차이, 충격·초음파 세척 주의, 제품 설명에서 확인할 항목을 비교했습니다.',
+      keyword: '아쿠아마린 블루 토파즈 차이',
+      image: '/Image/guide/aquamarine-vs-blue-topaz-difference-hero-b341babe.webp',
+      publishedAt: '2026-09-14',
+      category: '소재·보석',
+    },
+  {
       slug: 'tennis-bracelet-structure-selection-guide',
       path: '/guide/tennis-bracelet-structure-selection-guide',
       title: '테니스 팔찌 뜻, 세팅·잠금장치 선택법',
