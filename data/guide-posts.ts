@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'signet-ring-face-shape-selection-guide',
+      path: '/guide/signet-ring-face-shape-selection-guide',
+      title: '시그넷 반지 뜻, 윗면 모양과 착용감 고르는 법',
+      description: '시그넷 반지는 넓은 윗면이 특징인 인장 반지에서 이어진 디자인입니다. 타원형·쿠션형 차이, 무각인 선택, 착용 손가락과 윗면 높이를 비교하는 방법을 정리했습니다.',
+      keyword: '시그넷 반지 뜻',
+      image: '/Image/guide/signet-ring-face-shape-selection-guide-hero-6ec45611.webp',
+      publishedAt: '2026-09-15',
+      category: '선택',
+    },
+  {
       slug: 'aquamarine-vs-blue-topaz-difference',
       path: '/guide/aquamarine-vs-blue-topaz-difference',
       title: '아쿠아마린·블루 토파즈 차이, 색보다 먼저 볼 것',
