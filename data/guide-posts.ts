@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'brooch-placement-fabric-clasp-guide',
+      path: '/guide/brooch-placement-fabric-clasp-guide',
+      title: '브로치 다는 법, 옷감·위치·잠금 확인하기',
+      description: '브로치는 위치를 고르기 전에 옷감과 뒷면 잠금을 확인하세요. 재킷·블라우스·니트의 부착 조건, 핀을 다는 순서와 처짐·걸림을 확인하는 방법을 정리했습니다.',
+      keyword: '브로치 다는 법',
+      image: '/Image/guide/brooch-placement-fabric-clasp-guide-hero-6c272065.webp',
+      publishedAt: '2026-09-16',
+      category: '선택',
+    },
+  {
       slug: 'signet-ring-face-shape-selection-guide',
       path: '/guide/signet-ring-face-shape-selection-guide',
       title: '시그넷 반지 뜻, 윗면 모양과 착용감 고르는 법',

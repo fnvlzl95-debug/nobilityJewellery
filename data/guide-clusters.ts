@@ -160,6 +160,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/tennis-bracelet-structure-selection-guide', label: '테니스 팔찌 뜻, 세팅·잠금장치 선택법', description: '테니스 팔찌는 보석을 연속으로 연결한 디자인입니다' },
       { to: '/guide/aquamarine-vs-blue-topaz-difference', label: '아쿠아마린·블루 토파즈 차이, 색보다 먼저 볼 것', description: '비슷한 푸른색의 아쿠아마린과 블루 토파즈는 다른 광물입니다' },
       { to: '/guide/signet-ring-face-shape-selection-guide', label: '시그넷 반지 뜻, 윗면 모양과 착용감 고르는 법', description: '시그넷 반지는 넓은 윗면이 특징인 인장 반지에서 이어진 디자인입니다' },
+      { to: '/guide/brooch-placement-fabric-clasp-guide', label: '브로치 다는 법, 옷감·위치·잠금 확인하기', description: '브로치는 위치를 고르기 전에 옷감과 뒷면 잠금을 확인하세요' },
     ],
   },
 ]
