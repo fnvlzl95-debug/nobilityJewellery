@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ring-spinning-fit-balance-guide',
+      path: '/guide/ring-spinning-fit-balance-guide',
+      title: '반지가 돌아가는 이유, 줄이기 전에 확인할 것',
+      description: '반지가 자꾸 돌아간다면 마디와 착용 부위의 차이, 장식 배치부터 확인하세요. 전체 회전과 보석 흔들림을 구분하고, 호수 조정과 안쪽 비드를 검토할 때의 기준을 정리했습니다.',
+      keyword: '반지가 돌아가는 이유',
+      image: '/Image/guide/ring-spinning-fit-balance-guide-hero-45a4b858.webp',
+      publishedAt: '2026-09-19',
+      category: '선택',
+    },
+  {
       slug: 'jewelry-metal-hardness-and-deformation-guide',
       path: '/guide/jewelry-metal-hardness-and-deformation-guide',
       title: '귀금속 경도 순위, 금·은·백금 비교 전에 볼 것',

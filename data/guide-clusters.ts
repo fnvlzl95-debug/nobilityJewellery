@@ -162,6 +162,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/signet-ring-face-shape-selection-guide', label: '시그넷 반지 뜻, 윗면 모양과 착용감 고르는 법', description: '시그넷 반지는 넓은 윗면이 특징인 인장 반지에서 이어진 디자인입니다' },
       { to: '/guide/brooch-placement-fabric-clasp-guide', label: '브로치 다는 법, 옷감·위치·잠금 확인하기', description: '브로치는 위치를 고르기 전에 옷감과 뒷면 잠금을 확인하세요' },
       { to: '/guide/jewelry-metal-hardness-and-deformation-guide', label: '귀금속 경도 순위, 금·은·백금 비교 전에 볼 것', description: '금·은·백금은 합금과 가공 상태에 따라 경도가 달라집니다' },
+      { to: '/guide/ring-spinning-fit-balance-guide', label: '반지가 돌아가는 이유, 줄이기 전에 확인할 것', description: '반지가 자꾸 돌아간다면 마디와 착용 부위의 차이, 장식 배치부터 확인하세요' },
     ],
   },
 ]
