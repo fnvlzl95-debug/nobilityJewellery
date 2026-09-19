@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jewelry-metal-hardness-and-deformation-guide',
+      path: '/guide/jewelry-metal-hardness-and-deformation-guide',
+      title: '귀금속 경도 순위, 금·은·백금 비교 전에 볼 것',
+      description: '금·은·백금은 합금과 가공 상태에 따라 경도가 달라집니다. 경도표의 시험 조건, 가공 경화와 열처리, 완성품의 휨을 따로 살피는 기준을 정리했습니다.',
+      keyword: '귀금속 경도 순위',
+      image: '/Image/guide/jewelry-metal-hardness-and-deformation-guide-hero-4fac21f1.webp',
+      publishedAt: '2026-09-19',
+      category: '선택',
+    },
+  {
       slug: 'brooch-placement-fabric-clasp-guide',
       path: '/guide/brooch-placement-fabric-clasp-guide',
       title: '브로치 다는 법, 옷감·위치·잠금 확인하기',
