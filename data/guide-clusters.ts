@@ -163,6 +163,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/brooch-placement-fabric-clasp-guide', label: '브로치 다는 법, 옷감·위치·잠금 확인하기', description: '브로치는 위치를 고르기 전에 옷감과 뒷면 잠금을 확인하세요' },
       { to: '/guide/jewelry-metal-hardness-and-deformation-guide', label: '귀금속 경도 순위, 금·은·백금 비교 전에 볼 것', description: '금·은·백금은 합금과 가공 상태에 따라 경도가 달라집니다' },
       { to: '/guide/ring-spinning-fit-balance-guide', label: '반지가 돌아가는 이유, 줄이기 전에 확인할 것', description: '반지가 자꾸 돌아간다면 마디와 착용 부위의 차이, 장식 배치부터 확인하세요' },
+      { to: '/guide/jongno-initial-necklace-custom-order', label: '이니셜 목걸이 주문제작, 형태별 선택법', description: '이니셜 목걸이를 주문하려면 글자 참·연결 네임형·각인 판부터 구분하세요' },
     ],
   },
 ]

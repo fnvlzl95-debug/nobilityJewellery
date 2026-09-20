@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-initial-necklace-custom-order',
+      path: '/guide/jongno-initial-necklace-custom-order',
+      title: '이니셜 목걸이 주문제작, 형태별 선택법',
+      description: '이니셜 목걸이를 주문하려면 글자 참·연결 네임형·각인 판부터 구분하세요. 도안의 연결 위치와 앞뒤 모습, 체인 포함 범위를 정리해 종로 귀족에 제작 상담을 요청할 수 있습니다.',
+      keyword: '이니셜 목걸이 주문제작',
+      image: '/Image/guide/jongno-initial-necklace-custom-order-hero-30c4af3e.webp',
+      publishedAt: '2026-09-20',
+      category: '주문',
+    },
+  {
       slug: 'ring-spinning-fit-balance-guide',
       path: '/guide/ring-spinning-fit-balance-guide',
       title: '반지가 돌아가는 이유, 줄이기 전에 확인할 것',
