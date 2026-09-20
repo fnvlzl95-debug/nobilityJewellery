@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-two-tone-couple-ring-selection',
+      path: '/guide/jongno-two-tone-couple-ring-selection',
+      title: '종로 콤비 커플링, 색 배치부터 고르세요',
+      description: '콤비 커플링은 중앙·가장자리·장식부에 들어가는 색부터 비교하세요. 귀족 갤러리의 콤비 디자인을 살펴보고 부위별 소재와 원하는 배치를 정리해 주문 상담을 시작할 수 있습니다.',
+      keyword: '종로 콤비 커플링',
+      image: '/Image/guide/jongno-two-tone-couple-ring-selection-hero-3c2ad171.webp',
+      publishedAt: '2026-09-20',
+      category: '선택',
+    },
+  {
       slug: 'jongno-initial-necklace-custom-order',
       path: '/guide/jongno-initial-necklace-custom-order',
       title: '이니셜 목걸이 주문제작, 형태별 선택법',
