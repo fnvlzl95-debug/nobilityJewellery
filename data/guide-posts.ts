@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'eternity-ring-half-full-selection',
+      path: '/guide/eternity-ring-half-full-selection',
+      title: '이터니티 반지, 하프와 풀 선택법',
+      description: '이터니티 반지를 고를 때는 하프·풀 이름보다 보석이 이어지는 범위를 확인하세요. 정면의 끝점과 손바닥 쪽 구조, 호수별 배열을 비교하고 원하는 반지의 주문 조건을 상담할 수 있습니다.',
+      keyword: '이터니티 반지 하프 풀',
+      image: '/Image/guide/eternity-ring-half-full-selection-hero-b64e5c09.webp',
+      publishedAt: '2026-09-21',
+      category: '선택',
+    },
+  {
       slug: 'jongno-diamond-pendant-design-order',
       path: '/guide/jongno-diamond-pendant-design-order',
       title: '다이아 목걸이 주문, 한 알과 둘레 장식',

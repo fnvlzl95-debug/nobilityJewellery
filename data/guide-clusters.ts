@@ -166,6 +166,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-initial-necklace-custom-order', label: '이니셜 목걸이 주문제작, 형태별 선택법', description: '이니셜 목걸이를 주문하려면 글자 참·연결 네임형·각인 판부터 구분하세요' },
       { to: '/guide/jongno-two-tone-couple-ring-selection', label: '종로 콤비 커플링, 색 배치부터 고르세요', description: '콤비 커플링은 중앙·가장자리·장식부에 들어가는 색부터 비교하세요' },
       { to: '/guide/jongno-diamond-pendant-design-order', label: '다이아 목걸이 주문, 한 알과 둘레 장식', description: '다이아 목걸이 주문제작은 한 알을 강조할지 둘레 장식을 더할지부터 고르세요' },
+      { to: '/guide/eternity-ring-half-full-selection', label: '이터니티 반지, 하프와 풀 선택법', description: '이터니티 반지를 고를 때는 하프·풀 이름보다 보석이 이어지는 범위를 확인하세요' },
     ],
   },
 ]
