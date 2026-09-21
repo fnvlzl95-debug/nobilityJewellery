@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-diamond-pendant-design-order',
+      path: '/guide/jongno-diamond-pendant-design-order',
+      title: '다이아 목걸이 주문, 한 알과 둘레 장식',
+      description: '다이아 목걸이 주문제작은 한 알을 강조할지 둘레 장식을 더할지부터 고르세요. 중심석과 펜던트 외곽, 옆면 높이를 나누어 비교하고 종로 귀족에 원하는 디자인의 제작 상담을 요청할 수 있습니다.',
+      keyword: '다이아 목걸이 주문제작',
+      image: '/Image/guide/jongno-diamond-pendant-design-order-hero-2573bff4.webp',
+      publishedAt: '2026-09-21',
+      category: '주문',
+    },
+  {
       slug: 'jongno-two-tone-couple-ring-selection',
       path: '/guide/jongno-two-tone-couple-ring-selection',
       title: '종로 콤비 커플링, 색 배치부터 고르세요',

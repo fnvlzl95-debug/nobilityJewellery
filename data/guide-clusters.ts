@@ -165,6 +165,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/ring-spinning-fit-balance-guide', label: '반지가 돌아가는 이유, 줄이기 전에 확인할 것', description: '반지가 자꾸 돌아간다면 마디와 착용 부위의 차이, 장식 배치부터 확인하세요' },
       { to: '/guide/jongno-initial-necklace-custom-order', label: '이니셜 목걸이 주문제작, 형태별 선택법', description: '이니셜 목걸이를 주문하려면 글자 참·연결 네임형·각인 판부터 구분하세요' },
       { to: '/guide/jongno-two-tone-couple-ring-selection', label: '종로 콤비 커플링, 색 배치부터 고르세요', description: '콤비 커플링은 중앙·가장자리·장식부에 들어가는 색부터 비교하세요' },
+      { to: '/guide/jongno-diamond-pendant-design-order', label: '다이아 목걸이 주문, 한 알과 둘레 장식', description: '다이아 목걸이 주문제작은 한 알을 강조할지 둘레 장식을 더할지부터 고르세요' },
     ],
   },
 ]
