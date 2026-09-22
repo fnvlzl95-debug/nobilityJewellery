@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'necklace-earring-set-buying-guide',
+      path: '/guide/necklace-earring-set-buying-guide',
+      title: '목걸이·귀걸이 세트, 조합부터 고르세요',
+      description: '목걸이·귀걸이 세트를 구매할 때는 공통 모티브와 두 품목의 크기 비율, 실제 포함 구성을 확인하세요. 귀족 갤러리의 세트 디자인을 비교하고 필요한 품목을 골라 구매·제작 상담을 시작할 수 있습니다.',
+      keyword: '목걸이 귀걸이 세트',
+      image: '/Image/guide/necklace-earring-set-buying-guide-hero-830ae920.webp',
+      publishedAt: '2026-09-22',
+      category: '선택',
+    },
+  {
       slug: 'jongno-friendship-ring-group-order',
       path: '/guide/jongno-friendship-ring-group-order',
       title: '우정반지 주문제작, 여럿이 맞추는 순서',
