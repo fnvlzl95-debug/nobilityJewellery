@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-friendship-ring-group-order',
+      path: '/guide/jongno-friendship-ring-group-order',
+      title: '우정반지 주문제작, 여럿이 맞추는 순서',
+      description: '여럿이 우정반지를 주문제작하려면 공통 디자인과 각자 다른 요청을 먼저 나누세요. 인원별 확인표와 예산 합의 방법을 살펴보고 참고 사진·참여 인원·희망일을 귀족에 보내 상담을 시작할 수 있습니다.',
+      keyword: '우정반지 주문제작',
+      image: '/Image/guide/jongno-friendship-ring-group-order-hero-048163b6.webp',
+      publishedAt: '2026-09-22',
+      category: '주문',
+    },
+  {
       slug: 'eternity-ring-half-full-selection',
       path: '/guide/eternity-ring-half-full-selection',
       title: '이터니티 반지, 하프와 풀 선택법',

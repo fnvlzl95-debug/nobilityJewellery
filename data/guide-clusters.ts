@@ -167,6 +167,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-two-tone-couple-ring-selection', label: '종로 콤비 커플링, 색 배치부터 고르세요', description: '콤비 커플링은 중앙·가장자리·장식부에 들어가는 색부터 비교하세요' },
       { to: '/guide/jongno-diamond-pendant-design-order', label: '다이아 목걸이 주문, 한 알과 둘레 장식', description: '다이아 목걸이 주문제작은 한 알을 강조할지 둘레 장식을 더할지부터 고르세요' },
       { to: '/guide/eternity-ring-half-full-selection', label: '이터니티 반지, 하프와 풀 선택법', description: '이터니티 반지를 고를 때는 하프·풀 이름보다 보석이 이어지는 범위를 확인하세요' },
+      { to: '/guide/jongno-friendship-ring-group-order', label: '우정반지 주문제작, 여럿이 맞추는 순서', description: '여럿이 우정반지를 주문제작하려면 공통 디자인과 각자 다른 요청을 먼저 나누세요' },
     ],
   },
 ]
