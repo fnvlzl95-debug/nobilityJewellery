@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'open-ring-size-selection-guide',
+      path: '/guide/open-ring-size-selection-guide',
+      title: '오픈링 구매, 프리사이즈인지 확인하세요',
+      description: '오픈링은 끝이 열려 있어도 모두 프리사이즈는 아닙니다. 고정 호수와 조절형을 구분하고 틈의 위치·끝장식·착용 방향을 살펴보세요. 원하는 디자인 사진으로 귀족에 구매·제작 가능 범위를 문의할 수 있습니다.',
+      keyword: '오픈링 프리사이즈',
+      image: '/Image/guide/open-ring-size-selection-guide-hero-fca4fb25.webp',
+      publishedAt: '2026-09-23',
+      category: '선택',
+    },
+  {
       slug: 'necklace-earring-set-buying-guide',
       path: '/guide/necklace-earring-set-buying-guide',
       title: '목걸이·귀걸이 세트, 조합부터 고르세요',
