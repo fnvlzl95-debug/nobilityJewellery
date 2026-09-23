@@ -170,6 +170,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-friendship-ring-group-order', label: '우정반지 주문제작, 여럿이 맞추는 순서', description: '여럿이 우정반지를 주문제작하려면 공통 디자인과 각자 다른 요청을 먼저 나누세요' },
       { to: '/guide/necklace-earring-set-buying-guide', label: '목걸이·귀걸이 세트, 조합부터 고르세요', description: '목걸이·귀걸이 세트를 구매할 때는 공통 모티브와 두 품목의 크기 비율, 실제 포함 구성을 확인하세요' },
       { to: '/guide/open-ring-size-selection-guide', label: '오픈링 구매, 프리사이즈인지 확인하세요', description: '오픈링은 끝이 열려 있어도 모두 프리사이즈는 아닙니다' },
+      { to: '/guide/coin-necklace-design-selection-guide', label: '코인 목걸이 구매, 양면과 테두리 선택법', description: '코인 목걸이를 구매할 때는 앞·뒷면 무늬와 테두리 비율, 문양의 입체감을 따로 살펴보세요' },
     ],
   },
 ]

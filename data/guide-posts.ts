@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'coin-necklace-design-selection-guide',
+      path: '/guide/coin-necklace-design-selection-guide',
+      title: '코인 목걸이 구매, 양면과 테두리 선택법',
+      description: '코인 목걸이를 구매할 때는 앞·뒷면 무늬와 테두리 비율, 문양의 입체감을 따로 살펴보세요. 코인풍 장식과 실제 주화 사용 제품을 구분하고 원하는 부분을 사진에 표시해 귀족에 구매·제작 상담을 시작할 수 있습니다.',
+      keyword: '코인 목걸이 구매',
+      image: '/Image/guide/coin-necklace-design-selection-guide-hero-2c492123.webp',
+      publishedAt: '2026-09-23',
+      category: '선택',
+    },
+  {
       slug: 'open-ring-size-selection-guide',
       path: '/guide/open-ring-size-selection-guide',
       title: '오픈링 구매, 프리사이즈인지 확인하세요',
