@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'toi-et-moi-ring-custom-selection',
+      path: '/guide/toi-et-moi-ring-custom-selection',
+      title: '투아에무아 반지 주문, 두 보석 조합법',
+      description: '투아에무아 반지는 한 반지에 두 보석을 나란히 배치하는 디자인입니다. 먼저 유지할 보석을 고르고 색·모양·배치 방향을 비교해 보세요. 원하는 두 보석의 조합과 참고 사진으로 귀족에 제작 상담을 시작할 수 있습니다.',
+      keyword: '투아에무아 반지',
+      image: '/Image/guide/toi-et-moi-ring-custom-selection-hero-3fc2ed20.webp',
+      publishedAt: '2026-09-24',
+      category: '주문',
+    },
+  {
       slug: 'coin-necklace-design-selection-guide',
       path: '/guide/coin-necklace-design-selection-guide',
       title: '코인 목걸이 구매, 양면과 테두리 선택법',

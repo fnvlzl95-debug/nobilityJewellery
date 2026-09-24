@@ -171,6 +171,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/necklace-earring-set-buying-guide', label: '목걸이·귀걸이 세트, 조합부터 고르세요', description: '목걸이·귀걸이 세트를 구매할 때는 공통 모티브와 두 품목의 크기 비율, 실제 포함 구성을 확인하세요' },
       { to: '/guide/open-ring-size-selection-guide', label: '오픈링 구매, 프리사이즈인지 확인하세요', description: '오픈링은 끝이 열려 있어도 모두 프리사이즈는 아닙니다' },
       { to: '/guide/coin-necklace-design-selection-guide', label: '코인 목걸이 구매, 양면과 테두리 선택법', description: '코인 목걸이를 구매할 때는 앞·뒷면 무늬와 테두리 비율, 문양의 입체감을 따로 살펴보세요' },
+      { to: '/guide/toi-et-moi-ring-custom-selection', label: '투아에무아 반지 주문, 두 보석 조합법', description: '투아에무아 반지는 한 반지에 두 보석을 나란히 배치하는 디자인입니다' },
     ],
   },
 ]
