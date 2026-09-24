@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'baroque-pearl-pendant-selection-guide',
+      path: '/guide/baroque-pearl-pendant-selection-guide',
+      title: '못난이 진주 목걸이, 한 알의 모양 고르기',
+      description: '못난이 진주 목걸이를 한 알 펜던트로 고를 때는 그 진주만의 윤곽과 매달리는 방향을 살펴보세요. 대표 사진과 실제 후보를 구분하고, 유지하고 싶은 굴곡을 표시해 귀족에 구매·제작 가능 범위를 문의할 수 있습니다.',
+      keyword: '못난이 진주 목걸이',
+      image: '/Image/guide/baroque-pearl-pendant-selection-guide-hero-f33218b7.webp',
+      publishedAt: '2026-09-24',
+      category: '선택',
+    },
+  {
       slug: 'toi-et-moi-ring-custom-selection',
       path: '/guide/toi-et-moi-ring-custom-selection',
       title: '투아에무아 반지 주문, 두 보석 조합법',
