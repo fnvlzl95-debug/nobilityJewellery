@@ -173,6 +173,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/coin-necklace-design-selection-guide', label: '코인 목걸이 구매, 양면과 테두리 선택법', description: '코인 목걸이를 구매할 때는 앞·뒷면 무늬와 테두리 비율, 문양의 입체감을 따로 살펴보세요' },
       { to: '/guide/toi-et-moi-ring-custom-selection', label: '투아에무아 반지 주문, 두 보석 조합법', description: '투아에무아 반지는 한 반지에 두 보석을 나란히 배치하는 디자인입니다' },
       { to: '/guide/baroque-pearl-pendant-selection-guide', label: '못난이 진주 목걸이, 한 알의 모양 고르기', description: '못난이 진주 목걸이를 한 알 펜던트로 고를 때는 그 진주만의 윤곽과 매달리는 방향을 살펴보세요' },
+      { to: '/guide/y-lariat-necklace-drop-selection', label: 'Y자 목걸이 구매, 갈림점과 드롭 길이', description: 'Y자 목걸이는 목을 두르는 부분과 아래로 내려오는 드롭을 나누어 골라 보세요' },
     ],
   },
 ]

@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'y-lariat-necklace-drop-selection',
+      path: '/guide/y-lariat-necklace-drop-selection',
+      title: 'Y자 목걸이 구매, 갈림점과 드롭 길이',
+      description: 'Y자 목걸이는 목을 두르는 부분과 아래로 내려오는 드롭을 나누어 골라 보세요. 갈림점과 장식 끝의 위치, 조절되는 구간을 확인하고 참고 사진에 원하는 위치를 표시해 귀족에 구매·제작 상담을 시작할 수 있습니다.',
+      keyword: 'Y자 목걸이',
+      image: '/Image/guide/y-lariat-necklace-drop-selection-hero-ce565c42.webp',
+      publishedAt: '2026-09-25',
+      category: '선택',
+    },
+  {
       slug: 'baroque-pearl-pendant-selection-guide',
       path: '/guide/baroque-pearl-pendant-selection-guide',
       title: '못난이 진주 목걸이, 한 알의 모양 고르기',
