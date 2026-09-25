@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'rose-cut-diamond-ring-buying-guide',
+      path: '/guide/rose-cut-diamond-ring-buying-guide',
+      title: '로즈컷 다이아 반지, 은은한 빛 고르기',
+      description: '로즈컷 다이아 반지는 평평한 바닥과 돔 형태의 윗면이 특징입니다. 강한 반짝임과 다른 은은한 빛이 취향에 맞는지 보고, 실제 보석의 윤곽과 완성 반지 높이를 구분해 귀족에 구매·제작 가능 범위를 문의하세요.',
+      keyword: '로즈컷 다이아 반지',
+      image: '/Image/guide/rose-cut-diamond-ring-buying-guide-hero-92f4b606.webp',
+      publishedAt: '2026-09-25',
+      category: '선택',
+    },
+  {
       slug: 'y-lariat-necklace-drop-selection',
       path: '/guide/y-lariat-necklace-drop-selection',
       title: 'Y자 목걸이 구매, 갈림점과 드롭 길이',
