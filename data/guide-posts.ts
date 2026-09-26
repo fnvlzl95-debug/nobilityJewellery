@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'chain-ring-flexible-rigid-selection',
+      path: '/guide/chain-ring-flexible-rigid-selection',
+      title: '체인 반지 구매, 유연형과 고정형 차이',
+      description: '체인 반지는 움직이는 링크로 만든 제품과 체인 모양을 고정한 제품이 있습니다. 사진의 무늬만 보지 말고 움직이는 구간과 안쪽 면을 확인하세요. 원하는 연결 모양과 착용 방식을 정해 귀족에 구매·제작 가능 범위를 문의할 수 있습니다.',
+      keyword: '체인 반지',
+      image: '/Image/guide/chain-ring-flexible-rigid-selection-hero-9bc64ba3.webp',
+      publishedAt: '2026-09-26',
+      category: '선택',
+    },
+  {
       slug: 'spinel-ring-buying-guide',
       path: '/guide/spinel-ring-buying-guide',
       title: '스피넬 반지 구매, 루비와 다른 점',
