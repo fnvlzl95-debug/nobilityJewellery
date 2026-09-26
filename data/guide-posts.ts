@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'spinel-ring-buying-guide',
+      path: '/guide/spinel-ring-buying-guide',
+      title: '스피넬 반지 구매, 루비와 다른 점',
+      description: '스피넬은 루비와 다른 광물이며 빨강 외에도 다양한 색이 있습니다. 스피넬 반지를 구매할 때 색 이름·천연 여부·AAA 표기를 어떻게 읽는지 정리했습니다. 원하는 색과 반지 사진을 보내 귀족에 제작 가능 범위를 문의하세요.',
+      keyword: '스피넬 반지',
+      image: '/Image/guide/spinel-ring-buying-guide-hero-7b8c2650.webp',
+      publishedAt: '2026-09-26',
+      category: '선택',
+    },
+  {
       slug: 'rose-cut-diamond-ring-buying-guide',
       path: '/guide/rose-cut-diamond-ring-buying-guide',
       title: '로즈컷 다이아 반지, 은은한 빛 고르기',
