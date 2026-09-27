@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jade-ring-buying-guide',
+      path: '/guide/jade-ring-buying-guide',
+      title: '옥반지 구매, 통옥·세팅형과 처리 확인',
+      description: '옥반지는 옥 자체가 고리를 이루는 통옥형과 금속 반지에 옥을 올린 세팅형을 나누어 고르세요. 경옥·연옥의 구분, 경옥 A·B·C 처리 표기와 구매 전 확인할 사진을 정리했습니다. 원하는 형태와 자료를 보내 귀족에 상담할 수 있습니다.',
+      keyword: '옥반지',
+      image: '/Image/guide/jade-ring-buying-guide-hero-7b0a67e3.webp',
+      publishedAt: '2026-09-27',
+      category: '선택',
+    },
+  {
       slug: 'chain-ring-flexible-rigid-selection',
       path: '/guide/chain-ring-flexible-rigid-selection',
       title: '체인 반지 구매, 유연형과 고정형 차이',

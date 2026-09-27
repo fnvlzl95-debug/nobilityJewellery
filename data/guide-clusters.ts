@@ -177,6 +177,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/rose-cut-diamond-ring-buying-guide', label: '로즈컷 다이아 반지, 은은한 빛 고르기', description: '로즈컷 다이아 반지는 평평한 바닥과 돔 형태의 윗면이 특징입니다' },
       { to: '/guide/spinel-ring-buying-guide', label: '스피넬 반지 구매, 루비와 다른 점', description: '스피넬은 루비와 다른 광물이며 빨강 외에도 다양한 색이 있습니다' },
       { to: '/guide/chain-ring-flexible-rigid-selection', label: '체인 반지 구매, 유연형과 고정형 차이', description: '체인 반지는 움직이는 링크로 만든 제품과 체인 모양을 고정한 제품이 있습니다' },
+      { to: '/guide/jade-ring-buying-guide', label: '옥반지 구매, 통옥·세팅형과 처리 확인', description: '옥반지는 옥 자체가 고리를 이루는 통옥형과 금속 반지에 옥을 올린 세팅형을 나누어 고르세요' },
     ],
   },
 ]
