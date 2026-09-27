@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'fall-2026-charm-necklace-trend',
+      path: '/guide/fall-2026-charm-necklace-trend',
+      title: '2026 가을 참 목걸이, 모티브 조합법',
+      description: '2026년 9월 보그가 소개한 가을 참 주얼리 흐름을 바탕으로, 여러 모티브를 한 목걸이에 조합하는 방법을 정리했습니다. 중심 장식과 배치 방식, 나중에 교체할지 여부를 정해 귀족에 구매·제작 상담을 시작해 보세요.',
+      keyword: '2026 가을 참 목걸이',
+      image: '/Image/guide/fall-2026-charm-necklace-trend-hero-87844b8b.webp',
+      publishedAt: '2026-09-27',
+      category: '선택',
+    },
+  {
       slug: 'jade-ring-buying-guide',
       path: '/guide/jade-ring-buying-guide',
       title: '옥반지 구매, 통옥·세팅형과 처리 확인',
