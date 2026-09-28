@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'tiktok-loose-diamond-ring-order-guide',
+      path: '/guide/tiktok-loose-diamond-ring-order-guide',
+      title: '틱톡 다이아 경매, 반지 제작 전 확인',
+      description: '틱톡 다이아 경매에서 본 루스 보석을 반지로 만들고 싶다면 구매 구성과 제작 가능 범위를 먼저 확인하세요. 실제 보석 자료, 지참 보석 세팅, 완성품 견적에 포함할 항목을 나누고 귀족 상담에 필요한 정보를 정리했습니다.',
+      keyword: '틱톡 다이아 경매',
+      image: '/Image/guide/tiktok-loose-diamond-ring-order-guide-hero-7e4a2098.webp',
+      publishedAt: '2026-09-28',
+      category: '선택',
+    },
+  {
       slug: 'fall-2026-charm-necklace-trend',
       path: '/guide/fall-2026-charm-necklace-trend',
       title: '2026 가을 참 목걸이, 모티브 조합법',
