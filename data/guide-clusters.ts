@@ -180,6 +180,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jade-ring-buying-guide', label: '옥반지 구매, 통옥·세팅형과 처리 확인', description: '옥반지는 옥 자체가 고리를 이루는 통옥형과 금속 반지에 옥을 올린 세팅형을 나누어 고르세요' },
       { to: '/guide/fall-2026-charm-necklace-trend', label: '2026 가을 참 목걸이, 모티브 조합법', description: '2026년 9월 보그가 소개한 가을 참 주얼리 흐름을 바탕으로, 여러 모티브를 한 목걸이에 조합하는 방법을 정리했습니다' },
       { to: '/guide/tiktok-loose-diamond-ring-order-guide', label: '틱톡 다이아 경매, 반지 제작 전 확인', description: '틱톡 다이아 경매에서 본 루스 보석을 반지로 만들고 싶다면 구매 구성과 제작 가능 범위를 먼저 확인하세요' },
+      { to: '/guide/gold-cuff-bracelet-buying-guide', label: '커프 팔찌 구매, 뱅글과 다른 착용·사이즈', description: '커프 팔찌는 한쪽이 열린 구조라 뱅글과 사이즈 재는 법, 끼는 법이 다릅니다' },
     ],
   },
 ]

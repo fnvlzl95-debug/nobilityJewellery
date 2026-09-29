@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gold-cuff-bracelet-buying-guide',
+      path: '/guide/gold-cuff-bracelet-buying-guide',
+      title: '커프 팔찌 구매, 뱅글과 다른 착용·사이즈',
+      description: '커프 팔찌는 한쪽이 열린 구조라 뱅글과 사이즈 재는 법, 끼는 법이 다릅니다. 소매 위 착용 여부, 도금과 14K·18K 소재, 폭·두께·속 구조까지 금 커프를 사거나 주문하기 전에 확인할 항목을 정리했습니다.',
+      keyword: '커프 팔찌',
+      image: '/Image/guide/gold-cuff-bracelet-buying-guide-hero-9201cb5b.webp',
+      publishedAt: '2026-09-29',
+      category: '선택',
+    },
+  {
       slug: 'tiktok-loose-diamond-ring-order-guide',
       path: '/guide/tiktok-loose-diamond-ring-order-guide',
       title: '틱톡 다이아 경매, 반지 제작 전 확인',
