@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'bangle-bracelet-width-thickness-types',
+      path: '/guide/bangle-bracelet-width-thickness-types',
+      title: '뱅글팔찌 종류와 두께, 폭부터 구분하기',
+      description: '뱅글팔찌를 고를 때는 정면에서 보이는 폭과 옆면의 두께를 따로 확인하세요. 닫힌 고리형·힌지형·오픈형의 특징, 원형·타원형과 단면의 차이를 설명하고 원하는 볼륨과 구조로 구매·제작 상담하는 방법을 정리했습니다.',
+      keyword: '뱅글팔찌 두께',
+      image: '/Image/guide/bangle-bracelet-width-thickness-types-hero-6f7d34a3.webp',
+      publishedAt: '2026-09-30',
+      category: '선택',
+    },
+  {
       slug: 'gold-cuff-bracelet-buying-guide',
       path: '/guide/gold-cuff-bracelet-buying-guide',
       title: '커프 팔찌 구매, 뱅글과 다른 착용·사이즈',
