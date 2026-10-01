@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'tourmaline-ring-bicolor-selection',
+      path: '/guide/tourmaline-ring-bicolor-selection',
+      title: '투어멀린 반지, 단색과 바이컬러 고르기',
+      description: '투어멀린 반지를 고를 때 단색 느낌과 바이컬러의 색 배치를 비교해 보세요. 워터멜론과 다색성의 차이, 실제 보석 사진에서 볼 부분, 종로 귀족에 원하는 색과 디자인을 전달하는 방법을 정리했습니다.',
+      keyword: '투어멀린 반지',
+      image: '/Image/guide/tourmaline-ring-bicolor-selection-hero-feec0a71.webp',
+      publishedAt: '2026-10-01',
+      category: '선택',
+    },
+  {
       slug: 'bangle-bracelet-width-thickness-types',
       path: '/guide/bangle-bracelet-width-thickness-types',
       title: '뱅글팔찌 종류와 두께, 폭부터 구분하기',

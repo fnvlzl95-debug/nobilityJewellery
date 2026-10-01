@@ -182,6 +182,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/tiktok-loose-diamond-ring-order-guide', label: '틱톡 다이아 경매, 반지 제작 전 확인', description: '틱톡 다이아 경매에서 본 루스 보석을 반지로 만들고 싶다면 구매 구성과 제작 가능 범위를 먼저 확인하세요' },
       { to: '/guide/gold-cuff-bracelet-buying-guide', label: '커프 팔찌 구매, 뱅글과 다른 착용·사이즈', description: '커프 팔찌는 한쪽이 열린 구조라 뱅글과 사이즈 재는 법, 끼는 법이 다릅니다' },
       { to: '/guide/bangle-bracelet-width-thickness-types', label: '뱅글팔찌 종류와 두께, 폭부터 구분하기', description: '뱅글팔찌를 고를 때는 정면에서 보이는 폭과 옆면의 두께를 따로 확인하세요' },
+      { to: '/guide/tourmaline-ring-bicolor-selection', label: '투어멀린 반지, 단색과 바이컬러 고르기', description: '투어멀린 반지를 고를 때 단색 느낌과 바이컬러의 색 배치를 비교해 보세요' },
     ],
   },
 ]
