@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'earring-jacket-stud-compatibility-guide',
+      path: '/guide/earring-jacket-stud-compatibility-guide',
+      title: '이어재킷 귀걸이, 스터드에 맞춰 고르기',
+      description: '이어재킷은 스터드 귀걸이에 더하는 별도 장식입니다. 둘레를 감싸는 형태와 귓불 아래로 보이는 형태, 기존 귀걸이와의 호환·구성품 확인법을 정리했습니다. 사진을 준비해 종로 귀족에 구매·제작 가능 범위를 문의하세요.',
+      keyword: '이어재킷 귀걸이',
+      image: '/Image/guide/earring-jacket-stud-compatibility-guide-hero-d6a32583.webp',
+      publishedAt: '2026-10-02',
+      category: '선택',
+    },
+  {
       slug: 'tourmaline-ring-bicolor-selection',
       path: '/guide/tourmaline-ring-bicolor-selection',
       title: '투어멀린 반지, 단색과 바이컬러 고르기',
