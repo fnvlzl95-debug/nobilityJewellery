@@ -233,6 +233,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '반지가 돌아가는 이유',
       image: '/Image/guide/ring-spinning-fit-balance-guide-hero-45a4b858.webp',
       publishedAt: '2026-09-19',
+      updatedAt: '2026-10-03',
       category: '선택',
     },
   {
@@ -263,6 +264,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '시그넷 반지 뜻',
       image: '/Image/guide/signet-ring-face-shape-selection-guide-hero-6ec45611.webp',
       publishedAt: '2026-09-15',
+      updatedAt: '2026-10-03',
       category: '선택',
     },
   {
@@ -273,6 +275,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '아쿠아마린 블루 토파즈 차이',
       image: '/Image/guide/aquamarine-vs-blue-topaz-difference-hero-b341babe.webp',
       publishedAt: '2026-09-14',
+      updatedAt: '2026-10-03',
       category: '소재·보석',
     },
   {
@@ -313,6 +316,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '커플링 손가락',
     image: '/Image/guide/couple-ring-finger-placement-hero-5e9b2e70.webp',
     publishedAt: '2026-09-09',
+    updatedAt: '2026-10-03',
     category: '선택',
   },
   {
@@ -323,6 +327,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '남자 목걸이 45cm 50cm',
     image: '/Image/guide/mens-necklace-45cm-50cm-fit-hero-e636a584.webp',
     publishedAt: '2026-09-08',
+    updatedAt: '2026-10-03',
     category: '선택',
   },
   {

@@ -42,9 +42,11 @@ const buildPrerenderRoutes = (): string[] => [
 ]
 
 const seoUpdatedAt = '2026-08-25'
-// All gallery detail pages now include a design-specific inquiry path.
-const galleryTemplateUpdatedAt = '2026-09-05'
+// All gallery detail pages received design-specific consultation guidance.
+const galleryTemplateUpdatedAt = '2026-10-03'
 const consultationPagesUpdatedAt = '2026-09-05'
+const revisedServicePaths = new Set(['/wedding', '/buy-gold', '/custom', '/repair', '/couple-ring'])
+const serviceLastmod = (path: string) => revisedServicePaths.has(path) ? '2026-10-03' : consultationPagesUpdatedAt
 const sitemapUrls = [
   ...guidePosts.map((guide) => ({
     loc: guide.path,
@@ -56,8 +58,8 @@ const sitemapUrls = [
   })),
   { loc: '/guide', lastmod: seoUpdatedAt },
   { loc: '/gallery', lastmod: seoUpdatedAt },
-  { loc: '/wedding', lastmod: consultationPagesUpdatedAt },
-  ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: consultationPagesUpdatedAt })),
+  { loc: '/wedding', lastmod: serviceLastmod('/wedding') },
+  ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: serviceLastmod(loc) })),
   { loc: '/contact', lastmod: consultationPagesUpdatedAt },
   { loc: '/wholesale', lastmod: '2026-08-29' },
 ]

@@ -135,7 +135,9 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   const url = new URL(link.href, window.location.origin)
   if (url.origin !== window.location.origin || (!servicePaths.has(url.pathname) && !url.pathname.startsWith('/gallery/'))) return
 
-  const placement = link.closest('.related-card')
+  const placement = link.closest('.consultation-next')
+    ? 'consultation_next'
+    : link.closest('.related-card')
     ? 'related_links'
     : link.closest('.guide-cluster')
       ? 'topic_cluster'

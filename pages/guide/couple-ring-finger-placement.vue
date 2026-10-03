@@ -7,7 +7,7 @@ const pageTitle = '커플링은 어느 손가락에 낄까 | 귀족'
 const pageDescription = '커플링과 결혼반지는 착용 손가락만으로 확정해 구분하기 어렵습니다. 대표적인 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/couple-ring-finger-placement-hero-5e9b2e70.webp`
 const publishedAt = '2026-09-09'
-const updatedAt = ''
+const updatedAt = '2026-10-03'
 const faqItems = [
   {
     "question": "커플링은 꼭 왼손 약지에 껴야 하나요?",
@@ -118,6 +118,41 @@ const sections: Array<{
       "손을 많이 쓰는 직업이나 운동 여부를 상담 시 알립니다."
     ],
     "table": null
+  },
+  {
+    "title": "두 사람의 착용 조건을 따로 적어 보세요",
+    "paragraphs": [
+      "이 글에서는 손가락별 상징을 더 나누기보다 두 사람이 실제로 낄 위치를 결정하는 데 집중합니다. 두 반지를 같은 디자인으로 맞추더라도 착용 손과 손가락, 선호하는 폭은 각각 정리하면 상담에서 조건을 빠뜨리지 않기 쉽습니다.",
+      "아래 질문에 각자 답한 뒤 공통으로 유지할 요소를 골라 보세요. 예를 들어 색상이나 각인 문구는 맞추고, 착용 위치와 폭은 각자 비교하는 식으로 희망사항을 전달할 수 있습니다. 해당 조합의 제작 가능 여부는 선택한 디자인에 따라 확인합니다."
+    ],
+    "table": {
+      "headers": [
+        "각자 정할 항목",
+        "적어 둘 내용",
+        "두 사람이 함께 정할 것"
+      ],
+      "rows": [
+        [
+          "착용 위치",
+          "왼손·오른손과 실제 착용할 손가락",
+          "같은 위치에 낄지, 각자 편한 위치를 택할지"
+        ],
+        [
+          "함께 낄 반지",
+          "평소 반지와 겹칠 계획, 간섭이 걱정되는 부분",
+          "단독 착용과 겹쳐 착용 중 우선할 방식"
+        ],
+        [
+          "형태 선호",
+          "폭·표면 마감·보석 유무와 선호 사진",
+          "색상·무늬·각인 중 통일할 요소"
+        ]
+      ]
+    },
+    "bullets": [
+      "손가락을 바꿔 낄 계획이 있다면 처음부터 알려 주세요. 다른 손가락에도 같은 호수가 맞는다고 가정하지 않습니다.",
+      "상담에는 각자 원하는 디자인 사진과 함께 착용할 기존 반지 사진, 희망 수령일을 준비하세요. 호수는 실제 착용할 위치에서 확인합니다."
+    ]
   }
 ]
 const cautions = [
@@ -128,18 +163,28 @@ const cautions = [
 const relatedLinks = [
   {
     "to": "/guide/jongno-couple-ring-price-consultation-prep",
-    "label": "종로 커플링 가격 상담 전 정할 것",
-    "description": "종로 커플링 상담에서 금속, 폭, 보석, 세팅, 착용감과 두 반지의 통일 정도를 정리하는 방법을 안내합니다."
+    "label": "커플링 상담 전 정할 조건",
+    "description": "소재·폭·보석·마감과 두 반지의 통일 정도를 정리합니다."
   },
   {
-    "to": "/guide/silver-ring-rhodium-plating-guide",
-    "label": "은반지 로듐 도금과 재도금 기준",
-    "description": "은반지의 로듐 도금 목적과 외관 변화, 재도금 상담 전에 확인할 내용을 정리합니다."
+    "to": "/guide/ring-finger-meaning-guide",
+    "label": "손가락별 반지 의미를 더 알고 싶다면",
+    "description": "착용 위치의 상징과 관습은 이 글에서 확인하고, 실제 위치는 두 사람의 선호와 착용감으로 정하세요."
   },
   {
-    "to": "/guide/plated-jewelry-discoloration-care-guide",
-    "label": "도금 변색, 닦기 전 원인 확인",
-    "description": "도금 반지의 오염과 도금 마모를 구분하고 관리 전 확인할 사항을 안내합니다."
+    "to": "/guide/ring-size-measuring-method",
+    "label": "착용할 손가락의 반지 호수 확인",
+    "description": "반지를 낄 손과 손가락을 정했다면 호수 측정의 기본을 확인하세요."
+  },
+  {
+    "to": "/couple-ring",
+    "label": "두 사람의 착용 조건으로 커플링 상담",
+    "description": "각자 낄 손가락과 함께 착용할 반지, 통일하고 싶은 디자인 요소를 전달하세요."
+  },
+  {
+    "to": "/gallery/promise-couple-ring",
+    "label": "각인 포인트를 맞추는 프라미스 커플링",
+    "description": "레터링·각인과 밴드 모양을 디자인 참고로 확인하세요. 원하는 손가락과 폭의 조합은 상담에서 비교합니다."
   }
 ]
 const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]

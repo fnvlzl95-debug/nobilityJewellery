@@ -7,7 +7,7 @@ const pageTitle = '남자 목걸이 45·50cm 선택법 | 귀족'
 const pageDescription = '남자 목걸이 45cm와 50cm 중 어떤 길이가 맞는지 목둘레, 펜던트 유무, 착용 위치를 기준으로 비교합니다.'
 const ogImage = `${siteConfig.url}/Image/guide/mens-necklace-45cm-50cm-fit-hero-e636a584.webp`
 const publishedAt = '2026-09-08'
-const updatedAt = ''
+const updatedAt = '2026-10-03'
 const faqItems = [
   {
     "question": "남자 목걸이는 45cm와 50cm 중 어느 길이가 더 무난한가요?",
@@ -120,6 +120,41 @@ const sections: Array<{
       "착용 위치가 애매하면 두 길이를 모두 상담 대상으로 남겨 두세요."
     ],
     "table": null
+  },
+  {
+    "title": "45cm와 50cm 비교 결과를 상담에 전달하는 법",
+    "paragraphs": [
+      "두 길이 중 하나를 추천받기보다 같은 상의에서 비교한 결과를 보여 주세요. 정면에서 체인이 놓이는 선과 펜던트의 아래 끝을 각각 표시하면 “짧게” 또는 “길게”라는 말만 전달할 때보다 원하는 위치를 설명하기 쉽습니다.",
+      "끈 비교는 원하는 위치를 정하는 준비 과정입니다. 실제 체인과 같은 두께·유연성·무게를 재현하지는 못하므로 주문 전에는 선택한 체인과 잠금·펜던트 구성으로 길이와 착용감을 다시 확인하세요."
+    ],
+    "table": {
+      "headers": [
+        "비교 상황",
+        "사진·메모에 남길 것",
+        "상담에서 확인할 것"
+      ],
+      "rows": [
+        [
+          "체인만 착용",
+          "45cm와 50cm를 같은 상의에 대어 본 정면 사진",
+          "체인 형태에 따라 원하는 위치가 어떻게 달라지는지"
+        ],
+        [
+          "펜던트를 함께 착용",
+          "체인 선과 펜던트 아래 끝의 위치를 각각 표시",
+          "선택한 체인과 펜던트 고리의 호환 여부"
+        ],
+        [
+          "기존 목걸이 길이 변경",
+          "전체 형태·잠금 부분과 원하는 착용 위치",
+          "길이 변경이 가능한 구조인지, 실물 확인이 필요한지"
+        ]
+      ]
+    },
+    "bullets": [
+      "사진에는 얼굴을 포함할 필요가 없습니다. 목선과 체인 위치를 비교할 수 있는 범위만 준비하세요.",
+      "새 제작인지 기존 목걸이의 길이 변경인지 구분하고 원하는 체인·펜던트 사진을 함께 보내 주세요. 특정 길이의 재고나 수리 가능 여부는 개별 확인합니다."
+    ]
   }
 ]
 const cautions = [
@@ -130,23 +165,28 @@ const cautions = [
 const relatedLinks = [
   {
     "to": "/guide/gold-necklace-length-guide",
-    "label": "남자·여자 목걸이 길이 추천: 42·45·50cm 비교",
-    "description": "42cm, 45cm, 50cm 목걸이를 체형과 펜던트 크기 기준으로 비교합니다."
-  },
-  {
-    "to": "/guide/mother-necklace-design-consulting",
-    "label": "어머니 목걸이 디자인 상담: 선물용 체인·펜던트·길이 고르는 기준",
-    "description": "선물용 목걸이의 체인과 펜던트, 길이를 상담 전에 확인하는 기준을 안내합니다."
+    "label": "목걸이 길이를 더 넓게 비교하기",
+    "description": "42·45·50cm와 체형·펜던트 조건을 함께 살펴봅니다."
   },
   {
     "to": "/guide/necklace-chain-replacement-guide",
     "label": "목걸이 줄 교체와 펜던트 호환",
-    "description": "펜던트 고리와 새 체인의 호환 여부를 확인하는 상담 기준을 정리합니다."
+    "description": "기존 펜던트를 다른 체인에 연결하려면 고리와 잠금 구조를 확인하세요."
   },
   {
-    "to": "/guide/birthstone-necklace-gift-guide",
-    "label": "탄생석 종류와 의미, 목걸이 선물 고르는 기준",
-    "description": "탄생석 목걸이를 고를 때 색상, 소재, 표기와 예산을 확인하는 기준을 안내합니다."
+    "to": "/custom",
+    "label": "원하는 착용 위치로 목걸이 제작 상담",
+    "description": "두 길이를 비교한 사진과 체인·펜던트 선호를 전달해 제작 가능한 구성을 확인하세요."
+  },
+  {
+    "to": "/gallery/white-gold-pave-rondelle-pendant-necklace",
+    "label": "가는 체인과 롱델 펜던트 디자인 참고",
+    "description": "체인과 펜던트의 비례를 제품 사진에서 확인하세요. 사진만으로 45cm·50cm의 착용 위치를 판단하지 않습니다."
+  },
+  {
+    "to": "/repair",
+    "label": "기존 목걸이 길이 변경 상담",
+    "description": "전체와 잠금 부분 사진을 준비해 줄이기·연장 가능 여부를 문의하세요."
   }
 ]
 const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]

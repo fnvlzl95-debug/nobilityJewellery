@@ -7,7 +7,7 @@ const pageTitle = '시그넷 반지 뜻, 윗면 모양과 착용감 고르는 �
 const pageDescription = '시그넷 반지는 넓은 윗면이 특징인 인장 반지에서 이어진 디자인입니다. 타원형·쿠션형 차이, 무각인 선택, 착용 손가락과 윗면 높이를 비교하는 방법을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/signet-ring-face-shape-selection-guide-hero-6ec45611.webp`
 const publishedAt = '2026-09-15'
-const updatedAt = ''
+const updatedAt = '2026-10-03'
 const faqItems = [
   {
     "question": "시그넷 반지는 각인이 없으면 안 되나요?",
@@ -103,6 +103,41 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
+  },
+  {
+    "title": "시그넷 제작 문의는 정면과 측면을 함께 보내세요",
+    "paragraphs": [
+      "원하는 윗면의 윤곽뿐 아니라 옆모습에서 마음에 드는 높이와 고리로 이어지는 형태도 표시해 주세요. 정면 사진만 있으면 입체감을 알기 어려우므로, 확인되지 않은 부분은 그대로 남겨 두고 상담에서 질문하면 됩니다.",
+      "희망하는 형태와 각인의 구현 가능 범위를 주문제작 상담에서 먼저 확인하세요. 무각인으로 시작할지 문구를 넣을지, 정면에서 어떤 방향으로 보이길 원하는지를 함께 전달하면 디자인을 검토할 기준이 됩니다."
+    ],
+    "table": {
+      "headers": [
+        "희망사항",
+        "사진·메모로 전달할 것",
+        "확인할 부분"
+      ],
+      "rows": [
+        [
+          "윗면 형태",
+          "타원형·쿠션형 등 윤곽과 가로·세로 방향",
+          "정면 형태와 측면 높이를 함께 구현할 수 있는지"
+        ],
+        [
+          "각인 유무",
+          "무각인 희망 또는 원하는 문구·서체·방향",
+          "선택한 면과 문구가 어울리는지, 표현 가능한 범위"
+        ],
+        [
+          "착용 조건",
+          "낄 손가락과 다른 반지의 유무, 걸림이 걱정되는 부분",
+          "옆 손가락 접촉과 착용감을 확인하는 방법"
+        ]
+      ]
+    },
+    "bullets": [
+      "소재·색상 선호와 희망 수령일을 함께 알려 주세요. 제작 여부와 일정은 디자인을 검토한 뒤 확인합니다.",
+      "윗면 각인과 실제 인장 기능은 구분해 문의하세요. 장식 각인을 한다고 밀랍에 찍는 인장으로 사용할 수 있는 것은 아닙니다."
+    ]
   }
 ]
 const cautions = [
@@ -124,6 +159,11 @@ const relatedLinks = [
     "to": "/guide/custom-ring-consultation-checklist",
     "label": "일반 반지 주문제작 상담 준비",
     "description": "소재와 사양 등 주문 전 확인할 내용을 정리합니다."
+  },
+  {
+    "to": "/custom",
+    "label": "시그넷 형태·각인의 제작 가능 범위 문의",
+    "description": "정면·측면 참고 사진과 착용 손가락, 각인 희망사항을 준비해 상담하세요."
   }
 ]
 const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]

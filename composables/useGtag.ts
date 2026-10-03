@@ -65,6 +65,7 @@ export const useGtag = () => {
   const buildConversionParams = (pageName: string, params?: ConversionParams) => {
     return withOptionalParams({
       page_name: pageName,
+      source_path: typeof window !== 'undefined' ? cleanPath(window.location.pathname) : undefined,
       placement: params?.placement,
       intent: params?.intent,
       topic: params?.topic,

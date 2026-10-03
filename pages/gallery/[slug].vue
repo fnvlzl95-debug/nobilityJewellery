@@ -3,7 +3,7 @@ import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { getItemBySlug, getRelatedItems, getLandingLinkForItem, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
-import { galleryConsultation } from '~/data/gallery-consultation'
+import { getGalleryConsultation } from '~/data/gallery-consultation'
 
 const route = useRoute()
 const slug = computed(() => String(route.params.slug ?? ''))
@@ -18,8 +18,9 @@ if (!item) {
 }
 
 const product = item
-const consultation = galleryConsultation[product.slug]
-const contactLink = { path: '/contact', query: { type: 'custom', source: 'gallery', topic: product.title, from: `/gallery/${product.slug}` } }
+const consultation = getGalleryConsultation(product)
+const sourcePath = `/gallery/${product.slug}`
+const contactLink = { path: '/contact', query: { type: 'custom', source: 'gallery', topic: product.title, from: sourcePath } }
 const category = categories.find((c) => c.id === product.category)
 const categoryLabel = category?.label ?? '컬렉션'
 const relatedItems = getRelatedItems(product, 3)
@@ -29,11 +30,10 @@ const { trackKakaoClick, trackPhoneClick, trackInquiryClick, trackEvent, trackMe
 
 const pageUrl = `${siteConfig.url}/gallery/${product.slug}`
 const heroImageUrl = `${siteConfig.url}${product.images[0]}`
-const sampleSpec = product.specs?.find((spec) => spec.label === '사진 제품 기준')?.value
 const orderText = product.colorOptions.length
   ? `${product.material} 소재, ${product.colorOptions.join('·')} 색상으로 주문제작할 수 있습니다.`
   : `${product.material} 소재로 주문제작합니다.`
-const metaDescription = `${product.title}. ${product.description} ${orderText}${sampleSpec ? ` 사진 제품은 ${sampleSpec} 기준입니다.` : ''} 제작 기간은 ${product.delivery}입니다.`
+const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 ${product.delivery}가 필요하며 최종 일정은 상담 후 안내합니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
@@ -107,6 +107,7 @@ const handlePhone = () => {
 }
 const handleLanding = () => {
   trackEvent('gallery_landing_click', {
+    source_path: sourcePath,
     item_id: String(product.id),
     item_name: product.title,
     item_category: product.category,
@@ -116,11 +117,40 @@ const handleLanding = () => {
 
 const handleRelated = (target: { id: number; title: string; category: string }) => {
   trackEvent('gallery_related_click', {
+    source_path: sourcePath,
     item_id: String(target.id),
     item_name: target.title,
     item_category: target.category,
     from_item: product.title,
   })
+}
+
+const briefCopied = ref(false)
+const briefCopyError = ref(false)
+const copyConsultationBrief = async () => {
+  const brief = [
+    `${product.title} 디자인 상담`,
+    pageUrl,
+    '',
+    '유지하거나 바꾸고 싶은 디자인: ',
+    '희망 소재·색상: ',
+    '착용 또는 선물 용도: ',
+    '사이즈·각인 희망 사항: ',
+    '희망 수령일과 예산: ',
+  ].join('\n')
+  try {
+    await navigator.clipboard.writeText(brief)
+    briefCopied.value = true
+    briefCopyError.value = false
+    trackEvent('consultation_brief_copy', { source_path: sourcePath, item_id: String(product.id), placement: 'gallery_detail' })
+  } catch {
+    briefCopied.value = false
+    briefCopyError.value = true
+  }
+}
+
+const handleConsultationLink = (targetPath: string) => {
+  trackEvent('consultation_path_click', { source_path: sourcePath, target_path: targetPath, placement: 'gallery_detail' })
 }
 
 // ── 이미지 뷰어 ────────────────────────────────────────────────────
@@ -290,9 +320,13 @@ onUnmounted(() => {
             </dl>
           </div>
 
-          <section v-if="consultation" class="design-consultation" aria-label="디자인 상담 안내">
+          <section class="design-consultation" aria-label="디자인 상담 안내">
             <h2>{{ consultation.title }}</h2>
             <ul><li v-for="point in consultation.points" :key="point">{{ point }}</li></ul>
+            <p class="consultation-scope">{{ consultation.scope }}</p>
+            <nav v-if="consultation.links?.length" class="consultation-links" aria-label="관련 상담 안내">
+              <NuxtLink v-for="link in consultation.links" :key="link.to" :to="link.to" @click="handleConsultationLink(link.to)">{{ link.label }} →</NuxtLink>
+            </nav>
           </section>
 
           <div class="cta">
@@ -303,7 +337,7 @@ onUnmounted(() => {
               class="cta-primary"
               @click="handleKakao"
             >
-              <span>카톡 문의</span>
+              <span>이 디자인으로 카톡 상담</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -316,8 +350,10 @@ onUnmounted(() => {
             </div>
             <p class="cta-note">
               가격은 금시세에 따라 달라져 상담으로 안내드립니다.<br>
-              원하시는 사이즈·소재·각인을 함께 알려주시면 더 빠릅니다.
+              이 페이지 주소와 원하는 변경 사항, 희망 수령일을 함께 보내주세요.
             </p>
+            <button type="button" class="brief-copy" @click="copyConsultationBrief">{{ briefCopied ? '상담 내용 복사됨' : '디자인 주소와 상담 항목 복사' }}</button>
+            <p v-if="briefCopied || briefCopyError" class="cta-note" role="status">{{ briefCopyError ? '복사하지 못했습니다. 페이지 주소와 위 상담 항목을 카톡에 직접 보내주세요.' : '카톡에 붙여넣고 원하는 조건을 채워 보내주세요.' }}</p>
             <NuxtLink :to="landingLink.to" class="cta-guide-link" @click="handleLanding">
               {{ landingLink.label }} 보기
             </NuxtLink>
@@ -393,6 +429,11 @@ onUnmounted(() => {
 .design-consultation h2 { font-size:19px; line-height:1.55; color:#e4cf8d; margin-bottom:12px; }
 .design-consultation ul { padding-left:19px; list-style:disc; }
 .design-consultation li { color:rgba(250,250,250,.8); font-size:14px; line-height:1.8; margin:8px 0; }
+.consultation-scope { color:var(--gray); font-size:13px; line-height:1.8; margin-top:14px; }
+.consultation-links { display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:12px; }
+.consultation-links a { display:inline-flex; align-items:center; min-height:44px; color:var(--gold); font-size:13px; line-height:1.6; text-underline-offset:4px; }
+.brief-copy { margin-top:12px; padding:10px 0; min-height:44px; border:0; background:transparent; color:var(--gold); font:inherit; font-size:13px; text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+.brief-copy:focus-visible,.consultation-links a:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
 .page {
   background: var(--black);
   min-height: 100vh;

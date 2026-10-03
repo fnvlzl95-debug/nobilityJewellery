@@ -108,6 +108,8 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K·18K 가격 차이', description: '금 함량·중량·공임 비교' },
       { to: '/guide/jongno-14k-couple-ring-quote-checklist', label: '14K 커플링 견적 체크리스트', description: '견적 요청 전 확인 항목' },
       { to: '/guide/couple-ring-engraving-guide', label: '커플링 각인 가이드', description: '문구·위치·서체 선택' },
+      { to: '/guide/ring-finger-meaning-guide', label: '반지 손가락 의미와 착용 위치', description: '상징과 실제 착용감을 함께 선택' },
+      { to: '/guide/couple-ring-finger-placement', label: '커플링 착용할 손과 손가락', description: '일상 동작·디자인·호수 비교' },
       { to: '/guide/jongno-custom-couple-ring-order', label: '종로 커플링 주문 과정', description: '상담부터 수령까지' },
       { to: '/guide/rose-gold-couple-ring-selection-guide', label: '로즈골드 커플링 선택', description: '피부톤·도금·관리 기준' },
       { to: '/guide/wedding-ring-vs-couple-ring-choice', label: '결혼반지·커플링 선택', description: '용도별 차이 비교' },

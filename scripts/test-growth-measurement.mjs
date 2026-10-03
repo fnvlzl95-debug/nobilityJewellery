@@ -31,6 +31,13 @@ const {useGtag} = sourceModule('../composables/useGtag.ts', {window,siteConfig,s
 const gtag = useGtag()
 gtag.trackKakaoClick('custom'); gtag.trackPhoneClick('custom'); gtag.trackPageInquiryClick('custom')
 for (const name of ['kakao_click','phone_click','inquiry_click']) assert.equal(ga.filter(e=>e[1]===name).length, 1)
+for (const name of ['kakao_click','phone_click','inquiry_click','cta_click']) {
+  assert.ok(ga.filter(e=>e[1]===name).every(e=>e[2].source_path==='/custom'))
+}
+window.location.pathname='/gallery/pure-gold-snake-baby-ring'
+gtag.trackKakaoClick('gallery_detail', {placement:'gallery_detail_cta'})
+assert.equal(ga.filter(e=>e[1]==='kakao_click').at(-1)[2].source_path, '/gallery/pure-gold-snake-baby-ring')
+window.location.pathname='/custom'
 assert.equal(ga.some(e=>['click_kakao','click_phone','custom_inquiry_click'].includes(e[1])), false)
 gtag.trackLeadSubmitted('custom','service','제작','NG-TEST-001')
 gtag.trackLeadSubmitted('custom','service','제작','NG-TEST-001')

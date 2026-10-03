@@ -7,7 +7,7 @@ const pageTitle = '반지가 돌아가는 이유, 줄이기 전에 확인할 것
 const pageDescription = '반지가 자꾸 돌아간다면 마디와 착용 부위의 차이, 장식 배치부터 확인하세요. 전체 회전과 보석 흔들림을 구분하고, 호수 조정과 안쪽 비드를 검토할 때의 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/ring-spinning-fit-balance-guide-hero-45a4b858.webp`
 const publishedAt = '2026-09-19'
-const updatedAt = ''
+const updatedAt = '2026-10-03'
 const faqItems = [
   {
     "question": "반지가 돌아가면 사이즈를 줄여야 하나요?",
@@ -113,6 +113,41 @@ const sections: Array<{
       "조정 후에도 빼고 끼울 수 있는지, 안쪽이 특정 지점을 누르지 않는지 확인할 방법을 질문합니다."
     ],
     "table": null
+  },
+  {
+    "title": "호수를 정하기 전에 상담 메모를 준비하세요",
+    "paragraphs": [
+      "호수 측정은 손가락에 맞는 둘레를 확인하는 과정이고, 이 글의 점검은 반지가 도는 상황을 나누어 설명하기 위한 준비입니다. 반지를 줄여 달라고 먼저 정하기보다 마디 통과와 착용 위치에서의 느낌을 각각 알려 주세요.",
+      "반지 전체·옆면·안쪽 사진과 함께 아래 항목을 메모하면 됩니다. 사진으로 원인이나 조정 방법을 확정하지 않으며, 실물과 착용 상태를 본 뒤 가능한 작업을 확인합니다."
+    ],
+    "table": {
+      "headers": [
+        "현재 상태",
+        "상담에 전달할 내용",
+        "먼저 확인할 부분"
+      ],
+      "rows": [
+        [
+          "마디는 걸리는데 안쪽에서 헐거움",
+          "마디 통과의 불편함과 착용부 여유를 나누어 설명",
+          "전체 호수 조정이 적절한지, 다른 방법을 검토해야 하는지"
+        ],
+        [
+          "장식이 있는 방향으로 돌아감",
+          "정면·옆면과 평소 회전 방향이 보이는 사진",
+          "밴드 형태와 윗장식 배치를 함께 점검할 필요"
+        ],
+        [
+          "반지 몸체와 별개로 보석이 움직임",
+          "움직이는 부위를 알리고 반복해서 흔들지 않기",
+          "호수보다 보석 고정 상태의 점검이 먼저인지"
+        ]
+      ]
+    },
+    "bullets": [
+      "언제부터 돌아갔는지, 처음 착용할 때도 같았는지 적어 주세요. 불편한 상태를 재현하려고 억지로 끼우거나 당기지는 마세요.",
+      "현재 반지에 각인·보석·기존 수리 이력이 있다면 함께 알려 주세요. 특정 비드 가공이나 당일 수리를 미리 확정하지 않습니다."
+    ]
   }
 ]
 const cautions = [
@@ -135,6 +170,16 @@ const relatedLinks = [
     "to": "/guide/diamond-ring-setting-types",
     "label": "반지 보석 세팅 구조",
     "description": "보석을 고정하는 부위와 밴드를 구분해 살펴보세요."
+  },
+  {
+    "to": "/repair",
+    "label": "반지 착용감·세팅 점검 상담",
+    "description": "회전하는 모습과 마디 통과 상태, 옆면·안쪽 사진을 준비해 조정 가능 범위를 문의하세요."
+  },
+  {
+    "to": "/gallery/diamond-solitaire-couple-ring",
+    "label": "윗장식과 밴드 형태를 볼 수 있는 반지",
+    "description": "솔리테어 커플링의 정면·옆면을 디자인 참고로 살펴보세요. 회전 원인이나 수리 결과를 보여 주는 사례는 아닙니다."
   }
 ]
 const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]
@@ -144,7 +189,7 @@ const gmArticleTitle = '반지가 돌아가는 이유, 줄이기 전에 확인�
 const gmArticleLead = '반지가 손가락에서 돌아간다고 해서 바로 한 호수를 줄이는 것이 항상 맞는 것은 아닙니다. 관절과 손가락 뿌리의 굵기 차이, 반지의 무게 배분과 밴드 형태, 하루 중 손가락 변화, 보석과 세팅 상태를 나누어 살펴봐야 합니다.'
 const gmArticleCategory = '선택'
 const gmArticleKeyword = '반지가 돌아가는 이유'
-const gmInquiryType = 'custom' as const
+const gmInquiryType = 'repair' as const
 const gmInquiryTopic = '반지 회전과 착용감 확인'
 const gmHeroAlt = '회색 바닥 위 작은 원형 보석이 달린 금빛 반지'
 const gmHeroCaption = '밴드와 윗장식을 보여 주는 설명용 이미지입니다. 실제 판매 제품이나 특정 조정 결과가 아닙니다.'

@@ -2,22 +2,25 @@
 import { consultationPaths } from '~/data/consultation-paths'
 import { getItemBySlug } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
+import { normalizeGuidePath } from '~/data/guide-clusters'
 const props = defineProps<{ path: string; inquiryType?: 'custom' | 'repair' | 'wholesale' | 'other'; topic?: string }>()
+const sourcePath = computed(() => normalizeGuidePath(props.path))
 const context = computed(() => {
-  const existing = consultationPaths[props.path]
+  const existing = consultationPaths[sourcePath.value]
   if (existing) return { ...existing, type: props.inquiryType || existing.type }
   if (!props.path.startsWith('/guide/')) return null
   return { title: props.topic ? props.topic + ' 상담 준비' : '상담 전에 준비해 주세요', description: '제품 상태와 원하는 작업을 알려주시면 확인할 사항을 안내합니다.', type: props.inquiryType || 'other', prompts: ['제품 전체 사진과 소재·각인', '궁금한 점 또는 원하는 작업', '희망 방문일이나 수령일'], gallerySlugs: [], links: [] }
 })
 const items = computed(() => context.value?.gallerySlugs.map(getItemBySlug).filter(item => !!item) || [])
+const contextLinks = computed(() => context.value?.links?.filter(link => normalizeGuidePath(link.to) !== sourcePath.value) || [])
 const { trackKakaoClick, trackInquiryClick, trackEvent } = useGtag()
-const source = computed(() => props.path.startsWith('/guide/') ? 'guide_article' : 'service')
-const contactLink = computed(() => ({ path: '/contact', query: { source: source.value, type: context.value?.type, topic: context.value?.title, from: props.path } }))
-const brief = computed(() => context.value ? `${context.value.title}\n${siteConfig.url}${props.path}\n\n${context.value.prompts.map(p => `${p}: `).join('\n')}` : '')
+const source = computed(() => sourcePath.value.startsWith('/guide/') ? 'guide_article' : 'service')
+const contactLink = computed(() => ({ path: '/contact', query: { source: source.value, type: context.value?.type, topic: context.value?.title, from: sourcePath.value } }))
+const brief = computed(() => context.value ? `${context.value.title}\n${siteConfig.url}${sourcePath.value}\n\n${context.value.prompts.map(p => `${p}: `).join('\n')}` : '')
 const copied = ref(false)
 const copyError = ref(false)
 const copyBrief = async () => {
-  try { await navigator.clipboard.writeText(brief.value); copied.value = true; copyError.value = false; trackEvent('consultation_brief_copy', { source_path: props.path }) }
+  try { await navigator.clipboard.writeText(brief.value); copied.value = true; copyError.value = false; trackEvent('consultation_brief_copy', { source_path: sourcePath.value, placement: 'consultation_next' }) }
   catch { copyError.value = true }
 }
 </script>
@@ -27,16 +30,16 @@ const copyBrief = async () => {
     <p class="eyebrow">상담 준비</p>
     <h2>{{ context.title }}</h2>
     <p>{{ context.description }}</p>
+    <nav v-if="contextLinks.length" class="context-links" aria-label="상담 목적에 맞는 안내">
+      <NuxtLink v-for="link in contextLinks" :key="link.to" :to="link.to" @click="trackEvent('consultation_path_click', { source_path: sourcePath, target_path: link.to, placement: 'consultation_next' })">{{ link.label }} →</NuxtLink>
+    </nav>
     <div v-if="items.length" class="designs">
-      <NuxtLink v-for="item in items" :key="item.slug" :to="`/gallery/${item.slug}`" @click="trackEvent('consultation_case_click', { source_path: path, item_id: String(item.id), target_path: `/gallery/${item.slug}` })">
+      <NuxtLink v-for="item in items" :key="item.slug" :to="`/gallery/${item.slug}`" @click="trackEvent('consultation_case_click', { source_path: sourcePath, item_id: String(item.id), target_path: `/gallery/${item.slug}`, placement: 'consultation_next' })">
         <NuxtImg :src="item.images[0]" :alt="item.imageAlts[0]" width="480" height="480" sizes="sm:45vw md:35vw lg:360px" loading="lazy" />
         <strong>{{ item.title }}</strong><span>디자인 자세히 보기 →</span>
       </NuxtLink>
     </div>
     <ul><li v-for="prompt in context.prompts" :key="prompt">{{ prompt }}</li></ul>
-    <nav v-if="context.links?.length" class="context-links" aria-label="상담 목적 선택">
-      <NuxtLink v-for="link in context.links" :key="link.to" :to="link.to" @click="trackEvent('consultation_path_click', { source_path: path, target_path: link.to })">{{ link.label }} →</NuxtLink>
-    </nav>
     <div class="actions">
       <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="primary" @click="trackKakaoClick(source, { placement: 'consultation_next', intent: context.type, topic: context.title })">사진으로 카톡 상담</a>
       <NuxtLink :to="contactLink" @click="trackInquiryClick(source, { placement: 'consultation_next', intent: context.type, topic: context.title })">문의 남기기</NuxtLink>

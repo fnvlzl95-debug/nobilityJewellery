@@ -87,8 +87,8 @@ const galleryItemSource: GalleryItemSource[] = [
     workType: '주문제작 가능',
     delivery: '1-2주',
     specs: [
-      { label: '중량 옵션', value: '1돈 · 반돈 (기타 중량 상담)' },
-      { label: '각인', value: '이름·날짜 각인 가능' },
+      { label: '디자인', value: '말 모티브 돌·백일 기념 반지' },
+      { label: '각인 상담', value: '이름·날짜의 문구와 위치 확인 후 안내' },
     ],
     images: ['/Image/ring/SB0101.webp',
       '/Image/ring/SB0102.webp',
@@ -797,7 +797,7 @@ const galleryItemSource: GalleryItemSource[] = [
     id: 42,
     slug: 'pure-gold-snake-baby-ring',
     category: 'ring',
-    title: '뱀띠 아기 돌반지 2종',
+    title: '뱀띠 아기 돌반지',
     titleEn: 'Snake Zodiac Baby Rings',
     description: '왕관을 쓴 뱀 캐릭터를 두 가지 입체 디자인으로 표현한 돌·백일 기념 아기 반지입니다.',
     material: '24K 순금',
@@ -805,8 +805,8 @@ const galleryItemSource: GalleryItemSource[] = [
     delivery: '최소 2주',
     specs: [
       { label: '디자인', value: '왕관 뱀 캐릭터 2종' },
-      { label: '중량 옵션', value: '1돈 · 반돈 (기타 중량 상담)' },
-      { label: '각인', value: '이름·날짜 각인 가능' },
+      { label: '용도', value: '돌·백일 기념 선물' },
+      { label: '각인 상담', value: '이름·날짜의 문구와 위치 확인 후 안내' },
     ],
     images: [
       '/Image/ring/pure-gold-snake-baby-ring-01.webp',

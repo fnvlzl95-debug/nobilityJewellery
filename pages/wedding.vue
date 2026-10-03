@@ -6,17 +6,25 @@ definePageMeta({
   layout: 'landing'
 })
 
+const pageTitle = '종로 결혼예물 맞춤 상담 | 구성·제작기간 | 귀족'
+const pageDescription = '결혼반지부터 목걸이·귀걸이, 양가 선물까지 필요한 예물만 상담하세요. 종로3가 귀족에서 희망 소재·디자인·예산과 촬영·예식일을 확인해 구성을 정합니다. 제작은 최소 2주, 견적과 수령 일정은 카카오톡 상담으로 안내합니다.'
+const { trackKakaoClick, trackPageInquiryClick, trackEvent } = useGtag()
+const weddingContact = { path: '/contact', query: { type: 'custom', source: 'wedding_overview', topic: '결혼예물 구성·일정', from: '/wedding' } }
+const handleWeddingKakao = () => trackKakaoClick('wedding', { placement: 'wedding_intro', intent: 'custom', topic: '결혼예물 구성·일정' })
+const handleWeddingInquiry = () => trackPageInquiryClick('wedding', { placement: 'wedding_overview', intent: 'custom', topic: '결혼예물 구성·일정' })
+const trackWeddingLink = (targetPath: string, placement: string) => trackEvent('consultation_path_click', { source_path: '/wedding', target_path: targetPath, placement })
+
 useHead({
-  title: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족',
+  title: pageTitle,
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/wedding` }
   ],
   meta: [
-    { name: 'description', content: '종로3가 종묘귀금속백화점의 결혼예물 전문 상담. 커플링·반지·목걸이 세트를 예산에 맞춰 구성하고, 촬영·예식 일정에 맞춘 제작 기간과 시댁·처가 예물까지 안내합니다.' },
+    { name: 'description', content: pageDescription },
     { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
-    { property: 'og:title', content: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족' },
-    { property: 'og:description', content: '커플링·반지·목걸이 세트를 예산과 일정에 맞춰 구성하는 종로 결혼예물 상담.' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/wedding` },
     { property: 'og:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
@@ -24,8 +32,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족' },
-    { name: 'twitter:description', content: '커플링·반지·목걸이 세트를 예산과 일정에 맞춰 구성하는 종로 결혼예물 상담.' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/set/set0101.webp` },
   ],
   script: [
@@ -34,8 +42,8 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: '종로 결혼예물 | 세트 구성·예산 맞춤제작 | 귀족',
-        description: '예산과 일정에 맞춘 결혼예물 상담, 가격 범위 확인, 맞춤제작 안내 페이지입니다.',
+        name: pageTitle,
+        description: pageDescription,
         url: `${siteConfig.url}/wedding`,
         image: `${siteConfig.url}/Image/set/set0101.webp`,
         mainEntity: {
@@ -97,14 +105,14 @@ const advantages = [
   { title: '맞춤 구성', desc: '예산과 스타일에 맞게 세트 구성' },
   { title: '직접 제작', desc: '30년 경력 장인이 직접 세공' },
   { title: '도매가', desc: '종로 도매상가 가격으로 합리적 구매' },
-  { title: '품질보증', desc: '모든 제품 품질보증서 제공' }
+  { title: '수령 전 확인', desc: '소재·구성·각인과 완성 일정 확인' }
 ]
 
 const materials = [
-  { name: '18K 골드', purity: '순도 75%', desc: '내구성 우수, 결혼예물 추천' },
-  { name: '화이트골드', purity: '18K', desc: '은빛 광택, 다이아와 조화' },
+  { name: '14K·18K 골드', purity: '소재·색상 상담', desc: '원하는 색감과 착용 목적을 함께 비교' },
+  { name: '화이트골드', purity: '은빛 색상', desc: '표면 마감과 관리 방법을 함께 확인' },
   { name: '다이아몬드', purity: '감정서 확인', desc: '4C 기준, 감정서는 상담 시 안내' },
-  { name: '24K 순금', purity: '99.9%', desc: '전통 예물, 어르신 선물' }
+  { name: '24K 순금', purity: '순금 예물', desc: '양가 선물 용도와 디자인 상담' }
 ]
 
 const processSteps = [
@@ -120,12 +128,16 @@ const processSteps = [
     <!-- Header -->
         <div class="page-header">
           <span class="label">결혼예물 맞춤 상담</span>
-          <h1 class="title">예산과 일정에 맞춘 종로 결혼예물 상담</h1>
+          <h1 class="title">종로 결혼예물,<br>필요한 구성부터 함께 정하세요</h1>
           <p class="desc">
-            결혼을 준비하는 두 분을 위한 특별한 예물.<br>
-            종로3가 귀금속 거리의 금은방 귀족이 예산과 스타일에 맞게 맞춤 구성해드립니다.<br>
-            도매 기반이라 정해진 예산 안에서 구성 우선순위를 함께 조정해드립니다.
+            결혼반지만 준비할지, 목걸이·귀걸이와 양가 선물까지 맞출지.<br>
+            원하는 디자인 사진과 예산, 촬영·예식 날짜를 보내주세요.<br>
+            종로3가 귀족에서 필요한 품목과 제작 가능한 일정을 함께 확인합니다.
           </p>
+          <div class="wedding-intro-actions">
+            <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="wedding-kakao" @click="handleWeddingKakao">사진으로 예물 카톡 상담</a>
+            <NuxtLink :to="weddingContact" @click="handleWeddingInquiry">문의 내용 남기기</NuxtLink>
+          </div>
         </div>
 
         <section class="wedding-overview" aria-labelledby="wedding-overview-title">
@@ -134,24 +146,24 @@ const processSteps = [
             <div>
               <strong>구성 상담</strong>
               <p>커플링을 중심으로 목걸이·귀걸이·양가 선물 중 필요한 품목만 고릅니다.</p>
-              <NuxtLink to="/guide/wedding-jewelry-set-composition">구성 기준 보기</NuxtLink>
+              <NuxtLink to="/guide/wedding-jewelry-set-composition" @click="trackWeddingLink('/guide/wedding-jewelry-set-composition', 'wedding_overview')">구성 기준 보기</NuxtLink>
             </div>
             <div>
               <strong>예산 상담</strong>
-              <p>전체 상한선을 먼저 정하고 커플링, 신부·신랑, 양가 예물로 나누면 비교가 쉬워집니다.</p>
-              <NuxtLink to="/contact?type=custom&source=wedding_overview&topic=예물%20예산">예산 상담 남기기</NuxtLink>
+              <p>전체 예산과 꼭 필요한 품목을 알려주세요. 소재·디자인·구성을 맞춘 뒤 상담 시점의 견적을 안내합니다.</p>
+              <NuxtLink :to="weddingContact" @click="handleWeddingInquiry">예산과 구성 상담 남기기</NuxtLink>
             </div>
             <div>
               <strong>제작 일정 상담</strong>
               <p>제작은 최소 2주가 필요하며, 선택 사양과 촬영일·예식일을 함께 확인해 수령 일정을 정합니다.</p>
-              <NuxtLink to="/guide/wedding-ring-production-time">일정 기준 보기</NuxtLink>
+              <NuxtLink to="/guide/wedding-ring-production-time" @click="trackWeddingLink('/guide/wedding-ring-production-time', 'wedding_overview')">일정 기준 보기</NuxtLink>
             </div>
           </div>
         </section>
 
         <!-- Hero Image -->
         <div class="hero-image">
-          <img src="/Image/set/set0101.webp" alt="14K/18K 결혼예물 세트 - 반지, 목걸이, 귀걸이 컬렉션" loading="eager" />
+          <img src="/Image/set/set0101.webp" alt="모던 듀얼 체인 주얼리 세트 디자인" loading="eager" />
         </div>
 
         <!-- Advantages -->
@@ -236,49 +248,50 @@ const processSteps = [
             <div class="checklist-item">
               <span class="check-icon">1</span>
               <div class="check-text">
-                <h3>예산 설정</h3>
-                <p>신부/신랑 예물, 시댁/처가 예물 예산 분배</p>
+                <h3>필요한 품목과 예산</h3>
+                <p>결혼반지·목걸이·귀걸이·양가 선물 중 필요한 품목과 전체 예산을 알려주세요. 모든 품목을 세트로 맞출 필요는 없습니다.</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">2</span>
               <div class="check-text">
-                <h3>스타일 결정</h3>
-                <p>클래식, 모던, 심플 등 선호 스타일 파악</p>
+                <h3>비교할 디자인과 소재</h3>
+                <p>마음에 드는 사진과 유지하거나 바꾸고 싶은 부분, 희망 소재·색상을 보내주세요. 보석과 장식의 변경 가능 범위도 함께 확인합니다.</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">3</span>
               <div class="check-text">
-                <h3>사이즈 측정</h3>
-                <p>본인과 양가 어르신 사이즈 미리 확인</p>
+                <h3>착용 정보와 각인</h3>
+                <p>알고 있는 반지 사이즈, 원하는 목걸이 길이 느낌, 각인 문구를 준비해주세요. 사이즈가 불확실하면 확정 전에 상담으로 확인합니다.</p>
               </div>
             </div>
             <div class="checklist-item">
               <span class="check-icon">4</span>
               <div class="check-text">
-                <h3>일정 확인</h3>
-                <p>결혼식 2-3개월 전 주문 권장</p>
+                <h3>먼저 필요한 날짜</h3>
+                <p>촬영일·예식일·선물일 중 먼저 필요한 날짜를 알려주세요. 제작은 최소 2주가 필요하며, 디자인 확정 후 가능한 수령 일정을 안내합니다.</p>
               </div>
             </div>
           </div>
+          <p class="wedding-quote-note">견적을 비교할 때는 포함 품목·소재·보석·각인 조건을 같게 맞추세요. 가격은 금시세와 최종 제작 조건에 따라 상담으로 안내하며, 디자인이나 구성이 바뀌면 견적과 일정도 다시 확인합니다.</p>
         </div>
 
         <!-- Gallery -->
         <div class="gallery-section">
-          <h2 class="section-title">제품 갤러리</h2>
+          <h2 class="section-title">예물 구성을 상담할 디자인</h2>
           <div class="gallery-grid">
-            <NuxtLink to="/gallery/modern-dual-chain-set">
-              <img src="/Image/set/set0101.webp" alt="14K 결혼예물 세트 - 종로 금은방 도매가" loading="lazy" />
+            <NuxtLink to="/gallery/modern-dual-chain-set" @click="trackWeddingLink('/gallery/modern-dual-chain-set', 'wedding_gallery')">
+              <img src="/Image/set/set0101.webp" alt="모던 듀얼 체인 세트 전체 디자인" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/modern-dual-chain-set">
-              <img src="/Image/set/set0102.webp" alt="신부 예물 - 다이아몬드 목걸이, 귀걸이 세트" loading="lazy" />
+            <NuxtLink to="/gallery/modern-dual-chain-set" @click="trackWeddingLink('/gallery/modern-dual-chain-set', 'wedding_gallery')">
+              <img src="/Image/set/set0102.webp" alt="모던 듀얼 체인 세트 장식 디테일" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/u-link-lettering-signature-set">
-              <img src="/Image/set/set0201.webp" alt="웨딩 주얼리 컬렉션 - 맞춤 제작 가능" loading="lazy" />
+            <NuxtLink to="/gallery/u-link-lettering-signature-set" @click="trackWeddingLink('/gallery/u-link-lettering-signature-set', 'wedding_gallery')">
+              <img src="/Image/set/set0201.webp" alt="U링크 레터링 시그니처 세트 디자인" loading="lazy" />
             </NuxtLink>
-            <NuxtLink to="/gallery/u-link-lettering-signature-set">
-              <img src="/Image/set/set0202.webp" alt="결혼 예물 반지 - 이니셜 각인 서비스" loading="lazy" />
+            <NuxtLink to="/gallery/u-link-lettering-signature-set" @click="trackWeddingLink('/gallery/u-link-lettering-signature-set', 'wedding_gallery')">
+              <img src="/Image/set/set0202.webp" alt="U링크와 레터링 장식 디테일" loading="lazy" />
             </NuxtLink>
           </div>
           <div class="gallery-cta">
@@ -314,8 +327,8 @@ const processSteps = [
 
         <!-- CTA -->
         <LandingCTA
-          title="예물 상담"
-          description="결혼을 준비하시는 두 분을 위한 맞춤 예물 상담.<br>전화 또는 카카오톡으로 상세히 안내해드립니다."
+          title="필요한 예물과 수령일을 알려주세요"
+          description="원하는 디자인 사진·소재·예산과 촬영 또는 예식 날짜를<br>카카오톡으로 보내주시면 구성과 제작 조건을 상담해드립니다."
         />
 
     <!-- Location -->
@@ -366,6 +379,11 @@ const processSteps = [
 .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a227; margin-bottom: 16px; }
 .title { font-size: clamp(32px, 5vw, 48px); font-weight: 300; color: #fafafa; margin-bottom: 20px; }
 .desc { font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(250, 250, 250, 0.6); }
+.wedding-intro-actions { display:flex; align-items:center; justify-content:center; gap:12px 20px; flex-wrap:wrap; margin-top:24px; }
+.wedding-intro-actions a { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:12px 18px; color:#d4b44a; font-size:14px; font-weight:600; text-underline-offset:4px; }
+.wedding-intro-actions .wedding-kakao { background:#c9a227; color:#0a0a0a; text-decoration:none; }
+.wedding-intro-actions a:focus-visible { outline:2px solid #d4b44a; outline-offset:4px; }
+.wedding-quote-note { margin:24px auto 0; max-width:720px; color:rgba(250,250,250,.72); font-size:14px; line-height:1.8; }
 
 .wedding-overview {
   margin: 0 0 36px;
