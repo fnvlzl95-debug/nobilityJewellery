@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'tennis-necklace-uniform-graduated-selection',
+      path: '/guide/tennis-necklace-uniform-graduated-selection',
+      title: '테니스 목걸이, 균일형과 중앙 강조형',
+      description: '테니스 목걸이를 고를 때는 보석 크기가 일정하게 이어지는 균일형과 중앙으로 갈수록 커지는 그라데이션형을 먼저 비교하세요. 크기 배열과 목선 윤곽의 차이, 착용 사진에서 볼 부분, 종로 귀족 상담 준비 방법을 정리했습니다.',
+      keyword: '테니스 목걸이',
+      image: '/Image/guide/tennis-necklace-uniform-graduated-selection-hero-28a75f0c.webp',
+      publishedAt: '2026-10-04',
+      category: '선택',
+    },
+  {
       slug: 'earring-jacket-stud-compatibility-guide',
       path: '/guide/earring-jacket-stud-compatibility-guide',
       title: '이어재킷 귀걸이, 스터드에 맞춰 고르기',
