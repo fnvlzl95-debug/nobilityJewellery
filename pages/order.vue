@@ -30,7 +30,9 @@ const { trackEvent, trackFormError } = useGtag()
 const buildInitialFormData = () => ({
   name: '',
   phone: '',
+  postcode: '',
   address: '',
+  addressDetail: '',
   consent: false,
   honeypot: '',
 })
@@ -41,6 +43,84 @@ const isSubmitting = ref(false)
 const submittedOrderId = ref('')
 const formError = ref('')
 const successHeadingRef = ref<HTMLElement | null>(null)
+
+// 카카오 우편번호 서비스 — 키 발급 없이 쓰는 무료 주소 검색. 주소 검색을 누를 때만 불러온다.
+// https://postcode.map.kakao.com/guide
+const postcodeScriptUrl = 'https://t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
+type PostcodeResult = {
+  zonecode: string
+  address: string
+  roadAddress: string
+  jibunAddress: string
+  userSelectedType: 'R' | 'J'
+  buildingName: string
+}
+
+const addressSearchRef = ref<HTMLElement | null>(null)
+const addressFieldRef = ref<HTMLTextAreaElement | null>(null)
+const addressDetailRef = ref<HTMLInputElement | null>(null)
+const isAddressSearchOpen = ref(false)
+const isAddressSearchLoading = ref(false)
+// 검색 서비스를 불러오지 못하면 주소를 직접 적게 한다.
+const manualAddress = ref(false)
+
+let postcodeScript: Promise<void> | undefined
+const loadPostcodeScript = () => postcodeScript ??= new Promise<void>((resolve, reject) => {
+  const script = document.createElement('script')
+  const fail = () => {
+    postcodeScript = undefined
+    script.remove()
+    reject(new Error('postcode script unavailable'))
+  }
+  const timer = setTimeout(fail, 8000)
+  script.src = postcodeScriptUrl
+  script.onload = () => { clearTimeout(timer); resolve() }
+  script.onerror = () => { clearTimeout(timer); fail() }
+  document.head.appendChild(script)
+})
+
+const closeAddressSearch = () => {
+  isAddressSearchOpen.value = false
+}
+
+const openAddressSearch = async () => {
+  if (manualAddress.value || isAddressSearchOpen.value || isAddressSearchLoading.value) return
+  isAddressSearchLoading.value = true
+  try {
+    await loadPostcodeScript()
+    const Postcode = (window as any).kakao?.Postcode || (window as any).daum?.Postcode
+    if (!Postcode) throw new Error('postcode service unavailable')
+
+    isAddressSearchOpen.value = true
+    await nextTick()
+    const frame = addressSearchRef.value
+    if (!frame) return
+    // 모바일·인앱 브라우저에서는 팝업 대신 페이지에 끼워넣는 방식이 권장된다.
+    new Postcode({
+      oncomplete: (data: PostcodeResult) => {
+        const base = (data.userSelectedType === 'J' ? data.jibunAddress : data.roadAddress) || data.address
+        formData.value.postcode = data.zonecode
+        formData.value.address = data.buildingName ? `${base} (${data.buildingName})` : base
+        formError.value = ''
+        closeAddressSearch()
+        nextTick(() => addressDetailRef.value?.focus())
+      },
+      onresize: (size: { height: number }) => { frame.style.height = `${size.height}px` },
+      width: '100%',
+      height: '100%',
+      hideMapBtn: true,
+      hideEngBtn: true,
+    }).embed(frame, { autoClose: false })
+    // 버튼이 화면 아래쪽에 있으면 검색 화면이 하단 상담 바 밑에서 열려 보이지 않는다.
+    frame.scrollIntoView({ block: 'center' })
+  } catch {
+    manualAddress.value = true
+    await nextTick()
+    addressFieldRef.value?.focus()
+  } finally {
+    isAddressSearchLoading.value = false
+  }
+}
 
 // 은행 앱 입력란은 숫자만 받는 경우가 많아 하이픈 없이 복사한다.
 const accountDigits = order.account.replaceAll('-', '')
@@ -76,6 +156,13 @@ const handleSubmit = async () => {
   if (isSubmitting.value) return
   formError.value = ''
 
+  // 주소 검색 모드의 주소란은 readonly라 브라우저의 required 검사가 걸리지 않는다.
+  if (!formData.value.address.trim()) {
+    trackFormError('order', 'missing_address', 'validation')
+    formError.value = manualAddress.value ? '배송지 주소를 입력해주세요.' : '주소 검색으로 배송지 주소를 선택해주세요.'
+    return
+  }
+
   if (!formData.value.consent) {
     trackFormError('order', 'missing_consent', 'validation')
     formError.value = '개인정보 수집·이용에 동의해주세요.'
@@ -83,7 +170,12 @@ const handleSubmit = async () => {
   }
 
   isSubmitting.value = true
-  const submissionSnapshot = { ...formData.value }
+  const { postcode, addressDetail, ...fields } = formData.value
+  const submissionSnapshot = {
+    ...fields,
+    // 서버와 접수 메일에는 한 줄 주소로 보낸다: (우편번호) 기본 주소 상세 주소
+    address: [postcode && `(${postcode})`, fields.address.trim(), addressDetail.trim()].filter(Boolean).join(' '),
+  }
   const key = JSON.stringify(submissionSnapshot)
   const pending = pendingSubmission.value
   if (!pending || pending.key !== key || (pending.requestedAt && Date.now() - Date.parse(pending.requestedAt) > 22 * 3600000)) {
@@ -148,10 +240,6 @@ const handleSubmit = async () => {
           <h2 ref="successHeadingRef" tabindex="-1" class="section-title">주문서가 접수되었습니다</h2>
           <p class="success-desc">아래 계좌로 {{ amountLabel }}을 입금해 주시면 확인 후 연락드리겠습니다.</p>
           <p class="success-id">접수번호 <span>{{ submittedOrderId }}</span></p>
-          <p class="success-note">
-            내용을 고쳐야 하면 카카오톡이나 전화
-            <a :href="`tel:${siteConfig.phone}`">{{ siteConfig.phone }}</a>로 알려주세요.
-          </p>
         </div>
 
         <!-- Form -->
@@ -196,17 +284,51 @@ const handleSubmit = async () => {
 
           <div class="form-group">
             <label class="form-label" for="order-address">배송지 주소</label>
+
+            <div v-if="!manualAddress" class="postcode-row">
+              <input
+                v-model="formData.postcode"
+                type="text"
+                class="form-input"
+                placeholder="우편번호"
+                aria-label="우편번호"
+                readonly
+                @click="openAddressSearch"
+              >
+              <button type="button" class="btn-ghost btn-search" :disabled="isAddressSearchLoading" @click="openAddressSearch">
+                {{ isAddressSearchLoading ? '불러오는 중...' : '주소 검색' }}
+              </button>
+            </div>
+
+            <div v-if="isAddressSearchOpen" class="address-search">
+              <div ref="addressSearchRef" class="address-search-frame"></div>
+              <button type="button" class="btn-close-search" @click="closeAddressSearch">주소 검색 닫기</button>
+            </div>
+
+            <p v-if="manualAddress" class="address-notice">주소 검색을 불러오지 못했습니다. 주소를 직접 적어주세요.</p>
+
             <textarea
               id="order-address"
+              ref="addressFieldRef"
               v-model="formData.address"
               class="form-input form-textarea"
-              placeholder="도로명 주소와 동·호수까지 적어주세요"
-              autocomplete="street-address"
-              rows="3"
-              minlength="5"
-              maxlength="200"
-              required
+              :placeholder="manualAddress ? '도로명 주소' : '주소 검색을 눌러주세요'"
+              :readonly="!manualAddress"
+              rows="2"
+              maxlength="110"
+              @click="openAddressSearch"
             ></textarea>
+
+            <input
+              ref="addressDetailRef"
+              v-model="formData.addressDetail"
+              type="text"
+              class="form-input"
+              placeholder="상세 주소 (동·호수)"
+              aria-label="상세 주소"
+              autocomplete="address-line2"
+              maxlength="80"
+            >
           </div>
 
           <label class="consent-check">
@@ -249,7 +371,7 @@ const handleSubmit = async () => {
               <dd class="amount">{{ amountLabel }}</dd>
             </div>
           </dl>
-          <button type="button" class="btn-copy" @click="copyAccount">
+          <button type="button" class="btn-ghost btn-copy" @click="copyAccount">
             <span aria-live="polite">{{ copyState === 'done' ? '복사했습니다' : copyState === 'failed' ? '계좌번호를 길게 눌러 복사해 주세요' : '계좌번호 복사' }}</span>
           </button>
           <p class="payment-note">주문자와 입금자 이름이 다르면 카카오톡이나 전화로 알려주세요.</p>
@@ -399,6 +521,85 @@ const handleSubmit = async () => {
   resize: none;
 }
 
+/* 주소 검색으로 채우는 칸 — 누르면 검색이 열린다 */
+.form-input[readonly] {
+  cursor: pointer;
+}
+
+.postcode-row {
+  display: flex;
+  gap: 8px;
+}
+
+.postcode-row .form-input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.address-search {
+  border: 1px solid rgba(250, 250, 250, 0.14);
+}
+
+/* 검색 화면(iframe)이 뜨기 전 자리 — 이후 높이는 서비스의 onresize 값으로 맞춘다 */
+.address-search-frame {
+  height: 440px;
+}
+
+.btn-close-search {
+  width: 100%;
+  min-height: 44px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--gray);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(250, 250, 250, 0.14);
+  cursor: pointer;
+}
+
+.btn-close-search:hover {
+  color: var(--white);
+}
+
+.address-notice {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--gray);
+}
+
+/* 보조 버튼 — 주소 검색, 계좌번호 복사 */
+.btn-ghost {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s var(--ease-out-expo);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--gold-light);
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.btn-ghost:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-ghost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-search {
+  flex: 0 0 auto;
+  min-width: 104px;
+}
+
 .consent-check {
   display: flex;
   align-items: flex-start;
@@ -487,8 +688,7 @@ const handleSubmit = async () => {
   background: var(--gold-light);
 }
 
-.btn-submit:active:not(:disabled),
-.btn-copy:active {
+.btn-submit:active:not(:disabled) {
   transform: scale(0.98);
 }
 
@@ -511,7 +711,7 @@ const handleSubmit = async () => {
 }
 
 .success-id {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 13px;
 }
 
@@ -519,19 +719,6 @@ const handleSubmit = async () => {
   margin-left: 6px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.04em;
-}
-
-.success-note {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--gray);
-}
-
-.success-note a {
-  color: var(--white);
-  text-underline-offset: 3px;
-  white-space: nowrap;
 }
 
 /* ===== 입금 계좌 ===== */
@@ -549,20 +736,6 @@ const handleSubmit = async () => {
   width: 100%;
   min-height: 48px;
   margin-top: 16px;
-  padding: 10px 14px;
-  font-size: 14px;
-  font-family: inherit;
-  font-weight: 600;
-  color: var(--gold);
-  background: transparent;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, transform 0.3s var(--ease-out-expo);
-}
-
-.btn-copy:hover {
-  color: var(--gold-light);
-  background: rgba(201, 162, 39, 0.1);
 }
 
 .payment-note {
@@ -592,7 +765,7 @@ const handleSubmit = async () => {
   .form-input,
   .check-box,
   .btn-submit,
-  .btn-copy {
+  .btn-ghost {
     transition: none;
   }
 }
