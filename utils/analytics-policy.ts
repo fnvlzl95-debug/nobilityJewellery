@@ -1,8 +1,11 @@
 /** Operational measurement only; previews and local builds must never send production events. */
 export const isAnalyticsHost = (hostname: string) => hostname.toLowerCase() === 'noblessegold.com'
 
-export const shouldTrackAnalytics = (production: boolean, hostname: string, search = '') =>
-  production && isAnalyticsHost(hostname) && new URLSearchParams(search).get('analytics') !== 'off'
+/** 1대1 주문서와 관리 페이지. 주소 자체가 비밀이라 방문 기록을 어디에도 보내지 않는다. */
+export const isPrivatePath = (pathname: string) => /^\/(order|admin)(\/|$)/.test(pathname)
+
+export const shouldTrackAnalytics = (production: boolean, hostname: string, search = '', pathname = '') =>
+  production && isAnalyticsHost(hostname) && new URLSearchParams(search).get('analytics') !== 'off' && !isPrivatePath(pathname)
 
 export const analyticsEventVersion = '2026-09-05'
 

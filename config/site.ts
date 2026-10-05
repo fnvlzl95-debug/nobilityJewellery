@@ -71,10 +71,9 @@ export const siteConfig = {
     to: 'fnvlzl95@gmail.com',
   },
 
-  // 주문서 (pages/order.vue) — 상품명·금액과 입금 계좌
+  // 주문서 (pages/order/[token].vue, pages/admin) — 새 주문서의 기본 상품명과 입금 계좌
   order: {
-    product: '귀족 주문제작',
-    amount: 2740000, // 원
+    defaultProduct: '귀족 주문제작',
     bank: '토스뱅크',
     account: '1000-4335-7794',
     accountHolder: '박도현',

@@ -1,5 +1,5 @@
 import { siteConfig } from '~/config/site'
-import { shouldTrackAnalytics } from '~/utils/analytics-policy'
+import { isPrivatePath, shouldTrackAnalytics } from '~/utils/analytics-policy'
 
 declare global {
   interface Window {
@@ -13,6 +13,8 @@ declare global {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
+  // A private order link must not be remembered as the visit's landing page either.
+  if (isPrivatePath(window.location.pathname)) return
   useInquiryContext().capture()
   if (!shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search)) return
 
@@ -56,7 +58,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     contentView()
     let lastPath = router.currentRoute.value.path
     router.afterEach(async (to, _from, failure) => {
-      if (failure || to.path === lastPath) return
+      if (failure || to.path === lastPath || isPrivatePath(to.path)) return
       lastPath = to.path
       await nextTick()
       naverPageView()

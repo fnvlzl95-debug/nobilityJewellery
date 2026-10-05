@@ -1,31 +1,62 @@
 <script setup lang="ts">
-import { ref, shallowRef, nextTick } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { siteConfig } from '~/config/site'
 
-const { order } = siteConfig
-const amountLabel = `${order.amount.toLocaleString('ko-KR')}원`
+type OrderState = 'open' | 'submitted' | 'paid' | 'cancelled' | 'expired'
+interface PublicOrder {
+  orderId: string
+  product: string
+  amount: number
+  state: OrderState
+}
+
+const account = siteConfig.order
+const route = useRoute()
+const orderUrl = `/api/order/${route.params.token}`
+
+// 주문마다 주소가 다른 1대1 주문서. 관리 페이지(/admin)에서 만든 주문을 링크의 토큰으로 찾는다.
+const { data: fetchedOrder, error } = await useFetch<PublicOrder>(orderUrl)
+if (error.value || !fetchedOrder.value) {
+  throw createError({
+    statusCode: error.value?.statusCode || 500,
+    statusMessage: '주문서를 찾을 수 없습니다',
+    fatal: true,
+  })
+}
+// 접수하면 이 화면에서 바로 상태가 바뀌므로 따로 들고 있는다.
+const order = ref<PublicOrder>(fetchedOrder.value)
+const amountLabel = computed(() => `${order.value.amount.toLocaleString('ko-KR')}원`)
 
 useHead({
   title: `주문서 | ${siteConfig.name}`,
-  link: [
-    { rel: 'canonical', href: `${siteConfig.url}/order` }
-  ],
   meta: [
-    { name: 'description', content: `${order.product} 주문서. 주문자 정보와 배송지를 남기고 입금해 주세요.` },
-    // 상담을 마친 고객에게 링크로만 전달하는 페이지 — 검색 노출 대상이 아니다.
+    { name: 'description', content: `${order.value.product} 주문서. 주문자 정보와 배송지를 남기고 입금해 주세요.` },
+    // 고객 한 사람에게만 보내는 링크 — 검색에 잡히거나 주소가 다른 사이트로 넘어가면 안 된다.
     { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'referrer', content: 'no-referrer' },
     // Open Graph (카카오톡 링크 미리보기)
-    { property: 'og:title', content: `${order.product} 주문서` },
+    { property: 'og:title', content: `${order.value.product} 주문서` },
     { property: 'og:description', content: '주문자 정보와 배송지를 남겨주세요.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: `${siteConfig.url}/order` },
     { property: 'og:image', content: `${siteConfig.url}${siteConfig.ogImage}` },
     { property: 'og:locale', content: 'ko_KR' },
     { property: 'og:site_name', content: siteConfig.name },
   ],
 })
 
-const { trackEvent, trackFormError } = useGtag()
+const statusMessages: Record<Exclude<OrderState, 'open'>, { title: string; desc: string }> = {
+  submitted: { title: '주문서가 접수되었습니다', desc: '' },
+  paid: { title: '입금이 확인되었습니다', desc: '주문해 주셔서 감사합니다.' },
+  cancelled: { title: '취소된 주문서입니다', desc: '궁금한 점은 카카오톡이나 전화로 문의해 주세요.' },
+  expired: { title: '작성 기한이 지난 주문서입니다', desc: '새 주문서가 필요하시면 카카오톡이나 전화로 문의해 주세요.' },
+}
+const status = computed(() => {
+  const state = order.value.state
+  if (state === 'open') return null
+  if (state === 'submitted') return { title: statusMessages.submitted.title, desc: `아래 계좌로 ${amountLabel.value}을 입금해 주시면 확인 후 연락드리겠습니다.` }
+  return statusMessages[state]
+})
+const isClosed = computed(() => order.value.state === 'cancelled' || order.value.state === 'expired')
 
 const buildInitialFormData = () => ({
   name: '',
@@ -40,9 +71,8 @@ const buildInitialFormData = () => ({
 const formData = ref(buildInitialFormData())
 
 const isSubmitting = ref(false)
-const submittedOrderId = ref('')
 const formError = ref('')
-const successHeadingRef = ref<HTMLElement | null>(null)
+const statusHeadingRef = ref<HTMLElement | null>(null)
 
 // 카카오 우편번호 서비스 — 키 발급 없이 쓰는 무료 주소 검색. 주소 검색을 누를 때만 불러온다.
 // https://postcode.map.kakao.com/guide
@@ -123,7 +153,7 @@ const openAddressSearch = async () => {
 }
 
 // 은행 앱 입력란은 숫자만 받는 경우가 많아 하이픈 없이 복사한다.
-const accountDigits = order.account.replaceAll('-', '')
+const accountDigits = account.account.replaceAll('-', '')
 const copyState = ref<'idle' | 'done' | 'failed'>('idle')
 let copyResetTimer: ReturnType<typeof setTimeout> | undefined
 
@@ -150,63 +180,58 @@ const copyAccount = async () => {
   copyResetTimer = setTimeout(() => { copyState.value = 'idle' }, 2400)
 }
 
-// 같은 내용을 다시 보내면(전송 오류 후 재시도) 같은 접수번호로 묶여 메일이 중복 발송되지 않는다.
-const pendingSubmission = shallowRef<{ key: string; requestId?: string; requestedAt?: string } | null>(null)
+const showStatus = async () => {
+  formError.value = ''
+  await nextTick()
+  statusHeadingRef.value?.focus()
+}
+
 const handleSubmit = async () => {
   if (isSubmitting.value) return
   formError.value = ''
 
   // 주소 검색 모드의 주소란은 readonly라 브라우저의 required 검사가 걸리지 않는다.
   if (!formData.value.address.trim()) {
-    trackFormError('order', 'missing_address', 'validation')
     formError.value = manualAddress.value ? '배송지 주소를 입력해주세요.' : '주소 검색으로 배송지 주소를 선택해주세요.'
     return
   }
 
   if (!formData.value.consent) {
-    trackFormError('order', 'missing_consent', 'validation')
     formError.value = '개인정보 수집·이용에 동의해주세요.'
     return
   }
 
   isSubmitting.value = true
   const { postcode, addressDetail, ...fields } = formData.value
-  const submissionSnapshot = {
-    ...fields,
-    // 서버와 접수 메일에는 한 줄 주소로 보낸다: (우편번호) 기본 주소 상세 주소
-    address: [postcode && `(${postcode})`, fields.address.trim(), addressDetail.trim()].filter(Boolean).join(' '),
-  }
-  const key = JSON.stringify(submissionSnapshot)
-  const pending = pendingSubmission.value
-  if (!pending || pending.key !== key || (pending.requestedAt && Date.now() - Date.parse(pending.requestedAt) > 22 * 3600000)) {
-    // 구형 인앱 브라우저에는 randomUUID가 없다 — 그때는 서버가 접수번호를 만든다.
-    const requestId = globalThis.crypto?.randomUUID?.()
-    pendingSubmission.value = requestId
-      ? { key, requestId, requestedAt: new Date().toISOString() }
-      : { key }
-  }
 
   try {
-    const response = await $fetch<{ ok: boolean, orderId?: string }>('/api/order', {
+    const response = await $fetch<{ ok: boolean, state?: OrderState }>(orderUrl, {
       method: 'POST',
-      body: { ...submissionSnapshot, ...pendingSubmission.value, key: undefined },
+      body: {
+        ...fields,
+        // 서버와 접수 메일에는 한 줄 주소로 보낸다: (우편번호) 기본 주소 상세 주소
+        address: [postcode && `(${postcode})`, fields.address.trim(), addressDetail.trim()].filter(Boolean).join(' '),
+      },
     })
 
-    if (!response.ok || !response.orderId) {
-      throw new Error('접수번호를 확인할 수 없습니다.')
+    if (!response.ok || response.state !== 'submitted') {
+      throw new Error('접수 결과를 확인할 수 없습니다.')
     }
 
-    pendingSubmission.value = null
-    submittedOrderId.value = response.orderId
-    trackEvent('order_submitted', { order_id: response.orderId })
+    order.value = { ...order.value, state: 'submitted' }
     formData.value = buildInitialFormData()
-    await nextTick()
-    successHeadingRef.value?.focus()
+    await showStatus()
   } catch (e: any) {
-    const errorMessage = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
-    const errorCode = e.data?.data?.code || e.data?.code || 'SUBMISSION_FAILED'
-    trackFormError('order', errorCode, e.statusCode ? 'api_error' : 'submission')
-    formError.value = errorMessage
+    // 이미 접수됐거나 그사이 취소·만료된 주문서 — 지금 상태를 다시 읽어 그 화면으로 바꾼다.
+    if (e.statusCode === 409) {
+      const latest = await $fetch<PublicOrder>(orderUrl).catch(() => null)
+      if (latest && latest.state !== 'open') {
+        order.value = latest
+        await showStatus()
+        return
+      }
+    }
+    formError.value = e.data?.message || '전송 중 오류가 발생했습니다. 전화로 문의해주세요.'
   } finally {
     isSubmitting.value = false
   }
@@ -219,7 +244,7 @@ const handleSubmit = async () => {
       <div class="order-wrapper">
         <header class="order-header">
           <h1 class="title">주문서</h1>
-          <p class="desc">
+          <p v-if="order.state === 'open'" class="desc">
             주문자 정보와 배송지를 남기신 뒤, 아래 계좌로 입금해 주세요.
           </p>
         </header>
@@ -235,11 +260,11 @@ const handleSubmit = async () => {
           </div>
         </dl>
 
-        <!-- Success State -->
-        <div v-if="submittedOrderId" class="success-state">
-          <h2 ref="successHeadingRef" tabindex="-1" class="section-title">주문서가 접수되었습니다</h2>
-          <p class="success-desc">아래 계좌로 {{ amountLabel }}을 입금해 주시면 확인 후 연락드리겠습니다.</p>
-          <p class="success-id">접수번호 <span>{{ submittedOrderId }}</span></p>
+        <!-- 접수 이후, 또는 취소·기한 만료 -->
+        <div v-if="status" class="status-box" :class="{ 'is-closed': isClosed }">
+          <h2 ref="statusHeadingRef" tabindex="-1" class="section-title">{{ status.title }}</h2>
+          <p class="status-desc">{{ status.desc }}</p>
+          <p class="status-id">접수번호 <span>{{ order.orderId }}</span></p>
         </div>
 
         <!-- Form -->
@@ -351,20 +376,20 @@ const handleSubmit = async () => {
           </button>
         </form>
 
-        <section class="payment" aria-labelledby="payment-title">
+        <section v-if="order.state === 'open' || order.state === 'submitted'" class="payment" aria-labelledby="payment-title">
           <h2 id="payment-title" class="section-title">입금 계좌</h2>
           <dl class="detail-list">
             <div class="detail-row">
               <dt>은행</dt>
-              <dd>{{ order.bank }}</dd>
+              <dd>{{ account.bank }}</dd>
             </div>
             <div class="detail-row">
               <dt>계좌번호</dt>
-              <dd class="account-number">{{ order.account }}</dd>
+              <dd class="account-number">{{ account.account }}</dd>
             </div>
             <div class="detail-row">
               <dt>예금주</dt>
-              <dd>{{ order.accountHolder }}</dd>
+              <dd>{{ account.accountHolder }}</dd>
             </div>
             <div class="detail-row">
               <dt>입금 금액</dt>
@@ -697,25 +722,30 @@ const handleSubmit = async () => {
   cursor: not-allowed;
 }
 
-/* ===== Success State ===== */
-.success-state {
+/* ===== 접수·입금 확인·취소·만료 상태 ===== */
+.status-box {
   padding: 24px;
   background: rgba(201, 162, 39, 0.1);
   border: 1px solid rgba(201, 162, 39, 0.35);
 }
 
-.success-desc {
+.status-box.is-closed {
+  background: rgba(250, 250, 250, 0.02);
+  border-color: rgba(250, 250, 250, 0.08);
+}
+
+.status-desc {
   margin: 8px 0 16px;
   font-size: 15px;
   line-height: 1.7;
 }
 
-.success-id {
+.status-id {
   margin: 0;
   font-size: 13px;
 }
 
-.success-id span {
+.status-id span {
   margin-left: 6px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.04em;
@@ -756,7 +786,7 @@ const handleSubmit = async () => {
   }
 
   .payment,
-  .success-state {
+  .status-box {
     padding: 20px 18px;
   }
 }

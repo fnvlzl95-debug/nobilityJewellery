@@ -3,7 +3,7 @@ import { shouldTrackAnalytics, analyticsEventVersion, cleanPath } from '~/utils/
 
 const submittedLeadIds = new Set<string>()
 const trackingAllowed = () => typeof window !== 'undefined' &&
-  shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search)
+  shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search, window.location.pathname)
 
 // GA4 이벤트 추적 composable
 export const useGtag = () => {

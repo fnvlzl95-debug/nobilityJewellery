@@ -37,7 +37,8 @@ const getPrerenderRoutes = (dir = pagesDir): string[] => {
 
 // 정적 라우트 + 제품 상세 라우트
 const buildPrerenderRoutes = (): string[] => [
-  ...getPrerenderRoutes().filter(route => route !== '/guide'),
+  // /guide는 Worker가 그리고, /admin은 로그인해야 쓰는 화면이라 정적 파일로 굽지 않는다.
+  ...getPrerenderRoutes().filter(route => route !== '/guide' && !route.startsWith('/admin')),
   ...galleryItems.map((item) => `/gallery/${item.slug}`),
 ]
 
@@ -105,8 +106,8 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
     urls: sitemapUrls,
-    // 주문서는 고객에게 링크로만 전달한다 (페이지 자체도 noindex).
-    exclude: ['/order'],
+    // 1대1 주문서와 관리 페이지는 검색 대상이 아니다 (응답에도 noindex 헤더를 붙인다).
+    exclude: ['/order/**', '/admin', '/admin/**'],
   },
 
   app: {
@@ -170,9 +171,16 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
       crawlLinks: true,
       routes: buildPrerenderRoutes(),
+      ignore: ['/admin', '/order'],
     },
     routeRules: {
       '/guide': { prerender: false, headers: { 'cache-control': 'no-cache' } },
+      // 1대1 주문서: 주소가 곧 비밀이라 캐시·검색·리퍼러로 새어 나가지 않게 한다.
+      '/order/**': { prerender: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' } },
+      '/api/order/**': { headers: { 'cache-control': 'no-store' } },
+      // 관리 페이지: 로그인 상태에 따라 브라우저에서만 그린다.
+      '/admin': { ssr: false, prerender: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'same-origin' } },
+      '/api/admin/**': { headers: { 'cache-control': 'no-store' } },
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

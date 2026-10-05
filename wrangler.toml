@@ -1,0 +1,14 @@
+# Cloudflare Pages 프로젝트 설정.
+# 이 파일이 저장소에 있으면 대시보드 대신 여기 값이 배포 설정의 기준이 된다.
+# 암호화 변수(RESEND_API_KEY 등)는 대시보드에서 그대로 관리하며 이 파일의 영향을 받지 않는다.
+name = "nobilityjewellery"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-12-21"
+
+# 1대1 주문서와 관리자 로그인 저장소 (server/utils/cloudflare.ts)
+# 스키마 변경: migrations/에 파일을 추가하고 `npx wrangler d1 migrations apply noblesse-orders --remote`
+[[d1_databases]]
+binding = "DB"
+database_name = "noblesse-orders"
+database_id = "d0d9ed9f-5378-48ac-a035-b283156b214a"
+migrations_dir = "migrations"
