@@ -105,6 +105,8 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
     urls: sitemapUrls,
+    // 주문서는 고객에게 링크로만 전달한다 (페이지 자체도 noindex).
+    exclude: ['/order'],
   },
 
   app: {
