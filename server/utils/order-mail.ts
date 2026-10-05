@@ -1,6 +1,5 @@
 import type { H3Event } from 'h3'
 import { useRuntimeConfig } from '#imports'
-import { siteConfig } from '~/config/site'
 import { cloudflareEnv } from './cloudflare'
 import { sendMail } from './mail'
 import type { OrderRow } from './orders'
@@ -74,7 +73,7 @@ export async function sendOrderSubmittedMail(event: H3Event, order: OrderRow) {
           </table>
 
           <p style="margin: 20px 0;">
-            입금을 확인하면 <a href="${siteConfig.url}/admin" style="color: #c9a227;">주문서 관리</a>에서 입금 확인으로 바꿔 주세요.
+            입금을 확인하면 주문서 관리 페이지에서 입금 확인으로 바꿔 주세요.
           </p>
 
           <p style="color: #999; font-size: 12px; margin-top: 30px;">

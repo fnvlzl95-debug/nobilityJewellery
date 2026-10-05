@@ -10,7 +10,7 @@ const SESSION_DAYS = 30
 export const LOGIN_CODE_MINUTES = 10
 
 // 쿠키는 항상 Secure로 준다. http로 띄우는 로컬 개발 서버만 예외다.
-const secureCookies = (event: H3Event) => !/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(getRequestHost(event))
+export const secureCookies = (event: H3Event) => !/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(getRequestHost(event))
 
 /** Admin endpoints change state by cookie alone, so refuse requests started from another site. */
 export function assertSameOrigin(event: H3Event): void {
