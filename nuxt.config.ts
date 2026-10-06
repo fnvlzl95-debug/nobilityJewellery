@@ -144,6 +144,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-12-01',
 
+  routeRules: {
+    // 관리 페이지: 로그인 상태에 따라 브라우저에서만 그린다. 응답 헤더는 진입 키를 확인한 뒤
+    // server/middleware/admin-gate.ts가 붙인다 — 여기서 붙이면 404 응답에도 실려 페이지가 있다는 표가 난다.
+    '/admin': { ssr: false, prerender: false },
+  },
+
   nitro: {
     preset: 'cloudflare-pages',
     cloudflare: {
@@ -178,9 +184,6 @@ export default defineNuxtConfig({
       // 1대1 주문서: 주소가 곧 비밀이라 캐시·검색·리퍼러로 새어 나가지 않게 한다.
       '/order/**': { prerender: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' } },
       '/api/order/**': { headers: { 'cache-control': 'no-store' } },
-      // 관리 페이지: 로그인 상태에 따라 브라우저에서만 그린다. 응답 헤더는 진입 키를 확인한 뒤
-      // server/middleware/admin-gate.ts가 붙인다 — 여기서 붙이면 404 응답에도 실려 페이지가 있다는 표가 난다.
-      '/admin': { ssr: false, prerender: false },
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
