@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'cabochon-ring-smooth-dome-selection',
+      path: '/guide/cabochon-ring-smooth-dome-selection',
+      title: '카보숑 반지, 매끈한 돔형 보석 고르기',
+      description: '카보숑 반지는 여러 평평한 면 대신 매끈한 곡면을 살린 보석이 특징입니다. 타원형과 카보숑의 차이, 패싯 컷과 비교할 부분, 스타 사파이어를 고를 때 볼 점을 정리했습니다. 원하는 색과 표면 느낌으로 귀족에 상담해 보세요.',
+      keyword: '카보숑 반지',
+      image: '/Image/guide/cabochon-ring-smooth-dome-selection-hero-c1384397.webp',
+      publishedAt: '2026-10-06',
+      category: '선택',
+    },
+  {
       slug: 'tennis-necklace-uniform-graduated-selection',
       path: '/guide/tennis-necklace-uniform-graduated-selection',
       title: '테니스 목걸이, 균일형과 중앙 강조형',
