@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'cufflinks-shirt-fastening-selection',
+      path: '/guide/cufflinks-shirt-fastening-selection',
+      title: '커프스 버튼, 셔츠 소매에 맞춰 고르기',
+      description: '커프스 버튼은 셔츠 소매의 구멍을 연결하는 장식입니다. 모든 셔츠에 맞는 것은 아니므로 소매 구조부터 확인하세요. 회전바·체인 연결식의 차이와 선물·주문제작 상담에 필요한 사진을 정리했습니다.',
+      keyword: '커프스 버튼',
+      image: '/Image/guide/cufflinks-shirt-fastening-selection-hero-7d436939.webp',
+      publishedAt: '2026-10-07',
+      category: '선택',
+    },
+  {
       slug: 'cabochon-ring-smooth-dome-selection',
       path: '/guide/cabochon-ring-smooth-dome-selection',
       title: '카보숑 반지, 매끈한 돔형 보석 고르기',

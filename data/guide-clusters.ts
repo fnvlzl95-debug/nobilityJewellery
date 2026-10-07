@@ -188,6 +188,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/earring-jacket-stud-compatibility-guide', label: '이어재킷 귀걸이, 스터드에 맞춰 고르기', description: '이어재킷은 스터드 귀걸이에 더하는 별도 장식입니다' },
       { to: '/guide/tennis-necklace-uniform-graduated-selection', label: '테니스 목걸이, 균일형과 중앙 강조형', description: '테니스 목걸이를 고를 때는 보석 크기가 일정하게 이어지는 균일형과 중앙으로 갈수록 커지는 그라데이션형을 먼저 비교하세요' },
       { to: '/guide/cabochon-ring-smooth-dome-selection', label: '카보숑 반지, 매끈한 돔형 보석 고르기', description: '카보숑 반지는 여러 평평한 면 대신 매끈한 곡면을 살린 보석이 특징입니다' },
+      { to: '/guide/cufflinks-shirt-fastening-selection', label: '커프스 버튼, 셔츠 소매에 맞춰 고르기', description: '커프스 버튼은 셔츠 소매의 구멍을 연결하는 장식입니다' },
     ],
   },
 ]
