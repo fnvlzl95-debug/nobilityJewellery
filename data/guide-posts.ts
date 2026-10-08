@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'slider-bracelet-adjustment-tail-selection',
+      path: '/guide/slider-bracelet-adjustment-tail-selection',
+      title: '슬라이더 팔찌, 길이 조절과 꼬리 체인 확인법',
+      description: '슬라이더 팔찌는 조절 장식을 움직여 착용 둘레를 바꾸는 팔찌입니다. 볼로형의 조절 방식, 손 통과와 착용 범위의 차이, 남는 꼬리 체인을 확인하는 방법을 정리했습니다. 구매·선물 전 실제 후보의 조절 모습을 비교해 보세요.',
+      keyword: '슬라이더 팔찌',
+      image: '/Image/guide/slider-bracelet-adjustment-tail-selection-hero-e6e0df74.webp',
+      publishedAt: '2026-10-08',
+      category: '선택',
+    },
+  {
       slug: 'cufflinks-shirt-fastening-selection',
       path: '/guide/cufflinks-shirt-fastening-selection',
       title: '커프스 버튼, 셔츠 소매에 맞춰 고르기',
