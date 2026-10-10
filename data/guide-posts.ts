@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'family-birthstone-ring-custom-order',
+      path: '/guide/family-birthstone-ring-custom-order',
+      title: '가족 탄생석 반지 주문제작, 구성부터 정하기',
+      description: '가족 탄생석 반지 주문제작은 한 반지에 누구의 생월을 담을지 정하는 것부터 시작합니다. 같은 생월을 반복할지, 가족 순서와 색 조합 중 무엇을 우선할지 살펴보고 종로 귀족에 원하는 구성을 문의해 보세요.',
+      keyword: '가족 탄생석 반지',
+      image: '/Image/guide/family-birthstone-ring-custom-order-hero-103279c0.webp',
+      publishedAt: '2026-10-10',
+      category: '주문',
+    },
+  {
       slug: 'slider-bracelet-adjustment-tail-selection',
       path: '/guide/slider-bracelet-adjustment-tail-selection',
       title: '슬라이더 팔찌, 길이 조절과 꼬리 체인 확인법',
