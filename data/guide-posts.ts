@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'asymmetric-earrings-custom-pairing',
+      path: '/guide/asymmetric-earrings-custom-pairing',
+      title: '비대칭 귀걸이 주문제작, 한 쌍의 조합 고르기',
+      description: '비대칭 귀걸이 주문제작은 양쪽에 공통으로 남길 요소와 다르게 만들 부분을 정하는 것부터 시작합니다. 길이·모양·보석 조합을 비교하고, 한 쌍의 참고 사진으로 종로 귀족에 제작 상담을 문의해 보세요.',
+      keyword: '비대칭 귀걸이',
+      image: '/Image/guide/asymmetric-earrings-custom-pairing-hero-9f602b96.webp',
+      publishedAt: '2026-10-11',
+      category: '주문',
+    },
+  {
       slug: 'family-birthstone-ring-custom-order',
       path: '/guide/family-birthstone-ring-custom-order',
       title: '가족 탄생석 반지 주문제작, 구성부터 정하기',
