@@ -63,7 +63,7 @@ useHead({
 
         <template v-if="quote.state === 'active'">
           <dl class="detail-list">
-            <div class="detail-row">
+            <div v-if="quote.recipient" class="detail-row">
               <dt>받는 분</dt>
               <dd>{{ quote.recipient }} 귀하</dd>
             </div>
@@ -82,7 +82,7 @@ useHead({
               :src="imageUrl"
               :width="quote.imageWidth"
               :height="quote.imageHeight"
-              :alt="`${quote.recipient} 귀하 ${title}. 견적일 ${formatQuoteDate(quote.quoteDate!)}, 합계금액 ${formatMoney(quote.total!)}원`"
+              :alt="`${quote.recipient ? `${quote.recipient} 귀하 ` : ''}${title}. 견적일 ${formatQuoteDate(quote.quoteDate!)}, 합계금액 ${formatMoney(quote.total!)}원`"
               loading="eager"
             >
           </a>

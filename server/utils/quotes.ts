@@ -85,7 +85,7 @@ export function parseQuoteContent(body: Record<string, unknown> | null | undefin
   }
 
   return {
-    recipient: text(body.recipient, 40, '받는 분', true),
+    recipient: text(body.recipient, 40, '받는 분'),
     quoteDate,
     vatIncluded: body.vatIncluded === true,
     roundDown: body.roundDown === true,

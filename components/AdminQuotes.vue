@@ -120,11 +120,6 @@ const createQuote = async () => {
   if (isCreating.value || !canvasRef.value) return
   createError.value = ''
 
-  if (!content.value.recipient) {
-    createError.value = '받는 분을 입력해주세요.'
-    return
-  }
-
   if (content.value.items.some(item => !item.name)) {
     createError.value = '품명을 입력해주세요.'
     return
@@ -279,9 +274,9 @@ onMounted(() => {
       <h2 class="section-title">새 견적서</h2>
       <form class="stack" @submit.prevent="createQuote">
         <div class="field">
-          <label class="field-label" for="quote-recipient">받는 분</label>
-          <input id="quote-recipient" v-model="form.recipient" type="text" class="field-input" maxlength="40" placeholder="이름 또는 회사명" required>
-          <p class="hint">견적서에는 뒤에 '귀하'가 붙습니다.</p>
+          <label class="field-label" for="quote-recipient">받는 분 <span class="optional">(선택)</span></label>
+          <input id="quote-recipient" v-model="form.recipient" type="text" class="field-input" maxlength="40" placeholder="이름 또는 회사명">
+          <p class="hint">견적서에는 뒤에 '귀하'가 붙습니다. 비워 두면 받는 분 없이 만들어집니다.</p>
         </div>
 
         <div class="field">
@@ -438,7 +433,7 @@ onMounted(() => {
             <span class="order-id">{{ quote.id }}</span>
           </div>
 
-          <p class="order-summary">{{ quote.recipient }} 귀하 · <strong>{{ formatMoney(quote.total) }}원</strong></p>
+          <p class="order-summary">{{ quote.recipient ? `${quote.recipient} 귀하` : '받는 분 없음' }} · <strong>{{ formatMoney(quote.total) }}원</strong></p>
           <p class="order-memo">{{ formatQuoteDate(quote.quoteDate) }} · {{ quoteLabels(quote.vatIncluded).title }} · {{ itemSummary(quote) }}</p>
           <p v-if="quote.memo" class="order-memo">{{ quote.memo }}</p>
           <p v-if="quote.id === createdId" class="order-new-note">견적서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.</p>
