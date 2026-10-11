@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
-import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_MAX_ITEMS, QUOTE_OPTIONAL_COLUMNS, quoteColumnHeaders, quoteLabels, type QuoteContent, type QuoteOptionalColumn } from '~/utils/quote'
+import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_MATERIALS, QUOTE_MAX_ITEMS, QUOTE_OPTIONAL_COLUMNS, quoteColumnHeaders, quoteLabels, type QuoteContent, type QuoteOptionalColumn } from '~/utils/quote'
 import { drawQuote } from '~/utils/quote-canvas'
 
 // 관리 페이지의 견적서 탭. 기존 견적서 양식 그대로 그려 이미지로 저장하고, 고객에게 보낼 링크를 만든다.
@@ -32,7 +32,7 @@ const withCommas = (value: number) => value ? formatMoney(value) : ''
 
 // ===== 작성 =====
 // 입력 칸은 문자열로 들고 있다가 계산할 때 숫자로 바꾼다 (금액 칸에는 쉼표가 들어간다).
-const buildItem = () => ({ name: '', weight: '', unit: '돈', spec: '', quantity: '1', price: '', labor: '' })
+const buildItem = () => ({ name: '', weight: '', unit: '돈', spec: '', quantity: '1', price: '', labor: '', fixedPrice: false, unitPrice: '' })
 type FormItem = ReturnType<typeof buildItem>
 const todayInSeoul = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' })
 const buildForm = (hiddenColumns: QuoteOptionalColumn[] = []) => ({
@@ -72,8 +72,11 @@ const content = computed<QuoteContent>(() => ({
     unit: item.unit.trim(),
     spec: item.spec.trim(),
     quantity: digits(item.quantity) || 1,
-    price: digits(item.price),
-    labor: digits(item.labor),
+    // 판매가격만 적는 품목은 시세·공임 칸에 남아 있는 값을 쓰지 않는다.
+    price: item.fixedPrice ? 0 : digits(item.price),
+    labor: item.fixedPrice ? 0 : digits(item.labor),
+    fixedPrice: item.fixedPrice,
+    unitPrice: item.fixedPrice ? digits(item.unitPrice) : 0,
   })),
   note: form.value.note.trim(),
 }))
@@ -81,7 +84,7 @@ const labels = computed(() => quoteLabels(form.value.vatIncluded))
 const totals = computed(() => computeQuote(content.value))
 
 // 입력하는 동안 천 단위 쉼표를 붙여 금액을 잘못 읽지 않게 한다.
-const formatMoneyField = (item: FormItem, key: 'price' | 'labor') => {
+const formatMoneyField = (item: FormItem, key: 'price' | 'labor' | 'unitPrice') => {
   item[key] = withCommas(digits(item[key]))
 }
 
@@ -169,6 +172,8 @@ const loadQuote = (quote: AdminQuote) => {
       quantity: String(item.quantity),
       price: withCommas(item.price),
       labor: withCommas(item.labor),
+      fixedPrice: item.fixedPrice === true,
+      unitPrice: withCommas(item.unitPrice || 0),
     })),
     note: quote.note,
     memo: quote.memo,
@@ -295,33 +300,63 @@ onMounted(() => {
         <fieldset v-for="(item, index) in form.items" :key="index" class="quote-item">
           <legend class="field-label">품목 {{ index + 1 }}</legend>
           <div class="quote-item-grid">
-            <div class="field">
+            <div class="field quote-item-wide">
               <label class="field-label" :for="`quote-name-${index}`">품명</label>
-              <input :id="`quote-name-${index}`" v-model="item.name" type="text" class="field-input" maxlength="30" placeholder="18K, 순금 등" required>
+              <div class="material-picker" role="group" :aria-label="`품목 ${index + 1} 소재 고르기`">
+                <button
+                  v-for="material in QUOTE_MATERIALS"
+                  :key="material"
+                  type="button"
+                  class="segment"
+                  :aria-pressed="item.name.trim() === material"
+                  @click="item.name = material"
+                >
+                  {{ material }}
+                </button>
+              </div>
+              <input :id="`quote-name-${index}`" v-model="item.name" type="text" class="field-input" maxlength="30" placeholder="위에서 고르거나 직접 입력" required>
             </div>
-            <div class="field">
-              <label class="field-label" :for="`quote-quantity-${index}`">수량</label>
-              <input :id="`quote-quantity-${index}`" v-model="item.quantity" type="text" class="field-input" inputmode="numeric" autocomplete="off" required>
+
+            <div class="field quote-item-wide">
+              <span :id="`quote-mode-label-${index}`" class="field-label">금액 넣는 방식</span>
+              <div class="segmented" role="group" :aria-labelledby="`quote-mode-label-${index}`">
+                <button type="button" class="segment" :aria-pressed="!item.fixedPrice" @click="item.fixedPrice = false">시세로 계산</button>
+                <button type="button" class="segment" :aria-pressed="item.fixedPrice" @click="item.fixedPrice = true">판매가격만 입력</button>
+              </div>
             </div>
+
+            <!-- 판매가격만 입력: 1개당 금액을 그대로 적는다 -->
+            <div v-if="item.fixedPrice" class="field quote-item-wide">
+              <label class="field-label" :for="`quote-unit-price-${index}`">{{ labels.unitTotal }}</label>
+              <input :id="`quote-unit-price-${index}`" v-model="item.unitPrice" type="text" class="field-input" inputmode="numeric" autocomplete="off" placeholder="1,500,000" @input="formatMoneyField(item, 'unitPrice')">
+            </div>
+            <!-- 시세로 계산: 중량 × 시세 + 공임 -->
+            <template v-else>
+              <div class="field">
+                <label class="field-label" :for="`quote-price-${index}`">시세 <span class="optional">(중량 1{{ item.unit || '단위' }}당)</span></label>
+                <input :id="`quote-price-${index}`" v-model="item.price" type="text" class="field-input" inputmode="numeric" autocomplete="off" placeholder="843,000" @input="formatMoneyField(item, 'price')">
+              </div>
+              <div class="field">
+                <label class="field-label" :for="`quote-labor-${index}`">공임 <span class="optional">(1개당)</span></label>
+                <input :id="`quote-labor-${index}`" v-model="item.labor" type="text" class="field-input" inputmode="numeric" autocomplete="off" placeholder="900,000" @input="formatMoneyField(item, 'labor')">
+              </div>
+            </template>
+
             <div class="field">
-              <label class="field-label" :for="`quote-weight-${index}`">중량</label>
+              <label class="field-label" :for="`quote-weight-${index}`">중량 <span v-if="item.fixedPrice" class="optional">(선택)</span></label>
               <input :id="`quote-weight-${index}`" v-model="item.weight" type="text" class="field-input" inputmode="decimal" autocomplete="off" placeholder="15">
             </div>
             <div class="field">
               <label class="field-label" :for="`quote-unit-${index}`">중량 단위</label>
               <input :id="`quote-unit-${index}`" v-model="item.unit" type="text" class="field-input" maxlength="6" placeholder="돈">
             </div>
+            <div class="field">
+              <label class="field-label" :for="`quote-quantity-${index}`">수량</label>
+              <input :id="`quote-quantity-${index}`" v-model="item.quantity" type="text" class="field-input" inputmode="numeric" autocomplete="off" required>
+            </div>
             <div class="field quote-item-wide">
               <label class="field-label" :for="`quote-spec-${index}`">규격 <span class="optional">(선택)</span></label>
               <input :id="`quote-spec-${index}`" v-model="item.spec" type="text" class="field-input" maxlength="60" placeholder="높이 6cm / 가로 4cm">
-            </div>
-            <div class="field">
-              <label class="field-label" :for="`quote-price-${index}`">시세 <span class="optional">(중량 1{{ item.unit || '단위' }}당)</span></label>
-              <input :id="`quote-price-${index}`" v-model="item.price" type="text" class="field-input" inputmode="numeric" autocomplete="off" placeholder="843,000" @input="formatMoneyField(item, 'price')">
-            </div>
-            <div class="field">
-              <label class="field-label" :for="`quote-labor-${index}`">공임 <span class="optional">(1개당)</span></label>
-              <input :id="`quote-labor-${index}`" v-model="item.labor" type="text" class="field-input" inputmode="numeric" autocomplete="off" placeholder="900,000" @input="formatMoneyField(item, 'labor')">
             </div>
           </div>
           <p class="quote-item-total">
@@ -541,6 +576,13 @@ onMounted(() => {
 
 .admin .quote-item-wide {
   grid-column: 1 / -1;
+}
+
+/* 품명에 자주 쓰는 소재를 한 번에 넣는다 */
+.admin .material-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .admin .quote-item-total,

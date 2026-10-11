@@ -8,7 +8,13 @@ export interface QuoteItem {
   quantity: number  // 수량
   price: number     // 시세 — 중량 1단위당 원
   labor: number     // 공임 — 1개당 원
+  // 시세로 계산하지 않고 1개당 금액만 적는 품목. 이때 시세·공임은 쓰지 않는다.
+  fixedPrice?: boolean
+  unitPrice?: number // 1개당 금액 (원)
 }
+
+/** 품명 칸에서 바로 고를 수 있는 소재. 그 밖의 이름은 직접 적는다. */
+export const QUOTE_MATERIALS = ['순금', '18K', '14K', '은']
 
 // 품목 표의 칸. 품명과 총액은 항상 넣고, 나머지는 쓰지 않으면 견적서에서 뺄 수 있다.
 export const QUOTE_OPTIONAL_COLUMNS = ['weight', 'spec', 'quantity', 'price', 'marketTotal', 'labor', 'unitTotal'] as const
@@ -48,9 +54,13 @@ export const quoteColumnHeaders = (vatIncluded: boolean): Record<QuoteColumn, st
   }
 }
 
-/** 총시세 = 중량 × 시세, 1개당 = 총시세 + 공임, 합계 = 1개당 × 수량 */
+/** 총시세 = 중량 × 시세, 1개당 = 총시세 + 공임, 합계 = 1개당 × 수량. 금액만 적은 품목은 그 금액이 1개당이다. */
 export function computeQuote(content: Pick<QuoteContent, 'items' | 'roundDown'>) {
   const rows = content.items.map((item) => {
+    if (item.fixedPrice) {
+      const unitTotal = item.unitPrice || 0
+      return { marketTotal: 0, unitTotal, total: unitTotal * item.quantity }
+    }
     const market = item.weight * item.price
     const marketTotal = content.roundDown ? Math.floor(market / 1000) * 1000 : Math.round(market)
     const unitTotal = marketTotal + item.labor

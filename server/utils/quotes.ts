@@ -63,14 +63,19 @@ export function parseQuoteContent(body: Record<string, unknown> | null | undefin
     if (typeof weight !== 'number' || !Number.isFinite(weight) || weight < 0 || weight > 100000) {
       throw invalid('중량 항목을 숫자로 입력해주세요.')
     }
+    const fixedPrice = raw.fixedPrice ?? false
+    if (typeof fixedPrice !== 'boolean') throw invalid('품목 내용을 확인해주세요.')
     return {
       name: text(raw.name, 30, '품명', true),
       weight,
       unit: text(raw.unit, 6, '중량 단위'),
       spec: text(raw.spec, 60, '규격'),
       quantity: amount(raw.quantity, '수량', 1),
-      price: amount(raw.price, '시세'),
-      labor: amount(raw.labor, '공임'),
+      // 금액만 적는 품목은 시세·공임을 비워 두고 1개당 금액만 저장한다.
+      price: fixedPrice ? 0 : amount(raw.price, '시세'),
+      labor: fixedPrice ? 0 : amount(raw.labor, '공임'),
+      fixedPrice,
+      unitPrice: fixedPrice ? amount(raw.unitPrice, '판매가격') : 0,
     }
   })
 

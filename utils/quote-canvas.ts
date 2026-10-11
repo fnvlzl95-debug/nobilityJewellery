@@ -175,7 +175,7 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
           quantity: String(item.quantity),
           price: item.price ? formatMoney(item.price) : '',
           marketTotal: rows[row].marketTotal ? formatMoney(rows[row].marketTotal) : '',
-          labor: formatMoney(item.labor),
+          labor: item.fixedPrice ? '' : formatMoney(item.labor),
           unitTotal: formatMoney(rows[row].unitTotal),
           total: formatMoney(rows[row].total),
         }
