@@ -10,6 +10,9 @@ export const siteConfig = {
   tagline: '종로 귀금속 도매의 품격',
   description: '서울 종로 귀금속 도매 전문점 귀족. 금반지, 돌반지, 커플링, 예물, 결혼반지 주문제작. 14K 18K 24K 순금 도매, 수리·세공.',
 
+  // 견적서 공급자 표에 적는 대표자 이름
+  representative: '박승태',
+
   // 연락처
   phone: '02-766-4789',
   phoneFormatted: '+82-2-766-4789',

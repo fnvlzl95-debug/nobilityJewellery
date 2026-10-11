@@ -106,8 +106,8 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
     urls: sitemapUrls,
-    // 1대1 주문서와 관리 페이지는 검색 대상이 아니다 (응답에도 noindex 헤더를 붙인다).
-    exclude: ['/order/**', '/admin', '/admin/**'],
+    // 1대1 주문서·견적서와 관리 페이지는 검색 대상이 아니다 (응답에도 noindex 헤더를 붙인다).
+    exclude: ['/order/**', '/quote/**', '/admin', '/admin/**'],
   },
 
   app: {
@@ -177,13 +177,16 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
       crawlLinks: true,
       routes: buildPrerenderRoutes(),
-      ignore: ['/admin', '/order'],
+      ignore: ['/admin', '/order', '/quote'],
     },
     routeRules: {
       '/guide': { prerender: false, headers: { 'cache-control': 'no-cache' } },
       // 1대1 주문서: 주소가 곧 비밀이라 캐시·검색·리퍼러로 새어 나가지 않게 한다.
       '/order/**': { prerender: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' } },
       '/api/order/**': { headers: { 'cache-control': 'no-store' } },
+      // 1대1 견적서도 같은 기준이다.
+      '/quote/**': { prerender: false, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' } },
+      '/api/quote/**': { headers: { 'cache-control': 'no-store' } },
       // 정적 자산 캐시 (1년)
       '/Image/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

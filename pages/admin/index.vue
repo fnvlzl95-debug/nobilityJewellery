@@ -2,12 +2,12 @@
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
 
-// 운영자 전용 화면: 1대1 주문서를 만들고, 접수와 입금을 확인한다.
+// 운영자 전용 화면: 1대1 주문서를 만들어 접수와 입금을 확인하고, 견적서를 만든다 (components/AdminQuotes.vue).
 // 로그인 여부는 서버가 쿠키로 판단한다 (server/utils/admin-auth.ts).
 definePageMeta({ layout: false })
 
 useHead({
-  title: `주문서 관리 | ${siteConfig.name}`,
+  title: `관리 | ${siteConfig.name}`,
   meta: [
     { name: 'robots', content: 'noindex, nofollow' },
   ],
@@ -39,14 +39,15 @@ const stateLabels: Record<OrderState, string> = {
   cancelled: '취소',
 }
 
-const view = ref<'loading' | 'login' | 'orders'>('loading')
+const view = ref<'loading' | 'login' | 'ready'>('loading')
+const tab = ref<'orders' | 'quotes'>('orders')
 
 const errorMessage = (e: any, fallback: string) => e?.data?.message || fallback
 
 // 세션이 끊겼으면 어떤 요청에서든 로그인 화면으로 돌아간다.
-const api = async <T>(url: string, options: { method?: 'POST' | 'PATCH'; body?: Record<string, unknown> } = {}) => {
+const api = async <T>(url: string, options: { method?: 'POST' | 'PATCH'; body?: Record<string, unknown> } = {}): Promise<T> => {
   try {
-    return await $fetch<T>(url, options)
+    return await $fetch<T>(url, options) as T
   } catch (e: any) {
     if (e?.statusCode === 401) view.value = 'login'
     throw e
@@ -87,7 +88,7 @@ const verifyCode = async () => {
     await loadOrders()
     loginStep.value = 'email'
     loginCode.value = ''
-    view.value = 'orders'
+    view.value = 'ready'
   } catch (e) {
     loginError.value = errorMessage(e, '로그인하지 못했습니다. 잠시 후 다시 시도해주세요.')
   } finally {
@@ -244,7 +245,7 @@ onMounted(async () => {
     const session = await api<{ authenticated: boolean }>('/api/admin/session')
     if (session.authenticated) {
       await loadOrders()
-      view.value = 'orders'
+      view.value = 'ready'
       return
     }
   } catch (e) {
@@ -257,9 +258,14 @@ onMounted(async () => {
 <template>
   <div class="admin">
     <header class="admin-header">
-      <h1 class="admin-title">주문서 관리</h1>
-      <button v-if="view === 'orders'" type="button" class="btn-text" @click="logout">로그아웃</button>
+      <h1 class="admin-title">{{ siteConfig.name }} 관리</h1>
+      <button v-if="view === 'ready'" type="button" class="btn-text" @click="logout">로그아웃</button>
     </header>
+
+    <nav v-if="view === 'ready'" class="tabs" aria-label="관리 메뉴">
+      <button type="button" class="tab" :aria-current="tab === 'orders' ? 'page' : undefined" @click="tab = 'orders'">주문서</button>
+      <button type="button" class="tab" :aria-current="tab === 'quotes' ? 'page' : undefined" @click="tab = 'quotes'">견적서</button>
+    </nav>
 
     <p v-if="view === 'loading'" class="muted">불러오는 중...</p>
 
@@ -312,6 +318,7 @@ onMounted(async () => {
     </section>
 
     <template v-else>
+      <div v-show="tab === 'orders'" class="admin-tab">
       <!-- 새 주문서 -->
       <section class="panel">
         <h2 class="section-title">새 주문서</h2>
@@ -437,12 +444,16 @@ onMounted(async () => {
           </li>
         </ul>
       </section>
+      </div>
+
+      <AdminQuotes v-show="tab === 'quotes'" :api="api" />
     </template>
   </div>
 </template>
 
-<style scoped>
-/* 운영자 화면은 입력 내용이 다양해 서브셋 웹폰트 대신 기기 기본 글꼴로 통일한다. */
+<style>
+/* 견적서 탭(components/AdminQuotes.vue)과 함께 쓰는 스타일이라 scoped가 아니다. 모든 규칙을 .admin 아래로 묶는다.
+   운영자 화면은 입력 내용이 다양해 서브셋 웹폰트 대신 기기 기본 글꼴로 통일한다. */
 .admin {
   min-height: 100vh;
   min-height: 100dvh;
@@ -458,15 +469,46 @@ onMounted(async () => {
   font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
 }
 
-.admin-header,
-.list-header {
+.admin .admin-header,
+.admin .list-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.admin-title {
+.admin .admin-tab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+}
+
+/* 주문서 / 견적서 전환 */
+.admin .tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid rgba(250, 250, 250, 0.14);
+}
+
+.admin .tab {
+  min-height: 48px;
+  margin-bottom: -1px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--gray);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.admin .tab[aria-current="page"] {
+  color: var(--white);
+  border-bottom-color: var(--gold);
+}
+
+.admin .admin-title {
   margin: 0;
   font-size: 28px;
   font-weight: 600;
@@ -474,7 +516,7 @@ onMounted(async () => {
   letter-spacing: -0.01em;
 }
 
-.section-title {
+.admin .section-title {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
@@ -482,19 +524,19 @@ onMounted(async () => {
   letter-spacing: -0.01em;
 }
 
-.muted {
+.admin .muted {
   margin: 0;
   font-size: 14px;
   color: var(--gray);
 }
 
-.panel {
+.admin .panel {
   padding: 24px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.stack {
+.admin .stack {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -502,24 +544,24 @@ onMounted(async () => {
 }
 
 /* ===== 입력 ===== */
-.field {
+.admin .field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.field-label {
+.admin .field-label {
   font-size: 14px;
   font-weight: 600;
 }
 
-.optional {
+.admin .optional {
   font-weight: 400;
   color: var(--gray);
 }
 
 /* 16px 미만이면 iOS가 입력 포커스 때 화면을 확대한다 */
-.field-input {
+.admin .field-input {
   width: 100%;
   min-height: 52px;
   padding: 14px 16px;
@@ -532,28 +574,28 @@ onMounted(async () => {
   border-radius: 0;
 }
 
-select.field-input {
+.admin select.field-input {
   color-scheme: dark;
 }
 
-.field-input::placeholder {
+.admin .field-input::placeholder {
   color: var(--gray);
 }
 
-.code-input {
+.admin .code-input {
   font-size: 22px;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.2em;
 }
 
-.hint {
+.admin .hint {
   margin: 0;
   font-size: 13px;
   line-height: 1.7;
   color: var(--gray);
 }
 
-.error {
+.admin .error {
   margin: 0;
   padding: 12px 16px;
   font-size: 14px;
@@ -561,12 +603,12 @@ select.field-input {
   border-left: 2px solid var(--gold);
 }
 
-.list-header + .error {
+.admin .list-header + .error {
   margin-top: 16px;
 }
 
 /* ===== 버튼 ===== */
-.btn-primary {
+.admin .btn-primary {
   width: 100%;
   min-height: 52px;
   padding: 0 18px;
@@ -580,11 +622,11 @@ select.field-input {
   transition: background-color 0.3s;
 }
 
-.btn-primary:hover:not(:disabled) {
+.admin .btn-primary:hover:not(:disabled) {
   background: var(--gold-light);
 }
 
-.btn-ghost {
+.admin .btn-ghost {
   padding: 10px 14px;
   font-size: 14px;
   font-family: inherit;
@@ -596,12 +638,12 @@ select.field-input {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-ghost:hover:not(:disabled) {
+.admin .btn-ghost:hover:not(:disabled) {
   color: var(--gold-light);
   background: rgba(201, 162, 39, 0.1);
 }
 
-.btn-text {
+.admin .btn-text {
   padding: 10px 4px;
   font-size: 14px;
   font-family: inherit;
@@ -613,23 +655,23 @@ select.field-input {
   text-underline-offset: 3px;
 }
 
-.btn-text:hover:not(:disabled) {
+.admin .btn-text:hover:not(:disabled) {
   color: var(--white);
 }
 
-.btn-primary:disabled,
-.btn-ghost:disabled,
-.btn-text:disabled {
+.admin .btn-primary:disabled,
+.admin .btn-ghost:disabled,
+.admin .btn-text:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 /* ===== 주문서 목록 ===== */
-.list-header + .muted {
+.admin .list-header + .muted {
   margin-top: 16px;
 }
 
-.order-list {
+.admin .order-list {
   list-style: none;
   margin: 16px 0 0;
   padding: 0;
@@ -637,17 +679,17 @@ select.field-input {
   gap: 12px;
 }
 
-.order-card {
+.admin .order-card {
   padding: 20px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.order-card.is-new {
+.admin .order-card.is-new {
   border-color: rgba(201, 162, 39, 0.35);
 }
 
-.order-top {
+.admin .order-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -655,7 +697,7 @@ select.field-input {
   flex-wrap: wrap;
 }
 
-.chip {
+.admin .chip {
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 600;
@@ -666,52 +708,52 @@ select.field-input {
 }
 
 /* 운영자가 확인할 차례인 주문만 골드로 띄운다 */
-.chip-submitted {
+.admin .chip-submitted {
   color: var(--gold);
   border-color: rgba(201, 162, 39, 0.35);
 }
 
-.chip-paid {
+.admin .chip-paid {
   color: var(--white);
 }
 
-.order-id {
+.admin .order-id {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
   letter-spacing: 0.04em;
   color: var(--gray);
 }
 
-.order-summary {
+.admin .order-summary {
   margin: 14px 0 0;
   font-size: 16px;
   line-height: 1.6;
 }
 
-.order-summary strong {
+.admin .order-summary strong {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-.order-memo,
-.order-new-note {
+.admin .order-memo,
+.admin .order-new-note {
   margin: 4px 0 0;
   font-size: 14px;
   line-height: 1.6;
   color: var(--gray);
 }
 
-.order-new-note {
+.admin .order-new-note {
   margin-top: 10px;
   color: var(--white);
 }
 
-.order-meta {
+.admin .order-meta {
   margin: 14px 0 0;
   border-top: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.order-meta > div {
+.admin .order-meta > div {
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -719,13 +761,13 @@ select.field-input {
   border-bottom: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.order-meta dt {
+.admin .order-meta dt {
   flex: 0 0 auto;
   font-size: 14px;
   color: var(--gray);
 }
 
-.order-meta dd {
+.admin .order-meta dd {
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
@@ -733,12 +775,12 @@ select.field-input {
   overflow-wrap: anywhere;
 }
 
-.order-meta a {
+.admin .order-meta a {
   color: var(--white);
   text-underline-offset: 3px;
 }
 
-.order-actions {
+.admin .order-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -747,8 +789,8 @@ select.field-input {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-primary,
-  .btn-ghost {
+  .admin .btn-primary,
+  .admin .btn-ghost {
     transition: none;
   }
 }
