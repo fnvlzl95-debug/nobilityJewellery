@@ -1,4 +1,4 @@
-import { computeQuote, formatMoney, formatQuoteDate, formatWeight, quoteLabels, type QuoteContent } from './quote'
+import { computeQuote, formatMoney, formatQuoteDate, formatWeight, quoteColumnHeaders, quoteLabels, type QuoteColumn, type QuoteContent } from './quote'
 
 export interface QuoteSupplier {
   company: string
@@ -14,7 +14,6 @@ const PAGE_HEIGHT = 595
 const MARGIN_X = 36
 const SCALE = 3
 const FONT = `'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif`
-const COLUMN_WIDTHS = [70, 62, 190, 48, 75, 75, 68, 95, 87]
 const TABLE_Y = 328
 const HEADER_HEIGHT = 38
 const ROW_HEIGHT = 34
@@ -24,6 +23,19 @@ const PAPER = '#ffffff'
 const HEADER_FILL = '#f2f2f2'
 
 type Align = 'left' | 'center' | 'right'
+
+// 칸마다의 기본 너비와 정렬. 뺀 칸이 있으면 남은 칸이 같은 비율로 표 너비를 채운다.
+const COLUMNS: Array<{ key: QuoteColumn; width: number; align: Align }> = [
+  { key: 'name', width: 70, align: 'center' },
+  { key: 'weight', width: 62, align: 'center' },
+  { key: 'spec', width: 190, align: 'left' },
+  { key: 'quantity', width: 48, align: 'center' },
+  { key: 'price', width: 75, align: 'right' },
+  { key: 'marketTotal', width: 75, align: 'right' },
+  { key: 'labor', width: 68, align: 'right' },
+  { key: 'unitTotal', width: 95, align: 'right' },
+  { key: 'total', width: 87, align: 'right' },
+]
 interface TextStyle {
   size: number
   bold?: boolean
@@ -144,33 +156,35 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
   ctx.stroke()
 
   // 품목 표
-  const headers = ['품명', '중량', '규격', '수량', labels.price, '총시세', '공임', labels.unitTotal, labels.total]
-  const aligns: Align[] = ['center', 'center', 'left', 'center', 'right', 'right', 'right', 'right', 'right']
+  const headers = quoteColumnHeaders(content.vatIncluded)
+  const visible = COLUMNS.filter(column => !(content.hiddenColumns as QuoteColumn[]).includes(column.key))
+  const stretch = contentWidth / visible.reduce((sum, column) => sum + column.width, 0)
+  const columns = visible.map(column => ({ ...column, width: column.width * stretch }))
   let x = MARGIN_X
-  headers.forEach((header, column) => {
-    drawCell(ctx, header, x, TABLE_Y, COLUMN_WIDTHS[column], HEADER_HEIGHT, { size: 10, bold: true, align: 'center' }, HEADER_FILL)
-    x += COLUMN_WIDTHS[column]
-  })
+  for (const column of columns) {
+    drawCell(ctx, headers[column.key], x, TABLE_Y, column.width, HEADER_HEIGHT, { size: 10, bold: true, align: 'center' }, HEADER_FILL)
+    x += column.width
+  }
   for (let row = 0; row < rowCount; row++) {
     const item = content.items[row]
-    const cells = item
-      ? [
-          item.name,
-          formatWeight(item),
-          item.spec,
-          String(item.quantity),
-          item.price ? formatMoney(item.price) : '',
-          rows[row].marketTotal ? formatMoney(rows[row].marketTotal) : '',
-          formatMoney(item.labor),
-          formatMoney(rows[row].unitTotal),
-          formatMoney(rows[row].total),
-        ]
-      : []
+    const cells: Partial<Record<QuoteColumn, string>> = item
+      ? {
+          name: item.name,
+          weight: formatWeight(item),
+          spec: item.spec,
+          quantity: String(item.quantity),
+          price: item.price ? formatMoney(item.price) : '',
+          marketTotal: rows[row].marketTotal ? formatMoney(rows[row].marketTotal) : '',
+          labor: formatMoney(item.labor),
+          unitTotal: formatMoney(rows[row].unitTotal),
+          total: formatMoney(rows[row].total),
+        }
+      : {}
     x = MARGIN_X
-    COLUMN_WIDTHS.forEach((width, column) => {
-      drawCell(ctx, cells[column] || '', x, TABLE_Y + HEADER_HEIGHT + row * ROW_HEIGHT, width, ROW_HEIGHT, { size: 10, align: aligns[column] })
-      x += width
-    })
+    for (const column of columns) {
+      drawCell(ctx, cells[column.key] || '', x, TABLE_Y + HEADER_HEIGHT + row * ROW_HEIGHT, column.width, ROW_HEIGHT, { size: 10, align: column.align })
+      x += column.width
+    }
   }
 
   // 비고와 맺음

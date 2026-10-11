@@ -1,5 +1,5 @@
 import { createError } from 'h3'
-import { computeQuote, QUOTE_MAX_ITEMS, quoteLabels, type QuoteContent, type QuoteItem } from '../../utils/quote'
+import { computeQuote, QUOTE_MAX_ITEMS, QUOTE_OPTIONAL_COLUMNS, quoteLabels, type QuoteContent, type QuoteItem, type QuoteOptionalColumn } from '../../utils/quote'
 import type { D1Database } from './cloudflare'
 
 export interface QuoteRow {
@@ -9,6 +9,7 @@ export interface QuoteRow {
   quote_date: string
   vat_included: number
   round_down: number
+  hidden_columns: string
   items: string
   note: string
   memo: string
@@ -21,7 +22,7 @@ export interface QuoteRow {
 }
 
 // 이미지를 뺀 본문 열. 목록과 고객 화면은 이것만 읽는다.
-export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, round_down, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
+export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, round_down, hidden_columns, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
 
 export const QUOTE_TOKEN_PATTERN = /^[A-Za-z0-9_-]{22}$/
 // D1의 한 행 한도(2MB) 안에 여유 있게 들어가는 크기.
@@ -73,11 +74,18 @@ export function parseQuoteContent(body: Record<string, unknown> | null | undefin
     }
   })
 
+  const hiddenColumns = body.hiddenColumns ?? []
+  if (!Array.isArray(hiddenColumns) || hiddenColumns.some(column => !(QUOTE_OPTIONAL_COLUMNS as readonly unknown[]).includes(column))) {
+    throw invalid('견적서에 넣을 칸을 다시 선택해주세요.')
+  }
+
   return {
     recipient: text(body.recipient, 40, '받는 분', true),
     quoteDate,
     vatIncluded: body.vatIncluded === true,
     roundDown: body.roundDown === true,
+    // 표의 순서대로, 중복 없이 저장한다.
+    hiddenColumns: QUOTE_OPTIONAL_COLUMNS.filter(column => hiddenColumns.includes(column)),
     items,
     note: text(body.note, 200, '비고'),
     memo: text(body.memo, 200, '메모'),
@@ -118,6 +126,7 @@ export function toAdminQuote(quote: QuoteRow) {
     quoteDate: quote.quote_date,
     vatIncluded: quote.vat_included === 1,
     roundDown: quote.round_down === 1,
+    hiddenColumns: JSON.parse(quote.hidden_columns) as QuoteOptionalColumn[],
     items: JSON.parse(quote.items) as QuoteItem[],
     note: quote.note,
     memo: quote.memo,

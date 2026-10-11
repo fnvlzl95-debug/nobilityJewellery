@@ -10,11 +10,17 @@ export interface QuoteItem {
   labor: number     // 공임 — 1개당 원
 }
 
+// 품목 표의 칸. 품명과 총액은 항상 넣고, 나머지는 쓰지 않으면 견적서에서 뺄 수 있다.
+export const QUOTE_OPTIONAL_COLUMNS = ['weight', 'spec', 'quantity', 'price', 'marketTotal', 'labor', 'unitTotal'] as const
+export type QuoteOptionalColumn = typeof QUOTE_OPTIONAL_COLUMNS[number]
+export type QuoteColumn = 'name' | QuoteOptionalColumn | 'total'
+
 export interface QuoteContent {
   recipient: string
   quoteDate: string // YYYY-MM-DD
   vatIncluded: boolean
   roundDown: boolean // 총시세의 천 원 미만을 버린다
+  hiddenColumns: QuoteOptionalColumn[] // 견적서에서 뺄 칸. 값은 그대로 계산에 들어간다
   items: QuoteItem[]
   note: string
 }
@@ -25,6 +31,22 @@ export const QUOTE_MAX_ITEMS = 8
 export const quoteLabels = (vatIncluded: boolean) => vatIncluded
   ? { title: '부가세 포함 견적서', price: '부가세 포함\n시세', unitTotal: '1개당 판매가격', total: '총판매가격' }
   : { title: '견적서', price: '시세', unitTotal: '1개당 공급가액', total: '총공급가액' }
+
+/** 품목 표의 칸 이름 (왼쪽부터 놓이는 순서). */
+export const quoteColumnHeaders = (vatIncluded: boolean): Record<QuoteColumn, string> => {
+  const labels = quoteLabels(vatIncluded)
+  return {
+    name: '품명',
+    weight: '중량',
+    spec: '규격',
+    quantity: '수량',
+    price: labels.price,
+    marketTotal: '총시세',
+    labor: '공임',
+    unitTotal: labels.unitTotal,
+    total: labels.total,
+  }
+}
 
 /** 총시세 = 중량 × 시세, 1개당 = 총시세 + 공임, 합계 = 1개당 × 수량 */
 export function computeQuote(content: Pick<QuoteContent, 'items' | 'roundDown'>) {

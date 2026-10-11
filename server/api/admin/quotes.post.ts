@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
     quote_date: content.quoteDate,
     vat_included: content.vatIncluded ? 1 : 0,
     round_down: content.roundDown ? 1 : 0,
+    hidden_columns: JSON.stringify(content.hiddenColumns),
     items: JSON.stringify(content.items),
     note: content.note,
     memo: content.memo,
@@ -33,9 +34,9 @@ export default defineEventHandler(async (event) => {
 
   const db = useOrdersDb(event)
   await db.batch([
-    db.prepare(`INSERT INTO quotes (id, token, recipient, quote_date, vat_included, round_down, items, note, memo, total, image_width, image_height, status, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-      .bind(quote.id, quote.token, quote.recipient, quote.quote_date, quote.vat_included, quote.round_down, quote.items, quote.note, quote.memo, quote.total, quote.image_width, quote.image_height, quote.status, quote.created_at),
+    db.prepare(`INSERT INTO quotes (id, token, recipient, quote_date, vat_included, round_down, hidden_columns, items, note, memo, total, image_width, image_height, status, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .bind(quote.id, quote.token, quote.recipient, quote.quote_date, quote.vat_included, quote.round_down, quote.hidden_columns, quote.items, quote.note, quote.memo, quote.total, quote.image_width, quote.image_height, quote.status, quote.created_at),
     db.prepare('INSERT INTO quote_images (quote_id, png) VALUES (?, ?)').bind(quote.id, image.png),
   ])
 

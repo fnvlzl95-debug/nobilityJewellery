@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
-import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_MAX_ITEMS, quoteLabels, type QuoteContent } from '~/utils/quote'
+import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_MAX_ITEMS, QUOTE_OPTIONAL_COLUMNS, quoteColumnHeaders, quoteLabels, type QuoteContent, type QuoteOptionalColumn } from '~/utils/quote'
 import { drawQuote } from '~/utils/quote-canvas'
 
 // 관리 페이지의 견적서 탭. 기존 견적서 양식 그대로 그려 이미지로 저장하고, 고객에게 보낼 링크를 만든다.
@@ -35,22 +35,37 @@ const withCommas = (value: number) => value ? formatMoney(value) : ''
 const buildItem = () => ({ name: '', weight: '', unit: '돈', spec: '', quantity: '1', price: '', labor: '' })
 type FormItem = ReturnType<typeof buildItem>
 const todayInSeoul = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' })
-const buildForm = () => ({
+const buildForm = (hiddenColumns: QuoteOptionalColumn[] = []) => ({
   recipient: '',
   quoteDate: todayInSeoul(),
   vatIncluded: false,
   roundDown: false,
+  hiddenColumns,
   items: [buildItem()],
   note: '',
   memo: '',
 })
 const form = ref(buildForm())
 
+// 쓰지 않는 칸은 견적서에서 뺀다. 어떤 칸을 쓰는지는 대개 매번 같으므로 이 기기에 기억해 둔다.
+const COLUMNS_STORAGE_KEY = 'ng_quote_hidden_columns'
+const onlyOptionalColumns = (value: unknown) => QUOTE_OPTIONAL_COLUMNS.filter(column => Array.isArray(value) && value.includes(column))
+const rememberColumns = () => {
+  try { localStorage.setItem(COLUMNS_STORAGE_KEY, JSON.stringify(form.value.hiddenColumns)) } catch { /* 저장이 막힌 브라우저에서는 기억하지 않는다 */ }
+}
+const toggleColumn = (column: QuoteOptionalColumn) => {
+  const hidden = form.value.hiddenColumns
+  form.value.hiddenColumns = hidden.includes(column) ? hidden.filter(key => key !== column) : onlyOptionalColumns([...hidden, column])
+  rememberColumns()
+}
+const columnNames = computed(() => quoteColumnHeaders(form.value.vatIncluded))
+
 const content = computed<QuoteContent>(() => ({
   recipient: form.value.recipient.trim(),
   quoteDate: form.value.quoteDate,
   vatIncluded: form.value.vatIncluded,
   roundDown: form.value.roundDown,
+  hiddenColumns: form.value.hiddenColumns,
   items: form.value.items.map(item => ({
     name: item.name.trim(),
     weight: Number.parseFloat(item.weight) || 0,
@@ -133,7 +148,7 @@ const createQuote = async () => {
 }
 
 const resetForm = () => {
-  form.value = buildForm()
+  form.value = buildForm(form.value.hiddenColumns)
   createError.value = ''
 }
 
@@ -145,6 +160,7 @@ const loadQuote = (quote: AdminQuote) => {
     quoteDate: todayInSeoul(),
     vatIncluded: quote.vatIncluded,
     roundDown: quote.roundDown,
+    hiddenColumns: onlyOptionalColumns(quote.hiddenColumns),
     items: quote.items.map(item => ({
       name: item.name,
       weight: item.weight ? String(item.weight) : '',
@@ -243,6 +259,9 @@ const itemSummary = (quote: AdminQuote) => quote.items
 
 onMounted(() => {
   canShare.value = typeof navigator.share === 'function'
+  try {
+    form.value.hiddenColumns = onlyOptionalColumns(JSON.parse(localStorage.getItem(COLUMNS_STORAGE_KEY) || '[]'))
+  } catch { /* 기억해 둔 값이 없거나 읽을 수 없으면 모든 칸을 넣는다 */ }
   redraw()
   loadQuotes()
 })
@@ -316,6 +335,22 @@ onMounted(() => {
         <button type="button" class="segment segment-single" :aria-pressed="form.roundDown" @click="form.roundDown = !form.roundDown">
           총시세 천 원 미만 버림
         </button>
+
+        <fieldset class="column-picker">
+          <legend class="field-label">견적서에 넣을 칸</legend>
+          <div class="check-grid">
+            <label v-for="column in QUOTE_OPTIONAL_COLUMNS" :key="column" class="check">
+              <input type="checkbox" :checked="!form.hiddenColumns.includes(column)" @change="toggleColumn(column)">
+              <span class="check-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </span>
+              <span>{{ columnNames[column].replace('\n', ' ') }}</span>
+            </label>
+          </div>
+          <p class="hint">쓰지 않는 칸은 체크를 풀면 견적서에서 빠집니다. 품명과 {{ labels.total }} 칸은 항상 들어가고, 뺀 칸에 적은 값도 합계 계산에는 그대로 들어갑니다.</p>
+        </fieldset>
 
         <div class="field">
           <label class="field-label" for="quote-note">비고 <span class="optional">(선택 · 견적서에 인쇄됩니다)</span></label>
@@ -419,6 +454,72 @@ onMounted(() => {
 
 .admin .segment-single {
   width: 100%;
+}
+
+/* 견적서에 넣을 칸 고르기 */
+.admin .column-picker {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.admin .column-picker legend {
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+.admin .check-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 12px;
+  margin-bottom: 8px;
+}
+
+.admin .check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 시각적으로만 숨김 — display:none은 키보드 포커스를 막는다 */
+.admin .check input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+
+.admin .check input:focus-visible + .check-box {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.admin .check-box {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(250, 250, 250, 0.3);
+  color: transparent;
+}
+
+.admin .check input:checked + .check-box {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
 }
 
 .admin .quote-item {
