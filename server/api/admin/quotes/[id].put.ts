@@ -20,9 +20,9 @@ export default defineEventHandler(async (event) => {
   const db = useOrdersDb(event)
   const [updated] = await db.batch([
     db.prepare(`UPDATE quotes
-      SET recipient = ?, quote_date = ?, vat_included = ?, round_down = ?, hidden_columns = ?, seal = ?, items = ?, note = ?, memo = ?, total = ?, image_width = ?, image_height = ?
+      SET recipient = ?, quote_date = ?, vat_included = ?, show_vat = ?, round_down = ?, hidden_columns = ?, seal = ?, items = ?, note = ?, memo = ?, total = ?, image_width = ?, image_height = ?
       WHERE id = ? AND status = 'active'`)
-      .bind(content.recipient, content.quoteDate, content.vatIncluded ? 1 : 0, content.roundDown ? 1 : 0, JSON.stringify(content.hiddenColumns), content.seal ? 1 : 0, JSON.stringify(content.items), content.note, content.memo, quoteTotal(content), image.width, image.height, id),
+      .bind(content.recipient, content.quoteDate, content.vatIncluded ? 1 : 0, content.showVat ? 1 : 0, content.roundDown ? 1 : 0, JSON.stringify(content.hiddenColumns), content.seal ? 1 : 0, JSON.stringify(content.items), content.note, content.memo, quoteTotal(content), image.width, image.height, id),
     db.prepare(`UPDATE quote_images SET png = ? WHERE quote_id = ? AND EXISTS (SELECT 1 FROM quotes WHERE id = ? AND status = 'active')`)
       .bind(image.png, id, id),
   ])

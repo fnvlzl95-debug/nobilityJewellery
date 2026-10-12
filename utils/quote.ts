@@ -19,12 +19,15 @@ export const QUOTE_MATERIALS = ['순금', '18K', '14K', '은']
 // 품목 표의 칸. 품명과 총액은 항상 넣고, 나머지는 쓰지 않으면 견적서에서 뺄 수 있다.
 export const QUOTE_OPTIONAL_COLUMNS = ['weight', 'spec', 'quantity', 'price', 'marketTotal', 'labor', 'unitTotal'] as const
 export type QuoteOptionalColumn = typeof QUOTE_OPTIONAL_COLUMNS[number]
-export type QuoteColumn = 'name' | QuoteOptionalColumn | 'total'
+// 부가세를 따로 적을 때만 총액 앞에 들어가는 칸.
+export const QUOTE_VAT_COLUMNS = ['supply', 'vat'] as const
+export type QuoteColumn = 'name' | QuoteOptionalColumn | typeof QUOTE_VAT_COLUMNS[number] | 'total'
 
 export interface QuoteContent {
   recipient: string
   quoteDate: string // YYYY-MM-DD
   vatIncluded: boolean
+  showVat: boolean // 부가세 포함 견적서의 표에 공급가액과 부가세를 따로 적는다
   roundDown: boolean // 총시세의 천 원 미만을 버린다
   hiddenColumns: QuoteOptionalColumn[] // 견적서에서 뺄 칸. 값은 그대로 계산에 들어간다
   seal: boolean // 대표자 이름 옆에 직인을 넣는다
@@ -51,6 +54,8 @@ export const quoteColumnHeaders = (vatIncluded: boolean): Record<QuoteColumn, st
     marketTotal: '총시세',
     labor: '공임',
     unitTotal: labels.unitTotal,
+    supply: '공급가액',
+    vat: '부가세',
     total: labels.total,
   }
 }
@@ -68,6 +73,12 @@ export function computeQuote(content: Pick<QuoteContent, 'items' | 'roundDown'>)
     return { marketTotal, unitTotal, total: unitTotal * item.quantity }
   })
   return { rows, total: rows.reduce((sum, row) => sum + row.total, 0) }
+}
+
+/** 부가세 포함 금액을 공급가액과 부가세(10%)로 나눈다. 둘을 더하면 항상 원래 금액이다. */
+export function splitVat(total: number) {
+  const supply = Math.round(total / 1.1)
+  return { supply, vat: total - supply }
 }
 
 export const formatMoney = (amount: number) => amount.toLocaleString('ko-KR')

@@ -8,6 +8,7 @@ export interface QuoteRow {
   recipient: string
   quote_date: string
   vat_included: number
+  show_vat: number
   round_down: number
   hidden_columns: string
   seal: number
@@ -23,7 +24,7 @@ export interface QuoteRow {
 }
 
 // 이미지를 뺀 본문 열. 목록과 고객 화면은 이것만 읽는다.
-export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, round_down, hidden_columns, seal, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
+export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, show_vat, round_down, hidden_columns, seal, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
 
 export const QUOTE_TOKEN_PATTERN = /^[A-Za-z0-9_-]{22}$/
 // D1의 한 행 한도(2MB) 안에 여유 있게 들어가는 크기.
@@ -89,6 +90,8 @@ export function parseQuoteContent(body: Record<string, unknown> | null | undefin
     recipient: text(body.recipient, 40, '받는 분'),
     quoteDate,
     vatIncluded: body.vatIncluded === true,
+    // 공급가액과 부가세는 부가세 포함 금액에서만 나눠 적을 수 있다.
+    showVat: body.vatIncluded === true && body.showVat === true,
     roundDown: body.roundDown === true,
     // 표의 순서대로, 중복 없이 저장한다.
     hiddenColumns: QUOTE_OPTIONAL_COLUMNS.filter(column => hiddenColumns.includes(column)),
@@ -134,6 +137,7 @@ export function toAdminQuote(quote: QuoteRow) {
     recipient: quote.recipient,
     quoteDate: quote.quote_date,
     vatIncluded: quote.vat_included === 1,
+    showVat: quote.show_vat === 1,
     roundDown: quote.round_down === 1,
     hiddenColumns: JSON.parse(quote.hidden_columns) as QuoteOptionalColumn[],
     seal: quote.seal === 1,

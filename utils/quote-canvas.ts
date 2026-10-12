@@ -1,4 +1,4 @@
-import { computeQuote, formatMoney, formatQuoteDate, formatWeight, quoteColumnHeaders, quoteLabels, type QuoteColumn, type QuoteContent } from './quote'
+import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_VAT_COLUMNS, quoteColumnHeaders, quoteLabels, splitVat, type QuoteColumn, type QuoteContent } from './quote'
 
 export interface QuoteSupplier {
   company: string
@@ -38,6 +38,8 @@ const COLUMNS: Array<{ key: QuoteColumn; width: number; align: Align }> = [
   { key: 'marketTotal', width: 75, align: 'right' },
   { key: 'labor', width: 68, align: 'right' },
   { key: 'unitTotal', width: 95, align: 'right' },
+  { key: 'supply', width: 80, align: 'right' },
+  { key: 'vat', width: 70, align: 'right' },
   { key: 'total', width: 87, align: 'right' },
 ]
 interface TextStyle {
@@ -113,7 +115,10 @@ function drawCell(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
 export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supplier: QuoteSupplier, sealImage?: ImageBitmap | HTMLCanvasElement | null) {
   const labels = quoteLabels(content.vatIncluded)
   const { rows, total } = computeQuote(content)
-  const rowCount = Math.max(MIN_ROWS, content.items.length)
+  // 부가세를 따로 적을 때는 공급가액·부가세 칸을 넣고 표의 맨 아래 줄에 합계를 적는다.
+  const showVat = content.vatIncluded && content.showVat
+  const split = rows.map(row => splitVat(row.total))
+  const rowCount = Math.max(MIN_ROWS, content.items.length + (showVat ? 1 : 0))
   const tableBottom = TABLE_Y + HEADER_HEIGHT + rowCount * ROW_HEIGHT
   // 품목이 많아 표가 길어지면 그만큼 종이를 늘린다.
   const pageHeight = Math.max(PAGE_HEIGHT, tableBottom + 59)
@@ -175,7 +180,8 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
 
   // 품목 표
   const headers = quoteColumnHeaders(content.vatIncluded)
-  const visible = COLUMNS.filter(column => !(content.hiddenColumns as QuoteColumn[]).includes(column.key))
+  const hidden: QuoteColumn[] = showVat ? content.hiddenColumns : [...content.hiddenColumns, ...QUOTE_VAT_COLUMNS]
+  const visible = COLUMNS.filter(column => !hidden.includes(column.key))
   const stretch = contentWidth / visible.reduce((sum, column) => sum + column.width, 0)
   const columns = visible.map(column => ({ ...column, width: column.width * stretch }))
   let x = MARGIN_X
@@ -185,22 +191,33 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
   }
   for (let row = 0; row < rowCount; row++) {
     const item = content.items[row]
-    const cells: Partial<Record<QuoteColumn, string>> = item
-      ? {
-          name: item.name,
-          weight: formatWeight(item),
-          spec: item.spec,
-          quantity: String(item.quantity),
-          price: item.price ? formatMoney(item.price) : '',
-          marketTotal: rows[row].marketTotal ? formatMoney(rows[row].marketTotal) : '',
-          labor: item.fixedPrice ? '' : formatMoney(item.labor),
-          unitTotal: formatMoney(rows[row].unitTotal),
-          total: formatMoney(rows[row].total),
-        }
-      : {}
+    const isSumRow = showVat && row === rowCount - 1
+    let cells: Partial<Record<QuoteColumn, string>> = {}
+    if (isSumRow) {
+      cells = {
+        name: '합계',
+        supply: formatMoney(split.reduce((sum, part) => sum + part.supply, 0)),
+        vat: formatMoney(split.reduce((sum, part) => sum + part.vat, 0)),
+        total: formatMoney(total),
+      }
+    } else if (item) {
+      cells = {
+        name: item.name,
+        weight: formatWeight(item),
+        spec: item.spec,
+        quantity: String(item.quantity),
+        price: item.price ? formatMoney(item.price) : '',
+        marketTotal: rows[row].marketTotal ? formatMoney(rows[row].marketTotal) : '',
+        labor: item.fixedPrice ? '' : formatMoney(item.labor),
+        unitTotal: formatMoney(rows[row].unitTotal),
+        supply: formatMoney(split[row].supply),
+        vat: formatMoney(split[row].vat),
+        total: formatMoney(rows[row].total),
+      }
+    }
     x = MARGIN_X
     for (const column of columns) {
-      drawCell(ctx, cells[column.key] || '', x, TABLE_Y + HEADER_HEIGHT + row * ROW_HEIGHT, column.width, ROW_HEIGHT, { size: 10, align: column.align })
+      drawCell(ctx, cells[column.key] || '', x, TABLE_Y + HEADER_HEIGHT + row * ROW_HEIGHT, column.width, ROW_HEIGHT, { size: 10, bold: isSumRow, align: column.align }, isSumRow ? HEADER_FILL : undefined)
       x += column.width
     }
   }

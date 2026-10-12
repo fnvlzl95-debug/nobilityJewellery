@@ -40,6 +40,7 @@ const buildForm = (hiddenColumns: QuoteOptionalColumn[] = [], seal = false) => (
   recipient: '',
   quoteDate: todayInSeoul(),
   vatIncluded: false,
+  showVat: false,
   roundDown: false,
   hiddenColumns,
   seal,
@@ -66,6 +67,7 @@ const content = computed<QuoteContent>(() => ({
   recipient: form.value.recipient.trim(),
   quoteDate: form.value.quoteDate,
   vatIncluded: form.value.vatIncluded,
+  showVat: form.value.vatIncluded && form.value.showVat,
   roundDown: form.value.roundDown,
   hiddenColumns: form.value.hiddenColumns,
   seal: form.value.seal,
@@ -229,6 +231,7 @@ const fillForm = (quote: AdminQuote, quoteDate: string) => {
     recipient: quote.recipient,
     quoteDate,
     vatIncluded: quote.vatIncluded,
+    showVat: quote.showVat === true,
     roundDown: quote.roundDown,
     hiddenColumns: onlyOptionalColumns(quote.hiddenColumns),
     seal: quote.seal === true,
@@ -383,6 +386,18 @@ onMounted(() => {
             <button type="button" class="segment" :aria-pressed="!form.vatIncluded" @click="form.vatIncluded = false">공급가액 (부가세 별도)</button>
             <button type="button" class="segment" :aria-pressed="form.vatIncluded" @click="form.vatIncluded = true">판매가격 (부가세 포함)</button>
           </div>
+          <template v-if="form.vatIncluded">
+            <label class="check">
+              <input type="checkbox" :checked="form.showVat" @change="form.showVat = !form.showVat">
+              <span class="check-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </span>
+              <span>표에 공급가액·부가세 따로 적기</span>
+            </label>
+            <p class="hint">판매가격을 공급가액과 부가세(10%)로 나눠 표에 함께 적고, 맨 아래 줄에 합계를 넣습니다. 합계금액은 그대로입니다.</p>
+          </template>
         </div>
 
         <fieldset v-for="(item, index) in form.items" :key="index" class="quote-item">
@@ -555,7 +570,7 @@ onMounted(() => {
           </div>
 
           <p class="order-summary">{{ quote.recipient ? `${quote.recipient} 귀하` : '받는 분 없음' }} · <strong>{{ formatMoney(quote.total) }}원</strong></p>
-          <p class="order-memo">{{ formatQuoteDate(quote.quoteDate) }} · {{ quoteLabels(quote.vatIncluded).title }} · {{ itemSummary(quote) }}{{ quote.seal ? ' · 직인' : '' }}</p>
+          <p class="order-memo">{{ formatQuoteDate(quote.quoteDate) }} · {{ quoteLabels(quote.vatIncluded).title }} · {{ itemSummary(quote) }}{{ quote.showVat ? ' · 부가세 표기' : '' }}{{ quote.seal ? ' · 직인' : '' }}</p>
           <p v-if="quote.memo" class="order-memo">{{ quote.memo }}</p>
           <p v-if="quote.id === createdId" class="order-new-note">
             {{ savedAs === 'updated' ? '수정했습니다. 고객에게 보낸 링크는 그대로이고 내용만 바뀌었습니다.' : '견적서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.' }}
