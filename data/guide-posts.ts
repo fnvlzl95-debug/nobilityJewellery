@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'flush-set-ring-custom-design',
+      path: '/guide/flush-set-ring-custom-design',
+      title: '플러시 세팅 반지 주문제작, 보석 높이와 배치',
+      description: '플러시 세팅 반지는 보석을 금속 밴드 안에 낮게 넣는 디자인입니다. 보석의 돌출 높이와 반지 자체의 두께를 구분하고, 중앙·분산 배치와 금속 여백을 정해 종로 귀족에 주문제작 상담을 문의해 보세요.',
+      keyword: '플러시 세팅 반지',
+      image: '/Image/guide/flush-set-ring-custom-design-hero-08dd25b6.webp',
+      publishedAt: '2026-10-12',
+      category: '주문',
+    },
+  {
       slug: 'asymmetric-earrings-custom-pairing',
       path: '/guide/asymmetric-earrings-custom-pairing',
       title: '비대칭 귀걸이 주문제작, 한 쌍의 조합 고르기',

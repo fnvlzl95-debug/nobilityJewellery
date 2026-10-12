@@ -192,6 +192,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/slider-bracelet-adjustment-tail-selection', label: '슬라이더 팔찌, 길이 조절과 꼬리 체인 확인법', description: '슬라이더 팔찌는 조절 장식을 움직여 착용 둘레를 바꾸는 팔찌입니다' },
       { to: '/guide/family-birthstone-ring-custom-order', label: '가족 탄생석 반지 주문제작, 구성부터 정하기', description: '가족 탄생석 반지 주문제작은 한 반지에 누구의 생월을 담을지 정하는 것부터 시작합니다' },
       { to: '/guide/asymmetric-earrings-custom-pairing', label: '비대칭 귀걸이 주문제작, 한 쌍의 조합 고르기', description: '비대칭 귀걸이 주문제작은 양쪽에 공통으로 남길 요소와 다르게 만들 부분을 정하는 것부터 시작합니다' },
+      { to: '/guide/flush-set-ring-custom-design', label: '플러시 세팅 반지 주문제작, 보석 높이와 배치', description: '플러시 세팅 반지는 보석을 금속 밴드 안에 낮게 넣는 디자인입니다' },
     ],
   },
 ]
