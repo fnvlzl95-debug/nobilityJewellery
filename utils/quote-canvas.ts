@@ -18,6 +18,10 @@ const TABLE_Y = 328
 const HEADER_HEIGHT = 38
 const ROW_HEIGHT = 34
 const MIN_ROWS = 5
+// 직인은 대표자 이름 칸의 '(인)' 위에 겹쳐 찍는다.
+const SEAL_SIZE = 52
+const SEAL_CENTER_X = 770 // 칸의 오른쪽 선에 닿지 않게 안쪽으로
+const SEAL_CENTER_Y = 161
 const INK = '#000000'
 const PAPER = '#ffffff'
 const HEADER_FILL = '#f2f2f2'
@@ -106,7 +110,7 @@ function drawCell(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
   drawText(ctx, text, x, y, width, height, style)
 }
 
-export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supplier: QuoteSupplier) {
+export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supplier: QuoteSupplier, sealImage?: ImageBitmap | HTMLCanvasElement | null) {
   const labels = quoteLabels(content.vatIncluded)
   const { rows, total } = computeQuote(content)
   const rowCount = Math.max(MIN_ROWS, content.items.length)
@@ -143,6 +147,20 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
     drawCell(ctx, label, 420, supplierY, 120, height, { size: 10, bold: true, align: 'center' })
     drawCell(ctx, value, 540, supplierY, 266, height, { size: 10 })
     supplierY += height
+  }
+
+  // 직인. 등록된 직인 이미지가 없으면 찍을 자리('(인)')만 표시한다.
+  if (content.seal) {
+    drawText(ctx, '(인)', SEAL_CENTER_X - 20, 144, 40, 34, { size: 10, align: 'center' })
+    if (sealImage) {
+      const fit = SEAL_SIZE / Math.max(sealImage.width, sealImage.height)
+      const sealWidth = sealImage.width * fit
+      const sealHeight = sealImage.height * fit
+      ctx.save()
+      ctx.globalCompositeOperation = 'multiply' // 인주 아래로 글자와 선이 비치게
+      ctx.drawImage(sealImage, SEAL_CENTER_X - sealWidth / 2, SEAL_CENTER_Y - sealHeight / 2, sealWidth, sealHeight)
+      ctx.restore()
+    }
   }
 
   // 합계금액
@@ -189,6 +207,6 @@ export function drawQuote(canvas: HTMLCanvasElement, content: QuoteContent, supp
 
   // 비고와 맺음
   drawText(ctx, content.note, MARGIN_X, tableBottom + 6, 560, 26, { size: 9 })
-  drawText(ctx, '※ 본 견적서는 검인없이 사용함', MARGIN_X, tableBottom + 32, 360, 16, { size: 9 })
+  if (!content.seal) drawText(ctx, '※ 본 견적서는 검인없이 사용함', MARGIN_X, tableBottom + 32, 360, 16, { size: 9 })
   drawText(ctx, supplier.company, PAGE_WIDTH - MARGIN_X - 180, tableBottom + 28, 180, 22, { size: 12, bold: true, align: 'right' })
 }

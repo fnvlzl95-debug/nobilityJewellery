@@ -45,7 +45,7 @@ const tab = ref<'orders' | 'quotes'>('orders')
 const errorMessage = (e: any, fallback: string) => e?.data?.message || fallback
 
 // 세션이 끊겼으면 어떤 요청에서든 로그인 화면으로 돌아간다.
-const api = async <T>(url: string, options: { method?: 'POST' | 'PATCH'; body?: Record<string, unknown> } = {}): Promise<T> => {
+const api = async <T>(url: string, options: { method?: 'POST' | 'PATCH' | 'PUT' | 'DELETE'; body?: Record<string, unknown> } = {}): Promise<T> => {
   try {
     return await $fetch<T>(url, options) as T
   } catch (e: any) {

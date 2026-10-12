@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { ref, shallowRef, computed, watch, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
 import { computeQuote, formatMoney, formatQuoteDate, formatWeight, QUOTE_MATERIALS, QUOTE_MAX_ITEMS, QUOTE_OPTIONAL_COLUMNS, quoteColumnHeaders, quoteLabels, type QuoteContent, type QuoteOptionalColumn } from '~/utils/quote'
 import { drawQuote } from '~/utils/quote-canvas'
+import { extractSeal } from '~/utils/seal-image'
 
 // 관리 페이지의 견적서 탭. 기존 견적서 양식 그대로 그려 이미지로 저장하고, 고객에게 보낼 링크를 만든다.
 // 화면 공통 스타일은 pages/admin/index.vue에 있다.
 const props = defineProps<{
-  api: <T>(url: string, options?: { method?: 'POST' | 'PATCH'; body?: Record<string, unknown> }) => Promise<T>
+  api: <T>(url: string, options?: { method?: 'POST' | 'PATCH' | 'PUT' | 'DELETE'; body?: Record<string, unknown> }) => Promise<T>
 }>()
 
 interface AdminQuote extends QuoteContent {
@@ -35,12 +36,13 @@ const withCommas = (value: number) => value ? formatMoney(value) : ''
 const buildItem = () => ({ name: '', weight: '', unit: '돈', spec: '', quantity: '1', price: '', labor: '', fixedPrice: false, unitPrice: '' })
 type FormItem = ReturnType<typeof buildItem>
 const todayInSeoul = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' })
-const buildForm = (hiddenColumns: QuoteOptionalColumn[] = []) => ({
+const buildForm = (hiddenColumns: QuoteOptionalColumn[] = [], seal = false) => ({
   recipient: '',
   quoteDate: todayInSeoul(),
   vatIncluded: false,
   roundDown: false,
   hiddenColumns,
+  seal,
   items: [buildItem()],
   note: '',
   memo: '',
@@ -66,6 +68,7 @@ const content = computed<QuoteContent>(() => ({
   vatIncluded: form.value.vatIncluded,
   roundDown: form.value.roundDown,
   hiddenColumns: form.value.hiddenColumns,
+  seal: form.value.seal,
   items: form.value.items.map(item => ({
     name: item.name.trim(),
     weight: Number.parseFloat(item.weight) || 0,
@@ -95,16 +98,45 @@ const removeItem = (index: number) => {
   form.value.items.splice(index, 1)
 }
 
+// ===== 직인 =====
+// 직인 이미지는 서버에 한 번 등록해 두고 견적서를 그릴 때만 받아 온다. 사이트 어디에도 공개되지 않는다.
+const SEAL_STORAGE_KEY = 'ng_quote_seal'
+const sealImage = shallowRef<ImageBitmap | null>(null)
+const sealPreviewUrl = ref('')
+const sealError = ref('')
+const isSealBusy = ref(false)
+
+const loadSeal = async () => {
+  const response = await fetch('/api/admin/seal', { credentials: 'same-origin' }).catch(() => null)
+  if (sealPreviewUrl.value) URL.revokeObjectURL(sealPreviewUrl.value)
+  if (!response?.ok) {
+    sealImage.value = null
+    sealPreviewUrl.value = ''
+    return
+  }
+  const blob = await response.blob()
+  sealImage.value = await createImageBitmap(blob)
+  sealPreviewUrl.value = URL.createObjectURL(blob)
+}
+
+const setSeal = (seal: boolean) => {
+  form.value.seal = seal
+  try { localStorage.setItem(SEAL_STORAGE_KEY, seal ? '1' : '0') } catch { /* 저장이 막힌 브라우저에서는 기억하지 않는다 */ }
+}
+
 // 미리보기가 곧 저장되는 이미지다 — 고객이 내려받는 파일도 이 그림 그대로다.
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const redraw = () => {
-  if (canvasRef.value) drawQuote(canvasRef.value, content.value, supplier)
+  if (canvasRef.value) drawQuote(canvasRef.value, content.value, supplier, sealImage.value)
 }
-watch(content, redraw, { deep: true })
+watch([content, sealImage], redraw, { deep: true })
 
 const createError = ref('')
 const isCreating = ref(false)
 const createdId = ref('')
+// 수정 중인 견적번호. 비어 있으면 새 견적서를 만든다.
+const editingId = ref('')
+const savedAs = ref<'created' | 'updated'>('created')
 
 const canvasToBase64 = (canvas: HTMLCanvasElement) => new Promise<string>((resolve, reject) => {
   canvas.toBlob((blob) => {
@@ -116,7 +148,41 @@ const canvasToBase64 = (canvas: HTMLCanvasElement) => new Promise<string>((resol
   }, 'image/png')
 })
 
-const createQuote = async () => {
+const uploadSeal = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file || isSealBusy.value) return
+  sealError.value = ''
+  isSealBusy.value = true
+  try {
+    // 사진에서 빨간 도장만 남기고 종이 배경은 지운다.
+    const image = await canvasToBase64(await extractSeal(file))
+    await props.api('/api/admin/seal', { method: 'PUT', body: { image } })
+    await loadSeal()
+    setSeal(true)
+  } catch (e) {
+    sealError.value = errorMessage(e, '사진에서 빨간 도장을 찾지 못했습니다. 도장이 또렷하게 나온 사진으로 다시 올려주세요.')
+  } finally {
+    isSealBusy.value = false
+  }
+}
+
+const removeSeal = async () => {
+  if (isSealBusy.value || !window.confirm('등록된 직인을 지울까요?\n이미 만든 견적서의 이미지는 바뀌지 않습니다.')) return
+  sealError.value = ''
+  isSealBusy.value = true
+  try {
+    await props.api('/api/admin/seal', { method: 'DELETE' })
+    await loadSeal()
+  } catch (e) {
+    sealError.value = errorMessage(e, '직인을 지우지 못했습니다. 잠시 후 다시 시도해주세요.')
+  } finally {
+    isSealBusy.value = false
+  }
+}
+
+const saveQuote = async () => {
   if (isCreating.value || !canvasRef.value) return
   createError.value = ''
 
@@ -129,36 +195,43 @@ const createQuote = async () => {
   try {
     redraw()
     const image = await canvasToBase64(canvasRef.value)
-    const response = await props.api<{ quote: AdminQuote }>('/api/admin/quotes', {
-      method: 'POST',
+    const editing = editingId.value
+    // 수정은 같은 견적번호와 링크에 내용과 이미지만 바꿔 넣는다.
+    const response = await props.api<{ quote: AdminQuote }>(editing ? `/api/admin/quotes/${editing}` : '/api/admin/quotes', {
+      method: editing ? 'PUT' : 'POST',
       body: { ...content.value, memo: form.value.memo, image },
     })
     // 비슷한 견적서를 이어서 만들 수 있게 입력 내용은 지우지 않는다.
-    quotes.value = [response.quote, ...quotes.value]
+    quotes.value = editing
+      ? quotes.value.map(item => item.id === editing ? response.quote : item)
+      : [response.quote, ...quotes.value]
     createdId.value = response.quote.id
+    savedAs.value = editing ? 'updated' : 'created'
+    editingId.value = ''
     await nextTick()
     document.getElementById(`quote-${response.quote.id}`)?.scrollIntoView({ block: 'center' })
   } catch (e) {
-    createError.value = errorMessage(e, '견적서를 만들지 못했습니다. 잠시 후 다시 시도해주세요.')
+    createError.value = errorMessage(e, '견적서를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
   } finally {
     isCreating.value = false
   }
 }
 
 const resetForm = () => {
-  form.value = buildForm(form.value.hiddenColumns)
+  form.value = buildForm(form.value.hiddenColumns, form.value.seal)
   createError.value = ''
 }
 
-// 만든 견적서의 내용을 입력 칸으로 가져와 고쳐서 새로 만든다.
+// 만든 견적서의 내용을 입력 칸으로 가져온다.
 const formRef = ref<HTMLElement | null>(null)
-const loadQuote = (quote: AdminQuote) => {
+const fillForm = (quote: AdminQuote, quoteDate: string) => {
   form.value = {
     recipient: quote.recipient,
-    quoteDate: todayInSeoul(),
+    quoteDate,
     vatIncluded: quote.vatIncluded,
     roundDown: quote.roundDown,
     hiddenColumns: onlyOptionalColumns(quote.hiddenColumns),
+    seal: quote.seal === true,
     items: quote.items.map(item => ({
       name: item.name,
       weight: item.weight ? String(item.weight) : '',
@@ -175,6 +248,23 @@ const loadQuote = (quote: AdminQuote) => {
   }
   createError.value = ''
   formRef.value?.scrollIntoView({ block: 'start' })
+}
+
+// 복사해 새로 작성: 오늘 날짜의 새 견적서가 된다.
+const loadQuote = (quote: AdminQuote) => {
+  editingId.value = ''
+  fillForm(quote, todayInSeoul())
+}
+
+// 수정: 견적일을 포함해 그대로 불러오고, 저장하면 같은 링크의 내용이 바뀐다.
+const startEdit = (quote: AdminQuote) => {
+  editingId.value = quote.id
+  fillForm(quote, quote.quoteDate)
+}
+
+const cancelEdit = () => {
+  editingId.value = ''
+  resetForm()
 }
 
 // ===== 목록 =====
@@ -261,7 +351,9 @@ onMounted(() => {
   canShare.value = typeof navigator.share === 'function'
   try {
     form.value.hiddenColumns = onlyOptionalColumns(JSON.parse(localStorage.getItem(COLUMNS_STORAGE_KEY) || '[]'))
-  } catch { /* 기억해 둔 값이 없거나 읽을 수 없으면 모든 칸을 넣는다 */ }
+    form.value.seal = localStorage.getItem(SEAL_STORAGE_KEY) === '1'
+  } catch { /* 기억해 둔 값이 없거나 읽을 수 없으면 모든 칸을 넣고 직인은 뺀다 */ }
+  loadSeal()
   redraw()
   loadQuotes()
 })
@@ -271,8 +363,9 @@ onMounted(() => {
   <div class="admin-tab">
     <!-- 새 견적서 -->
     <section ref="formRef" class="panel">
-      <h2 class="section-title">새 견적서</h2>
-      <form class="stack" @submit.prevent="createQuote">
+      <h2 class="section-title">{{ editingId ? '견적서 수정' : '새 견적서' }}</h2>
+      <p v-if="editingId" class="hint editing-note">{{ editingId }} 수정 중입니다. 저장하면 고객에게 보낸 링크는 그대로이고 내용과 이미지만 바뀝니다.</p>
+      <form class="stack" @submit.prevent="saveQuote">
         <div class="field">
           <label class="field-label" for="quote-recipient">받는 분 <span class="optional">(선택)</span></label>
           <input id="quote-recipient" v-model="form.recipient" type="text" class="field-input" maxlength="40" placeholder="이름 또는 회사명">
@@ -382,6 +475,33 @@ onMounted(() => {
           <p class="hint">쓰지 않는 칸은 체크를 풀면 견적서에서 빠집니다. 품명과 {{ labels.total }} 칸은 항상 들어가고, 뺀 칸에 적은 값도 합계 계산에는 그대로 들어갑니다.</p>
         </fieldset>
 
+        <fieldset class="column-picker">
+          <legend class="field-label">직인</legend>
+          <label class="check">
+            <input type="checkbox" :checked="form.seal" @change="setSeal(!form.seal)">
+            <span class="check-box">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+            <span>견적서에 직인 넣기</span>
+          </label>
+          <div class="seal-row">
+            <img v-if="sealPreviewUrl" :src="sealPreviewUrl" alt="등록된 직인" class="seal-thumb">
+            <label class="btn-ghost seal-upload">
+              {{ isSealBusy ? '처리하는 중...' : sealPreviewUrl ? '직인 사진 바꾸기' : '직인 사진 올리기' }}
+              <input type="file" accept="image/*" :disabled="isSealBusy" @change="uploadSeal">
+            </label>
+            <button v-if="sealPreviewUrl" type="button" class="btn-text" :disabled="isSealBusy" @click="removeSeal">직인 지우기</button>
+          </div>
+          <p v-if="sealError" class="error" role="alert">{{ sealError }}</p>
+          <p class="hint">
+            대표자 이름 옆 '(인)' 자리에 찍히고, '본 견적서는 검인없이 사용함' 문구는 빠집니다.
+            {{ sealPreviewUrl ? '' : '등록된 직인이 없으면 찍을 자리만 표시됩니다.' }}
+            직인 이미지는 이 관리 화면에서만 쓰이고 사이트에 공개되지 않습니다.
+          </p>
+        </fieldset>
+
         <div class="field">
           <label class="field-label" for="quote-note">비고 <span class="optional">(선택 · 견적서에 인쇄됩니다)</span></label>
           <input id="quote-note" v-model="form.note" type="text" class="field-input" maxlength="200" placeholder="※ 수량 5개 기준 총공급가액입니다.">
@@ -402,9 +522,10 @@ onMounted(() => {
 
         <p v-if="createError" class="error" role="alert">{{ createError }}</p>
         <button type="submit" class="btn-primary" :disabled="isCreating">
-          {{ isCreating ? '만드는 중...' : '견적서 만들기' }}
+          {{ isCreating ? '저장하는 중...' : editingId ? '수정 저장' : '견적서 만들기' }}
         </button>
-        <button type="button" class="btn-text" @click="resetForm">입력 내용 지우기</button>
+        <button v-if="editingId" type="button" class="btn-text" @click="cancelEdit">수정 취소</button>
+        <button v-else type="button" class="btn-text" @click="resetForm">입력 내용 지우기</button>
       </form>
     </section>
 
@@ -434,9 +555,11 @@ onMounted(() => {
           </div>
 
           <p class="order-summary">{{ quote.recipient ? `${quote.recipient} 귀하` : '받는 분 없음' }} · <strong>{{ formatMoney(quote.total) }}원</strong></p>
-          <p class="order-memo">{{ formatQuoteDate(quote.quoteDate) }} · {{ quoteLabels(quote.vatIncluded).title }} · {{ itemSummary(quote) }}</p>
+          <p class="order-memo">{{ formatQuoteDate(quote.quoteDate) }} · {{ quoteLabels(quote.vatIncluded).title }} · {{ itemSummary(quote) }}{{ quote.seal ? ' · 직인' : '' }}</p>
           <p v-if="quote.memo" class="order-memo">{{ quote.memo }}</p>
-          <p v-if="quote.id === createdId" class="order-new-note">견적서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.</p>
+          <p v-if="quote.id === createdId" class="order-new-note">
+            {{ savedAs === 'updated' ? '수정했습니다. 고객에게 보낸 링크는 그대로이고 내용만 바뀌었습니다.' : '견적서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.' }}
+          </p>
 
           <div class="order-actions">
             <template v-if="quote.state === 'active'">
@@ -446,7 +569,8 @@ onMounted(() => {
               <button v-if="canShare" type="button" class="btn-ghost" @click="shareLink(quote)">공유</button>
               <a class="btn-ghost" :href="imageUrl(quote)">이미지 저장</a>
             </template>
-            <button type="button" class="btn-text" @click="loadQuote(quote)">내용 불러오기</button>
+            <button v-if="quote.state === 'active'" type="button" class="btn-text" @click="startEdit(quote)">수정</button>
+            <button type="button" class="btn-text" @click="loadQuote(quote)">복사해 새로 작성</button>
             <button v-if="quote.state === 'active'" type="button" class="btn-text" :disabled="busyId === quote.id" @click="cancelQuote(quote)">견적 취소</button>
           </div>
         </li>
@@ -550,6 +674,55 @@ onMounted(() => {
   background: var(--gold);
   border-color: var(--gold);
   color: var(--black);
+}
+
+.admin .editing-note {
+  margin-top: 8px;
+  color: var(--white);
+}
+
+/* 직인 등록 */
+.admin .seal-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 4px 0 8px;
+}
+
+/* 직인은 흰 종이에 찍는 것이라 흰 바탕에 보여준다 */
+.admin .seal-thumb {
+  width: 64px;
+  height: 64px;
+  padding: 6px;
+  object-fit: contain;
+  background: var(--white);
+}
+
+.admin .seal-upload {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* 시각적으로만 숨김 — 라벨을 누르면 파일 선택이 열린다 */
+.admin .seal-upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+
+.admin .seal-upload:has(input:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .admin .quote-item {

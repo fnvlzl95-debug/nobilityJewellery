@@ -10,6 +10,7 @@ export interface QuoteRow {
   vat_included: number
   round_down: number
   hidden_columns: string
+  seal: number
   items: string
   note: string
   memo: string
@@ -22,7 +23,7 @@ export interface QuoteRow {
 }
 
 // 이미지를 뺀 본문 열. 목록과 고객 화면은 이것만 읽는다.
-export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, round_down, hidden_columns, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
+export const QUOTE_COLUMNS = 'id, token, recipient, quote_date, vat_included, round_down, hidden_columns, seal, items, note, memo, total, image_width, image_height, status, created_at, cancelled_at'
 
 export const QUOTE_TOKEN_PATTERN = /^[A-Za-z0-9_-]{22}$/
 // D1의 한 행 한도(2MB) 안에 여유 있게 들어가는 크기.
@@ -91,27 +92,30 @@ export function parseQuoteContent(body: Record<string, unknown> | null | undefin
     roundDown: body.roundDown === true,
     // 표의 순서대로, 중복 없이 저장한다.
     hiddenColumns: QUOTE_OPTIONAL_COLUMNS.filter(column => hiddenColumns.includes(column)),
+    seal: body.seal === true,
     items,
     note: text(body.note, 200, '비고'),
     memo: text(body.memo, 200, '메모'),
   }
 }
 
-/** base64로 받은 견적서 이미지를 PNG인지 확인하고 크기를 읽는다. */
-export function decodeQuoteImage(value: unknown): { png: Uint8Array; width: number; height: number } {
-  if (typeof value !== 'string' || !value || value.length > MAX_IMAGE_BYTES * 1.4 || !/^[A-Za-z0-9+/]+={0,2}$/.test(value)) {
-    throw invalid('견적서 이미지를 만들지 못했습니다. 다시 시도해주세요.')
+/** base64로 받은 이미지를 PNG인지 확인하고 크기를 읽는다. */
+export function decodePng(value: unknown, maxBytes: number, message: string): { png: Uint8Array; width: number; height: number } {
+  if (typeof value !== 'string' || !value || value.length > maxBytes * 1.4 || !/^[A-Za-z0-9+/]+={0,2}$/.test(value)) {
+    throw invalid(message)
   }
   const binary = atob(value)
   const png = new Uint8Array(binary.length)
   for (let i = 0; i < binary.length; i++) png[i] = binary.charCodeAt(i)
-  if (png.length > MAX_IMAGE_BYTES || png.length < 33 || PNG_SIGNATURE.some((byte, i) => png[i] !== byte)) {
-    throw invalid('견적서 이미지를 만들지 못했습니다. 다시 시도해주세요.')
+  if (png.length > maxBytes || png.length < 33 || PNG_SIGNATURE.some((byte, i) => png[i] !== byte)) {
+    throw invalid(message)
   }
   // IHDR: 서명 8바이트 + 길이·타입 8바이트 뒤에 가로·세로가 4바이트씩 온다.
   const view = new DataView(png.buffer)
   return { png, width: view.getUint32(16), height: view.getUint32(20) }
 }
+
+export const decodeQuoteImage = (value: unknown) => decodePng(value, MAX_IMAGE_BYTES, '견적서 이미지를 만들지 못했습니다. 다시 시도해주세요.')
 
 export function createQuoteId(now = new Date()): string {
   const date = now
@@ -132,6 +136,7 @@ export function toAdminQuote(quote: QuoteRow) {
     vatIncluded: quote.vat_included === 1,
     roundDown: quote.round_down === 1,
     hiddenColumns: JSON.parse(quote.hidden_columns) as QuoteOptionalColumn[],
+    seal: quote.seal === 1,
     items: JSON.parse(quote.items) as QuoteItem[],
     note: quote.note,
     memo: quote.memo,

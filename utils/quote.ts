@@ -27,6 +27,7 @@ export interface QuoteContent {
   vatIncluded: boolean
   roundDown: boolean // 총시세의 천 원 미만을 버린다
   hiddenColumns: QuoteOptionalColumn[] // 견적서에서 뺄 칸. 값은 그대로 계산에 들어간다
+  seal: boolean // 대표자 이름 옆에 직인을 넣는다
   items: QuoteItem[]
   note: string
 }
