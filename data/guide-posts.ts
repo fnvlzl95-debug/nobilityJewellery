@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'east-west-ring-custom-orientation',
+      path: '/guide/east-west-ring-custom-orientation',
+      title: '이스트웨스트 반지 주문제작, 가로 세팅 고르기',
+      description: '이스트웨스트 반지는 길쭉한 보석을 손가락을 가로지르는 방향으로 놓은 디자인입니다. 같은 보석의 가로·세로 배치, 테두리를 포함한 전체 폭과 측면 높이를 비교해 종로 귀족에 주문제작 상담을 문의해 보세요.',
+      keyword: '이스트웨스트 반지',
+      image: '/Image/guide/east-west-ring-custom-orientation-hero-d0641865.webp',
+      publishedAt: '2026-10-13',
+      category: '주문',
+    },
+  {
       slug: 'flush-set-ring-custom-design',
       path: '/guide/flush-set-ring-custom-design',
       title: '플러시 세팅 반지 주문제작, 보석 높이와 배치',
