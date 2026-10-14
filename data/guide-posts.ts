@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'milgrain-ring-custom-edge-design',
+      path: '/guide/milgrain-ring-custom-edge-design',
+      title: '밀그레인 반지 주문제작, 테두리 장식 고르기',
+      description: '밀그레인 반지 주문제작은 장식의 위치, 알갱이의 크기감, 무늬가 이어지는 범위를 함께 정하는 과정입니다. 테두리와 밴드 폭의 비례를 비교하고, 원하는 참고 사진으로 종로 귀족에 상담해 보세요.',
+      keyword: '밀그레인 반지',
+      image: '/Image/guide/milgrain-ring-custom-edge-design-hero-ee61565e.webp',
+      publishedAt: '2026-10-14',
+      category: '주문',
+    },
+  {
       slug: 'east-west-ring-custom-orientation',
       path: '/guide/east-west-ring-custom-orientation',
       title: '이스트웨스트 반지 주문제작, 가로 세팅 고르기',
