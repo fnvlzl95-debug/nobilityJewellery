@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'station-necklace-custom-spacing',
+      path: '/guide/station-necklace-custom-spacing',
+      title: '스테이션 목걸이 주문제작, 보석 간격 정하기',
+      description: '스테이션 목걸이는 체인을 따라 보석을 간격 있게 배치한 디자인입니다. 주문제작 전 전체 길이·장식 개수·배치 구간을 구분하고, 보석 사이 여백과 정면에 보이는 범위를 종로 귀족에 상담해 보세요.',
+      keyword: '스테이션 목걸이',
+      image: '/Image/guide/station-necklace-custom-spacing-hero-512f9998.webp',
+      publishedAt: '2026-10-16',
+      category: '주문',
+    },
+  {
       slug: 'milgrain-ring-custom-edge-design',
       path: '/guide/milgrain-ring-custom-edge-design',
       title: '밀그레인 반지 주문제작, 테두리 장식 고르기',

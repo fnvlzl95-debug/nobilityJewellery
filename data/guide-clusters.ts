@@ -195,6 +195,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/flush-set-ring-custom-design', label: '플러시 세팅 반지 주문제작, 보석 높이와 배치', description: '플러시 세팅 반지는 보석을 금속 밴드 안에 낮게 넣는 디자인입니다' },
       { to: '/guide/east-west-ring-custom-orientation', label: '이스트웨스트 반지 주문제작, 가로 세팅 고르기', description: '이스트웨스트 반지는 길쭉한 보석을 손가락을 가로지르는 방향으로 놓은 디자인입니다' },
       { to: '/guide/milgrain-ring-custom-edge-design', label: '밀그레인 반지 주문제작, 테두리 장식 고르기', description: '밀그레인 반지 주문제작은 장식의 위치, 알갱이의 크기감, 무늬가 이어지는 범위를 함께 정하는 과정입니다' },
+      { to: '/guide/station-necklace-custom-spacing', label: '스테이션 목걸이 주문제작, 보석 간격 정하기', description: '스테이션 목걸이는 체인을 따라 보석을 간격 있게 배치한 디자인입니다' },
     ],
   },
 ]
