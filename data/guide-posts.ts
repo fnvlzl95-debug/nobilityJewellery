@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'openwork-pendant-custom-pattern',
+      path: '/guide/openwork-pendant-custom-pattern',
+      title: '투각 펜던트 주문제작, 무늬와 빈 공간 고르기',
+      description: '투각 펜던트 주문제작은 금속으로 남길 무늬와 뚫을 공간을 나누는 것부터 시작합니다. 테두리와 연결선, 뒷판 유무, 실제 크기에서 보이는 무늬를 비교하고 종로 귀족에 원하는 도안을 상담해 보세요.',
+      keyword: '투각 펜던트',
+      image: '/Image/guide/openwork-pendant-custom-pattern-hero-703b22ee.webp',
+      publishedAt: '2026-10-18',
+      category: '주문',
+    },
+  {
       slug: 'station-necklace-custom-spacing',
       path: '/guide/station-necklace-custom-spacing',
       title: '스테이션 목걸이 주문제작, 보석 간격 정하기',
