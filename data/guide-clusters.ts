@@ -197,6 +197,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/milgrain-ring-custom-edge-design', label: '밀그레인 반지 주문제작, 테두리 장식 고르기', description: '밀그레인 반지 주문제작은 장식의 위치, 알갱이의 크기감, 무늬가 이어지는 범위를 함께 정하는 과정입니다' },
       { to: '/guide/station-necklace-custom-spacing', label: '스테이션 목걸이 주문제작, 보석 간격 정하기', description: '스테이션 목걸이는 체인을 따라 보석을 간격 있게 배치한 디자인입니다' },
       { to: '/guide/openwork-pendant-custom-pattern', label: '투각 펜던트 주문제작, 무늬와 빈 공간 고르기', description: '투각 펜던트 주문제작은 금속으로 남길 무늬와 뚫을 공간을 나누는 것부터 시작합니다' },
+      { to: '/guide/ai-image-jewelry-custom-order', label: 'AI 주얼리 주문제작, 생성 사진으로 상담하기', description: 'AI로 만든 반지·목걸이 사진으로 주문제작을 상담할 때 준비할 내용을 안내합니다' },
     ],
   },
 ]

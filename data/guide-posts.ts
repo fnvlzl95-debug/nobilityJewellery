@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-image-jewelry-custom-order',
+      path: '/guide/ai-image-jewelry-custom-order',
+      title: 'AI 주얼리 주문제작, 생성 사진으로 상담하기',
+      description: 'AI로 만든 반지·목걸이 사진으로 주문제작을 상담할 때 준비할 내용을 안내합니다. 기준 이미지 한 장, 유지할 디자인과 수정할 부분을 정리하고 보석·크기·연결 구조를 종로 귀족에 문의해 보세요.',
+      keyword: 'AI 주얼리 주문제작',
+      image: '/Image/guide/ai-image-jewelry-custom-order-hero-e909dd27.webp',
+      publishedAt: '2026-10-19',
+      category: '주문',
+    },
+  {
       slug: 'openwork-pendant-custom-pattern',
       path: '/guide/openwork-pendant-custom-pattern',
       title: '투각 펜던트 주문제작, 무늬와 빈 공간 고르기',
