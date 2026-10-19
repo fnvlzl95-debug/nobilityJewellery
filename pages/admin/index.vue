@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
+import { addVat, paymentStage, type AdminOrder, type OrderState } from '~/utils/order'
+import { splitVat } from '~/utils/quote'
 
 // 운영자 전용 화면: 1대1 주문서를 만들어 접수와 입금을 확인하고, 견적서를 만든다 (components/AdminQuotes.vue).
+// 주문서·입금확인서 이미지는 components/AdminOrderDoc.vue가 그린다.
 // 로그인 여부는 서버가 쿠키로 판단한다 (server/utils/admin-auth.ts).
 definePageMeta({ layout: false })
 
@@ -13,23 +16,8 @@ useHead({
   ],
 })
 
-type OrderState = 'open' | 'expired' | 'submitted' | 'paid' | 'cancelled'
-type OrderAction = 'markPaid' | 'unmarkPaid' | 'cancel'
-interface AdminOrder {
-  id: string
-  token: string
-  product: string
-  amount: number
-  memo: string
-  state: OrderState
-  customerName: string | null
-  customerPhone: string | null
-  customerAddress: string | null
-  createdAt: string
-  expiresAt: string
-  submittedAt: string | null
-  paidAt: string | null
-}
+type OrderAction = 'markPaid' | 'unmarkPaid' | 'markBalancePaid' | 'unmarkBalancePaid' | 'cancel'
+type DocKind = 'sheet' | 'deposit' | 'full'
 
 const stateLabels: Record<OrderState, string> = {
   open: '작성 대기',
@@ -38,6 +26,13 @@ const stateLabels: Record<OrderState, string> = {
   paid: '입금 확인',
   cancelled: '취소',
 }
+// 입금 확인 뒤에는 계약금만 받았는지, 완불인지로 나눠 보여준다.
+const stateLabel = (order: AdminOrder) => {
+  const stage = paymentStage(order)
+  return stage === 'deposit' ? '계약금 입금 · 잔금 대기' : stage === 'full' ? '완불' : stateLabels[order.state]
+}
+// 운영자가 확인할 차례(접수, 잔금 대기)인 주문만 골드로 띄운다.
+const chipClass = (order: AdminOrder) => paymentStage(order) === 'deposit' ? 'chip-submitted' : `chip-${order.state}`
 
 const view = ref<'loading' | 'login' | 'ready'>('loading')
 const tab = ref<'orders' | 'quotes'>('orders')
@@ -143,55 +138,139 @@ const updateOrder = async (order: AdminOrder, action: OrderAction) => {
   }
 }
 
-// ===== 새 주문서 =====
-const buildNewOrder = () => ({
-  product: siteConfig.order.defaultProduct,
+// ===== 새 주문서 · 수정 =====
+// 입력 칸은 문자열로 들고 있다가 보낼 때 숫자로 바꾼다 (금액 칸에는 쉼표가 들어간다).
+const buildOrderForm = () => ({
+  customerName: '',
+  customerPhone: '',
   amount: '',
+  addVat: false,
+  payment: 'full' as 'full' | 'deposit',
+  deposit: '',
+  product: siteConfig.order.defaultProduct,
+  spec: '',
+  dueDate: '',
+  customerAddress: '',
   memo: '',
   validDays: 14,
 })
-const newOrder = ref(buildNewOrder())
+const orderForm = ref(buildOrderForm())
+const orderFormRef = ref<HTMLElement | null>(null)
 const createError = ref('')
 const isCreating = ref(false)
 const createdId = ref('')
+// 수정 중인 접수번호. 비어 있으면 새 주문서를 만든다.
+const editingId = ref('')
+const savedAs = ref<'created' | 'updated'>('created')
 
-const amountValue = computed(() => Number(newOrder.value.amount.replace(/\D/g, '')))
+const digitsOf = (value: string) => Number(value.replace(/\D/g, ''))
+const withCommas = (value: number) => value ? value.toLocaleString('ko-KR') : ''
+const baseAmount = computed(() => digitsOf(orderForm.value.amount))
+const totalAmount = computed(() => orderForm.value.addVat ? addVat(baseAmount.value) : baseAmount.value)
+const depositAmount = computed(() => orderForm.value.payment === 'deposit' ? digitsOf(orderForm.value.deposit) : 0)
+const hasCustomer = computed(() => orderForm.value.customerName.trim() !== '')
 
 // 입력하는 동안 천 단위 쉼표를 붙여 금액을 잘못 읽지 않게 한다.
-const formatAmountInput = () => {
-  newOrder.value.amount = amountValue.value ? amountValue.value.toLocaleString('ko-KR') : ''
+const formatMoneyInput = (key: 'amount' | 'deposit') => {
+  orderForm.value[key] = withCommas(digitsOf(orderForm.value[key]))
 }
 
-const createOrder = async () => {
+const saveOrder = async () => {
   if (isCreating.value) return
   createError.value = ''
+  const form = orderForm.value
 
-  if (!amountValue.value) {
+  if (!baseAmount.value) {
     createError.value = '금액을 입력해주세요.'
+    return
+  }
+  if (hasCustomer.value !== (form.customerPhone.trim() !== '')) {
+    createError.value = '주문자와 전화번호를 함께 입력해주세요.'
+    return
+  }
+  if (form.payment === 'deposit' && !depositAmount.value) {
+    createError.value = '계약금을 입력해주세요.'
+    return
+  }
+  if (depositAmount.value >= totalAmount.value) {
+    createError.value = '계약금은 총금액보다 적어야 합니다.'
     return
   }
 
   isCreating.value = true
   try {
-    const response = await api<{ order: AdminOrder }>('/api/admin/orders', {
-      method: 'POST',
+    const editing = editingId.value
+    const response = await api<{ order: AdminOrder }>(editing ? `/api/admin/orders/${editing}` : '/api/admin/orders', {
+      method: editing ? 'PUT' : 'POST',
       body: {
-        product: newOrder.value.product,
-        amount: amountValue.value,
-        memo: newOrder.value.memo,
-        validDays: newOrder.value.validDays,
+        customerName: form.customerName,
+        customerPhone: form.customerPhone,
+        customerAddress: form.customerAddress,
+        amount: baseAmount.value,
+        addVat: form.addVat,
+        deposit: depositAmount.value,
+        product: form.product,
+        spec: form.spec,
+        dueDate: form.dueDate,
+        memo: form.memo,
+        validDays: form.validDays,
       },
     })
-    orders.value = [response.order, ...orders.value]
+    orders.value = editing
+      ? orders.value.map(item => item.id === editing ? response.order : item)
+      : [response.order, ...orders.value]
     createdId.value = response.order.id
-    newOrder.value = buildNewOrder()
+    savedAs.value = editing ? 'updated' : 'created'
+    editingId.value = ''
+    orderForm.value = buildOrderForm()
     await nextTick()
     document.getElementById(`order-${response.order.id}`)?.scrollIntoView({ block: 'center' })
-  } catch (e) {
-    createError.value = errorMessage(e, '주문서를 만들지 못했습니다. 잠시 후 다시 시도해주세요.')
+  } catch (e: any) {
+    createError.value = errorMessage(e, '주문서를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
+    if (e?.statusCode === 409) await loadOrders().catch(() => {})
   } finally {
     isCreating.value = false
   }
+}
+
+// 만든 주문서를 입력 칸으로 불러와 고친다. 부가세를 더한 주문은 공급가액으로 되돌려 보여준다.
+const startEdit = (order: AdminOrder) => {
+  editingId.value = order.id
+  orderForm.value = {
+    customerName: order.customerName || '',
+    customerPhone: order.customerPhone || '',
+    amount: withCommas(order.vatIncluded ? splitVat(order.amount).supply : order.amount),
+    addVat: order.vatIncluded,
+    payment: order.deposit ? 'deposit' : 'full',
+    deposit: withCommas(order.deposit),
+    product: order.product,
+    spec: order.spec,
+    dueDate: order.dueDate,
+    customerAddress: order.customerAddress || '',
+    memo: order.memo,
+    validDays: 14,
+  }
+  createError.value = ''
+  orderFormRef.value?.scrollIntoView({ block: 'start' })
+}
+
+const cancelEdit = () => {
+  editingId.value = ''
+  orderForm.value = buildOrderForm()
+  createError.value = ''
+}
+
+const savedNote = (order: AdminOrder) => {
+  if (savedAs.value === 'updated') return '수정했습니다. 고객에게 보낸 링크는 그대로이고 내용만 바뀌었습니다.'
+  return order.customerName
+    ? '주문서를 만들었습니다. "주문서 이미지"로 바로 보내거나 링크를 보내주세요.'
+    : '주문서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.'
+}
+
+// ===== 주문서 · 입금확인서 이미지 =====
+const openDoc = ref<{ id: string; kind: DocKind } | null>(null)
+const toggleDoc = (order: AdminOrder, kind: DocKind) => {
+  openDoc.value = openDoc.value?.id === order.id && openDoc.value.kind === kind ? null : { id: order.id, kind }
 }
 
 // ===== 고객 링크 =====
@@ -319,38 +398,100 @@ onMounted(async () => {
 
     <template v-else>
       <div v-show="tab === 'orders'" class="admin-tab">
-      <!-- 새 주문서 -->
-      <section class="panel">
-        <h2 class="section-title">새 주문서</h2>
-        <form class="stack" @submit.prevent="createOrder">
+      <!-- 새 주문서 · 수정 -->
+      <section ref="orderFormRef" class="panel">
+        <h2 class="section-title">{{ editingId ? '주문서 수정' : '새 주문서' }}</h2>
+        <p v-if="editingId" class="hint editing-note">{{ editingId }} 수정 중입니다. 고객에게 보낸 링크와 접수·입금 기록은 그대로이고 내용만 바뀝니다.</p>
+        <form class="stack" @submit.prevent="saveOrder">
           <div class="field">
-            <label class="field-label" for="new-product">상품명</label>
-            <input id="new-product" v-model="newOrder.product" type="text" class="field-input" maxlength="60" required>
+            <label class="field-label" for="order-customer-name">주문자 <span class="optional">(선택)</span></label>
+            <input id="order-customer-name" v-model="orderForm.customerName" type="text" class="field-input" maxlength="50" autocomplete="off">
           </div>
 
           <div class="field">
-            <label class="field-label" for="new-amount">금액 (원)</label>
+            <label class="field-label" for="order-customer-phone">전화번호 <span class="optional">(선택)</span></label>
+            <input id="order-customer-phone" v-model="orderForm.customerPhone" type="tel" class="field-input" inputmode="tel" placeholder="010-0000-0000" autocomplete="off">
+            <p class="hint">전화·카카오톡으로 받은 주문은 주문자와 전화번호를 적으면 바로 접수됩니다. 비워 두면 고객이 링크에서 직접 적습니다.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="new-amount">주문금액 (원)</label>
             <input
               id="new-amount"
-              v-model="newOrder.amount"
+              v-model="orderForm.amount"
               type="text"
               class="field-input"
               inputmode="numeric"
               placeholder="2,740,000"
               autocomplete="off"
               required
-              @input="formatAmountInput"
+              @input="formatMoneyInput('amount')"
             >
+            <label class="check">
+              <input v-model="orderForm.addVat" type="checkbox">
+              <span class="check-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </span>
+              <span>부가세 10% 더하기</span>
+            </label>
+            <p v-if="orderForm.addVat && baseAmount" class="hint order-total-hint">
+              총금액 <strong>{{ won(totalAmount) }}</strong> (공급가액 {{ won(baseAmount) }} + 부가세 {{ won(totalAmount - baseAmount) }})
+            </p>
+          </div>
+
+          <div class="field">
+            <span id="order-payment-label" class="field-label">결제</span>
+            <div class="segmented" role="group" aria-labelledby="order-payment-label">
+              <button type="button" class="segment" :aria-pressed="orderForm.payment === 'full'" @click="orderForm.payment = 'full'">완불</button>
+              <button type="button" class="segment" :aria-pressed="orderForm.payment === 'deposit'" @click="orderForm.payment = 'deposit'">계약금</button>
+            </div>
+            <template v-if="orderForm.payment === 'deposit'">
+              <input
+                id="order-deposit"
+                v-model="orderForm.deposit"
+                type="text"
+                class="field-input"
+                inputmode="numeric"
+                placeholder="계약금 1,000,000"
+                aria-label="계약금 (원)"
+                autocomplete="off"
+                @input="formatMoneyInput('deposit')"
+              >
+              <p v-if="depositAmount && totalAmount > depositAmount" class="hint order-total-hint">잔금 <strong>{{ won(totalAmount - depositAmount) }}</strong></p>
+            </template>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="new-product">상품명</label>
+            <input id="new-product" v-model="orderForm.product" type="text" class="field-input" maxlength="60" required>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="order-spec">제작 사양 <span class="optional">(선택)</span></label>
+            <textarea id="order-spec" v-model="orderForm.spec" class="field-input" rows="3" maxlength="300" placeholder="14K 화이트골드 펜던트 1.5 × 2.5cm, 줄 60cm"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="order-due">수령 예정일 <span class="optional">(선택)</span></label>
+            <input id="order-due" v-model="orderForm.dueDate" type="text" class="field-input" maxlength="40" placeholder="10월 30일 ~ 11월 2일">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="order-address">배송지 <span class="optional">(선택)</span></label>
+            <input id="order-address" v-model="orderForm.customerAddress" type="text" class="field-input" maxlength="200" autocomplete="off">
+            <p class="hint">고객이 링크에서 주문서를 쓰면 고객이 적은 주소가 들어갑니다.</p>
           </div>
 
           <div class="field">
             <label class="field-label" for="new-memo">메모 <span class="optional">(선택 · 고객에게 보이지 않습니다)</span></label>
-            <input id="new-memo" v-model="newOrder.memo" type="text" class="field-input" maxlength="200" placeholder="고객 이름, 디자인 등">
+            <input id="new-memo" v-model="orderForm.memo" type="text" class="field-input" maxlength="200" placeholder="디자인, 참고 사항 등">
           </div>
 
-          <div class="field">
+          <div v-if="!editingId && !hasCustomer" class="field">
             <label class="field-label" for="new-valid">작성 기한</label>
-            <select id="new-valid" v-model.number="newOrder.validDays" class="field-input">
+            <select id="new-valid" v-model.number="orderForm.validDays" class="field-input">
               <option :value="7">7일</option>
               <option :value="14">14일</option>
               <option :value="30">30일</option>
@@ -359,8 +500,9 @@ onMounted(async () => {
 
           <p v-if="createError" class="error" role="alert">{{ createError }}</p>
           <button type="submit" class="btn-primary" :disabled="isCreating">
-            {{ isCreating ? '만드는 중...' : '주문서 만들기' }}
+            {{ isCreating ? '저장하는 중...' : editingId ? '수정 저장' : '주문서 만들기' }}
           </button>
+          <button v-if="editingId" type="button" class="btn-text" @click="cancelEdit">수정 취소</button>
         </form>
       </section>
 
@@ -385,23 +527,15 @@ onMounted(async () => {
             :class="{ 'is-new': order.id === createdId }"
           >
             <div class="order-top">
-              <span class="chip" :class="`chip-${order.state}`">{{ stateLabels[order.state] }}</span>
+              <span class="chip" :class="chipClass(order)">{{ stateLabel(order) }}</span>
               <span class="order-id">{{ order.id }}</span>
             </div>
 
-            <p class="order-summary">{{ order.product }} · <strong>{{ won(order.amount) }}</strong></p>
+            <p class="order-summary">{{ order.product }} · <strong>{{ won(order.amount) }}</strong>{{ order.vatIncluded ? ' (부가세 포함)' : '' }}</p>
             <p v-if="order.memo" class="order-memo">{{ order.memo }}</p>
-            <p v-if="order.id === createdId" class="order-new-note">주문서를 만들었습니다. 링크를 복사해 고객에게 보내주세요.</p>
+            <p v-if="order.id === createdId" class="order-new-note">{{ savedNote(order) }}</p>
 
             <dl class="order-meta">
-              <div>
-                <dt>만든 날</dt>
-                <dd>{{ formatDate(order.createdAt) }}</dd>
-              </div>
-              <div v-if="order.state === 'open' || order.state === 'expired'">
-                <dt>작성 기한</dt>
-                <dd>{{ formatDate(order.expiresAt) }}</dd>
-              </div>
               <template v-if="order.customerName">
                 <div>
                   <dt>주문자</dt>
@@ -411,36 +545,80 @@ onMounted(async () => {
                   <dt>전화번호</dt>
                   <dd><a :href="`tel:${order.customerPhone}`">{{ order.customerPhone }}</a></dd>
                 </div>
-                <div>
-                  <dt>배송지</dt>
-                  <dd>{{ order.customerAddress }}</dd>
-                </div>
-                <div>
-                  <dt>접수</dt>
-                  <dd>{{ formatDate(order.submittedAt) }}</dd>
-                </div>
               </template>
+              <div>
+                <dt>결제</dt>
+                <dd>{{ order.deposit ? `계약금 ${won(order.deposit)} · 잔금 ${won(order.amount - order.deposit)}` : '완불' }}</dd>
+              </div>
+              <div v-if="order.spec">
+                <dt>제작 사양</dt>
+                <dd class="pre-line">{{ order.spec }}</dd>
+              </div>
+              <div v-if="order.dueDate">
+                <dt>수령 예정일</dt>
+                <dd>{{ order.dueDate }}</dd>
+              </div>
+              <div v-if="order.customerAddress">
+                <dt>배송지</dt>
+                <dd>{{ order.customerAddress }}</dd>
+              </div>
+              <div>
+                <dt>만든 날</dt>
+                <dd>{{ formatDate(order.createdAt) }}</dd>
+              </div>
+              <div v-if="order.state === 'open' || order.state === 'expired'">
+                <dt>작성 기한</dt>
+                <dd>{{ formatDate(order.expiresAt) }}</dd>
+              </div>
+              <div v-if="order.submittedAt">
+                <dt>접수</dt>
+                <dd>{{ formatDate(order.submittedAt) }}</dd>
+              </div>
               <div v-if="order.paidAt">
-                <dt>입금 확인</dt>
+                <dt>{{ order.deposit ? '계약금 입금 확인' : '입금 확인' }}</dt>
                 <dd>{{ formatDate(order.paidAt) }}</dd>
+              </div>
+              <div v-if="order.balancePaidAt">
+                <dt>잔금 입금 확인</dt>
+                <dd>{{ formatDate(order.balancePaidAt) }}</dd>
               </div>
             </dl>
 
             <div v-if="order.state !== 'cancelled' && order.state !== 'expired'" class="order-actions">
               <button v-if="order.state === 'submitted'" type="button" class="btn-ghost" :disabled="busyId === order.id" @click="updateOrder(order, 'markPaid')">
-                입금 확인
+                {{ order.deposit ? '계약금 입금 확인' : '입금 확인 (완불)' }}
+              </button>
+              <button v-if="paymentStage(order) === 'deposit'" type="button" class="btn-ghost" :disabled="busyId === order.id" @click="updateOrder(order, 'markBalancePaid')">
+                잔금 입금 확인 (완불)
               </button>
               <template v-if="order.state === 'open' || order.state === 'submitted'">
                 <button type="button" class="btn-ghost" @click="copyLink(order)">
                   <span aria-live="polite">{{ copiedId === order.id ? '복사했습니다' : '링크 복사' }}</span>
                 </button>
                 <button v-if="canShare" type="button" class="btn-ghost" @click="shareLink(order)">공유</button>
-                <button type="button" class="btn-text" :disabled="busyId === order.id" @click="updateOrder(order, 'cancel')">주문 취소</button>
               </template>
-              <button v-if="order.state === 'paid'" type="button" class="btn-text" :disabled="busyId === order.id" @click="updateOrder(order, 'unmarkPaid')">
-                입금 확인 취소
+              <button type="button" class="btn-ghost" :aria-expanded="openDoc?.id === order.id && openDoc.kind === 'sheet'" @click="toggleDoc(order, 'sheet')">주문서 이미지</button>
+              <button v-if="order.deposit && paymentStage(order) !== 'none'" type="button" class="btn-ghost" :aria-expanded="openDoc?.id === order.id && openDoc.kind === 'deposit'" @click="toggleDoc(order, 'deposit')">계약금 입금확인서</button>
+              <button v-if="paymentStage(order) === 'full'" type="button" class="btn-ghost" :aria-expanded="openDoc?.id === order.id && openDoc.kind === 'full'" @click="toggleDoc(order, 'full')">
+                {{ order.deposit ? '완불 입금확인서' : '입금확인서' }}
+              </button>
+              <button type="button" class="btn-text" @click="startEdit(order)">내용 수정</button>
+              <button v-if="order.state === 'open' || order.state === 'submitted'" type="button" class="btn-text" :disabled="busyId === order.id" @click="updateOrder(order, 'cancel')">주문 취소</button>
+              <button v-if="order.state === 'paid' && !order.balancePaidAt" type="button" class="btn-text" :disabled="busyId === order.id" @click="updateOrder(order, 'unmarkPaid')">
+                {{ order.deposit ? '계약금 확인 취소' : '입금 확인 취소' }}
+              </button>
+              <button v-if="order.balancePaidAt" type="button" class="btn-text" :disabled="busyId === order.id" @click="updateOrder(order, 'unmarkBalancePaid')">
+                잔금 확인 취소
               </button>
             </div>
+
+            <AdminOrderDoc
+              v-if="openDoc && openDoc.id === order.id"
+              :key="openDoc.kind"
+              :order="order"
+              :kind="openDoc.kind"
+              @close="openDoc = null"
+            />
           </li>
         </ul>
       </section>
@@ -580,6 +758,15 @@ onMounted(async () => {
 
 .admin .field-input::placeholder {
   color: var(--gray);
+}
+
+.admin textarea.field-input {
+  resize: vertical;
+}
+
+.admin .order-total-hint strong {
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
 }
 
 .admin .code-input {
@@ -773,6 +960,10 @@ onMounted(async () => {
   line-height: 1.6;
   text-align: right;
   overflow-wrap: anywhere;
+}
+
+.admin .order-meta .pre-line {
+  white-space: pre-line;
 }
 
 .admin .order-meta a {

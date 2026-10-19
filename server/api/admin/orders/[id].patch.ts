@@ -8,8 +8,16 @@ const actions = {
   markPaid: (db: D1Database, id: string, now: string) => db
     .prepare(`UPDATE orders SET status = 'paid', paid_at = ? WHERE id = ? AND status = 'submitted'`)
     .bind(now, id),
+  // 잔금까지 확인한 주문은 잔금 확인부터 취소해야 한다.
   unmarkPaid: (db: D1Database, id: string) => db
-    .prepare(`UPDATE orders SET status = 'submitted', paid_at = NULL WHERE id = ? AND status = 'paid'`)
+    .prepare(`UPDATE orders SET status = 'submitted', paid_at = NULL WHERE id = ? AND status = 'paid' AND balance_paid_at IS NULL`)
+    .bind(id),
+  // 계약금 주문의 잔금(완불) 확인
+  markBalancePaid: (db: D1Database, id: string, now: string) => db
+    .prepare(`UPDATE orders SET balance_paid_at = ? WHERE id = ? AND status = 'paid' AND deposit > 0 AND balance_paid_at IS NULL`)
+    .bind(now, id),
+  unmarkBalancePaid: (db: D1Database, id: string) => db
+    .prepare(`UPDATE orders SET balance_paid_at = NULL WHERE id = ? AND status = 'paid' AND balance_paid_at IS NOT NULL`)
     .bind(id),
   cancel: (db: D1Database, id: string, now: string) => db
     .prepare(`UPDATE orders SET status = 'cancelled', cancelled_at = ? WHERE id = ? AND status IN ('open', 'submitted')`)

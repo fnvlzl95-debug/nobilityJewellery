@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody, createError, getRouterParam } from 'h3'
 import { clientIp, runAfterResponse, useOrdersDb } from '../../utils/cloudflare'
 import { sendOrderSubmittedMail } from '../../utils/order-mail'
-import { findOrderByToken, orderState, type OrderState } from '../../utils/orders'
+import { findOrderByToken, isValidPhone, orderState, type OrderState } from '../../utils/orders'
 import { createRateLimiter } from '../../utils/rate-limit'
 
 interface OrderBody {
@@ -9,16 +9,11 @@ interface OrderBody {
   phone: string
   address: string
   consent: boolean
+  weightNotice: boolean // 제작 후 실측 중량에 따라 금액이 달라질 수 있다는 고지를 확인했다
   honeypot?: string // Spam prevention
 }
 
 const allowRequest = createRateLimiter(5, 60 * 1000)
-
-function validatePhone(phone: string): boolean {
-  // Korean phone number format
-  const phoneRegex = /^(01[016789]|02|0[3-9][0-9])-?[0-9]{3,4}-?[0-9]{4}$/
-  return phoneRegex.test(phone.replace(/\s/g, ''))
-}
 
 const closedMessages: Record<Exclude<OrderState, 'open'>, string> = {
   submitted: '이미 접수된 주문서입니다.',
@@ -71,7 +66,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (!validatePhone(body.phone)) {
+  if (!isValidPhone(body.phone)) {
     throw createError({
       statusCode: 400,
       message: '올바른 전화번호를 입력해주세요.',
@@ -82,6 +77,13 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: '배송지 주소를 정확히 입력해주세요.',
+    })
+  }
+
+  if (body.weightNotice !== true) {
+    throw createError({
+      statusCode: 400,
+      message: '실측 중량에 따른 금액 변동 안내를 확인해주세요.',
     })
   }
 

@@ -7,13 +7,13 @@ export interface QuoteSupplier {
   phone: string
 }
 
-// 기존에 쓰던 견적서(PDF) 양식을 그대로 옮긴다: A4 가로 842×595pt.
+// 기존에 쓰던 견적서(PDF) 양식을 그대로 옮긴다. 글·칸 그리기는 주문서·입금확인서(utils/order-docs-canvas.ts)도 함께 쓴다: A4 가로 842×595pt.
 // 좌표와 글자 크기는 모두 pt 기준이고, 저장용 이미지는 3배로 그려 인쇄해도 선명하다.
 const PAGE_WIDTH = 842
 const PAGE_HEIGHT = 595
 const MARGIN_X = 36
-const SCALE = 3
-const FONT = `'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif`
+export const SCALE = 3
+export const FONT = `'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif`
 const TABLE_Y = 328
 const HEADER_HEIGHT = 38
 const ROW_HEIGHT = 34
@@ -23,10 +23,10 @@ const SEAL_SIZE = 52
 const SEAL_CENTER_X = 770 // 칸의 오른쪽 선에 닿지 않게 안쪽으로
 const SEAL_CENTER_Y = 161
 const INK = '#000000'
-const PAPER = '#ffffff'
-const HEADER_FILL = '#f2f2f2'
+export const PAPER = '#ffffff'
+export const HEADER_FILL = '#f2f2f2'
 
-type Align = 'left' | 'center' | 'right'
+export type Align = 'left' | 'center' | 'right'
 
 // 칸마다의 기본 너비와 정렬. 뺀 칸이 있으면 남은 칸이 같은 비율로 표 너비를 채운다.
 const COLUMNS: Array<{ key: QuoteColumn; width: number; align: Align }> = [
@@ -48,7 +48,7 @@ interface TextStyle {
   align?: Align
 }
 
-function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+export function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const lines: string[] = []
   for (const paragraph of text.split('\n')) {
     let line = ''
@@ -76,7 +76,7 @@ function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number
 }
 
 /** 칸 안에 글을 가로 정렬·세로 가운데로 넣는다. 넘치면 들어갈 때까지 글자를 줄인다. */
-function drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, height: number, style: TextStyle) {
+export function drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, height: number, style: TextStyle) {
   if (!text) return
   const padding = 4
   const maxWidth = width - padding * 2
@@ -101,7 +101,7 @@ function drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
   }
 }
 
-function drawCell(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, height: number, style: TextStyle, fill?: string) {
+export function drawCell(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, height: number, style: TextStyle, fill?: string) {
   if (fill) {
     ctx.fillStyle = fill
     ctx.fillRect(x, y, width, height)

@@ -64,7 +64,10 @@ export async function sendOrderSubmittedMail(event: H3Event, order: OrderRow) {
           <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             ${row('접수번호', `<strong>${order.id}</strong>`)}
             ${row('주문 상품', escapeHtml(order.product))}
-            ${row('주문 금액', `${order.amount.toLocaleString('ko-KR')}원`)}
+            ${row('주문 금액', `${order.amount.toLocaleString('ko-KR')}원${order.vat_included ? ' (부가세 포함)' : ''}`)}
+            ${order.deposit ? row('계약금', `${order.deposit.toLocaleString('ko-KR')}원 · 잔금 ${(order.amount - order.deposit).toLocaleString('ko-KR')}원`) : ''}
+            ${order.spec ? row('제작 사양', escapeHtml(order.spec)) : ''}
+            ${order.due_date ? row('수령 예정일', escapeHtml(order.due_date)) : ''}
             ${order.memo ? row('내부 메모', escapeHtml(order.memo)) : ''}
             ${row('주문자', escapeHtml(order.customer_name || ''))}
             ${row('전화번호', `<a href="tel:${phone}" style="color: #c9a227;">${phone}</a>`)}

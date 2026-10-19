@@ -41,7 +41,7 @@ const footerLinks = [
       </div>
       <div class="footer-info">
         <span>종로3가 금은방 귀족 | {{ siteConfig.address.full }} | 전화 <a :href="`tel:${siteConfig.phone}`" class="footer-tel" @click="handleFooterPhoneClick">{{ siteConfig.phone }}</a></span>
-        <span>대표: 박승태 | 사업자등록번호: 101-09-26010</span>
+        <span>대표: {{ siteConfig.representative }} | 사업자등록번호: {{ siteConfig.businessNumber }}</span>
       </div>
       <div class="footer-bottom">
         <span class="copyright">© 2026 귀족. All rights reserved.</span>

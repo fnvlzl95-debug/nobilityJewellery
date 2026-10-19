@@ -1,36 +1,15 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { requireAdmin } from '../../utils/admin-auth'
 import { useOrdersDb } from '../../utils/cloudflare'
-import { createOrderId, ORDER_VALID_DAYS, toAdminOrder, type OrderRow } from '../../utils/orders'
+import { createOrderId, ORDER_VALID_DAYS, parseOrderDetails, toAdminOrder, type OrderRow } from '../../utils/orders'
 import { randomToken } from '../../utils/secure-random'
-
-interface CreateOrderBody {
-  product?: unknown
-  amount?: unknown
-  memo?: unknown
-  validDays?: unknown
-}
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event)
 
-  const body = await readBody<CreateOrderBody>(event)
-  const product = typeof body?.product === 'string' ? body.product.trim() : ''
-  const memo = typeof body?.memo === 'string' ? body.memo.trim() : ''
-  const amount = body?.amount
+  const body = await readBody<Record<string, unknown>>(event)
+  const details = parseOrderDetails(body)
   const validDays = body?.validDays
-
-  if (product.length < 1 || product.length > 60) {
-    throw createError({ statusCode: 400, message: '상품명을 60자 이내로 입력해주세요.' })
-  }
-
-  if (typeof amount !== 'number' || !Number.isInteger(amount) || amount < 1000 || amount > 1000000000) {
-    throw createError({ statusCode: 400, message: '금액을 원 단위 숫자로 입력해주세요.' })
-  }
-
-  if (memo.length > 200) {
-    throw createError({ statusCode: 400, message: '메모는 200자 이내로 입력해주세요.' })
-  }
 
   if (typeof validDays !== 'number' || !ORDER_VALID_DAYS.includes(validDays)) {
     throw createError({ statusCode: 400, message: '작성 기한을 선택해주세요.' })
@@ -40,23 +19,30 @@ export default defineEventHandler(async (event) => {
   const order: OrderRow = {
     id: createOrderId(now),
     token: randomToken(16),
-    product,
-    amount,
-    memo,
-    status: 'open',
-    customer_name: null,
-    customer_phone: null,
-    customer_address: null,
+    product: details.product,
+    amount: details.amount,
+    vat_included: details.vatIncluded ? 1 : 0,
+    deposit: details.deposit,
+    spec: details.spec,
+    due_date: details.dueDate,
+    memo: details.memo,
+    // 운영자가 주문자를 직접 적은 주문(전화·카카오톡 주문)은 고객 작성 없이 바로 접수된다.
+    status: details.customer ? 'submitted' : 'open',
+    customer_name: details.customer?.name ?? null,
+    customer_phone: details.customer?.phone ?? null,
+    customer_address: details.customer?.address ?? null,
     created_at: now.toISOString(),
     expires_at: new Date(now.getTime() + validDays * 86400000).toISOString(),
-    submitted_at: null,
+    submitted_at: details.customer ? now.toISOString() : null,
     paid_at: null,
+    balance_paid_at: null,
     cancelled_at: null,
   }
 
   await useOrdersDb(event)
-    .prepare('INSERT INTO orders (id, token, product, amount, memo, status, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-    .bind(order.id, order.token, order.product, order.amount, order.memo, order.status, order.created_at, order.expires_at)
+    .prepare(`INSERT INTO orders (id, token, product, amount, vat_included, deposit, spec, due_date, memo, status, customer_name, customer_phone, customer_address, created_at, expires_at, submitted_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .bind(order.id, order.token, order.product, order.amount, order.vat_included, order.deposit, order.spec, order.due_date, order.memo, order.status, order.customer_name, order.customer_phone, order.customer_address, order.created_at, order.expires_at, order.submitted_at)
     .run()
 
   console.log('Order created:', { orderId: order.id })

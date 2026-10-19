@@ -12,6 +12,8 @@ export const siteConfig = {
 
   // 견적서 공급자 표에 적는 대표자 이름
   representative: '박승태',
+  // 주문서·입금확인서 공급자 표와 사이트 하단에 적는 사업자등록번호
+  businessNumber: '101-09-26010',
 
   // 연락처
   phone: '02-766-4789',

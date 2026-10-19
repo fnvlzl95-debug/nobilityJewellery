@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
 import { siteConfig } from '~/config/site'
+import { orderMoney, WEIGHT_NOTICE, type OrderState } from '~/utils/order'
 
-type OrderState = 'open' | 'submitted' | 'paid' | 'cancelled' | 'expired'
 interface PublicOrder {
   orderId: string
   product: string
   amount: number
+  vatIncluded: boolean
+  deposit: number
+  spec: string
+  dueDate: string
   state: OrderState
+  balancePaid: boolean
 }
 
 const account = siteConfig.order
@@ -25,7 +30,16 @@ if (error.value || !fetchedOrder.value) {
 }
 // 접수하면 이 화면에서 바로 상태가 바뀌므로 따로 들고 있는다.
 const order = ref<PublicOrder>(fetchedOrder.value)
-const amountLabel = computed(() => `${order.value.amount.toLocaleString('ko-KR')}원`)
+const won = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
+const money = computed(() => orderMoney(order.value))
+const amountLabel = computed(() => won(order.value.amount))
+// 지금 입금할 금액: 계약금 주문은 계약금을 먼저, 계약금이 확인되면 잔금을 받는다.
+const awaitingBalance = computed(() => order.value.state === 'paid' && order.value.deposit > 0 && !order.value.balancePaid)
+const payNow = computed(() => {
+  if (awaitingBalance.value) return { label: '잔금', amount: money.value.balance }
+  if (order.value.deposit > 0) return { label: '계약금', amount: money.value.deposit }
+  return { label: '입금 금액', amount: money.value.total }
+})
 
 useHead({
   title: `주문서 | ${siteConfig.name}`,
@@ -53,7 +67,11 @@ const statusMessages: Record<Exclude<OrderState, 'open'>, { title: string; desc:
 const status = computed(() => {
   const state = order.value.state
   if (state === 'open') return null
-  if (state === 'submitted') return { title: statusMessages.submitted.title, desc: `아래 계좌로 ${amountLabel.value}을 입금해 주시면 확인 후 연락드리겠습니다.` }
+  if (state === 'submitted') {
+    const what = order.value.deposit > 0 ? `계약금 ${won(money.value.deposit)}` : amountLabel.value
+    return { title: statusMessages.submitted.title, desc: `아래 계좌로 ${what}을 입금해 주시면 확인 후 연락드리겠습니다.` }
+  }
+  if (awaitingBalance.value) return { title: '계약금 입금이 확인되었습니다', desc: `잔금 ${won(money.value.balance)}은 아래 계좌로 입금해 주세요.` }
   return statusMessages[state]
 })
 const isClosed = computed(() => order.value.state === 'cancelled' || order.value.state === 'expired')
@@ -64,6 +82,7 @@ const buildInitialFormData = () => ({
   postcode: '',
   address: '',
   addressDetail: '',
+  weightNotice: false,
   consent: false,
   honeypot: '',
 })
@@ -196,6 +215,11 @@ const handleSubmit = async () => {
     return
   }
 
+  if (!formData.value.weightNotice) {
+    formError.value = '실측 중량에 따른 금액 변동 안내를 확인해주세요.'
+    return
+  }
+
   if (!formData.value.consent) {
     formError.value = '개인정보 수집·이용에 동의해주세요.'
     return
@@ -254,11 +278,31 @@ const handleSubmit = async () => {
             <dt>주문 상품</dt>
             <dd>{{ order.product }}</dd>
           </div>
+          <div v-if="order.spec" class="detail-row">
+            <dt>제작 사양</dt>
+            <dd class="pre-line">{{ order.spec }}</dd>
+          </div>
           <div class="detail-row">
             <dt>주문 금액</dt>
-            <dd class="amount">{{ amountLabel }}</dd>
+            <dd class="amount">{{ amountLabel }}<span v-if="order.vatIncluded" class="amount-note">부가세 포함</span></dd>
+          </div>
+          <template v-if="order.deposit > 0">
+            <div class="detail-row">
+              <dt>계약금</dt>
+              <dd class="amount">{{ won(money.deposit) }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>잔금</dt>
+              <dd class="amount">{{ won(money.balance) }}</dd>
+            </div>
+          </template>
+          <div v-if="order.dueDate" class="detail-row">
+            <dt>수령 예정일</dt>
+            <dd>{{ order.dueDate }}</dd>
           </div>
         </dl>
+
+        <p v-if="!isClosed" class="weight-notice">{{ WEIGHT_NOTICE }} 주문 금액은 예상 중량 기준이며, 제작 후 실제로 잰 중량에 따라 최종 금액이 늘거나 줄 수 있습니다.</p>
 
         <!-- 접수 이후, 또는 취소·기한 만료 -->
         <div v-if="status" class="status-box" :class="{ 'is-closed': isClosed }">
@@ -357,6 +401,18 @@ const handleSubmit = async () => {
           </div>
 
           <label class="consent-check">
+            <input v-model="formData.weightNotice" type="checkbox">
+            <span class="check-box">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+            <span class="check-label">
+              제작 후 실측 중량에 따라 금액이 달라질 수 있음을 확인했습니다
+            </span>
+          </label>
+
+          <label class="consent-check">
             <input v-model="formData.consent" type="checkbox">
             <span class="check-box">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
@@ -376,7 +432,7 @@ const handleSubmit = async () => {
           </button>
         </form>
 
-        <section v-if="order.state === 'open' || order.state === 'submitted'" class="payment" aria-labelledby="payment-title">
+        <section v-if="order.state === 'open' || order.state === 'submitted' || awaitingBalance" class="payment" aria-labelledby="payment-title">
           <h2 id="payment-title" class="section-title">입금 계좌</h2>
           <dl class="detail-list">
             <div class="detail-row">
@@ -392,8 +448,8 @@ const handleSubmit = async () => {
               <dd>{{ account.accountHolder }}</dd>
             </div>
             <div class="detail-row">
-              <dt>입금 금액</dt>
-              <dd class="amount">{{ amountLabel }}</dd>
+              <dt>{{ payNow.label }}</dt>
+              <dd class="amount">{{ won(payNow.amount) }}</dd>
             </div>
           </dl>
           <button type="button" class="btn-ghost btn-copy" @click="copyAccount">
@@ -489,6 +545,29 @@ const handleSubmit = async () => {
 .detail-row .amount {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.detail-row .amount-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--gray);
+}
+
+.detail-row .pre-line {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* 금액 변동 고지 — 접수 전에 반드시 읽게 금액 바로 아래 둔다 */
+.weight-notice {
+  margin: -16px 0 0;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  background: rgba(201, 162, 39, 0.1);
+  border-left: 2px solid var(--gold);
 }
 
 /* ===== Form ===== */
