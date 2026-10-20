@@ -1,5 +1,5 @@
 import { createError } from 'h3'
-import { addVat } from '../../utils/order'
+import { addVat, ORDER_ACCOUNTS } from '../../utils/order'
 import type { D1Database } from './cloudflare'
 
 export type OrderStatus = 'open' | 'submitted' | 'paid' | 'cancelled'
@@ -13,6 +13,7 @@ export interface OrderRow {
   amount: number
   vat_included: number
   deposit: number
+  account: string
   spec: string
   due_date: string
   memo: string
@@ -48,6 +49,7 @@ export function toPublicOrder(order: OrderRow) {
     amount: order.amount,
     vatIncluded: order.vat_included === 1,
     deposit: order.deposit,
+    account: order.account,
     spec: order.spec,
     dueDate: order.due_date,
     state: orderState(order),
@@ -63,6 +65,7 @@ export function toAdminOrder(order: OrderRow) {
     amount: order.amount,
     vatIncluded: order.vat_included === 1,
     deposit: order.deposit,
+    account: order.account,
     spec: order.spec,
     dueDate: order.due_date,
     memo: order.memo,
@@ -107,6 +110,8 @@ export function parseOrderDetails(body: Record<string, unknown> | null | undefin
     throw invalid('계약금을 원 단위 숫자로 입력해주세요.')
   }
   if (depositValue >= total) throw invalid('계약금은 총금액보다 적어야 합니다.')
+  const account = typeof body?.account === 'string' ? body.account : ORDER_ACCOUNTS[0].id
+  if (!ORDER_ACCOUNTS.some(item => item.id === account)) throw invalid('입금 계좌를 선택해주세요.')
   if (spec.length > 300) throw invalid('제작 사양은 300자 이내로 입력해주세요.')
   if (dueDate.length > 40) throw invalid('수령 예정일은 40자 이내로 입력해주세요.')
   if (memo.length > 200) throw invalid('메모는 200자 이내로 입력해주세요.')
@@ -121,6 +126,7 @@ export function parseOrderDetails(body: Record<string, unknown> | null | undefin
     amount: total,
     vatIncluded,
     deposit: depositValue,
+    account,
     spec,
     dueDate,
     memo,

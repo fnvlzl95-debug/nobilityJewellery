@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
     amount: details.amount,
     vat_included: details.vatIncluded ? 1 : 0,
     deposit: details.deposit,
+    account: details.account,
     spec: details.spec,
     due_date: details.dueDate,
     memo: details.memo,
@@ -40,9 +41,9 @@ export default defineEventHandler(async (event) => {
   }
 
   await useOrdersDb(event)
-    .prepare(`INSERT INTO orders (id, token, product, amount, vat_included, deposit, spec, due_date, memo, status, customer_name, customer_phone, customer_address, created_at, expires_at, submitted_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-    .bind(order.id, order.token, order.product, order.amount, order.vat_included, order.deposit, order.spec, order.due_date, order.memo, order.status, order.customer_name, order.customer_phone, order.customer_address, order.created_at, order.expires_at, order.submitted_at)
+    .prepare(`INSERT INTO orders (id, token, product, amount, vat_included, deposit, account, spec, due_date, memo, status, customer_name, customer_phone, customer_address, created_at, expires_at, submitted_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .bind(order.id, order.token, order.product, order.amount, order.vat_included, order.deposit, order.account, order.spec, order.due_date, order.memo, order.status, order.customer_name, order.customer_phone, order.customer_address, order.created_at, order.expires_at, order.submitted_at)
     .run()
 
   console.log('Order created:', { orderId: order.id })

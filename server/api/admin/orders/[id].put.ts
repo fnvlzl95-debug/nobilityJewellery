@@ -30,11 +30,11 @@ export default defineEventHandler(async (event) => {
   const status = order.status === 'open' && customer ? 'submitted' : order.status
   const result = await db
     .prepare(`UPDATE orders
-      SET product = ?, amount = ?, vat_included = ?, deposit = ?, spec = ?, due_date = ?, memo = ?,
+      SET product = ?, amount = ?, vat_included = ?, deposit = ?, account = ?, spec = ?, due_date = ?, memo = ?,
           customer_name = ?, customer_phone = ?, customer_address = ?, status = ?, submitted_at = ?
       WHERE id = ? AND status = ? AND (status != 'open' OR expires_at > ?)`)
     .bind(
-      details.product, details.amount, details.vatIncluded ? 1 : 0, details.deposit, details.spec, details.dueDate, details.memo,
+      details.product, details.amount, details.vatIncluded ? 1 : 0, details.deposit, details.account, details.spec, details.dueDate, details.memo,
       customer?.name ?? null, customer?.phone ?? null, customer?.address ?? null, status, order.submitted_at ?? (customer ? now : null),
       id, order.status, now,
     )

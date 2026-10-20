@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { siteConfig } from '~/config/site'
-import { addVat, paymentStage, type AdminOrder, type OrderState } from '~/utils/order'
+import { addVat, ORDER_ACCOUNTS, orderAccount, paymentStage, type AdminOrder, type OrderState } from '~/utils/order'
 import { splitVat } from '~/utils/quote'
 
 // 운영자 전용 화면: 1대1 주문서를 만들어 접수와 입금을 확인하고, 견적서를 만든다 (components/AdminQuotes.vue).
@@ -147,6 +147,7 @@ const buildOrderForm = () => ({
   addVat: false,
   payment: 'full' as 'full' | 'deposit',
   deposit: '',
+  account: ORDER_ACCOUNTS[0].id,
   product: siteConfig.order.defaultProduct,
   spec: '',
   dueDate: '',
@@ -209,6 +210,7 @@ const saveOrder = async () => {
         amount: baseAmount.value,
         addVat: form.addVat,
         deposit: depositAmount.value,
+        account: form.account,
         product: form.product,
         spec: form.spec,
         dueDate: form.dueDate,
@@ -243,6 +245,7 @@ const startEdit = (order: AdminOrder) => {
     addVat: order.vatIncluded,
     payment: order.deposit ? 'deposit' : 'full',
     deposit: withCommas(order.deposit),
+    account: orderAccount(order.account).id,
     product: order.product,
     spec: order.spec,
     dueDate: order.dueDate,
@@ -464,6 +467,14 @@ onMounted(async () => {
           </div>
 
           <div class="field">
+            <span id="order-account-label" class="field-label">입금 계좌</span>
+            <div class="segmented" role="group" aria-labelledby="order-account-label">
+              <button v-for="item in ORDER_ACCOUNTS" :key="item.id" type="button" class="segment" :aria-pressed="orderForm.account === item.id" @click="orderForm.account = item.id">{{ item.bank }}</button>
+            </div>
+            <p class="hint">{{ orderAccount(orderForm.account).bank }} {{ orderAccount(orderForm.account).account }} (예금주 {{ orderAccount(orderForm.account).accountHolder }})</p>
+          </div>
+
+          <div class="field">
             <label class="field-label" for="new-product">상품명</label>
             <input id="new-product" v-model="orderForm.product" type="text" class="field-input" maxlength="60" required>
           </div>
@@ -549,6 +560,10 @@ onMounted(async () => {
               <div>
                 <dt>결제</dt>
                 <dd>{{ order.deposit ? `계약금 ${won(order.deposit)} · 잔금 ${won(order.amount - order.deposit)}` : '완불' }}</dd>
+              </div>
+              <div>
+                <dt>입금 계좌</dt>
+                <dd>{{ orderAccount(order.account).bank }} {{ orderAccount(order.account).account }}</dd>
               </div>
               <div v-if="order.spec">
                 <dt>제작 사양</dt>

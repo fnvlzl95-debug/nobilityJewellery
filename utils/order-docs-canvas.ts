@@ -1,5 +1,5 @@
 import { siteConfig } from '../config/site'
-import { koreanAmount, orderMoney, paymentStage, WEIGHT_NOTICE, type AdminOrder } from './order'
+import { koreanAmount, orderAccount, orderMoney, paymentStage, WEIGHT_NOTICE, type AdminOrder } from './order'
 import { drawCell, drawText, FONT, HEADER_FILL, PAPER, SCALE, wrapLines, type QuoteSupplier } from './quote-canvas'
 import { formatQuoteDate } from './quote'
 
@@ -126,7 +126,10 @@ export function drawPaperDoc(canvas: HTMLCanvasElement, doc: PaperDoc, supplier:
 
 // ===== 주문서 =====
 
-const accountLine = () => `${siteConfig.order.bank} ${siteConfig.order.account} (예금주 ${siteConfig.order.accountHolder})`
+const accountLine = (order: AdminOrder) => {
+  const account = orderAccount(order.account)
+  return `${account.bank} ${account.account} (예금주 ${account.accountHolder})`
+}
 const dateText = (isoDate: string) => isoDate ? formatQuoteDate(isoDate) : ''
 
 /** 주문자 → 전화번호 → 주문금액 순으로 시작해 제작 사양, 결제, 수령 안내를 적는다. */
@@ -153,7 +156,7 @@ export function orderSheetDoc(order: AdminOrder, issuedDate: string): PaperDoc {
   const pickup: PaperRow[] = []
   if (order.dueDate) pickup.push({ label: '수령 예정일', value: order.dueDate })
   if (order.customerAddress) pickup.push({ label: '배송지', value: order.customerAddress })
-  if (stage !== 'full') pickup.push({ label: stage === 'deposit' ? '잔금 입금 계좌' : '입금 계좌', value: accountLine() })
+  if (stage !== 'full') pickup.push({ label: stage === 'deposit' ? '잔금 입금 계좌' : '입금 계좌', value: accountLine(order) })
 
   return {
     title: '주 문 서',
@@ -216,7 +219,7 @@ export function receiptDoc(order: AdminOrder, input: ReceiptInput): PaperDoc {
   }
   payments.push(
     { label: '구분', value: isDeposit ? '계약금' : '완불' },
-    { label: '입금 계좌', value: accountLine() },
+    { label: '입금 계좌', value: accountLine(order) },
   )
 
   const orderRows: PaperRow[] = [{ label: '품명', value: order.product }]

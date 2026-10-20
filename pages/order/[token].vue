@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
 import { siteConfig } from '~/config/site'
-import { orderMoney, WEIGHT_NOTICE, type OrderState } from '~/utils/order'
+import { orderAccount, orderMoney, WEIGHT_NOTICE, type OrderState } from '~/utils/order'
 
 interface PublicOrder {
   orderId: string
@@ -9,13 +9,13 @@ interface PublicOrder {
   amount: number
   vatIncluded: boolean
   deposit: number
+  account: string
   spec: string
   dueDate: string
   state: OrderState
   balancePaid: boolean
 }
 
-const account = siteConfig.order
 const route = useRoute()
 const orderUrl = `/api/order/${route.params.token}`
 
@@ -30,6 +30,8 @@ if (error.value || !fetchedOrder.value) {
 }
 // 접수하면 이 화면에서 바로 상태가 바뀌므로 따로 들고 있는다.
 const order = ref<PublicOrder>(fetchedOrder.value)
+// 주문서마다 운영자가 고른 입금 계좌
+const account = computed(() => orderAccount(order.value.account))
 const won = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 const money = computed(() => orderMoney(order.value))
 const amountLabel = computed(() => won(order.value.amount))
@@ -172,19 +174,19 @@ const openAddressSearch = async () => {
 }
 
 // 은행 앱 입력란은 숫자만 받는 경우가 많아 하이픈 없이 복사한다.
-const accountDigits = account.account.replaceAll('-', '')
+const accountDigits = computed(() => account.value.account.replaceAll('-', ''))
 const copyState = ref<'idle' | 'done' | 'failed'>('idle')
 let copyResetTimer: ReturnType<typeof setTimeout> | undefined
 
 const copyAccount = async () => {
   let copied = false
   try {
-    await navigator.clipboard.writeText(accountDigits)
+    await navigator.clipboard.writeText(accountDigits.value)
     copied = true
   } catch {
     // 카카오톡 등 인앱 브라우저는 Clipboard API가 막혀 있을 수 있다.
     const field = document.createElement('textarea')
-    field.value = accountDigits
+    field.value = accountDigits.value
     field.setAttribute('readonly', '')
     field.style.position = 'fixed'
     field.style.opacity = '0'

@@ -79,9 +79,11 @@ export const siteConfig = {
   // 주문서 (pages/order/[token].vue, pages/admin) — 새 주문서의 기본 상품명과 입금 계좌
   order: {
     defaultProduct: '귀족 주문제작',
-    bank: '토스뱅크',
-    account: '1000-4335-7794',
-    accountHolder: '박도현',
+    // 주문서를 만들 때 고르는 입금 계좌. 첫 번째가 기본이다. id는 DB(orders.account)에 저장되니 바꾸지 않는다.
+    accounts: [
+      { id: 'toss', bank: '토스뱅크', account: '1000-4335-7794', accountHolder: '박도현' },
+      { id: 'kakao', bank: '카카오뱅크', account: '3333-03-1680316', accountHolder: '박도현' },
+    ],
   },
 
   // 브랜드 컬러 (CSS 변수로도 사용)
