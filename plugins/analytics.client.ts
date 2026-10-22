@@ -54,7 +54,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     const normalized = normalizeAnalyticsContactUrl(to.fullPath)
     if (normalized !== to.fullPath) {
       rememberInquiryTopic(to.fullPath, storage)
-      return { path: normalized, replace: true }
+      const target = router.resolve(normalized)
+      return { path: target.path, query: target.query, hash: target.hash, replace: true }
     }
     const destination = new URL(to.fullPath, siteConfig.url)
     const nextOptOut = analyticsOptOut(destination.search, storage)

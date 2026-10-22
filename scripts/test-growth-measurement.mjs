@@ -67,21 +67,22 @@ assert.equal(ga.length,count); assert.equal(meta.length,metaCount)
 
 // Run the production plugin against a browser/router double: no network requests.
 const makeStorage = () => { const values = new Map(); return { getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k) } }
-function browserHarness(path='/', referrer='', storage=makeStorage()) {
+const locationRouter = createRouter({history:createMemoryHistory(),routes:[{path:'/:pathMatch(.*)*',component:{}}]})
+function browserHarness(path='/', referrer='', storage=makeStorage(), suppliedRouter) {
   const url = new URL(path,siteConfig.url), scripts=[], metas=[], redirects=[], naverViews=[], naverEvents=[], callbacks=[], hooks={}
-  const route = p => { const u=new URL(p,siteConfig.url);return {path:u.pathname,fullPath:u.pathname+u.search+u.hash} }
+  const route = p => locationRouter.resolve(p)
   const location={hostname:url.hostname,pathname:url.pathname,search:url.search,hash:url.hash,assign:p=>redirects.push(['assign',p]),replace:p=>redirects.push(['replace',p])}
   const win={location,sessionStorage:storage,setTimeout:fn=>callbacks.push(fn),wcs:{inflow:()=>{},event:(...v)=>naverEvents.push(v)},wcs_do:()=>naverViews.push(location.pathname)}
   const doc={title:'Test',referrer,querySelector:()=>metas[0]||null,createElement:tag=>({tag}),head:{appendChild:element=>(element.tag==='script'?scripts:metas).push(element)}}
-  const router={currentRoute:{value:route(path)},beforeEach:fn=>hooks.before=fn,afterEach:fn=>hooks.after=fn}
+  const router=suppliedRouter || {currentRoute:{value:route(path)},resolve:route,beforeEach:fn=>hooks.before=fn,afterEach:fn=>hooks.after=fn}
   sourceModule('../plugins/analytics.client.ts',{...policy,siteConfig,window:win,document:doc,defineNuxtPlugin:fn=>fn({hook:(name,fn)=>hooks[name]=fn}),useRouter:()=>router,useInquiryContext:()=>({capture:()=>{}}),nextTick:async()=>{}})
   const mount=()=>hooks['app:mounted']?.()
   const load=()=>{for(const cb of callbacks.splice(0))cb();for(const s of scripts)s.onload?.()}
   const move=async p=>{
     const to=route(p),from=router.currentRoute.value,result=hooks.before?.(to,from)
     if(result===false)return false
-    if(result?.path)return move(result.path)
-    const u=new URL(p,siteConfig.url);Object.assign(location,{pathname:u.pathname,search:u.search,hash:u.hash});router.currentRoute.value=to
+    if(result?.path)return move(result)
+    const u=new URL(to.fullPath,siteConfig.url);Object.assign(location,{pathname:u.pathname,search:u.search,hash:u.hash});router.currentRoute.value=to
     await hooks.after?.(to,from)
     return true
   }
@@ -124,6 +125,23 @@ const redirectContext=makeStorage(), rawContact='/contact?type=custom&topic=ORIG
 policy.rememberInquiryTopic(rawContact,redirectContext)
 assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,rawContact),'')
 assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,policy.normalizeAnalyticsContactUrl(rawContact)),'ORIGINAL_CATALOG_TITLE')
+// Real Vue Router must preserve query/hash when the production guard redirects an SPA CTA.
+// A redirect object with a query embedded only in `path` silently loses that query.
+const spaRouter=createRouter({history:createMemoryHistory(),routes:[{path:'/gallery/:slug',component:{}},{path:'/contact',component:{}}]})
+const productPath='/gallery/diamond-solitaire-couple-ring'
+await spaRouter.push(productPath)
+const spa=browserHarness(productPath,'',makeStorage(),spaRouter)
+spaRouter.afterEach(to=>{const url=new URL(to.fullPath,siteConfig.url);Object.assign(spa.win.location,{pathname:url.pathname,search:url.search,hash:url.hash})})
+spa.mount();spa.load()
+await spaRouter.push('/contact?type=custom&source=gallery&topic=SPA_ORIGINAL_CATALOG_TITLE&from='+encodeURIComponent(productPath)+'#inquiry-form')
+await Promise.resolve()
+const spaRoute=spaRouter.currentRoute.value
+assert.equal(spaRoute.query.type,'custom');assert.equal(spaRoute.query.source,'gallery')
+assert.equal(spaRoute.query.topic,'custom');assert.equal(spaRoute.query.from,productPath);assert.equal(spaRoute.hash,'#inquiry-form')
+assert.equal(policy.takeInquiryTopic('custom',productPath,spa.win.sessionStorage,spaRoute.fullPath),'SPA_ORIGINAL_CATALOG_TITLE')
+assert.equal(spa.redirects.length,0)
+assert.equal(spa.pageviews().filter(args=>args[2].page_location===siteConfig.url+'/contact').length,1)
+assert.equal(JSON.stringify(spa.win.dataLayer).includes('SPA_ORIGINAL_CATALOG_TITLE'),false)
 assert.equal(policy.hasSafeAnalyticsQuery('?q=PII_SENTINEL'),false)
 for (const category of ['전체','가격','비용','기간','수리','관리','선택','소재·보석','주문']) assert.equal(policy.hasSafeAnalyticsQuery('?category='+encodeURIComponent(category)),true)
 const guide=browserHarness('/guide');guide.mount();guide.load();await guide.move('/guide?category='+encodeURIComponent('소재·보석'));assert.equal(guide.redirects.length,0);assert.equal(guide.pageviews().length,1)
