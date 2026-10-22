@@ -4,7 +4,6 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { galleryItems, categories } from '~/data/gallery-items'
 import { faqItems } from '~/data/faq-items'
 import { siteConfig } from '~/config/site'
-import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const { trackPhoneClick, trackKakaoClick, trackMapClick, trackEvent } = useGtag()
 
@@ -222,12 +221,6 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify(buildBreadcrumbJsonLd([
-        { name: '홈', path: '/' },
-      ]))
-    },
-    {
-      type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
@@ -373,7 +366,6 @@ const handleNaverMapClick = () => {
           sizes="sm:100vw md:100vw lg:1536px"
           loading="eager"
           fetchpriority="high"
-          preload
         />
         <div class="hero-overlay"></div>
         <div class="hero-grain"></div>

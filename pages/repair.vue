@@ -2,21 +2,23 @@
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const pageTitle = '종로 귀금속 수리 | 반지 사이즈·체인·도금 상담 | 귀족'
+const pageDescription = '종로3가 귀족의 반지 사이즈 조절, 목걸이·팔찌 체인 수리, 귀걸이 침과 보석 세팅, 세척·광택·도금 상담 안내입니다. 제품 전체·손상 부위·각인 사진을 보내주세요. 작업 범위와 비용·완료 일정은 실물 상태를 확인한 뒤 안내합니다.'
+
 definePageMeta({
   layout: 'landing'
 })
 
 useHead({
-  title: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족',
+  title: pageTitle,
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/repair` }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 수리 전문 귀족. 반지 사이즈 조절, 목걸이 체인 수리, 귀걸이 침 교체, 금 세척·광택. 30년 경력 장인이 직접 수리. 종로3가 금은방.' },
-    { name: 'keywords', content: '금반지 수리, 귀금속 AS, 사이즈 조절, 광택, 도금, 종로 귀금속 수리, 체인 수리, 금 세척' },
+    { name: 'description', content: pageDescription },
     // Open Graph
-    { property: 'og:title', content: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족' },
-    { property: 'og:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/repair` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp` },
@@ -24,8 +26,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 귀금속 수리·AS | 반지 사이즈·체인·도금 | 귀족' },
-    { name: 'twitter:description', content: '종로 귀금속 수리 전문. 반지 사이즈 조절, 체인 수리, 금 세척·광택. 종로3가 금은방 귀족.' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/pexels-leah-newhouse-50725-691046.webp` },
   ],
   script: [
@@ -82,15 +84,15 @@ const handleKakaoClick = () => {
 const repairServices = [
   {
     title: '반지 사이즈 조절',
-    description: '반지가 헐겁거나 꽉 끼시나요? 14K, 18K 골드 반지의 사이즈 늘리기, 줄이기 모두 가능합니다.',
-    details: ['사이즈 늘리기 (최대 2호)', '사이즈 줄이기', '당일 작업 가능 (상태에 따라)'],
+    description: '반지가 헐겁거나 꽉 끼면 소재·밴드·보석 세팅을 확인해 늘리기나 줄이기 가능 범위를 상담합니다.',
+    details: ['소재와 밴드 구조 확인', '늘리기·줄이기 범위 상담', '상태 확인 후 완료 일정 안내'],
     icon: 'ring',
     to: '/guide/jongno-ring-size-repair',
     linkLabel: '사이즈 수리 자세히'
   },
   {
     title: '체인 수리',
-    description: '끊어진 목걸이, 팔찌 체인을 원래대로 복원해드립니다. 다양한 체인 종류 수리 가능.',
+    description: '끊어진 목걸이·팔찌의 손상 위치와 연결 구조를 확인해 수리 또는 부품 교체를 상담합니다.',
     details: ['목걸이 체인 땜', '팔찌 체인 땜', '잠금장치 교체'],
     icon: 'chain',
     to: '/guide/necklace-bracelet-chain-repair',
@@ -98,7 +100,7 @@ const repairServices = [
   },
   {
     title: '세척 및 광택',
-    description: '오래된 귀금속의 광택을 되살려드립니다. 금, 은 모두 세척 가능.',
+    description: '표면 오염·흠집·도금 마모를 구분하고 소재와 보석에 맞는 작업을 확인합니다.',
     details: ['초음파 세척', '광택 복원', '로듐 도금 (화이트골드)'],
     icon: 'polish',
     to: '/guide/jongno-ring-polishing-cost',
@@ -137,10 +139,10 @@ const repairServices = [
     <!-- Header -->
         <div class="repair-header">
           <span class="label">Repair & Service</span>
-          <h1 class="title">수리/AS 안내</h1>
+          <h1 class="title">종로 귀금속 수리·AS 상담</h1>
           <p class="desc">
-            30년 경력의 장인이 직접 수리합니다.<br>
-            반지 사이즈 조절부터 체인 수리까지, 모든 귀금속 수리가 가능합니다.
+            반지 사이즈 조절·끊어진 체인·세척과 도금, 필요한 작업을 먼저 확인하세요.<br>
+            제품 전체와 손상 부위 사진을 보내주시면 실물 점검 전 준비사항을 안내합니다.
           </p>
         </div>
 
@@ -213,6 +215,8 @@ const repairServices = [
             </span>
           </NuxtLink>
         </div>
+
+        <ServiceQuestions path="/repair" />
 
         <GuideClusterLinks cluster-id="repair" current-path="/repair" />
 

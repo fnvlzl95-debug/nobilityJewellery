@@ -11,7 +11,9 @@ const GATE_DAYS = 400 // 브라우저가 허용하는 쿠키 최대 수명
 // 진입 키는 저장소에 두지 않고 Cloudflare 암호화 변수 ADMIN_GATE_KEY로만 관리한다.
 export default defineEventHandler(async (event) => {
   const { pathname, search } = getRequestURL(event)
-  if (pathname !== '/admin' && !pathname.startsWith('/admin/') && !pathname.startsWith('/api/admin/')) return
+  const gatePath = pathname.toLowerCase()
+  if (gatePath !== '/admin' && !gatePath.startsWith('/admin/') && !gatePath.startsWith('/api/admin/')) return
+  setResponseHeaders(event, { 'referrer-policy': 'no-referrer' })
 
   // Nuxt가 없는 주소에 내는 오류와 같은 내용으로 맞춘다 — 응답만 봐서는 구별할 수 없어야 한다.
   const fullPath = pathname + search
@@ -23,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const gate = await sha256Hex(gateKey)
 
   const key = getQuery(event).key
-  if (pathname === '/admin' && typeof key === 'string' && timingSafeEqual(await sha256Hex(key), gate)) {
+  if (gatePath === '/admin' && typeof key === 'string' && timingSafeEqual(await sha256Hex(key), gate)) {
     // 메일 등 다른 곳에서 /admin 링크를 눌러도 따라와야 하므로 SameSite는 lax다. 로그인 세션은 따로 strict로 둔다.
     setCookie(event, GATE_COOKIE, gate, {
       httpOnly: true,
@@ -41,6 +43,6 @@ export default defineEventHandler(async (event) => {
   setResponseHeaders(event, {
     'cache-control': 'no-store',
     'x-robots-tag': 'noindex, nofollow',
-    'referrer-policy': 'same-origin',
+    'referrer-policy': 'no-referrer',
   })
 })

@@ -1,9 +1,13 @@
 import { siteConfig } from '~/config/site'
-import { shouldTrackAnalytics, analyticsEventVersion, cleanPath } from '~/utils/analytics-policy'
+import { shouldTrackAnalytics, analyticsEventVersion, analyticsOptOut, analyticsService, cleanPublicPath } from '~/utils/analytics-policy'
 
 const submittedLeadIds = new Set<string>()
-const trackingAllowed = () => typeof window !== 'undefined' &&
-  shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search, window.location.pathname)
+const trackingAllowed = () => {
+  if (typeof window === 'undefined' || window.ngAnalyticsDisabled) return false
+  let storage: Storage | undefined
+  try { storage = window.sessionStorage } catch { /* blocked storage */ }
+  return !analyticsOptOut(window.location.search, storage) && shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search, window.location.pathname)
+}
 
 // GA4 이벤트 추적 composable
 export const useGtag = () => {
@@ -48,12 +52,26 @@ export const useGtag = () => {
 
   const trackEvent = (eventName: string, params?: Record<string, string | number>) => {
     if (!trackingAllowed()) return
-    params = { ...params, event_version: analyticsEventVersion, page_path: cleanPath(window.location.pathname) }
+    const safeParams = Object.fromEntries(Object.entries(params || {}).flatMap(([key, value]) => {
+      if (['topic', 'lead_topic', 'name', 'email', 'phone', 'message', 'address'].includes(key)) return []
+      if (['source_path', 'target_path', 'page_path'].includes(key)) return [[key, cleanPublicPath(value)]]
+      if (key === 'destination') {
+        try {
+          const url = new URL(String(value), siteConfig.url)
+          if (url.protocol === 'tel:') return [[key, 'phone']]
+          return [[key, url.origin === siteConfig.url ? cleanPublicPath(url.pathname) : url.origin + url.pathname]]
+        } catch { return [] }
+      }
+      return [[key, value]]
+    }))
+    params = { ...safeParams, event_version: analyticsEventVersion, page_path: cleanPublicPath(window.location.pathname) }
     if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
       (window as any).gtag('event', eventName, params)
     }
 
     trackMetaCustomEvent(eventName, params)
+    const naverEvents: Record<string, string> = { kakao_click: 'KakaoClick', phone_click: 'PhoneClick', inquiry_click: 'InquiryClick', naver_map_click: 'MapClick', kakao_map_click: 'MapClick', form_start: 'FormStart', generate_lead: 'LeadAccepted', guide_to_service_click: 'GuideToService' }
+    if (naverEvents[eventName]) window.ngTrackNaverEvent?.(naverEvents[eventName])
   }
 
   const withOptionalParams = (params: EventParams) => {
@@ -65,11 +83,10 @@ export const useGtag = () => {
   const buildConversionParams = (pageName: string, params?: ConversionParams) => {
     return withOptionalParams({
       page_name: pageName,
-      source_path: typeof window !== 'undefined' ? cleanPath(window.location.pathname) : undefined,
+      source_path: typeof window !== 'undefined' ? cleanPublicPath(window.location.pathname) : undefined,
       placement: params?.placement,
       intent: params?.intent,
-      topic: params?.topic,
-      destination: params?.destination,
+      service_type: analyticsService(params?.intent || pageName, typeof window !== 'undefined' ? window.location.pathname : ''),
     })
   }
 
@@ -144,18 +161,17 @@ export const useGtag = () => {
   const trackLeadSubmitted = (
     leadType: string,
     leadSource?: string,
-    leadTopic?: string,
+    _leadTopic?: string,
     leadId?: string,
     sourcePath?: string,
   ) => {
     if (!trackingAllowed() || !leadId || submittedLeadIds.has(leadId)) return
     submittedLeadIds.add(leadId)
     const leadParams = withOptionalParams({
-      lead_type: leadType,
-      lead_source: leadSource,
-      lead_topic: leadTopic,
+      lead_type: analyticsService(leadType),
+      lead_source: ['home', 'gallery', 'guide_article', 'service', 'contact'].includes(leadSource || '') ? leadSource : 'contact',
       lead_id: leadId,
-      source_path: sourcePath?.startsWith('/') && !sourcePath.startsWith('//') ? sourcePath.split(/[?#]/)[0] : undefined,
+      source_path: cleanPublicPath(sourcePath),
     })
     trackEvent('generate_lead', leadParams)
     trackMetaEvent('Lead', leadParams)
@@ -174,8 +190,8 @@ export const useGtag = () => {
   const trackFormError = (pageName: string, errorMessage: string, errorType = 'submission') => {
     trackEvent('contact_form_error', {
       page_name: pageName,
-      error_message: errorMessage,
-      error_type: errorType,
+      error_code: /^(missing_type|missing_consent|[A-Z_]{3,40})$/.test(errorMessage) ? errorMessage : 'UNKNOWN_ERROR',
+      error_type: ['validation', 'api_error', 'submission'].includes(errorType) ? errorType : 'submission',
     })
   }
 

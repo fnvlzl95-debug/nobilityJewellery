@@ -89,6 +89,7 @@ const quickAnswers = ${js(draft.quickAnswers)}
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }

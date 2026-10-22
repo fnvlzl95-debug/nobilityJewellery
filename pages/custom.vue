@@ -2,21 +2,23 @@
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const pageTitle = '종로 주얼리 주문제작 | 디자인·각인·제작기간 | 귀족'
+const pageDescription = '반지·목걸이·팔찌 주문제작을 종로3가 귀족에서 상담하세요. 공개 제품 사진에서 원하는 디자인과 변경할 부분을 고르고, 소재·색상·각인·희망일을 알려주세요. 제작은 최소 2주를 기준으로 상담하며 최종 견적과 일정은 사양 확인 후 안내합니다.'
+
 definePageMeta({
   layout: 'landing'
 })
 
 useHead({
-  title: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족',
+  title: pageTitle,
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/custom` }
   ],
   meta: [
-    { name: 'description', content: '종로 귀금속 주문제작 전문 귀족. 커플링 주문제작, 돌반지 맞춤제작, 결혼반지 맞춤, 금반지 주문제작. 30년 경력 장인이 직접 세공. 디자인 상담부터 제작까지. 종로3가 금은방.' },
-    { name: 'keywords', content: '금반지 주문제작, 맞춤 반지, 이니셜 각인, 14K 주문제작, 18K 주문제작, 종로 주문제작, 커플링 맞춤' },
+    { name: 'description', content: pageDescription },
     // Open Graph
-    { property: 'og:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
-    { property: 'og:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작. 30년 경력 장인 직접 세공.' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/custom` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0401.webp` },
@@ -24,8 +26,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '귀금속 주문제작 | 반지·목걸이·팔찌 | 귀족' },
-    { name: 'twitter:description', content: '종로 귀금속 주문제작 전문. 커플링, 돌반지, 결혼반지 맞춤제작.' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0401.webp` },
   ],
   script: [
@@ -96,7 +98,7 @@ const customTypes = [
     title: '리폼/리디자인',
     to: '/repair',
     linkLabel: '리폼·수리 안내 보기',
-    description: '오래된 금제품을 새로운 디자인으로 다시 태어나게 합니다. 기존 금을 녹여 새로운 주얼리로 제작해드립니다.',
+    description: '오래된 금제품을 새로운 디자인으로 다시 태어나게 합니다. 제품의 소재·상태를 확인해 활용 가능한 부분과 새 디자인을 상담합니다.',
     items: ['기존 금 활용', '새 디자인 적용', '크기 변경', '스타일 현대화']
   }
 ]
@@ -105,11 +107,11 @@ const process = [
   { num: '01', title: '상담', desc: '원하시는 디자인과 예산을 말씀해주세요' },
   { num: '02', title: '디자인 확정', desc: '샘플 확인 후 세부 사항 결정' },
   { num: '03', title: '제작', desc: '30년 경력 장인이 직접 세공' },
-  { num: '04', title: '완성', desc: '품질 검수 후 전달 (1-2주 소요)' }
+  { num: '04', title: '완성', desc: '최소 2주 기준, 사양 확인 후 수령 일정 안내' }
 ]
 
 const advantages = [
-  { title: '직접 세공', desc: '외주 없이 매장에서 직접 제작합니다' },
+  { title: '제작 상담', desc: '원하는 디자인과 작업 가능한 범위 확인' },
   { title: '30년 경력', desc: '종로 귀금속 상가에서 쌓은 기술력' },
   { title: '합리적 가격', desc: '도매가로 주문제작을 진행합니다' },
   { title: '품질 보증', desc: '모든 제품 품질보증서 제공' }
@@ -121,10 +123,10 @@ const advantages = [
     <!-- Header -->
         <div class="custom-header">
           <span class="label">Custom Made</span>
-          <h1 class="title">주문제작</h1>
+          <h1 class="title">종로 주얼리 주문제작</h1>
           <p class="desc">
-            원하시는 디자인을 말씀해주세요.<br>
-            30년 경력의 장인이 직접 세공하여 제작해드립니다.
+            반지·목걸이·팔찌의 참고 사진과 바꾸고 싶은 부분을 알려주세요.<br>
+            소재·색상·각인과 희망 수령일을 확인해 제작 가능 범위와 견적을 안내합니다.
           </p>
         </div>
 
@@ -223,10 +225,10 @@ const advantages = [
           <h2 class="section-title">주문제작 갤러리</h2>
           <div class="gallery-grid">
             <NuxtLink to="/gallery/diamond-solitaire-couple-ring">
-              <img src="/Image/ring/NS0102.webp" alt="14K 다이아몬드 솔리테어 반지 - 주문제작 가능" loading="lazy" />
+              <img src="/Image/ring/NS0102.webp" alt="다이아몬드 솔리테어 커플링 정면 디자인" loading="lazy" />
             </NuxtLink>
             <NuxtLink to="/gallery/promise-couple-ring">
-              <img src="/Image/ring/NN0103.webp" alt="14K 골드 커플링 주문제작 - 이니셜 각인 가능" loading="lazy" />
+              <img src="/Image/ring/NN0103.webp" alt="프라미스 각인 커플링의 레터링 디자인" loading="lazy" />
             </NuxtLink>
             <NuxtLink to="/gallery/pure-gold-horse-baby-ring">
               <img src="/Image/ring/SB0101.webp" alt="24K 순금 돌반지 주문제작 - 띠별 디자인" loading="lazy" />
@@ -246,6 +248,8 @@ const advantages = [
         </div>
 
         <!-- 주문제작 가이드 클러스터 -->
+        <ServiceQuestions path="/custom" />
+
         <GuideClusterLinks cluster-id="custom" />
 
         <ConsultationNextStep path="/custom" />

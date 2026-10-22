@@ -5,6 +5,7 @@ import { findGuideClusterForPath } from '~/data/guide-clusters'
 interface ArticleSection {
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: {
     headers: string[]
@@ -234,6 +235,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
             <span>{{ displaySectionTitle(section.title) }}</span>
           </h2>
           <p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p>
+          <p v-for="link in section.links" :key="link.to"><NuxtLink :to="link.to">{{ link.label }} →</NuxtLink></p>
           <ul v-if="section.bullets?.length" class="article-bullets">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
@@ -582,6 +584,12 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   color: rgba(250, 250, 250, 0.92);
 }
 
+.article-section a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .article-bullets {
   margin: 6px 0 16px;
   padding-inline-start: 1.35em;
@@ -695,6 +703,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-sources a {
   color: #d4b44a;
+  text-decoration: underline;
   text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }

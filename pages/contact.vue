@@ -2,7 +2,7 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
-import { cleanPath } from '~/utils/analytics-policy'
+import { cleanPublicPath, takeInquiryTopic } from '~/utils/analytics-policy'
 
 type InquiryType = 'wholesale' | 'custom' | 'repair' | 'other'
 type InquirySource = 'home' | 'gallery' | 'guide_article' | 'service'
@@ -81,7 +81,7 @@ useHead({
 })
 
 const route = useRoute()
-const { trackPhoneClick, trackKakaoClick, trackLeadSubmitted, trackFormError } = useGtag()
+const { trackPhoneClick, trackKakaoClick, trackLeadSubmitted, trackFormError, trackEvent } = useGtag()
 
 const inquiryTypes = [
   { value: 'wholesale', label: '도매 상담', labelEn: 'Wholesale' },
@@ -114,6 +114,13 @@ const parseQuerySource = (): InquirySource | '' => {
     : ''
 }
 
+const restoreInquiryTopic = () => {
+  if (import.meta.server) return
+  let storage: Storage | undefined
+  try { storage = window.sessionStorage } catch { /* optional context */ }
+  const topic = takeInquiryTopic(getQueryValue(route.query.type), getQueryValue(route.query.from), storage)
+  if (topic) formData.value.topic = topic
+}
 const buildInitialFormData = () => ({
   name: '',
   phone: '',
@@ -121,8 +128,8 @@ const buildInitialFormData = () => ({
   message: '',
   consent: false,
   source: parseQuerySource(),
-  topic: getQueryValue(route.query.topic).trim().slice(0, 120),
-  sourcePath: cleanPath(getQueryValue(route.query.from)),
+  topic: inquiryTypes.find(item => item.value === getQueryValue(route.query.topic))?.label || '',
+  sourcePath: cleanPublicPath(getQueryValue(route.query.from)),
   discoverySource: '',
   honeypot: '',
 })
@@ -172,6 +179,7 @@ watch(
   () => route.fullPath,
   () => {
     formData.value = buildInitialFormData()
+    restoreInquiryTopic()
     isSubmitted.value = false
     submittedInquiryId.value = ''
     formError.value = ''
@@ -179,6 +187,7 @@ watch(
 )
 
 onMounted(() => {
+  restoreInquiryTopic()
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll()
 })
@@ -349,7 +358,7 @@ const handleSubmit = async () => {
           </div>
 
           <!-- Form -->
-          <form v-else class="contact-form" @submit.prevent="handleSubmit">
+          <form v-else class="contact-form" @submit.prevent="handleSubmit" @focusin.once="trackEvent('form_start', { form_id: 'contact_inquiry', source_path: '/contact' })">
             <div class="form-heading">
               <span>Inquiry Form</span>
               <h2>문의 내용을 남겨주세요</h2>
@@ -412,8 +421,10 @@ const handleSubmit = async () => {
                   placeholder="010-0000-0000"
                   autocomplete="tel"
                   inputmode="tel"
+                  aria-describedby="phone-format-help"
                   required
                 >
+                <p id="phone-format-help" class="field-help">예: 010-1234-5678 또는 02-123-4567. 하이픈 없이 입력해도 됩니다.</p>
               </div>
             </div>
 
@@ -625,6 +636,8 @@ select.form-input { color-scheme: dark; }
   color: #fafafa;
   font-weight: 600;
 }
+
+.field-help { margin-top: 8px; font-size: 12px; line-height: 1.6; color: rgba(250, 250, 250, 0.65); }
 
 .phone-link:hover,
 .phone-link:focus-visible {

@@ -233,6 +233,7 @@ function extractGuideContent(guide, source = null) {
   const normalizedSections = sections.map((section) => ({
     title: cleanText(section?.title),
     paragraphs: Array.isArray(section?.paragraphs) ? section.paragraphs.map(cleanText).filter(Boolean) : [],
+    links: Array.isArray(section?.links) ? section.links.map(link => ({ to: cleanText(link?.to), label: cleanText(link?.label) })).filter(link => link.to.startsWith('/') && !link.to.startsWith('//') && link.label) : [],
     bullets: Array.isArray(section?.bullets) ? section.bullets.map(cleanText).filter(Boolean) : [],
     table: section?.table && Array.isArray(section.table.headers) && Array.isArray(section.table.rows)
       ? { headers: section.table.headers.map(cleanText), rows: section.table.rows.filter(Array.isArray).map(row => row.map(cleanText)) } : null,

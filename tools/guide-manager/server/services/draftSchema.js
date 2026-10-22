@@ -63,6 +63,10 @@ const guideDraftSchema = {
         properties: {
           title: nonEmpty,
           paragraphs: { type: 'array', minItems: 1, maxItems: 5, items: nonEmpty },
+          links: { type: 'array', maxItems: 4, items: {
+            type: 'object', additionalProperties: false, required: ['to', 'label'],
+            properties: { to: { type: 'string', pattern: '^/(?!/)' }, label: nonEmpty },
+          } },
           // Existing birthstone guides legitimately enumerate all twelve months.
           bullets: { type: 'array', maxItems: 12, items: nonEmpty },
           image: { anyOf: [{ type: 'null' }, imageSchema] },
@@ -101,7 +105,7 @@ guideDraftResponseSchema.properties.heroImage = responseImageSchema;
 guideDraftResponseSchema.properties.sections.items.properties.image = {
   anyOf: [{ type: 'null' }, responseImageSchema],
 };
-guideDraftResponseSchema.properties.sections.items.required.push('table');
+guideDraftResponseSchema.properties.sections.items.required.push('table', 'links');
 
 const evidenceSchema = {
   type: 'object', additionalProperties: false, required: ['topic', 'summary', 'sources', 'claims'],

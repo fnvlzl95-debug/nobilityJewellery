@@ -7,7 +7,7 @@ const pageTitle = '이스트웨스트 반지 주문제작, 가로 세팅 고르�
 const pageDescription = '이스트웨스트 반지는 길쭉한 보석을 손가락을 가로지르는 방향으로 놓은 디자인입니다. 같은 보석의 가로·세로 배치, 테두리를 포함한 전체 폭과 측면 높이를 비교해 종로 귀족에 주문제작 상담을 문의해 보세요.'
 const ogImage = `${siteConfig.url}/Image/guide/east-west-ring-custom-orientation-hero-d0641865.webp`
 const publishedAt = '2026-10-13'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "이스트웨스트는 다이아몬드 컷의 한 종류인가요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -114,7 +115,29 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
-  }
+  },
+{
+  "title": "공개 반지 사진에서 방향과 세팅을 구분해 보기",
+  "paragraphs": [
+    "귀족의 팬시 옐로우 다이아몬드 솔리테어 반지는 쿠션컷 중심석과 프롱·숄더 파베 구성을 볼 수 있는 공개 디자인입니다. 가로 배치로 완성한 제작 사례로 제시하는 사진은 아니며, 중심석을 둘러싼 금속과 밴드로 이어지는 부분을 비교하는 참고로 사용하세요.",
+    "이 디자인을 출발점으로 문의한다면 중심석의 긴 방향을 손가락에 대해 어떻게 놓고 싶은지 표시하세요. 사진 전체를 돌려 보이는 모양과 실제 반지의 세팅 방향 변경은 다릅니다. 보석 후보의 형태, 프롱 위치, 밴드 접합부와 높이를 함께 확인한 뒤 가능한 구성을 정합니다."
+  ],
+  "bullets": [
+    "정면 사진: 손가락 방향과 보석의 원하는 긴 방향을 각각 표시",
+    "측면 사진: 중심석 높이와 밴드 연결부 확인 요청",
+    "함께 낄 반지: 나란히 착용할 때 닿는 부분 확인"
+  ],
+  "links": [
+    {
+      "to": "/gallery/fancy-yellow-diamond-solitaire-ring",
+      "label": "쿠션컷 솔리테어의 공개 세팅 사진"
+    },
+    {
+      "to": "/custom",
+      "label": "중심석 방향과 밴드 연결 구조 상담"
+    }
+  ]
+}
 ]
 const cautions = [
   "외부 브랜드 제품은 가로 배치와 고정 방식의 사례입니다. 해당 제품의 사양·재고·제작 조건이 귀족에 그대로 적용되는 것은 아닙니다.",

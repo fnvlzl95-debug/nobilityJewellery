@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, resolve, sep } from 'node:path'
 import { verifyNotFoundDocument, verifyNotFoundResponses } from './verify-not-found.mjs'
+import { readSitemapImageLocations } from './sitemap-image-validation.mjs'
 
 const args = process.argv.slice(2)
 const liveIndex = args.indexOf('--live')
@@ -112,6 +113,11 @@ const verifyCommonSeoDocument = (html, pageUrl, sitemapEntry, failures) => {
   if (/\bnoindex\b/i.test(robots)) failures.push(`${pageUrl.pathname}: robots noindex`)
   if (jsonLdNodes.some((node) => hasSchemaType(node, 'InvalidJsonLd'))) {
     failures.push(`${pageUrl.pathname}: invalid JSON-LD`)
+  }
+  for (const breadcrumb of jsonLdNodes.filter(node => hasSchemaType(node, 'BreadcrumbList'))) {
+    if (!Array.isArray(breadcrumb.itemListElement) || breadcrumb.itemListElement.length < 2) {
+      failures.push(`${pageUrl.pathname}: BreadcrumbList requires at least 2 items`)
+    }
   }
 
   if (pageUrl.pathname.startsWith('/guide/')) {
@@ -410,6 +416,8 @@ const verifyLocal = async () => {
   verifyNotFoundDocument(await readFile(join(publicDir, '404.html'), 'utf8'), 'build/404.html')
   if (process.env.SEO_LOCAL_RENDER_ORIGIN) await verifyNotFoundResponses(process.env.SEO_LOCAL_RENDER_ORIGIN)
   const sitemap = await readFile(join(publicDir, 'sitemap.xml'), 'utf8')
+  const sitemapImages = readSitemapImageLocations(sitemap)
+  if (!sitemapImages.length) throw new Error('Sitemap image discovery returned no images')
   const sitemapEntries = extractSitemapEntries(sitemap)
   const locations = sitemapEntries.map((entry) => entry.loc)
   const failures = []
@@ -417,6 +425,13 @@ const verifyLocal = async () => {
   const sitemapPaths = new Set(locations.map((location) => new URL(location).pathname))
   const sitemapByPath = new Map(sitemapEntries.map((entry) => [new URL(entry.loc).pathname, entry]))
   const galleryDetailPaths = [...sitemapPaths].filter((pathname) => pathname.startsWith('/gallery/'))
+
+  for (const imageLoc of new Set(sitemapImages)) {
+    const imageUrl = new URL(imageLoc)
+    if (imageUrl.origin !== expectedOrigin) continue
+    const imageFile = join(publicDir, decodeURIComponent(imageUrl.pathname).replace(/^\//, ''))
+    if (!existsSync(imageFile)) failures.push(`sitemap image missing from build output: ${imageUrl.pathname}`)
+  }
 
   for (const location of locations) {
     const url = new URL(location)

@@ -7,7 +7,7 @@ const pageTitle = '커프스 버튼, 셔츠 소매에 맞춰 고르기 | 귀족'
 const pageDescription = '커프스 버튼은 셔츠 소매의 구멍을 연결하는 장식입니다. 모든 셔츠에 맞는 것은 아니므로 소매 구조부터 확인하세요. 회전바·체인 연결식의 차이와 선물·주문제작 상담에 필요한 사진을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/cufflinks-shirt-fastening-selection-hero-7d436939.webp`
 const publishedAt = '2026-10-07'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "커프스 버튼과 커프링크는 다른 물건인가요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -109,7 +110,48 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
-  }
+  },
+{
+  "title": "셔츠와 함께 보내는 커프스 상담 기록",
+  "paragraphs": [
+    "원하는 앞 장식 사진만 보내기보다 실제 입을 셔츠의 소매를 펼친 사진과 접어 여민 사진을 함께 준비하세요. 구멍의 위치, 겹쳐지는 원단, 손으로 잠글 때 잡을 공간을 나눠 설명하면 앞면과 뒷면의 요구사항을 구분할 수 있습니다.",
+    "예식용으로 결혼반지까지 함께 준비한다면 프라미스 각인 커플링의 레터링 사진을 보며 두 품목에 같은 문구를 넣을지부터 정할 수 있습니다. 이 사진은 반지 디자인 참고이며 커프스의 제작 사진이나 잠금 부품 보유를 뜻하지 않습니다. 커프스의 각인 면과 잠금 방식은 별도로 확인합니다."
+  ],
+  "table": {
+    "headers": [
+      "보낼 자료",
+      "적어둘 내용"
+    ],
+    "rows": [
+      [
+        "소매 안팎 사진",
+        "셔츠를 접어 여미는 방식과 구멍 위치"
+      ],
+      [
+        "앞 장식 참고 사진",
+        "원하는 윤곽·색상·문구 방향"
+      ],
+      [
+        "뒷면 사진 또는 미정 표시",
+        "회전바·체인 등 비교하고 싶은 잠금 방식"
+      ],
+      [
+        "착용 일정",
+        "혼자 착용할지, 예식·촬영 중 먼저 필요한 날짜"
+      ]
+    ]
+  },
+  "links": [
+    {
+      "to": "/wedding",
+      "label": "커프스를 포함한 신랑 예물 구성 상담"
+    },
+    {
+      "to": "/gallery/promise-couple-ring",
+      "label": "함께 준비할 프라미스 각인 커플링 보기"
+    }
+  ]
+}
 ]
 const cautions = [
   "잠금 구조가 움직이지 않을 때 억지로 비틀거나 공구로 벌리지 마세요. 고정형인지 작동형인지 해당 제품 설명부터 확인하세요.",

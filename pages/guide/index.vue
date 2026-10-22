@@ -290,7 +290,13 @@ useHead(() => ({
         <span>{{ currentPage }} / {{ totalPages }} 페이지</span>
       </div>
 
-      <div :key="`${activeCategory}-${currentPage}`" class="guide-grid">
+      <div v-if="filteredPosts.length === 0" class="guide-empty" role="status">
+        <h2>검색 결과가 없습니다</h2>
+        <p>검색어를 짧게 바꾸거나 다른 주제에서 찾아보세요.</p>
+        <NuxtLink to="/guide">전체 가이드로 돌아가기</NuxtLink>
+      </div>
+
+      <div v-else :key="`${activeCategory}-${currentPage}`" class="guide-grid">
         <NuxtLink v-for="post in paginatedPosts" :key="post.slug" :to="post.path" class="guide-card">
           <img :src="post.image" :alt="post.title" loading="lazy">
           <div class="guide-card-body">
@@ -350,9 +356,9 @@ useHead(() => ({
         </span>
       </nav>
 
-      <!-- 전체 글 목록: 크롤러가 모든 가이드에 링크로 도달할 수 있도록 프리렌더 HTML에 항상 노출 -->
-      <section class="guide-all-list" aria-label="전체 가이드 목록">
-        <h2>전체 가이드 목록</h2>
+      <!-- 접힌 상태에서도 모든 내부 링크를 서버 HTML에 보존한다. -->
+      <details class="guide-all-list">
+        <summary>전체 가이드 목록 <span>{{ guidePosts.length }}개</span></summary>
         <div v-for="category in guideCategories" :key="`all-${category}`" class="guide-all-group">
           <h3>{{ category }}</h3>
           <ul>
@@ -361,7 +367,7 @@ useHead(() => ({
             </li>
           </ul>
         </div>
-      </section>
+      </details>
     </section>
   </div>
 </template>
@@ -372,6 +378,10 @@ useHead(() => ({
 .guide-search div { display:flex; gap:10px; }
 .guide-search input { flex:1; min-width:0; padding:12px; border:1px solid #7c7047; background:#161616; color:#fafafa; }
 .guide-search button { padding:12px 20px; background:#c9a227; color:#111; border:0; cursor:pointer; }
+.guide-empty { padding:32px 0; border-top:1px solid var(--gray-darker); }
+.guide-empty h2 { margin-bottom:12px; font-size:20px; }
+.guide-empty p { margin-bottom:16px; color:var(--gray); }
+.guide-empty a { display:inline-block; min-height:44px; color:var(--gold); text-decoration:underline; text-underline-offset:4px; }
 
 .guide-list-page {
   min-height: 100vh;
@@ -501,7 +511,7 @@ useHead(() => ({
 }
 
 .guide-category-link.is-current small {
-  color: rgba(201, 162, 39, 0.68);
+  color: var(--gold);
 }
 
 .guide-category-context {
@@ -783,10 +793,21 @@ useHead(() => ({
   border-top: 1px solid rgba(250, 250, 250, 0.08);
 }
 
-.guide-all-list h2 {
+.guide-all-list summary {
+  cursor: pointer;
+  min-height: 44px;
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: var(--white);
+}
+
+.guide-all-list summary span {
+  margin-left: 8px;
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.guide-all-list[open] summary {
   margin-bottom: 24px;
 }
 

@@ -7,7 +7,7 @@ const pageTitle = '체인 반지 구매, 유연형과 고정형 차이 | 귀족'
 const pageDescription = '체인 반지는 움직이는 링크로 만든 제품과 체인 모양을 고정한 제품이 있습니다. 사진의 무늬만 보지 말고 움직이는 구간과 안쪽 면을 확인하세요. 원하는 연결 모양과 착용 방식을 정해 귀족에 구매·제작 가능 범위를 문의할 수 있습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/chain-ring-flexible-rigid-selection-hero-9bc64ba3.webp`
 const publishedAt = '2026-09-26'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "체인 반지는 일반 반지처럼 모양이 고정되어 있나요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -103,7 +104,29 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
-  }
+  },
+{
+  "title": "링크 모양과 움직임을 나눠 상담하는 방법",
+  "paragraphs": [
+    "귀족의 청키 체인 파베 토글 목걸이에는 오벌 링크와 잠금 장식의 정면·착용 사진이 공개돼 있습니다. 마음에 드는 연결 고리의 윤곽을 설명하는 참고로 사용할 수 있지만, 이 목걸이가 체인 반지의 제작 사례이거나 같은 움직임을 구현할 수 있다는 뜻은 아닙니다.",
+    "참고 사진에 유지할 링크 모양을 표시하고, 반지는 움직이는 체인 구조인지 형태가 고정된 밴드인지 따로 적어 주세요. 안쪽 면의 연결 흔적, 손가락을 굽힐 때의 간격, 호수 조정 방법은 최종 반지 후보에서 다시 확인해야 합니다."
+  ],
+  "bullets": [
+    "모양: 길쭉한 고리·둥근 고리 중 원하는 윤곽 표시",
+    "작동: 링크가 움직이길 원하는지 고정되길 원하는지 기재",
+    "착용: 손가락과 기본 호수, 옆 손가락에 닿는 느낌 확인"
+  ],
+  "links": [
+    {
+      "to": "/gallery/rose-gold-chunky-chain-pave-lock-necklace",
+      "label": "오벌 링크 모양을 볼 수 있는 목걸이 사진"
+    },
+    {
+      "to": "/custom",
+      "label": "체인 반지의 모양·구조 제작 상담"
+    }
+  ]
+}
 ]
 const cautions = [
   "체인처럼 보이는 고정형 반지를 억지로 구부리지 마세요. 움직이는 부분은 해당 제품의 설명으로 확인하세요.",

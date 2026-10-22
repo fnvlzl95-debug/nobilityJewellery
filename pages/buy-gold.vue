@@ -14,21 +14,23 @@ const handleInlinePhoneClick = () => trackPhoneClick('buy_gold', {
   destination: `tel:${siteConfig.phone}`,
 })
 
+const pageTitle = '종로 금매입·은매입 | 순도 확인·방문 전 상담 | 귀족'
+const pageDescription = '순금·14K·18K, 은 장신구와 부서진 귀금속의 매입 가능 여부를 종로3가 귀족에 문의하세요. 품목·각인 사진으로 준비사항을 확인하고 방문할 수 있습니다. 고시 시세와 최종 지급액을 구분하며 매입가는 실물의 순도·중량·상태 확인 후 안내합니다.'
+
 definePageMeta({
   layout: 'landing'
 })
 
 useHead({
-  title: '종로 금매입·은매입 | 순금·14K·18K·은 제품 상담 | 귀족',
+  title: pageTitle,
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/buy-gold` }
   ],
   meta: [
-    { name: 'description', content: '종로3가 귀족 금매입·은매입 상담. 순금·14K·18K, 은 장신구·실버바와 부서진 귀금속의 매입 가능 여부를 확인하세요. 사진·각인 확인, 당일 시세와 최종 매입가의 차이, 방문 전 준비사항을 안내합니다.' },
-    { name: 'keywords', content: '금 매입, 금매입, 은 매입, 귀금속 매입, 금반지 매입, 금목걸이 매입, 골드바 매입, 순금 매입, 18K 매입, 14K 매입, 종로 금 매입, 금은방 매입, 금 시세, 금 팔기' },
+    { name: 'description', content: pageDescription },
     // Open Graph
-    { property: 'og:title', content: '종로 금매입·은매입 | 순금·14K·18K·은 제품 상담 | 귀족' },
-    { property: 'og:description', content: '품목·순도·각인·중량을 확인하고 당일 시세를 적용하는 종로 금·은 매입 상담.' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/buy-gold` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
@@ -36,8 +38,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 금매입·은매입 | 순금·14K·18K·은 제품 상담 | 귀족' },
-    { name: 'twitter:description', content: '품목·순도·각인·중량 확인 후 당일 시세를 적용하는 종로 매입 상담.' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/NN0801.webp` },
   ],
   script: [
@@ -46,7 +48,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: '종로 금매입·은매입 | 순금·14K·18K·은 제품 상담 | 귀족',
+        name: pageTitle,
         description: '품목과 순도·각인, 중량을 확인한 뒤 당일 시세를 적용하는 금·은 매입 상담 안내 페이지입니다.',
         url: `${siteConfig.url}/buy-gold`,
         mainEntity: {
@@ -258,7 +260,7 @@ const relatedGuides = [
             </p>
             <p>
               귀족은 서울 종로3가 금은방 밀집 지역, 종묘귀금속백화점 1층에 있어
-              당일 국제 시세를 실시간으로 반영해 매입가를 산정합니다.
+              상담 당일 시세와 제품 확인 결과를 기준으로 매입가를 안내합니다.
               14K·18K는 순도에 따라 금 함량을 계산해 매입하며,
               감정과 계량 과정을 모두 보시는 앞에서 진행합니다.
               방문 전 전화(<a :href="`tel:${siteConfig.phone}`" @click="handleInlinePhoneClick">{{ siteConfig.phone }}</a>)로
@@ -288,6 +290,8 @@ const relatedGuides = [
             <p>은 장신구도 상담 대상입니다. 925 등 각인이 보이는 사진과 제품 상태를 보내주세요. 은도금 여부나 다른 소재와의 결합에 따라 실물 확인이 필요합니다.</p>
             <h3 class="notice-title">끊어진 목걸이·짝이 없는 귀걸이는 어떻게 하나요?</h3>
             <p>파손이나 분실 상태를 먼저 알려주세요. 모양이 온전한지와 별개로 재질·순도·상태를 확인해 매입 여부를 안내합니다. 수리해서 계속 착용할지 고민된다면 <NuxtLink to="/repair">귀금속 수리 상담</NuxtLink>도 함께 확인하실 수 있습니다.</p>
+            <h3 class="notice-title">금시세와 실제로 받는 금액은 왜 다른가요?</h3>
+            <p>시세의 기준 순도와 살 때·팔 때 구분을 먼저 확인하세요. 장신구는 보석과 비금속 부품이 섞여 있을 수 있어 전체 무게를 그대로 적용하지 않습니다. 순도·계량 기준·공제 여부와 최종 지급액을 같은 조건으로 비교하세요. <NuxtLink to="/guide/jewelry-hallmark-numbers-meaning">585·750·925 각인 읽는 법</NuxtLink>과 <NuxtLink to="/guide/gold-price-how-to-check">금시세 확인 기준</NuxtLink>을 함께 볼 수 있습니다.</p>
             <h3 class="notice-title">전화나 사진만으로 최종 금액을 알 수 있나요?</h3>
             <p>사진으로는 품목과 확인할 항목을 먼저 안내합니다. 최종 금액은 실물의 순도·중량·상태와 상담 당일 시세를 확인한 뒤 결정합니다. 비금속 부품·보석의 처리와 공제 여부, 최종 지급액을 거래 전에 함께 확인해 주세요.</p>
           </div>
@@ -685,6 +689,8 @@ const relatedGuides = [
 
 .price-info-body a {
   color: #c9a227;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .price-info-link {

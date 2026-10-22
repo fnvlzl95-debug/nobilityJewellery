@@ -7,7 +7,7 @@ const pageTitle = '슬라이더 팔찌, 길이 조절과 꼬리 체인 확인법
 const pageDescription = '슬라이더 팔찌는 조절 장식을 움직여 착용 둘레를 바꾸는 팔찌입니다. 볼로형의 조절 방식, 손 통과와 착용 범위의 차이, 남는 꼬리 체인을 확인하는 방법을 정리했습니다. 구매·선물 전 실제 후보의 조절 모습을 비교해 보세요.'
 const ogImage = `${siteConfig.url}/Image/guide/slider-bracelet-adjustment-tail-selection-hero-e6e0df74.webp`
 const publishedAt = '2026-10-08'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "볼로 팔찌와 슬라이더 팔찌는 어떤 관계인가요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -115,7 +116,31 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
-  }
+  },
+{
+  "title": "메시 체인 슬라이더 팔찌 사진을 읽는 순서",
+  "paragraphs": [
+    "귀족 갤러리의 메시 체인 슬라이더 팔찌는 메시 체인과 조절 장식을 함께 볼 수 있는 공개 디자인입니다. 사진에서는 체인의 짜임과 장식 위치를 살펴보고, 실제 착용 구간을 조절했을 때 남는 체인과 끝 장식이 어디에 놓이는지 추가로 확인하세요.",
+    "공개 사진만으로 내부 마찰 부품의 재질, 손을 통과시키는 최대 벌림, 사용 가능한 조절 범위를 알 수는 없습니다. 상담 때 원하는 밀착감과 평소 손목에 맞는 팔찌 정보를 보내고, 조절 전후·손 통과·잠금 분리 여부를 보여 주는 자료를 요청하세요."
+  ],
+  "image": {
+    "src": "/Image/bracelet/BR0101.webp",
+    "alt": "귀족 갤러리의 메시 체인 슬라이더 팔찌",
+    "caption": "공개 갤러리 제품 사진입니다. 실제 조절 범위와 내부 부품 구조는 사진에서 확정하지 않고 상담으로 확인합니다.",
+    "width": 1024,
+    "height": 1536
+  },
+  "links": [
+    {
+      "to": "/gallery/rose-gold-mesh-chain-slider-bracelet",
+      "label": "메시 체인 슬라이더 팔찌 상세 보기"
+    },
+    {
+      "to": "/guide/bracelet-size-measuring-guide",
+      "label": "손목 치수와 원하는 착용 여유 확인"
+    }
+  ]
+}
 ]
 const cautions = [
   "조절 가능 범위 밖까지 무리하게 당기거나 끝 장식을 임의로 분리하지 마세요. 탈착 방법은 해당 제품 설명을 우선하세요.",

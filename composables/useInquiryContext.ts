@@ -1,9 +1,13 @@
-import { sanitizeAcquisition, type AcquisitionContext } from '~/utils/analytics-policy'
+import { analyticsOptOut, shouldTrackAnalytics, sanitizeAcquisition, type AcquisitionContext } from '~/utils/analytics-policy'
 
 const storageKey = 'ng_acquisition_v1'
 export const useInquiryContext = () => {
   const capture = (): AcquisitionContext => {
     if (import.meta.server) return sanitizeAcquisition(null)
+    let storage: Storage | undefined
+    try { storage = window.sessionStorage } catch { /* blocked storage */ }
+    if (window.ngAnalyticsDisabled || analyticsOptOut(window.location.search, storage) ||
+      !shouldTrackAnalytics(import.meta.env.PROD, window.location.hostname, window.location.search, window.location.pathname)) return sanitizeAcquisition(null)
     try {
       const saved = sessionStorage.getItem(storageKey)
       if (saved) return sanitizeAcquisition(JSON.parse(saved))

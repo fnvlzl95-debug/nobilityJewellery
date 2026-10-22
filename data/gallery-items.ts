@@ -23,7 +23,7 @@ export const galleryProductDefaults = {
   material: '14K·18K',
   colorOptions: ['화이트골드', '로즈골드', '옐로우골드'],
   workType: '주문제작',
-  delivery: '최소 2주',
+  delivery: '최소 2주 · 상담 후 확정',
 } as const
 
 type GalleryItemSource = Omit<GalleryItem, 'colorOptions'>
@@ -45,7 +45,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '프라미스 레터링과 각인 포인트를 더한 클래식 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
-    delivery: '1-2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0103.webp',
       '/Image/ring/NN0101.webp',
@@ -67,7 +67,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '중앙 다이아몬드가 빛나는 우아한 솔리테어 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
-    delivery: '1-2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NS0102.webp',
       '/Image/ring/NS0101.webp'],
@@ -81,11 +81,11 @@ const galleryItemSource: GalleryItemSource[] = [
     slug: 'pure-gold-horse-baby-ring',
     category: 'ring',
     title: '말띠 아기 돌반지',
-    titleEn: 'Signet Ring',
+    titleEn: 'Horse Motif Baby Ring',
     description: '말 모티브를 새겨 돌·백일 선물로 제작하는 아기 반지입니다.',
     material: '24K 순금',
     workType: '주문제작 가능',
-    delivery: '1-2주',
+    delivery: galleryProductDefaults.delivery,
     specs: [
       { label: '디자인', value: '말 모티브 돌·백일 기념 반지' },
       { label: '각인 상담', value: '이름·날짜의 문구와 위치 확인 후 안내' },
@@ -115,7 +115,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '민무늬 밴드에 밀그레인 라인과 원스톤 포인트를 더한 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작 가능',
-    delivery: '1-2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0201.webp',
       '/Image/ring/NN0202.webp'],
@@ -133,7 +133,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '새틴 무광 면과 유광 엣지를 조합한 투톤 콤비 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1-2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0301.webp',
       '/Image/ring/NN0302.webp'],
@@ -151,7 +151,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '심플함과 화려함을 겸한 브릿지 솔리테어 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0401.webp',
       '/Image/ring/NN0402.webp'],
@@ -169,7 +169,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: 'V라인 레이어드 밴드가 손가락을 길어 보이게 연출하는 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0501.webp',
       '/Image/ring/NN0502.webp'],
@@ -187,7 +187,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '하트 스톤과 레이어드 라인이 돋보이는 로맨틱 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0602.webp',
       '/Image/ring/NN0601.webp'],
@@ -205,7 +205,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '계단형 스텝 엣지로 밴드에 입체감을 살린 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0701.webp',
       '/Image/ring/NN0702.webp'],
@@ -223,7 +223,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '사선 웨이브 라인으로 손가락이 가늘어 보이는 커플링입니다.',
     material: '14K White / Rose / Gold',
     workType: '주문제작',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/ring/NN0802.webp',
       '/Image/ring/NN0801.webp'],
@@ -289,7 +289,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '새틴 무광 마감에 사선 컷 포인트를 준 데일리 커플링입니다.',
     material: '14K Rose / White Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN0901.webp'],
     imageAlts: [
       '새틴 무광 사선 컷 커플링 정면'
@@ -304,7 +304,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '솔리테어 큐빅을 파베 라인이 감싼 화려한 커플링입니다.',
     material: '14K Rose / White Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN1001.webp'],
     imageAlts: [
       '투 라인 솔리테어 파베 커플링 정면'
@@ -319,7 +319,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '세 가지 색상과 꼬임 패턴을 조합한 트리컬러 데일리 반지입니다.',
     material: '14K Yellow / Rose / White Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN1101.webp'],
     imageAlts: [
       '트리컬러 트위스트 반지 꼬임 디테일'
@@ -334,7 +334,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '밀그레인 디테일로 빈티지와 모던을 살린 콤비 커플링입니다.',
     material: '14K Gold / Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN1201.webp'],
     imageAlts: [
       '밀그레인 솔리테어 콤비 커플링 정면'
@@ -349,7 +349,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '은은한 밀그레인 포인트의 편안한 데일리 커플링입니다.',
     material: '14K Rose / Yellow Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN1301.webp'],
     imageAlts: [
       '밀그레인 밴드 커플링 정면'
@@ -364,7 +364,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '넓은 밴드에 빈티지 패턴을 새긴 앤티크 무드 커플링입니다.',
     material: '14K Yellow / Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/NN1401.webp'],
     imageAlts: [
       '빈티지 패턴 와이드 밴드 커플링 정면'
@@ -379,7 +379,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '볼 비즈를 한 줄로 배열해 체인에 대비감을 준 목걸이입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/necklace/NC0101.webp'],
     imageAlts: [
       '볼 비즈 체인 목걸이 전체 디자인'
@@ -394,7 +394,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '행운의 말발굽 모티브에 기념 숫자나 참을 더하는 목걸이입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/necklace/NC0201.webp'],
     imageAlts: [
       '말발굽 숫자 각인 목걸이 펜던트 디테일'
@@ -409,7 +409,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '버클 형태의 곡선 펜던트에 파베 스톤을 세팅한 목걸이입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/necklace/NC0301.webp'],
     imageAlts: [
       '버클 파베 펜던트 목걸이 정면'
@@ -424,7 +424,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '메시 체인과 슬라이더 장식으로 길이를 조절하는 팔찌입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/bracelet/BR0101.webp'],
     imageAlts: [
       '메시 체인 슬라이더 팔찌 전체 디자인'
@@ -485,7 +485,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '이니셜을 새긴 클로버 참과 볼 장식을 연결한 체인 팔찌입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/bracelet/rose-gold-clover-initial-chain-bracelet-01.webp'],
     imageAlts: [
       '클로버 이니셜 체인 팔찌 전체 디자인'
@@ -505,7 +505,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '물고기 모티브와 밀그레인 라인을 조합한 커플링입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/rose-gold-fish-motif-couple-ring-01.webp'],
     imageAlts: [
       '물고기 모티브 커플링 착용 이미지'
@@ -524,7 +524,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '두 겹 체인 위에 원스톤을 올린 가벼운 데일리 팔찌입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/bracelet/rose-gold-double-chain-solitaire-bracelet-01.webp'],
     imageAlts: [
       '더블 체인 원스톤 팔찌 착용 이미지'
@@ -543,7 +543,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '블랙 오닉스 클로버를 얹은 슬림 와이어 뱅글입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/bracelet/rose-gold-black-onyx-clover-bangle-01.webp',
       '/Image/bracelet/rose-gold-black-onyx-clover-bangle-02.webp',
@@ -567,7 +567,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '매듭 모티브를 파베 라인으로 감싼 슬림 뱅글입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/bracelet/rose-gold-knot-pave-bangle-01.webp'],
     imageAlts: [
       '매듭 파베 뱅글 정면'
@@ -587,7 +587,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '두 가지 골드 색상을 조합한 텐션 세팅 솔리테어 커플링입니다.',
     material: '14K Rose / Yellow Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/two-tone-tension-solitaire-couple-ring-01.webp'],
     imageAlts: [
       '투톤 텐션 솔리테어 커플링 정면'
@@ -607,7 +607,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '하트 라인과 파베 라인 두 가지 디자인으로 고르는 에타니티 반지입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/rose-gold-heart-pave-eternity-ring-01.webp'],
     imageAlts: [
       '하트 파베 에타니티 반지 두 가지 디자인'
@@ -627,7 +627,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: 'X자로 교차한 파베 포인트가 중심을 잡는 슬림 뱅글입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/bracelet/rose-gold-cross-pave-bangle-01.webp',
       '/Image/bracelet/rose-gold-cross-pave-bangle-02.webp',
@@ -651,7 +651,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '두툼한 오벌 체인에 파베 토글 잠금 장식을 더한 목걸이입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-01.webp',
       '/Image/necklace/rose-gold-chunky-chain-pave-lock-necklace-02.webp',
@@ -695,7 +695,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '자개 바탕에 팔각별 메달을 얹은 슬림 뱅글입니다.',
     material: '14K Rose Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/bracelet/rose-gold-compass-star-bangle-01.webp',
       '/Image/bracelet/rose-gold-compass-star-bangle-02.webp',
@@ -739,7 +739,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '안쪽에 격자·로프 세공을 넣은 투톤 텐션 커플링입니다.',
     material: '14K Rose / Yellow Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/ring/two-tone-lattice-tension-couple-ring-01.webp'],
     imageAlts: [
       '투톤 래티스 텐션 커플링 정면과 안쪽 격자 세공'
@@ -759,7 +759,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '가는 체인에 파베 롱델 하나만 얹은 미니멀 목걸이입니다.',
     material: '14K White Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: [
       '/Image/necklace/white-gold-pave-rondelle-pendant-necklace-01.webp',
       '/Image/necklace/white-gold-pave-rondelle-pendant-necklace-02.webp',
@@ -782,7 +782,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '이니셜·로프·스테이션 체인을 단독 또는 겹쳐 연출하는 팔찌 3종입니다.',
     material: '14K Gold',
     workType: '주문제작 가능',
-    delivery: '1~2주',
+    delivery: galleryProductDefaults.delivery,
     images: ['/Image/bracelet/gold-layered-chain-bracelet-trio-01.webp'],
     imageAlts: [
       '레이어드 체인 팔찌 3종 착용 이미지'

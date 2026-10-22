@@ -7,7 +7,7 @@ const pageTitle = '이터니티 반지, 하프와 풀 선택법 | 귀족'
 const pageDescription = '이터니티 반지를 고를 때는 하프·풀 이름보다 보석이 이어지는 범위를 확인하세요. 정면의 끝점과 손바닥 쪽 구조, 호수별 배열을 비교하고 원하는 반지의 주문 조건을 상담할 수 있습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/eternity-ring-half-full-selection-hero-b64e5c09.webp`
 const publishedAt = '2026-09-21'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "하프 이터니티는 보석이 정확히 절반에만 있나요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -104,7 +105,31 @@ const sections: Array<{
     ],
     "bullets": [],
     "table": null
-  }
+  },
+{
+  "title": "하트 파베 에타니티 반지에서 비교할 부분",
+  "paragraphs": [
+    "귀족 갤러리에는 하트 베젤·큐빅 인레이를 사용한 하트 라인과 프롱 파베·골드 비드가 교차하는 파베 라인이 함께 공개돼 있습니다. 두 디자인의 정면 무늬를 먼저 비교하고, 마음에 드는 쪽을 선택해 손바닥 방향까지 세팅이 이어지는 범위를 문의하세요.",
+    "현재 공개 정면 사진만으로 각 반지의 뒷면 전체 세팅 범위나 호수 조정 가능 여부를 확정할 수는 없습니다. 같은 장식이라도 빈 금속 구간과 보석 배치에 따라 확인할 부분이 달라지므로 밴드를 한 바퀴 보여 주는 사진을 요청하는 편이 정확합니다."
+  ],
+  "image": {
+    "src": "/Image/ring/rose-gold-heart-pave-eternity-ring-01.webp",
+    "alt": "귀족 갤러리의 하트 라인과 파베 라인 에타니티 반지",
+    "caption": "공개 갤러리 제품 사진입니다. 하트·파베 무늬를 비교하는 자료이며 뒷면 세팅 범위와 조정 조건은 추가 확인이 필요합니다.",
+    "width": 1254,
+    "height": 1254
+  },
+  "links": [
+    {
+      "to": "/gallery/rose-gold-heart-pave-eternity-ring",
+      "label": "하트 파베 에타니티 반지 상세 사진"
+    },
+    {
+      "to": "/guide/jongno-ring-size-repair",
+      "label": "반지 구조별 사이즈 수리 상담 기준"
+    }
+  ]
+}
 ]
 const cautions = [
   "정면 사진 한 장이나 상품명만으로 보석의 전체 배열 범위를 판단하지 마세요. 옆면과 반대편도 확인하세요.",

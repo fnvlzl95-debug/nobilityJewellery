@@ -63,6 +63,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '이스트웨스트 반지',
       image: '/Image/guide/east-west-ring-custom-orientation-hero-d0641865.webp',
       publishedAt: '2026-10-13',
+      updatedAt: '2026-10-22',
       category: '주문',
     },
   {
@@ -93,6 +94,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '가족 탄생석 반지',
       image: '/Image/guide/family-birthstone-ring-custom-order-hero-103279c0.webp',
       publishedAt: '2026-10-10',
+      updatedAt: '2026-10-22',
       category: '주문',
     },
   {
@@ -103,6 +105,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '슬라이더 팔찌',
       image: '/Image/guide/slider-bracelet-adjustment-tail-selection-hero-e6e0df74.webp',
       publishedAt: '2026-10-08',
+      updatedAt: '2026-10-22',
       category: '선택',
     },
   {
@@ -113,6 +116,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '커프스 버튼',
       image: '/Image/guide/cufflinks-shirt-fastening-selection-hero-7d436939.webp',
       publishedAt: '2026-10-07',
+      updatedAt: '2026-10-22',
       category: '선택',
     },
   {
@@ -213,6 +217,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '체인 반지',
       image: '/Image/guide/chain-ring-flexible-rigid-selection-hero-9bc64ba3.webp',
       publishedAt: '2026-09-26',
+      updatedAt: '2026-10-22',
       category: '선택',
     },
   {
@@ -313,6 +318,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '이터니티 반지 하프 풀',
       image: '/Image/guide/eternity-ring-half-full-selection-hero-b64e5c09.webp',
       publishedAt: '2026-09-21',
+      updatedAt: '2026-10-22',
       category: '선택',
     },
   {

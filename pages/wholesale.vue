@@ -262,7 +262,7 @@ const products: { category: string; items: { label: string; to?: string }[] }[] 
             <div class="step">
               <span class="step-num">04</span>
               <h3 class="step-title">납품</h3>
-              <p class="step-desc">재고: 당일 / 주문제작: 1-2주</p>
+              <p class="step-desc">주문제작은 최소 2주, 재고와 수령 일정은 상담 후 확정</p>
             </div>
           </div>
         </div>

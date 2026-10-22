@@ -2,21 +2,23 @@
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
+const pageTitle = '종로 순금 돌반지 | 말띠·뱀띠 디자인·이름 각인 | 귀족'
+const pageDescription = '종로3가 귀족에서 순금 돌반지와 백일반지를 상담하세요. 말띠·뱀띠 아기 반지의 실제 공개 사진을 비교하고 이름·날짜 각인, 선물 날짜를 정할 수 있습니다. 제작은 최소 2주를 기준으로 상담하며 가격과 수령 일정은 최종 주문 조건 확인 후 안내합니다.'
+
 definePageMeta({
   layout: 'landing'
 })
 
 useHead({
-  title: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인 | 귀족',
+  title: pageTitle,
   link: [
     { rel: 'canonical', href: `${siteConfig.url}/baby-gold` }
   ],
   meta: [
-    { name: 'description', content: '종로3가 금은방 귀족의 24K 순금 돌반지 주문제작 안내. 1돈·반돈 중량과 이름 각인, 제작기간을 당일 시세 기준으로 상담합니다. 2026년 말띠 등 띠별 디자인과 백일반지도 도매가로 제작합니다.' },
-    { name: 'keywords', content: '돌반지, 순금 돌반지, 돌반지 주문제작, 백일반지, 아기반지, 돌잔치 반지, 24K 돌반지, 순금 아기반지, 띠별 돌반지, 말띠 돌반지, 용띠 돌반지, 종로 돌반지, 금은방 돌반지' },
+    { name: 'description', content: pageDescription },
     // Open Graph
-    { property: 'og:title', content: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인 | 귀족' },
-    { property: 'og:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작. 종로3가 금은방 도매가.' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteConfig.url}/baby-gold` },
     { property: 'og:image', content: `${siteConfig.url}/Image/ring/SB0101.webp` },
@@ -24,8 +26,8 @@ useHead({
     { property: 'og:site_name', content: '귀족' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인 | 귀족' },
-    { name: 'twitter:description', content: '24K 순금 돌반지 주문제작. 백일반지, 아기반지, 띠별 디자인 맞춤제작.' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: `${siteConfig.url}/Image/ring/SB0101.webp` },
   ],
   script: [
@@ -34,7 +36,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: '종로 돌반지 주문제작 | 순금 1돈·반돈·각인 | 귀족',
+        name: pageTitle,
         description: '24K 순금 돌반지, 백일반지, 아기반지 주문제작 안내 페이지입니다.',
         url: `${siteConfig.url}/baby-gold`,
         image: `${siteConfig.url}/Image/ring/SB0101.webp`,
@@ -88,8 +90,8 @@ const products = [
   {
     title: '띠별 아기반지',
     material: '24K 순금',
-    description: '태어난 해의 띠를 새긴 특별한 반지. 용띠, 뱀띠, 말띠 등 모든 띠 디자인 제작 가능합니다.',
-    features: ['12간지 디자인', '년도 각인', '맞춤 사이즈', '품질보증서']
+    description: '태어난 해의 띠를 새긴 특별한 반지. 공개된 말띠·뱀띠 디자인을 참고하고, 다른 띠의 모티브는 제작 가능 범위를 상담하세요.',
+    features: ['띠별 모티브 상담', '년도 각인', '맞춤 사이즈', '품질보증서']
   }
 ]
 
@@ -118,11 +120,11 @@ const processSteps = [
     <!-- Header -->
     <div class="page-header">
           <span class="label">Baby Gold Ring</span>
-          <h1 class="title">순금 돌반지</h1>
+          <h1 class="title">종로 순금 돌반지·백일반지</h1>
           <p class="desc">
             아이의 첫 돌을 축하하는 24K 순금 반지.<br>
             종로3가 금은방 귀족에서 30년 경력 장인이 정성껏 제작합니다.<br>
-            돌잔치 전 방문하시면 당일 시세 기준으로 무게·디자인·각인까지 한 번에 상담해드립니다.
+            말띠·뱀띠 디자인을 비교하고 이름 각인과 선물 날짜를 알려주세요. 제작은 최소 2주를 기준으로 상담합니다.
           </p>
         </div>
 
@@ -250,6 +252,8 @@ const processSteps = [
         </div>
 
         <!-- 돌반지 가이드 클러스터 -->
+        <ServiceQuestions path="/baby-gold" />
+
         <GuideClusterLinks cluster-id="baby-gold" />
 
         <ConsultationNextStep path="/baby-gold" />

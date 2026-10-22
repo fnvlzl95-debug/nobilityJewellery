@@ -42,12 +42,15 @@ const buildPrerenderRoutes = (): string[] => [
   ...galleryItems.map((item) => `/gallery/${item.slug}`),
 ]
 
-const seoUpdatedAt = '2026-08-25'
+const seoUpdatedAt = '2026-10-22'
 // All gallery detail pages received design-specific consultation guidance.
-const galleryTemplateUpdatedAt = '2026-10-03'
+const galleryTemplateUpdatedAt = '2026-10-22'
 const consultationPagesUpdatedAt = '2026-09-05'
 const revisedServicePaths = new Set(['/wedding', '/buy-gold', '/custom', '/repair', '/couple-ring'])
-const serviceLastmod = (path: string) => revisedServicePaths.has(path) ? '2026-10-03' : consultationPagesUpdatedAt
+const auditRevisedPaths = new Set(['/', '/custom', '/repair', '/baby-gold', '/wedding', '/buy-gold', '/privacy'])
+const serviceLastmod = (path: string) => auditRevisedPaths.has(path)
+  ? '2026-10-22'
+  : revisedServicePaths.has(path) ? '2026-10-03' : consultationPagesUpdatedAt
 const sitemapUrls = [
   ...guidePosts.map((guide) => ({
     loc: guide.path,
@@ -62,12 +65,12 @@ const sitemapUrls = [
   { loc: '/wedding', lastmod: serviceLastmod('/wedding') },
   ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: serviceLastmod(loc) })),
   { loc: '/contact', lastmod: consultationPagesUpdatedAt },
-  { loc: '/wholesale', lastmod: '2026-08-29' },
+  { loc: '/wholesale', lastmod: '2026-10-22' },
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: process.env.NODE_ENV !== 'production' },
+  devtools: { enabled: false },
   // First paint should not wait for small global/component CSS requests.
   features: { inlineStyles: true },
 

@@ -6,8 +6,8 @@ definePageMeta({
   layout: 'landing'
 })
 
-const pageTitle = '종로 결혼예물 맞춤 상담 | 구성·제작기간 | 귀족'
-const pageDescription = '결혼반지부터 목걸이·귀걸이, 양가 선물까지 필요한 예물만 상담하세요. 종로3가 귀족에서 희망 소재·디자인·예산과 촬영·예식일을 확인해 구성을 정합니다. 제작은 최소 2주, 견적과 수령 일정은 카카오톡 상담으로 안내합니다.'
+const pageTitle = '종로 결혼예물·결혼반지 | 구성·제작기간 상담 | 귀족'
+const pageDescription = '결혼반지만 준비할지, 목걸이·귀걸이와 양가 선물까지 맞출지 필요한 예물부터 정하세요. 종로3가 귀족의 공개 디자인을 비교하고 소재·각인·예산과 촬영·예식일을 상담합니다. 제작은 최소 2주, 견적과 수령 일정은 최종 조건 확인 후 안내합니다.'
 const { trackKakaoClick, trackPageInquiryClick, trackEvent } = useGtag()
 const weddingContact = { path: '/contact', query: { type: 'custom', source: 'wedding_overview', topic: '결혼예물 구성·일정', from: '/wedding' } }
 const handleWeddingKakao = () => trackKakaoClick('wedding', { placement: 'wedding_intro', intent: 'custom', topic: '결혼예물 구성·일정' })
@@ -21,7 +21,6 @@ useHead({
   ],
   meta: [
     { name: 'description', content: pageDescription },
-    { name: 'keywords', content: '결혼예물, 예물 세트, 결혼반지, 시댁예물, 처가예물, 신부예물, 신랑예물, 18K 예물, 다이아몬드 예물, 종로 예물, 금은방 예물, 예물 도매, 웨딩 주얼리' },
     // Open Graph
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },
@@ -282,16 +281,16 @@ const processSteps = [
           <h2 class="section-title">예물 구성을 상담할 디자인</h2>
           <div class="gallery-grid">
             <NuxtLink to="/gallery/modern-dual-chain-set" @click="trackWeddingLink('/gallery/modern-dual-chain-set', 'wedding_gallery')">
-              <img src="/Image/set/set0101.webp" alt="모던 듀얼 체인 세트 전체 디자인" loading="lazy" />
+              <img src="/Image/set/set0101.webp" alt="오벌 링크 파베 주얼리 세트 전체 디자인" loading="lazy" />
             </NuxtLink>
             <NuxtLink to="/gallery/modern-dual-chain-set" @click="trackWeddingLink('/gallery/modern-dual-chain-set', 'wedding_gallery')">
-              <img src="/Image/set/set0102.webp" alt="모던 듀얼 체인 세트 장식 디테일" loading="lazy" />
+              <img src="/Image/set/set0102.webp" alt="오벌 링크 파베 주얼리 세트 장식 디테일" loading="lazy" />
             </NuxtLink>
             <NuxtLink to="/gallery/u-link-lettering-signature-set" @click="trackWeddingLink('/gallery/u-link-lettering-signature-set', 'wedding_gallery')">
-              <img src="/Image/set/set0201.webp" alt="U링크 레터링 시그니처 세트 디자인" loading="lazy" />
+              <img src="/Image/set/set0201.webp" alt="말발굽 레터링 주얼리 세트 디자인" loading="lazy" />
             </NuxtLink>
             <NuxtLink to="/gallery/u-link-lettering-signature-set" @click="trackWeddingLink('/gallery/u-link-lettering-signature-set', 'wedding_gallery')">
-              <img src="/Image/set/set0202.webp" alt="U링크와 레터링 장식 디테일" loading="lazy" />
+              <img src="/Image/set/set0202.webp" alt="말발굽 모티브와 레터링 장식 디테일" loading="lazy" />
             </NuxtLink>
           </div>
           <div class="gallery-cta">
@@ -303,6 +302,8 @@ const processSteps = [
             </NuxtLink>
           </div>
         </div>
+
+        <ServiceQuestions path="/wedding" />
 
         <GuideClusterLinks cluster-id="wedding" current-path="/wedding" />
 

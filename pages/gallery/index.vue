@@ -240,11 +240,18 @@ onUnmounted(() => {
                 @click="handleCardClick(item)"
               >
                 <div class="card-image">
-                  <img
+                  <NuxtImg
                     :src="item.images[0]"
                     :alt="item.imageAlts[0] ?? item.title"
-                    :loading="section.id === availableCategories[0]?.id && itemIndex < 4 ? 'eager' : 'lazy'"
-                    :fetchpriority="section.id === availableCategories[0]?.id && itemIndex < 4 ? 'high' : 'auto'"
+                    width="530"
+                    height="530"
+                    sizes="xs:50vw 480:33vw lg:25vw xl:265px"
+                    densities="1 2"
+                    format="webp"
+                    quality="80"
+                    decoding="async"
+                    :loading="section.id === availableCategories[0]?.id && itemIndex < 2 ? 'eager' : 'lazy'"
+                    :fetchpriority="section.id === availableCategories[0]?.id && itemIndex === 0 ? 'high' : 'auto'"
                   />
                   <span v-if="item.images.length > 1" class="card-badge">+{{ item.images.length - 1 }}</span>
                 </div>
@@ -442,6 +449,7 @@ onUnmounted(() => {
 /* ===== Category Section ===== */
 .category-section {
   margin-bottom: 42px;
+  scroll-margin-top: 112px;
 }
 
 .category-header {

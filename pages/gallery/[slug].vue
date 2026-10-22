@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { getItemBySlug, getRelatedItems, getLandingLinkForItem, categories } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
@@ -33,7 +33,7 @@ const heroImageUrl = `${siteConfig.url}${product.images[0]}`
 const orderText = product.colorOptions.length
   ? `${product.material} 소재, ${product.colorOptions.join('·')} 색상으로 주문제작할 수 있습니다.`
   : `${product.material} 소재로 주문제작합니다.`
-const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 ${product.delivery}가 필요하며 최종 일정은 상담 후 안내합니다.`
+const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 최소 2주를 기준으로 하며 최종 일정은 상담 후 안내합니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 
@@ -170,29 +170,19 @@ const prevImage = () => {
 }
 
 const isLightboxOpen = ref(false)
-let lastFocusedElement: HTMLElement | null = null
+const lightboxDialog = ref<HTMLElement | null>(null)
+const closeLightbox = () => { isLightboxOpen.value = false }
+useModalFocus(isLightboxOpen, lightboxDialog, closeLightbox)
 
 const openLightbox = () => {
-  lastFocusedElement = document.activeElement as HTMLElement | null
   isLightboxOpen.value = true
-  document.body.style.overflow = 'hidden'
   trackEvent('gallery_detail_zoom', { item_name: product.title, image_index: activeIndex.value + 1 })
-  nextTick(() => {
-    document.querySelector<HTMLElement>('.lightbox-close')?.focus()
-  })
-}
-const closeLightbox = () => {
-  isLightboxOpen.value = false
-  document.body.style.overflow = ''
-  lastFocusedElement?.focus()
-  lastFocusedElement = null
 }
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (!isLightboxOpen.value) return
-  if (e.key === 'Escape') closeLightbox()
-  if (e.key === 'ArrowRight') nextImage()
-  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') { e.preventDefault(); nextImage() }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevImage() }
 }
 
 let revealObserver: IntersectionObserver | null = null
@@ -225,7 +215,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
   revealObserver?.disconnect()
-  document.body.style.overflow = ''
 })
 </script>
 
@@ -251,13 +240,21 @@ onUnmounted(() => {
             :aria-label="`${product.title} 이미지 확대해서 보기`"
             @click="openLightbox"
           >
-            <img
-              :src="product.images[activeIndex]"
-              :alt="altFor(activeIndex)"
+            <NuxtImg
+              v-for="(image, index) in product.images"
+              v-show="activeIndex === index"
+              :key="image"
+              :src="image"
+              :alt="altFor(index)"
               width="1024"
               height="1024"
-              loading="eager"
-              fetchpriority="high"
+              sizes="xs:100vw 400:100vw sm:100vw md:100vw lg:50vw xl:660px"
+              densities="1 2"
+              format="webp"
+              quality="85"
+              :loading="activeIndex === index ? 'eager' : 'lazy'"
+              :fetchpriority="activeIndex === index ? 'high' : 'auto'"
+              decoding="async"
             />
             <span class="media-zoom" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -279,7 +276,7 @@ onUnmounted(() => {
               :aria-label="altFor(index)"
               @click="selectImage(index)"
             >
-              <img :src="image" :alt="''" width="200" height="200" loading="lazy" />
+              <NuxtImg :src="image" alt="" width="84" height="84" densities="1 2" format="webp" quality="80" loading="lazy" decoding="async" />
             </button>
           </div>
         </section>
@@ -373,7 +370,7 @@ onUnmounted(() => {
             @click="handleRelated(related)"
           >
             <div class="related-image">
-              <img :src="related.images[0]" :alt="related.imageAlts[0] ?? related.title" width="400" height="400" loading="lazy" />
+              <NuxtImg :src="related.images[0]" :alt="related.imageAlts[0] ?? related.title" width="440" height="440" sizes="xs:100vw sm:50vw lg:33vw xl:440px" densities="1 2" format="webp" quality="80" loading="lazy" decoding="async" />
             </div>
             <div class="related-body">
               <span class="related-name">{{ related.title }}</span>
@@ -390,10 +387,13 @@ onUnmounted(() => {
       <Transition name="lightbox-fade">
         <div
           v-if="isLightboxOpen"
+          ref="lightboxDialog"
           class="lightbox"
           role="dialog"
           aria-modal="true"
           :aria-label="`${product.title} 이미지 보기`"
+          tabindex="-1"
+          data-lenis-prevent
           @click.self="closeLightbox"
         >
           <button class="lightbox-close" aria-label="닫기" @click="closeLightbox">

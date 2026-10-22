@@ -7,7 +7,7 @@ const pageTitle = '가족 탄생석 반지 주문제작, 구성부터 정하기 
 const pageDescription = '가족 탄생석 반지 주문제작은 한 반지에 누구의 생월을 담을지 정하는 것부터 시작합니다. 같은 생월을 반복할지, 가족 순서와 색 조합 중 무엇을 우선할지 살펴보고 종로 귀족에 원하는 구성을 문의해 보세요.'
 const ogImage = `${siteConfig.url}/Image/guide/family-birthstone-ring-custom-order-hero-103279c0.webp`
 const publishedAt = '2026-10-10'
-const updatedAt = ''
+const updatedAt = '2026-10-22'
 const faqItems = [
   {
     "question": "가족 탄생석 반지에는 부모의 생월도 넣어야 하나요?",
@@ -34,6 +34,7 @@ const quickAnswers = [
 const sections: Array<{
   title: string
   paragraphs: string[]
+  links?: { to: string; label: string }[]
   bullets?: string[]
   table?: { headers: string[]; rows: string[][] } | null
   image?: { src: string; alt: string; caption: string; width?: number; height?: number }
@@ -137,7 +138,30 @@ const sections: Array<{
       "착용할 분의 취향, 참고 사진, 예산과 희망일"
     ],
     "table": null
-  }
+  },
+{
+  "title": "가족의 의미와 실제 보석 후보를 따로 기록하세요",
+  "paragraphs": [
+    "가족별 생월·희망 보석·배치 순서를 한 줄씩 정리하고, 아직 결정하지 않은 보석은 미정으로 남겨 두세요. 같은 생월이 겹치면 가족마다 반복할지 하나의 상징으로 묶을지를 표시합니다. 이름이나 생년월일 전체를 공개 자료에 올릴 필요는 없으며 상담에 필요한 범위만 전달하세요.",
+    "귀족의 팬시 옐로우 다이아몬드 솔리테어 반지는 중심석과 주변 파베를 구분해 볼 수 있는 기존 공개 디자인입니다. 가족 탄생석 반지의 제작 사례는 아닙니다. 이를 참고할 경우 중심석을 둘지 여러 보석을 나란히 둘지부터 정하고, 희망 탄생석의 확보 여부와 실제 배치 가능한 형태는 별도로 상담하세요."
+  ],
+  "bullets": [
+    "가족 표시와 생월: 필요한 의미만 간단히 기재",
+    "보석 후보: 종류를 정한 항목과 색상만 고른 항목 구분",
+    "배치: 순서·반복 여부·중심석 유무를 스케치",
+    "관리: 함께 세팅할 보석의 관리 조건과 수리 가능 범위 문의"
+  ],
+  "links": [
+    {
+      "to": "/gallery/fancy-yellow-diamond-solitaire-ring",
+      "label": "중심석과 주변 파베를 구분해 볼 디자인"
+    },
+    {
+      "to": "/custom",
+      "label": "가족 탄생석 구성의 제작 가능 범위 상담"
+    }
+  ]
+}
 ]
 const cautions = [
   "배치와 문의 예시는 주문제작 상담을 준비하기 위한 제안입니다. 특정 보석의 재고나 모든 조합의 제작 가능 여부를 뜻하지 않습니다.",

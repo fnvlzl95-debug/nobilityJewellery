@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 
 const route = useRoute()
@@ -27,33 +27,8 @@ onUnmounted(() => {
 })
 
 const toggleButtonRef = ref<HTMLButtonElement | null>(null)
-
-// Watch menu state for scroll lock + focus management
-watch(isMenuOpen, async (open) => {
-  document.body.style.overflow = open ? 'hidden' : ''
-  if (open) {
-    await nextTick()
-    document.querySelector<HTMLElement>('.mobile-menu-close')?.focus()
-  } else {
-    toggleButtonRef.value?.focus()
-  }
-})
-
-// ESC로 메뉴 닫기
-const handleMenuKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && isMenuOpen.value) {
-    isMenuOpen.value = false
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleMenuKeydown)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleMenuKeydown)
-  document.body.style.overflow = ''
-})
+const menuDialog = ref<HTMLElement | null>(null)
+useModalFocus(isMenuOpen, menuDialog, () => { isMenuOpen.value = false })
 
 const navLinks = [
   { to: '/', label: '홈', key: 'home' },
@@ -113,7 +88,7 @@ const handleMobileMenuPhoneClick = () => {
   <!-- Mobile Menu -->
   <Teleport to="body">
     <Transition name="menu-fade">
-      <div v-if="isMenuOpen" id="mobile-menu-overlay" class="mobile-menu-overlay" role="dialog" aria-modal="true" aria-label="메뉴">
+      <div v-if="isMenuOpen" id="mobile-menu-overlay" ref="menuDialog" class="mobile-menu-overlay" role="dialog" aria-modal="true" aria-label="메뉴" tabindex="-1" data-lenis-prevent>
         <!-- Close Button -->
         <button class="mobile-menu-close" @click="closeMenu" aria-label="닫기">
           <span></span>
