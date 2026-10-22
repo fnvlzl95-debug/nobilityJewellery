@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-jewelry-design-prompt-guide',
+      path: '/guide/ai-jewelry-design-prompt-guide',
+      title: 'AI 주얼리 디자인, 주문제작 프롬프트 예시',
+      description: 'AI 주얼리 디자인을 시작할 때 품목·형태·색·보석 배치를 어떻게 적을지 안내합니다. 반지와 목걸이 프롬프트 예시를 내 취향에 맞게 바꾸고, 생성한 아이디어로 종로 귀족에 주문제작을 상담해 보세요.',
+      keyword: 'AI 주얼리 디자인',
+      image: '/Image/guide/ai-jewelry-design-prompt-guide-hero-34467502.webp',
+      publishedAt: '2026-10-22',
+      category: '주문',
+    },
+  {
       slug: 'ai-image-jewelry-custom-order',
       path: '/guide/ai-image-jewelry-custom-order',
       title: 'AI 주얼리 주문제작, 생성 사진으로 상담하기',
