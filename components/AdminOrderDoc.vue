@@ -89,11 +89,12 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="doc-panel">
-    <div class="field">
+    <div class="field doc-phone">
       <span :id="`doc-phone-label-${order.id}`" class="field-label">귀족 전화번호</span>
       <div class="segmented" role="group" :aria-labelledby="`doc-phone-label-${order.id}`">
         <button v-for="item in PHONES" :key="item.id" type="button" class="segment" :aria-pressed="phoneId === item.id" @click="choosePhone(item.id)">
-          {{ item.label }} {{ item.number }}
+          <small>{{ item.label }}</small>
+          <span>{{ item.number }}</span>
         </button>
       </div>
     </div>
@@ -145,6 +146,22 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+/* 번호가 줄바꿈되지 않게 이름과 번호를 위아래로 둔다 */
+.admin .doc-phone .segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.admin .doc-phone .segment small {
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .admin .doc-image {
