@@ -50,7 +50,10 @@ export const rememberInquiryTopic = (fullPath: string, storage?: Pick<Storage, '
   pendingInquiryTopic = { topic: topic.slice(0, 120), type: url.searchParams.get('type') || '', from: cleanPublicPath(url.searchParams.get('from')), at: Date.now() }
   try { storage?.setItem(inquiryTopicKey, JSON.stringify(pendingInquiryTopic)) } catch { /* form can use in-memory context */ }
 }
-export const takeInquiryTopic = (type: string, from: string, storage?: Pick<Storage, 'getItem' | 'removeItem'>): string => {
+export const takeInquiryTopic = (type: string, from: string, storage?: Pick<Storage, 'getItem' | 'removeItem'>, currentFullPath = ''): string => {
+  // location.replace is asynchronous: the original document can mount before it
+  // unloads. Leave its context intact for the normalized destination document.
+  if (currentFullPath && normalizeAnalyticsContactUrl(currentFullPath) !== currentFullPath) return ''
   let value = pendingInquiryTopic
   pendingInquiryTopic = null
   try {

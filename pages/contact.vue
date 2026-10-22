@@ -118,7 +118,7 @@ const restoreInquiryTopic = () => {
   if (import.meta.server) return
   let storage: Storage | undefined
   try { storage = window.sessionStorage } catch { /* optional context */ }
-  const topic = takeInquiryTopic(getQueryValue(route.query.type), getQueryValue(route.query.from), storage)
+  const topic = takeInquiryTopic(getQueryValue(route.query.type), getQueryValue(route.query.from), storage, route.fullPath)
   if (topic) formData.value.topic = topic
 }
 const buildInitialFormData = () => ({

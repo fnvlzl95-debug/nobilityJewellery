@@ -120,6 +120,10 @@ const rawContext=browserHarness('/contact?type=custom&topic=PII_SENTINEL&from=/c
 rawContext.mount();rawContext.load();assert.equal(rawContext.scripts.length,0)
 assert.equal(rawContext.redirects[0][1],'/contact?type=custom&topic=custom&from=%2Fcustom')
 assert.equal(policy.takeInquiryTopic('custom','/custom',rawContext.win.sessionStorage),'PII_SENTINEL')
+const redirectContext=makeStorage(), rawContact='/contact?type=custom&topic=ORIGINAL_CATALOG_TITLE&from=/custom'
+policy.rememberInquiryTopic(rawContact,redirectContext)
+assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,rawContact),'')
+assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,policy.normalizeAnalyticsContactUrl(rawContact)),'ORIGINAL_CATALOG_TITLE')
 assert.equal(policy.hasSafeAnalyticsQuery('?q=PII_SENTINEL'),false)
 for (const category of ['전체','가격','비용','기간','수리','관리','선택','소재·보석','주문']) assert.equal(policy.hasSafeAnalyticsQuery('?category='+encodeURIComponent(category)),true)
 const guide=browserHarness('/guide');guide.mount();guide.load();await guide.move('/guide?category='+encodeURIComponent('소재·보석'));assert.equal(guide.redirects.length,0);assert.equal(guide.pageviews().length,1)
