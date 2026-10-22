@@ -12,12 +12,20 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ close: [] }>()
 
-const supplier = {
+// 공급자 칸의 전화번호는 문서마다 고른다. 마지막에 고른 번호를 이 기기에 기억해 둔다.
+const PHONES = siteConfig.order.documentPhones
+const PHONE_STORAGE_KEY = 'ng_doc_phone'
+const phoneId = ref(PHONES[0].id)
+const choosePhone = (id: string) => {
+  phoneId.value = id
+  try { localStorage.setItem(PHONE_STORAGE_KEY, id) } catch { /* 저장이 막힌 브라우저에서는 기억하지 않는다 */ }
+}
+const supplier = computed(() => ({
   company: siteConfig.name,
   representative: siteConfig.representative,
   address: siteConfig.address.full,
-  phone: siteConfig.phone,
-}
+  phone: (PHONES.find(item => item.id === phoneId.value) || PHONES[0]).number,
+}))
 
 const todayInSeoul = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' })
 const dateInSeoul = (iso: string | null) => iso ? new Date(iso).toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }) : todayInSeoul()
@@ -47,7 +55,7 @@ const canShareFile = ref(false)
 
 const render = () => {
   const canvas = document.createElement('canvas')
-  drawPaperDoc(canvas, doc.value, supplier, sealImage.value)
+  drawPaperDoc(canvas, doc.value, supplier.value, sealImage.value)
   canvas.toBlob((blob) => {
     if (!blob) return
     if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
@@ -57,7 +65,7 @@ const render = () => {
     canShareFile.value = typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })
   }, 'image/png')
 }
-watch(doc, render, { deep: true })
+watch([doc, supplier], render, { deep: true })
 
 const share = async () => {
   if (!imageBlob.value) return
@@ -67,6 +75,10 @@ const share = async () => {
 }
 
 onMounted(async () => {
+  try {
+    const saved = localStorage.getItem(PHONE_STORAGE_KEY)
+    if (PHONES.some(item => item.id === saved)) phoneId.value = saved!
+  } catch { /* 기억해 둔 번호가 없으면 가게 번호 */ }
   sealImage.value = await loadSeal()
   render()
 })
@@ -77,6 +89,15 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="doc-panel">
+    <div class="field">
+      <span :id="`doc-phone-label-${order.id}`" class="field-label">귀족 전화번호</span>
+      <div class="segmented" role="group" :aria-labelledby="`doc-phone-label-${order.id}`">
+        <button v-for="item in PHONES" :key="item.id" type="button" class="segment" :aria-pressed="phoneId === item.id" @click="choosePhone(item.id)">
+          {{ item.label }} {{ item.number }}
+        </button>
+      </div>
+    </div>
+
     <div class="doc-fields">
       <div class="field">
         <label class="field-label" :for="`doc-issued-${order.id}`">{{ kind === 'sheet' ? '작성일' : '발행일' }}</label>

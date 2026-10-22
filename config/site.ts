@@ -84,6 +84,11 @@ export const siteConfig = {
       { id: 'toss', bank: '토스뱅크', account: '1000-4335-7794', accountHolder: '박도현' },
       { id: 'kakao', bank: '카카오뱅크', account: '3333-03-1680316', accountHolder: '박도현' },
     ],
+    // 주문서·입금확인서 공급자 칸에 적는 전화번호. 문서를 만들 때 고른다 (첫 번째가 기본).
+    documentPhones: [
+      { id: 'shop', label: '가게', number: '02-766-4789' },
+      { id: 'mobile', label: '휴대폰', number: '010-5739-0496' },
+    ],
   },
 
   // 브랜드 컬러 (CSS 변수로도 사용)
