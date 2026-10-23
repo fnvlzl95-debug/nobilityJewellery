@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-jewelry-custom-budget-guide',
+      path: '/guide/ai-jewelry-custom-budget-guide',
+      title: 'AI 이미지 주문제작 비용, 예산 맞추는 법',
+      description: 'AI로 만든 반지·목걸이 이미지, 주문제작 비용은 어떻게 정할까요? 꼭 유지할 디자인과 조정 가능한 장식을 나누고 원안·예산 조정안의 견적을 비교하는 방법을 종로 귀족이 안내합니다.',
+      keyword: 'AI 주얼리 주문제작 비용',
+      image: '/Image/guide/ai-jewelry-custom-budget-guide-hero-eea8014e.webp',
+      publishedAt: '2026-10-23',
+      category: '주문',
+    },
+  {
       slug: 'ai-jewelry-design-prompt-guide',
       path: '/guide/ai-jewelry-design-prompt-guide',
       title: 'AI 주얼리 디자인, 주문제작 프롬프트 예시',
