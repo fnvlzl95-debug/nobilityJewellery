@@ -200,6 +200,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/ai-image-jewelry-custom-order', label: 'AI 주얼리 주문제작, 생성 사진으로 상담하기', description: 'AI로 만든 반지·목걸이 사진으로 주문제작을 상담할 때 준비할 내용을 안내합니다' },
       { to: '/guide/ai-jewelry-design-prompt-guide', label: 'AI 주얼리 디자인, 주문제작 프롬프트 예시', description: 'AI 주얼리 디자인을 시작할 때 품목·형태·색·보석 배치를 어떻게 적을지 안내합니다' },
       { to: '/guide/ai-jewelry-custom-budget-guide', label: 'AI 이미지 주문제작 비용, 예산 맞추는 법', description: 'AI로 만든 반지·목걸이 이미지, 주문제작 비용은 어떻게 정할까요' },
+      { to: '/guide/ai-jewelry-gemstone-color-selection', label: 'AI 보석 색감, 주문제작 전 실물 고르기', description: 'AI 보석 색감이 마음에 들었다면 실제 주문제작에는 어떻게 반영할까요' },
     ],
   },
 ]

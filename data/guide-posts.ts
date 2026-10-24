@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-jewelry-gemstone-color-selection',
+      path: '/guide/ai-jewelry-gemstone-color-selection',
+      title: 'AI 보석 색감, 주문제작 전 실물 고르기',
+      description: 'AI 보석 색감이 마음에 들었다면 실제 주문제작에는 어떻게 반영할까요? 색상·밝기·선명도의 선호를 정리하고 실제 후보 보석을 비교하는 방법, 종로 귀족에 보낼 문의 예시를 안내합니다.',
+      keyword: 'AI 보석 색감',
+      image: '/Image/guide/ai-jewelry-gemstone-color-selection-hero-a7acb078.webp',
+      publishedAt: '2026-10-24',
+      category: '주문',
+    },
+  {
       slug: 'ai-jewelry-custom-budget-guide',
       path: '/guide/ai-jewelry-custom-budget-guide',
       title: 'AI 이미지 주문제작 비용, 예산 맞추는 법',
