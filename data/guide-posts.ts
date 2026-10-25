@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'handwriting-engraving-custom-order',
+      path: '/guide/handwriting-engraving-custom-order',
+      title: '손글씨 각인 주문제작, 원본 준비와 확인법',
+      description: '손글씨 각인으로 필체를 남기고 싶다면 원본 사진과 사용할 부분부터 정리하세요. 반지·펜던트의 각인 면에 맞춰 획·여백·방향을 확인하는 방법과 종로 귀족에 보낼 문의 예시를 안내합니다.',
+      keyword: '손글씨 각인',
+      image: '/Image/guide/handwriting-engraving-custom-order-hero-c530028e.webp',
+      publishedAt: '2026-10-25',
+      category: '주문',
+    },
+  {
       slug: 'ai-jewelry-gemstone-color-selection',
       path: '/guide/ai-jewelry-gemstone-color-selection',
       title: 'AI 보석 색감, 주문제작 전 실물 고르기',
