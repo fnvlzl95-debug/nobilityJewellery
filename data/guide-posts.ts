@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'three-stone-ring-custom-proportions',
+      path: '/guide/three-stone-ring-custom-proportions',
+      title: '스리스톤 반지 주문제작, 보석 비율 정하기',
+      description: '스리스톤 반지 주문제작은 중심 보석과 양옆 한 쌍의 비율부터 비교하세요. 보이는 크기·모양·전체 폭, 총 캐럿 표기와 실제 보석 조합을 확인하는 방법을 종로 귀족이 안내합니다.',
+      keyword: '스리스톤 반지',
+      image: '/Image/guide/three-stone-ring-custom-proportions-hero-b1fc02c0.webp',
+      publishedAt: '2026-10-26',
+      category: '주문',
+    },
+  {
       slug: 'handwriting-engraving-custom-order',
       path: '/guide/handwriting-engraving-custom-order',
       title: '손글씨 각인 주문제작, 원본 준비와 확인법',
