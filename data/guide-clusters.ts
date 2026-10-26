@@ -203,6 +203,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/ai-jewelry-gemstone-color-selection', label: 'AI 보석 색감, 주문제작 전 실물 고르기', description: 'AI 보석 색감이 마음에 들었다면 실제 주문제작에는 어떻게 반영할까요' },
       { to: '/guide/handwriting-engraving-custom-order', label: '손글씨 각인 주문제작, 원본 준비와 확인법', description: '손글씨 각인으로 필체를 남기고 싶다면 원본 사진과 사용할 부분부터 정리하세요' },
       { to: '/guide/three-stone-ring-custom-proportions', label: '스리스톤 반지 주문제작, 보석 비율 정하기', description: '스리스톤 반지 주문제작은 중심 보석과 양옆 한 쌍의 비율부터 비교하세요' },
+      { to: '/guide/split-shank-ring-custom-band-design', label: '스플릿 생크 반지 주문제작, 밴드 선택법', description: '스플릿 생크 반지는 보석 가까이에서 밴드가 갈라지는 디자인입니다' },
     ],
   },
 ]

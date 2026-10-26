@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'split-shank-ring-custom-band-design',
+      path: '/guide/split-shank-ring-custom-band-design',
+      title: '스플릿 생크 반지 주문제작, 밴드 선택법',
+      description: '스플릿 생크 반지는 보석 가까이에서 밴드가 갈라지는 디자인입니다. 주문제작 전에 나뉘는 위치, 두 갈래 사이 빈틈과 전체 폭, 금속선·보석 장식을 비교하는 방법을 종로 귀족이 안내합니다.',
+      keyword: '스플릿 생크 반지',
+      image: '/Image/guide/split-shank-ring-custom-band-design-hero-7dd3065e.webp',
+      publishedAt: '2026-10-27',
+      category: '주문',
+    },
+  {
       slug: 'three-stone-ring-custom-proportions',
       path: '/guide/three-stone-ring-custom-proportions',
       title: '스리스톤 반지 주문제작, 보석 비율 정하기',
