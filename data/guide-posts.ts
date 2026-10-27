@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'heart-cut-diamond-selection-guide',
+      path: '/guide/heart-cut-diamond-selection-guide',
+      title: '하트컷 다이아, 모양과 세팅 고르는 법',
+      description: '하트컷 다이아는 한 알의 외곽이 하트인 보석입니다. 윗부분의 골과 좌우 곡선, 아래 끝을 비교하고 세팅 후에도 하트 윤곽이 보이는지 확인하는 방법을 종로 귀족이 안내합니다.',
+      keyword: '하트컷 다이아',
+      image: '/Image/guide/heart-cut-diamond-selection-guide-hero-1d38e9ae.webp',
+      publishedAt: '2026-10-27',
+      category: '선택',
+    },
+  {
       slug: 'split-shank-ring-custom-band-design',
       path: '/guide/split-shank-ring-custom-band-design',
       title: '스플릿 생크 반지 주문제작, 밴드 선택법',
