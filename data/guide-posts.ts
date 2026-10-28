@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'enamel-jewelry-selection-care-guide',
+      path: '/guide/enamel-jewelry-selection-care-guide',
+      title: '에나멜 주얼리, 색 장식과 관리 확인법',
+      description: '에나멜 주얼리는 금속 재질과 색 장식 재료를 따로 확인하세요. 유리질 에나멜과 수지 제품의 차이, 색면·금속 경계 비교, 구매 전 물세척과 관리 조건을 묻는 방법을 종로 귀족이 안내합니다.',
+      keyword: '에나멜 주얼리',
+      image: '/Image/guide/enamel-jewelry-selection-care-guide-hero-7c07e554.webp',
+      publishedAt: '2026-10-28',
+      category: '선택',
+    },
+  {
       slug: 'heart-cut-diamond-selection-guide',
       path: '/guide/heart-cut-diamond-selection-guide',
       title: '하트컷 다이아, 모양과 세팅 고르는 법',

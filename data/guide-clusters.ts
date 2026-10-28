@@ -205,6 +205,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/three-stone-ring-custom-proportions', label: '스리스톤 반지 주문제작, 보석 비율 정하기', description: '스리스톤 반지 주문제작은 중심 보석과 양옆 한 쌍의 비율부터 비교하세요' },
       { to: '/guide/split-shank-ring-custom-band-design', label: '스플릿 생크 반지 주문제작, 밴드 선택법', description: '스플릿 생크 반지는 보석 가까이에서 밴드가 갈라지는 디자인입니다' },
       { to: '/guide/heart-cut-diamond-selection-guide', label: '하트컷 다이아, 모양과 세팅 고르는 법', description: '하트컷 다이아는 한 알의 외곽이 하트인 보석입니다' },
+      { to: '/guide/enamel-jewelry-selection-care-guide', label: '에나멜 주얼리, 색 장식과 관리 확인법', description: '에나멜 주얼리는 금속 재질과 색 장식 재료를 따로 확인하세요' },
     ],
   },
 ]
