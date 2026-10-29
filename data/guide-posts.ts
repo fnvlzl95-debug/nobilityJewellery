@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'amethyst-ring-color-aaa-selection',
+      path: '/guide/amethyst-ring-color-aaa-selection',
+      title: '자수정 반지, 색과 AAA 표기 확인법',
+      description: '자수정 반지는 보라색의 진하기와 색 분포, AAA 표기의 기준을 나누어 확인하세요. 판매처 품질 표현과 감별 자료의 차이, 실제 후보 비교와 착용·관리 조건을 종로 귀족이 안내합니다.',
+      keyword: '자수정 반지',
+      image: '/Image/guide/amethyst-ring-color-aaa-selection-hero-95390707.webp',
+      publishedAt: '2026-10-29',
+      category: '선택',
+    },
+  {
       slug: 'enamel-jewelry-selection-care-guide',
       path: '/guide/enamel-jewelry-selection-care-guide',
       title: '에나멜 주얼리, 색 장식과 관리 확인법',
