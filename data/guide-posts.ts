@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'threader-earrings-front-back-length-guide',
+      path: '/guide/threader-earrings-front-back-length-guide',
+      title: '실귀걸이 고르는 법, 앞뒤 길이와 구조',
+      description: '실귀걸이는 상품의 총길이와 착용 후 앞뒤로 내려오는 길이를 나누어 확인하세요. 체인 통과형의 구조, 끝 장식·고정 부품과 구매 전 비교할 항목을 종로 귀족이 안내합니다.',
+      keyword: '실귀걸이',
+      image: '/Image/guide/threader-earrings-front-back-length-guide-hero-72939f69.webp',
+      publishedAt: '2026-10-30',
+      category: '선택',
+    },
+  {
       slug: 'amethyst-ring-color-aaa-selection',
       path: '/guide/amethyst-ring-color-aaa-selection',
       title: '자수정 반지, 색과 AAA 표기 확인법',

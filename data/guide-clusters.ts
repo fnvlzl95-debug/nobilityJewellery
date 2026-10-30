@@ -207,6 +207,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/heart-cut-diamond-selection-guide', label: '하트컷 다이아, 모양과 세팅 고르는 법', description: '하트컷 다이아는 한 알의 외곽이 하트인 보석입니다' },
       { to: '/guide/enamel-jewelry-selection-care-guide', label: '에나멜 주얼리, 색 장식과 관리 확인법', description: '에나멜 주얼리는 금속 재질과 색 장식 재료를 따로 확인하세요' },
       { to: '/guide/amethyst-ring-color-aaa-selection', label: '자수정 반지, 색과 AAA 표기 확인법', description: '자수정 반지는 보라색의 진하기와 색 분포, AAA 표기의 기준을 나누어 확인하세요' },
+      { to: '/guide/threader-earrings-front-back-length-guide', label: '실귀걸이 고르는 법, 앞뒤 길이와 구조', description: '실귀걸이는 상품의 총길이와 착용 후 앞뒤로 내려오는 길이를 나누어 확인하세요' },
     ],
   },
 ]
