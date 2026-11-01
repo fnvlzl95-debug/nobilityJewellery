@@ -208,6 +208,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/enamel-jewelry-selection-care-guide', label: '에나멜 주얼리, 색 장식과 관리 확인법', description: '에나멜 주얼리는 금속 재질과 색 장식 재료를 따로 확인하세요' },
       { to: '/guide/amethyst-ring-color-aaa-selection', label: '자수정 반지, 색과 AAA 표기 확인법', description: '자수정 반지는 보라색의 진하기와 색 분포, AAA 표기의 기준을 나누어 확인하세요' },
       { to: '/guide/threader-earrings-front-back-length-guide', label: '실귀걸이 고르는 법, 앞뒤 길이와 구조', description: '실귀걸이는 상품의 총길이와 착용 후 앞뒤로 내려오는 길이를 나누어 확인하세요' },
+      { to: '/guide/ai-ring-design-to-pendant-custom-order', label: 'AI 반지 디자인, 목걸이로 바꿔 맞추기', description: 'AI 반지 디자인이 마음에 들지만 목걸이로 착용하고 싶다면, 남길 모티브와 새로 정할 연결 구조를 구분하세요' },
     ],
   },
 ]

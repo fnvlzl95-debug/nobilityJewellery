@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-ring-design-to-pendant-custom-order',
+      path: '/guide/ai-ring-design-to-pendant-custom-order',
+      title: 'AI 반지 디자인, 목걸이로 바꿔 맞추기',
+      description: 'AI 반지 디자인이 마음에 들지만 목걸이로 착용하고 싶다면, 남길 모티브와 새로 정할 연결 구조를 구분하세요. 펜던트의 방향·비율·고리와 주문 구성을 종로 귀족이 안내합니다.',
+      keyword: 'AI 반지 모티브 펜던트 전환',
+      image: '/Image/guide/ai-ring-design-to-pendant-custom-order-hero-3f2ced42.webp',
+      publishedAt: '2026-11-01',
+      category: '주문',
+    },
+  {
       slug: 'threader-earrings-front-back-length-guide',
       path: '/guide/threader-earrings-front-back-length-guide',
       title: '실귀걸이 고르는 법, 앞뒤 길이와 구조',
