@@ -125,6 +125,14 @@ const redirectContext=makeStorage(), rawContact='/contact?type=custom&topic=ORIG
 policy.rememberInquiryTopic(rawContact,redirectContext)
 assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,rawContact),'')
 assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,policy.normalizeAnalyticsContactUrl(rawContact)),'ORIGINAL_CATALOG_TITLE')
+assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext,policy.normalizeAnalyticsContactUrl(rawContact)),'ORIGINAL_CATALOG_TITLE', 'Refresh/additional inquiry must retain the original topic')
+assert.equal(policy.takeInquiryTopic('repair','/custom',redirectContext),'', 'A different inquiry type must not inherit the topic')
+assert.equal(policy.takeInquiryTopic('custom','/repair',redirectContext),'', 'A different source must not inherit the topic')
+assert.equal(policy.takeInquiryTopic('custom','/custom',redirectContext),'ORIGINAL_CATALOG_TITLE', 'Unrelated navigation must not consume matching context')
+const expiredContext=makeStorage()
+expiredContext.setItem('ng_inquiry_topic_v1',JSON.stringify({topic:'EXPIRED',type:'custom',from:'/custom',at:Date.now()-16*60000}))
+assert.equal(policy.takeInquiryTopic('custom','/custom',expiredContext),'')
+assert.equal(expiredContext.getItem('ng_inquiry_topic_v1'),null)
 // Real Vue Router must preserve query/hash when the production guard redirects an SPA CTA.
 // A redirect object with a query embedded only in `path` silently loses that query.
 const spaRouter=createRouter({history:createMemoryHistory(),routes:[{path:'/gallery/:slug',component:{}},{path:'/contact',component:{}}]})

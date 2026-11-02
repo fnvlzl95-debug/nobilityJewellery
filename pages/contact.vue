@@ -109,6 +109,7 @@ const parseQueryType = (): InquiryType | '' => {
 
 const parseQuerySource = (): InquirySource | '' => {
   const source = getQueryValue(route.query.source)
+  if (source === 'wedding_overview') return 'service'
   return source === 'home' || source === 'gallery' || source === 'guide_article' || source === 'service'
     ? source
     : ''
@@ -239,6 +240,7 @@ const handleSubmit = async () => {
     )
     isSubmitted.value = true
     formData.value = buildInitialFormData()
+    restoreInquiryTopic()
     await nextTick()
     successHeadingRef.value?.focus()
   } catch (e: any) {
@@ -467,7 +469,7 @@ const handleSubmit = async () => {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </span>
-                <span class="check-label"><NuxtLink to="/privacy">개인정보처리방침</NuxtLink>에 동의합니다</span>
+                <span class="check-label"><NuxtLink to="/privacy" target="_blank" rel="noopener" aria-label="개인정보처리방침 (새 탭)">개인정보처리방침</NuxtLink>에 동의합니다</span>
               </label>
 
               <button type="submit" class="btn-submit" :disabled="isSubmitting">

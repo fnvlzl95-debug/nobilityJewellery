@@ -55,13 +55,19 @@ export const takeInquiryTopic = (type: string, from: string, storage?: Pick<Stor
   // unloads. Leave its context intact for the normalized destination document.
   if (currentFullPath && normalizeAnalyticsContactUrl(currentFullPath) !== currentFullPath) return ''
   let value = pendingInquiryTopic
-  pendingInquiryTopic = null
   try {
     const saved = storage?.getItem(inquiryTopicKey)
-    storage?.removeItem(inquiryTopicKey)
     if (saved) value = JSON.parse(saved)
   } catch { /* optional context */ }
-  return value && value.type === type && value.from === cleanPublicPath(from) && Date.now() - value.at < 15 * 60000 && typeof value.topic === 'string' ? value.topic.slice(0, 120) : ''
+  // Keep the local topic through refresh/back navigation and an additional inquiry.
+  // Only the matching source/type may restore it, within the original 15-minute window.
+  const age = value ? Date.now() - value.at : NaN
+  if (!value || !Number.isFinite(age) || age < 0 || age >= 15 * 60000 || typeof value.topic !== 'string') {
+    pendingInquiryTopic = null
+    try { storage?.removeItem(inquiryTopicKey) } catch { /* optional context */ }
+    return ''
+  }
+  return value.type === type && value.from === cleanPublicPath(from) ? value.topic.slice(0, 120) : ''
 }
 
 // Legacy contact links contain article/product titles. Replace them with a fixed service
