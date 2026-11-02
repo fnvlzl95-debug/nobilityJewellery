@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-ring-design-existing-diamond-fit',
+      path: '/guide/ai-ring-design-existing-diamond-fit',
+      title: '보유 다이아로 AI 반지 디자인 맞추기',
+      description: '가지고 있는 다이아로 AI 반지를 맞추려면 실물 보석을 기준으로 디자인을 조정하세요. 원본 사진과 생성 이미지 구분, 치수·중심석 비율·주변 장식 비교법을 종로 귀족이 안내합니다.',
+      keyword: '보유 다이아 AI 반지',
+      image: '/Image/guide/ai-ring-design-existing-diamond-fit-hero-d308fb8e.webp',
+      publishedAt: '2026-11-02',
+      category: '주문',
+    },
+  {
       slug: 'ai-ring-design-to-pendant-custom-order',
       path: '/guide/ai-ring-design-to-pendant-custom-order',
       title: 'AI 반지 디자인, 목걸이로 바꿔 맞추기',
