@@ -98,6 +98,7 @@ const inquiryActionLabel = computed(() => {
 })
 const contactLink = computed(() => ({
   path: '/contact',
+  hash: '#inquiry-form',
   query: {
     type: effectiveType.value,
     source: 'guide_article',

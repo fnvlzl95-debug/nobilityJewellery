@@ -20,7 +20,7 @@ if (!item) {
 const product = item
 const consultation = getGalleryConsultation(product)
 const sourcePath = `/gallery/${product.slug}`
-const contactLink = { path: '/contact', query: { type: 'custom', source: 'gallery', topic: product.title, from: sourcePath } }
+const contactLink = { path: '/contact', hash: '#inquiry-form', query: { type: 'custom', source: 'gallery', topic: product.title, from: sourcePath } }
 const category = categories.find((c) => c.id === product.category)
 const categoryLabel = category?.label ?? '컬렉션'
 const relatedItems = getRelatedItems(product, 3)

@@ -4,6 +4,7 @@ import Lenis from 'lenis'
 import { galleryItems, categories, getItemsByCategory, getLandingLinkForCategory, type GalleryItem } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
+import { filterGalleryItems } from '~/utils/gallery-search'
 
 const { trackPageInquiryClick, trackEvent, trackMetaEvent } = useGtag()
 
@@ -18,6 +19,7 @@ const consultationChecks = [
 
 const buildGalleryInquiryLink = (topic?: string) => ({
   path: '/contact',
+  hash: '#inquiry-form',
   query: {
     type: 'custom',
     source: 'gallery',
@@ -117,10 +119,19 @@ let rafId: number | null = null
 let fallbackScrollHandler: (() => void) | null = null
 
 const isScrolled = ref(false)
-const availableCategories = computed(() => availableCategoryData)
+// Search stays in memory only: never add free text to URLs, storage or analytics.
+const searchQuery = useState<string>('gallery-search', () => '')
+const searchInput = ref<HTMLInputElement | null>(null)
+const clearSearch = () => {
+  searchQuery.value = ''
+  searchInput.value?.focus()
+}
+const filteredItems = computed(() => filterGalleryItems(galleryItems, searchQuery.value))
+const resultCount = computed(() => filteredItems.value.length)
+const availableCategories = computed(() => availableCategoryData.filter(category => filteredItems.value.some(item => item.category === category.id)))
 const categorySections = computed(() => availableCategories.value.map((category) => ({
   ...category,
-  items: getItemsByCategory(category.id),
+  items: filteredItems.value.filter(item => item.category === category.id),
   cta: getLandingLinkForCategory(category.id),
 })))
 const categorySectionId = (categoryId: string) => `category-${categoryId}`
@@ -194,7 +205,18 @@ onUnmounted(() => {
           </div>
         </header>
 
-        <nav class="tab-bar" aria-label="갤러리 카테고리">
+        <section class="gallery-search" aria-label="디자인 검색">
+          <label for="gallery-search">어떤 디자인을 찾으세요?</label>
+          <div class="gallery-search-controls">
+            <input id="gallery-search" ref="searchInput" v-model="searchQuery" type="search" maxlength="80" autocomplete="off" placeholder="예: 커플링, 볼 비즈, 로즈골드" aria-describedby="gallery-search-help gallery-search-results">
+            <button v-if="searchQuery" type="button" @click="clearSearch">검색 지우기</button>
+          </div>
+          <p id="gallery-search-help">상품명·디자인 설명·소재·색상으로 찾아보세요. 가격과 제작 사양은 디자인별로 상담해 드립니다.</p>
+          <p id="gallery-search-results" role="status" aria-live="polite">{{ resultCount }}개 디자인</p>
+          <p v-if="!resultCount" class="gallery-search-empty">일치하는 디자인이 없습니다. 다른 단어로 검색하거나 검색을 지워 전체 디자인을 확인해 주세요.</p>
+        </section>
+
+        <nav v-if="resultCount" class="tab-bar" aria-label="갤러리 카테고리">
           <a
             v-for="category in availableCategories"
             :key="category.id"
@@ -202,7 +224,7 @@ onUnmounted(() => {
             :href="`#${categorySectionId(category.id)}`"
           >
             <span>{{ category.label }}</span>
-            <strong>{{ getItemsByCategory(category.id).length }}</strong>
+            <strong>{{ filteredItems.filter(item => item.category === category.id).length }}</strong>
           </a>
         </nav>
 
@@ -315,7 +337,7 @@ onUnmounted(() => {
         <div class="gallery-footer">
           <p class="footer-note">
             모든 제품은 도매가로 제공됩니다.<br>
-            상세 문의는 전화 또는 방문 상담을 이용해주세요.
+            디자인 상담은 카카오톡·전화·방문 또는 문의 양식으로 시작하실 수 있습니다.
           </p>
           <NuxtLink :to="buildGalleryInquiryLink()" class="footer-cta" @click="handleInquiryAction('footer_cta', '갤러리 상담')">
             <span>문의하기</span>
@@ -331,6 +353,14 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.gallery-search { margin-bottom: 28px; padding: 20px; border: 1px solid #353025; border-radius: 12px; }
+.gallery-search label { display: block; margin-bottom: 10px; font-weight: 600; }
+.gallery-search-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.gallery-search input { flex: 1 1 220px; min-width: 0; width: 100%; padding: 12px; border: 1px solid #666; border-radius: 6px; color: #fafafa; background: #181818; font-size: 16px; }
+.gallery-search button { padding: 10px 14px; min-height: 44px; border: 1px solid #bfa26c; border-radius: 6px; color: #fafafa; background: #28231b; }
+.gallery-search input:focus-visible, .gallery-search button:focus-visible { outline: 2px solid #dfc487; outline-offset: 3px; }
+.gallery-search p { margin: 10px 0 0; color: #bbb; font-size: 14px; line-height: 1.6; }
+.gallery-search .gallery-search-empty { color: #e5d3ad; }
 /* ===== Base ===== */
 .page {
   background: #0a0a0a;

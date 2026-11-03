@@ -247,17 +247,17 @@ const advantages = [
           </div>
         </div>
 
-        <!-- 주문제작 가이드 클러스터 -->
+        <!-- 핵심 제작 조건과 디자인 확인 후 바로 상담을 시작할 수 있습니다. -->
+        <ConsultationNextStep path="/custom" />
+
         <ServiceQuestions path="/custom" />
 
-        <GuideClusterLinks cluster-id="custom" />
-
-        <ConsultationNextStep path="/custom" />
+        <GuideClusterLinks cluster-id="custom" :initial-visible="6" />
 
         <!-- CTA -->
         <LandingCTA
           title="주문제작 상담"
-          description="원하시는 디자인이 있으시면 전화 또는 방문해주세요.<br>상담 후 견적을 안내해드립니다."
+          description="원하시는 디자인을 카카오톡으로 보내주시거나 전화·방문으로 상담해주세요.<br>상담 후 견적과 주문 절차를 안내해드립니다."
         />
 
     <!-- Location Info -->

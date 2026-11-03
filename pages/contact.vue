@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
+import { getItemBySlug } from '~/data/gallery-items'
 import { cleanPublicPath, takeInquiryTopic } from '~/utils/analytics-policy'
 
 type InquiryType = 'wholesale' | 'custom' | 'repair' | 'other'
@@ -143,6 +144,13 @@ const submittedInquiryId = ref('')
 const isScrolled = ref(false)
 const formError = ref('')
 const successHeadingRef = ref<HTMLElement | null>(null)
+const inquiryFormRef = ref<HTMLElement | null>(null)
+const focusInquiryForm = () => inquiryFormRef.value?.focus({ preventScroll: true })
+// Only known catalogue entries may become a return link, never a supplied URL.
+const inquiryProduct = computed(() => {
+  const match = /^\/gallery\/([a-z0-9-]+)$/.exec(formData.value.sourcePath)
+  return match ? getItemBySlug(match[1]) : undefined
+})
 const inquiryContext = computed(() => {
   const sourceLabel = formData.value.source ? inquirySourceLabels[formData.value.source as InquirySource] : ''
   if (!sourceLabel && !formData.value.topic) return null
@@ -177,7 +185,8 @@ const handleKakaoClick = () => {
 }
 
 watch(
-  () => route.fullPath,
+  // A jump to the form must not clear fields, consent, or the restored topic.
+  () => JSON.stringify({ path: route.path, query: route.query }),
   () => {
     formData.value = buildInitialFormData()
     restoreInquiryTopic()
@@ -187,8 +196,13 @@ watch(
   }
 )
 
+watch(() => route.hash, (hash) => {
+  if (hash === '#inquiry-form') nextTick(focusInquiryForm)
+})
+
 onMounted(() => {
   restoreInquiryTopic()
+  if (route.hash === '#inquiry-form') nextTick(focusInquiryForm)
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll()
 })
@@ -294,6 +308,10 @@ const handleSubmit = async () => {
               </div>
             </a>
 
+            <a href="#inquiry-form" class="form-shortcut" @click="focusInquiryForm">
+              문의 양식으로 바로 가기 <span aria-hidden="true">↓</span>
+            </a>
+
             <a :href="`tel:${siteConfig.phone}`" class="phone-link" @click="handlePhoneClick">
               <span>전화 상담</span>
               <strong>{{ siteConfig.phone }}</strong>
@@ -343,7 +361,7 @@ const handleSubmit = async () => {
         </div>
 
         <!-- Right Side: Form -->
-        <div class="form-side">
+        <div id="inquiry-form" ref="inquiryFormRef" class="form-side" tabindex="-1" role="region" aria-label="문의 양식">
           <!-- Success State -->
           <div v-if="isSubmitted" class="success-state">
             <div class="success-icon">
@@ -371,6 +389,12 @@ const handleSubmit = async () => {
               <span class="inquiry-context-label">현재 상담 흐름</span>
               <strong>{{ inquiryContext.topic || inquiryContext.sourceLabel }}</strong>
               <p>{{ inquiryContext.description }}</p>
+              <NuxtLink
+                v-if="inquiryProduct"
+                :to="`/gallery/${inquiryProduct.slug}`"
+                class="inquiry-product-link"
+                :aria-label="`${inquiryProduct.title} 디자인 다시 보기`"
+              >선택한 디자인 다시 보기 <span aria-hidden="true">→</span></NuxtLink>
             </div>
 
             <input v-model="formData.source" type="hidden">
@@ -623,6 +647,31 @@ select.form-input { color-scheme: dark; }
   transform: translateX(4px);
 }
 
+.form-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  color: #d4b44a;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.form-shortcut:hover {
+  background: rgba(201, 162, 39, 0.08);
+}
+
+.form-shortcut:focus-visible,
+.inquiry-product-link:focus-visible {
+  outline: 2px solid #d4b44a;
+  outline-offset: 4px;
+}
+
 .phone-link {
   display: inline-flex;
   align-items: center;
@@ -795,6 +844,7 @@ select.form-input { color-scheme: dark; }
 
 /* ===== Form Side ===== */
 .form-side {
+  scroll-margin-top: 112px;
   background: rgba(250, 250, 250, 0.02);
   border: 1px solid rgba(250, 250, 250, 0.06);
   padding: clamp(24px, 4vw, 40px);
@@ -845,6 +895,18 @@ select.form-input { color-scheme: dark; }
   padding: 18px 20px;
   border: 1px solid rgba(201, 162, 39, 0.35);
   background: linear-gradient(180deg, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.03));
+}
+
+.inquiry-product-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 8px;
+  color: #d4b44a;
+  font-size: 14px;
+  line-height: 1.5;
+  text-underline-offset: 4px;
 }
 
 .inquiry-context-label {

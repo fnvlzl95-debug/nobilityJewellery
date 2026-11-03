@@ -15,7 +15,7 @@ const items = computed(() => context.value?.gallerySlugs.map(getItemBySlug).filt
 const contextLinks = computed(() => context.value?.links?.filter(link => normalizeGuidePath(link.to) !== sourcePath.value) || [])
 const { trackKakaoClick, trackInquiryClick, trackEvent } = useGtag()
 const source = computed(() => sourcePath.value.startsWith('/guide/') ? 'guide_article' : 'service')
-const contactLink = computed(() => ({ path: '/contact', query: { source: source.value, type: context.value?.type, topic: context.value?.title, from: sourcePath.value } }))
+const contactLink = computed(() => ({ path: '/contact', hash: '#inquiry-form', query: { source: source.value, type: context.value?.type, topic: context.value?.title, from: sourcePath.value } }))
 const brief = computed(() => context.value ? `${context.value.title}\n${siteConfig.url}${sourcePath.value}\n\n${context.value.prompts.map(p => `${p}: `).join('\n')}` : '')
 const copied = ref(false)
 const copyError = ref(false)
