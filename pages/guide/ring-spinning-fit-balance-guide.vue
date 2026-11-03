@@ -277,6 +277,8 @@ useHead({
 
 <template>
   <GuideArticleView
+    :consultation-after-section="1"
+    :show-guide-cluster="false"
     :category="gmArticleCategory"
     :keyword="gmArticleKeyword"
     :inquiry-type="gmInquiryType"

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { consultationPaths } from '~/data/consultation-paths'
+import { consultationPaths, type ConsultationPath } from '~/data/consultation-paths'
 import { getItemBySlug } from '~/data/gallery-items'
 import { siteConfig } from '~/config/site'
 import { normalizeGuidePath } from '~/data/guide-clusters'
 const props = defineProps<{ path: string; inquiryType?: 'custom' | 'repair' | 'wholesale' | 'other'; topic?: string }>()
 const sourcePath = computed(() => normalizeGuidePath(props.path))
-const context = computed(() => {
+const context = computed<(Omit<ConsultationPath, 'type'> & { type: 'custom' | 'repair' | 'wholesale' | 'other' }) | null>(() => {
   const existing = consultationPaths[sourcePath.value]
   if (existing) return { ...existing, type: props.inquiryType || existing.type }
   if (!props.path.startsWith('/guide/')) return null
-  return { title: props.topic ? props.topic + ' 상담 준비' : '상담 전에 준비해 주세요', description: '제품 상태와 원하는 작업을 알려주시면 확인할 사항을 안내합니다.', type: props.inquiryType || 'other', prompts: ['제품 전체 사진과 소재·각인', '궁금한 점 또는 원하는 작업', '희망 방문일이나 수령일'], gallerySlugs: [], links: [] }
+  return { title: props.topic ? props.topic.replace(/\s*상담$/, '') + ' 상담 준비' : '상담 전에 준비해 주세요', description: '제품 상태와 원하는 작업을 알려주시면 확인할 사항을 안내합니다.', type: props.inquiryType || 'other', prompts: ['제품 전체 사진과 소재·각인', '궁금한 점 또는 원하는 작업', '희망 방문일이나 수령일'], gallerySlugs: [], links: [] }
 })
 const items = computed(() => context.value?.gallerySlugs.map(getItemBySlug).filter(item => !!item) || [])
 const contextLinks = computed(() => context.value?.links?.filter(link => normalizeGuidePath(link.to) !== sourcePath.value) || [])
@@ -19,9 +19,10 @@ const contactLink = computed(() => ({ path: '/contact', query: { source: source.
 const brief = computed(() => context.value ? `${context.value.title}\n${siteConfig.url}${sourcePath.value}\n\n${context.value.prompts.map(p => `${p}: `).join('\n')}` : '')
 const copied = ref(false)
 const copyError = ref(false)
+watch(sourcePath, () => { copied.value = false; copyError.value = false })
 const copyBrief = async () => {
   try { await navigator.clipboard.writeText(brief.value); copied.value = true; copyError.value = false; trackEvent('consultation_brief_copy', { source_path: sourcePath.value, placement: 'consultation_next' }) }
-  catch { copyError.value = true }
+  catch { copied.value = false; copyError.value = true }
 }
 </script>
 
@@ -39,9 +40,13 @@ const copyBrief = async () => {
         <strong>{{ item.title }}</strong><span>디자인 자세히 보기 →</span>
       </NuxtLink>
     </div>
+    <div v-if="context.priceGuidance?.length" class="price-guidance">
+      <h3>예산 상담 전에 확인해 주세요</h3>
+      <p v-for="note in context.priceGuidance" :key="note">{{ note }}</p>
+    </div>
     <ul><li v-for="prompt in context.prompts" :key="prompt">{{ prompt }}</li></ul>
     <div class="actions">
-      <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="primary" @click="trackKakaoClick(source, { placement: 'consultation_next', intent: context.type, topic: context.title })">사진으로 카톡 상담</a>
+      <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" class="primary" @click="trackKakaoClick(source, { placement: 'consultation_next', intent: context.type, topic: context.title })">{{ context.kakaoLabel || '사진으로 카톡 상담' }}</a>
       <NuxtLink :to="contactLink" @click="trackInquiryClick(source, { placement: 'consultation_next', intent: context.type, topic: context.title })">문의 남기기</NuxtLink>
       <button type="button" @click="copyBrief">{{ copied ? '상담 내용 복사됨' : '상담 내용 복사' }}</button>
     </div>
@@ -65,6 +70,9 @@ ul { padding-left:20px; list-style:disc; margin:20px 0; }
 .actions a,.actions button { min-height:44px; padding:11px 16px; border:1px solid rgba(201,162,39,.45); background:transparent; color:#fafafa; text-decoration:none; font:inherit; font-size:14px; cursor:pointer; }
 .actions .primary { color:#0a0a0a; background:#c9a227; font-weight:700; }
 .actions :focus-visible,.designs a:focus-visible { outline:2px solid #d4b44a; outline-offset:4px; }
+.price-guidance { padding:18px; margin:20px 0; background:var(--surface-raised, rgba(250,250,250,.02)); border:1px solid var(--hairline, rgba(250,250,250,.08)); }
+.price-guidance h3 { font-size:17px; margin:0 0 10px; }
+.price-guidance p { margin:8px 0; }
 .copy-note { font-size:13px; margin-bottom:0; }
 @media(max-width:400px) { .designs { gap:10px; } .designs strong { font-size:14px; } }
 </style>

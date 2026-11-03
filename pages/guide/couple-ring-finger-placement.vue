@@ -282,6 +282,7 @@ useHead({
 
 <template>
   <GuideArticleView
+    :consultation-after-section="1"
     :category="gmArticleCategory"
     :keyword="gmArticleKeyword"
     :inquiry-type="gmInquiryType"

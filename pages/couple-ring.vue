@@ -76,7 +76,7 @@ const ringTypes = [
   {
     title: '클래식 커플링',
     description: '심플하고 클래식한 디자인. 어떤 스타일에도 잘 어울리며 일상 착용에 적합합니다.',
-    features: ['심플 디자인', '일상 착용', '사이즈 교환']
+    features: ['심플 디자인', '일상 착용', '호수 상담']
   },
   {
     title: '이니셜 커플링',
@@ -94,7 +94,7 @@ const materials = [
   { name: '14K 화이트골드', desc: '은빛 광택의 세련된 느낌' },
   { name: '14K 로즈골드', desc: '핑크빛의 여성스러운 느낌' },
   { name: '14K 옐로우골드', desc: '클래식한 골드 느낌' },
-  { name: '18K 골드', desc: '내구성 우수, 고급스러운 광택' }
+  { name: '18K 골드', desc: '금 함량과 색상을 고려해 선택' }
 ]
 
 const occasions = [
@@ -133,6 +133,8 @@ const engravingOptions = [
           </div>
         </div>
 
+        <ConsultationNextStep path="/couple-ring" />
+
         <!-- Why Choose -->
         <div class="why-section">
           <div class="why-grid">
@@ -146,11 +148,11 @@ const engravingOptions = [
             </div>
             <div class="why-item">
               <h3>무료 각인</h3>
-              <p>이니셜, 날짜, 메시지 각인 무료</p>
+              <p>무료 각인 제공. 적용 가능한 디자인·문구는 상담 시 확인해 주세요.</p>
             </div>
             <div class="why-item">
               <h3>사이즈 조절</h3>
-              <p>구매 후 사이즈 조절 가능</p>
+              <p>디자인과 소재에 따라 조절 가능 범위 상담</p>
             </div>
           </div>
         </div>
@@ -206,7 +208,7 @@ const engravingOptions = [
         <!-- Engraving -->
         <div class="engraving-section">
           <h2 class="section-title">각인 서비스</h2>
-          <p class="section-desc">주문제작 시 무료로 각인해드립니다</p>
+          <p class="section-desc">주문제작 시 무료로 각인해드립니다. 원하는 문구와 위치를 알려주시면 디자인에 따른 적용 가능 범위를 확인합니다.</p>
           <div class="engraving-grid">
             <div
               v-for="(eng, index) in engravingOptions"
@@ -248,8 +250,6 @@ const engravingOptions = [
 
         <!-- 커플링 가이드 클러스터 -->
         <GuideClusterLinks cluster-id="couple-ring" />
-
-        <ConsultationNextStep path="/couple-ring" />
 
         <!-- CTA -->
         <LandingCTA
