@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import { siteConfig } from '~/config/site'
+import { consultationPaths } from '~/data/consultation-paths'
 
 const route = useRoute()
 const { trackKakaoClick, trackPhoneClick, trackMapClick } = useGtag()
@@ -24,6 +25,8 @@ const pageName = computed(() => {
 
 const intent = computed(() => {
   const path = normalizedPath.value
+  const consultation = consultationPaths[path]
+  if (consultation) return consultation.type
   if (path.includes('repair') || path.includes('plating') || path.includes('chain') || path.includes('size')) return 'repair'
   if (path.includes('wholesale')) return 'wholesale'
   if (path.includes('custom') || path.includes('couple-ring') || path.includes('baby-gold') || path.includes('wedding') || path.includes('gallery')) return 'custom'

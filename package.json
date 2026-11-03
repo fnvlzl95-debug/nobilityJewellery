@@ -16,7 +16,8 @@
     "verify:seo": "node scripts/verify-with-worker.mjs",
     "verify:seo:live": "node scripts/verify-seo-output.mjs --live https://noblessegold.com",
     "postinstall": "nuxt prepare",
-    "images": "node scripts/convert-to-webp.mjs"
+    "images": "node scripts/convert-to-webp.mjs",
+    "test:consultation": "node scripts/test-consultation-paths.mjs"
   },
   "dependencies": {
     "@nuxt/image": "^2.0.0",

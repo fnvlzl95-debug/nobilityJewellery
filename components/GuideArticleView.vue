@@ -39,6 +39,8 @@ interface SourceReference {
 
 const props = withDefaults(defineProps<{
   category: string
+  showGuideCluster?: boolean
+  consultationAfterSection?: number
   title: string
   lead: string
   keyword: string
@@ -60,6 +62,8 @@ const props = withDefaults(defineProps<{
   sourceNote?: string
   sources?: SourceReference[]
 }>(), {
+  showGuideCluster: true,
+  consultationAfterSection: 0,
   inquiryType: 'custom',
   inquiryTopic: '',
   heroWidth: 1536,
@@ -257,10 +261,11 @@ const handleGuideLinkClick = (event: MouseEvent) => {
             />
             <figcaption>{{ section.image.caption }}</figcaption>
           </figure>
+          <ConsultationNextStep v-if="props.consultationAfterSection === index + 1" :path="route.path" :inquiry-type="effectiveType" :topic="props.inquiryTopic || props.keyword" />
         </section>
       </article>
 
-      <ConsultationNextStep :path="route.path" :inquiry-type="effectiveType" :topic="props.inquiryTopic || props.keyword" />
+      <ConsultationNextStep v-if="props.consultationAfterSection < 1 || props.consultationAfterSection > props.sections.length" :path="route.path" :inquiry-type="effectiveType" :topic="props.inquiryTopic || props.keyword" />
 
       <section v-if="props.cautions?.length" class="guide-caution">
         <h2>알아두시면 좋아요</h2>
@@ -306,14 +311,15 @@ const handleGuideLinkClick = (event: MouseEvent) => {
       </section>
 
       <GuideClusterLinks
-        v-if="guideCluster"
+        v-if="props.showGuideCluster && guideCluster"
         :cluster-id="guideCluster.id"
         :current-path="route.path"
       />
 
       <section class="guide-bottom-cta">
         <h2>이것만 알려주시면 상담이 빨라져요</h2>
-        <p>예산 범위, 희망 수령일, 원하는 스타일(사진도 좋아요) — 이 세 가지만 미리 정해두시면 훨씬 수월합니다.</p>
+        <p v-if="effectiveType === 'repair'">제품 전체와 불편한 부분의 사진, 증상이 생기는 상황, 이전 수리 이력을 알려주세요. 작업 가능 여부와 일정은 제품 상태를 확인한 뒤 안내합니다.</p>
+        <p v-else>예산 범위, 희망 수령일, 원하는 스타일(사진도 좋아요)을 알려주시면 상담이 수월합니다.</p>
         <div class="guide-bottom-links">
           <a :href="siteConfig.social.kakaoOpenChat" target="_blank" rel="noopener" @click="handleKakaoClick">카톡으로 {{ inquiryActionLabel }}</a>
           <a :href="`tel:${siteConfig.phone}`" @click="handlePhoneClick">전화로 문의하기</a>

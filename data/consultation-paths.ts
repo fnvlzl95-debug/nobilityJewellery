@@ -1,5 +1,7 @@
 export interface ConsultationPath {
   title: string
+  kakaoLabel?: string
+  priceGuidance?: string[]
   description: string
   type: 'custom' | 'repair' | 'other'
   prompts: string[]
@@ -28,10 +30,12 @@ const baby: ConsultationPath = {
 }
 const couple: ConsultationPath = {
   title: '두 분이 원하는 커플링을 함께 고르세요',
-  description: '사진의 디자인을 시작점으로 소재·색상과 각인 방향을 상담할 수 있습니다.',
-  type: 'custom', prompts: ['참고 디자인과 선호 색상', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 2주'],
+  description: '원하시는 디자인과 예산 범위, 희망 수령일을 알려주세요. 호수를 아직 정하지 않았다면 상담 내용에 미정으로 적어주세요.',
+  kakaoLabel: '예산·일정 카톡 상담',
+  priceGuidance: ['견적은 상담 시점의 금시세와 소재, 두 반지의 호수·폭·디자인에 따라 달라집니다.', '보석과 각인 등 원하는 변경 사항을 함께 알려주세요. 제작 가능 범위와 비용을 확인한 뒤 결정할 수 있습니다.', '정해 둔 예산 범위가 있다면 먼저 알려주세요. 상세 가격과 중량은 개별 상담에서 안내합니다.'],
+  type: 'custom', prompts: ['두 반지의 예산 범위', '참고 디자인과 선호 색상', '착용할 손가락·호수 (미정 가능)', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 2주'],
   gallerySlugs: ['promise-couple-ring', 'two-tone-lattice-tension-couple-ring'],
-  links: [{ to: '/couple-ring', label: '커플링 디자인·각인 상담 안내' }],
+  links: [{ to: '/couple-ring', label: '커플링 디자인·각인 상담 안내' }, { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K·18K 견적이 달라지는 기준' }],
 }
 const buying: ConsultationPath = {
   title: '매입 상담 전에 준비하면 좋은 정보',
@@ -58,7 +62,7 @@ const bracelet: ConsultationPath = {
 
 export const consultationPaths: Record<string, ConsultationPath> = {
   '/custom': custom, '/repair': repair, '/baby-gold': baby, '/couple-ring': couple, '/buy-gold': buying,
-  '/wedding': { ...couple, title: '예물 구성의 우선순위를 함께 정해보세요', description: '원하는 품목과 스타일, 준비 일정을 기준으로 구성 선택을 돕습니다.', gallerySlugs: ['rose-gold-chain-necklace-bracelet-set'] },
+  '/wedding': { ...couple, priceGuidance: undefined, prompts: ['참고 디자인과 선호 색상', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 2주'], title: '예물 구성의 우선순위를 함께 정해보세요', description: '원하는 품목과 스타일, 준비 일정을 기준으로 구성 선택을 돕습니다.', gallerySlugs: ['rose-gold-chain-necklace-bracelet-set'] },
   '/guide/gold-one-don-gram': { ...buying, title: '무게를 확인한 다음, 어떤 상담이 필요하세요?', description: '돌 선물, 맞춤 제작, 보유한 금의 매입 중 목적에 맞는 안내를 선택하세요. 실제 제품 조건과 금액은 상담에서 확인합니다.', prompts: ['돌 선물·제작·매입 중 상담 목적', '관심 디자인 또는 보유 제품 사진', '희망 수령일 또는 방문일'], links: [{ to: '/buy-gold', label: '금·은 매입 상담' }, { to: '/baby-gold', label: '돌반지 디자인과 주문 안내' }, { to: '/custom', label: '맞춤 제작·리폼 상담' }], gallerySlugs: ['pure-gold-horse-baby-ring'] },
   '/guide/gold-necklace-length-guide': necklace,
   '/guide/bracelet-size-measuring-guide': bracelet,
@@ -72,6 +76,8 @@ export const consultationPaths: Record<string, ConsultationPath> = {
   '/guide/ring-finger-meaning-guide': {
     ...couple,
     title: '착용할 손가락을 정했다면 디자인과 호수를 함께 보세요',
+    priceGuidance: undefined,
+    kakaoLabel: '반지 제작·조정 카톡 상담',
     description: '상징은 자유롭게 정하되, 반지 폭과 장식 높이에 따라 착용감이 달라질 수 있습니다. 아래 등록 디자인을 참고해 새 반지를 상담하거나, 가진 반지의 사이즈 조정 가능 여부를 확인하세요.',
     prompts: ['착용할 손과 손가락', '참고 디자인 또는 현재 반지 사진', '새 반지 제작 또는 기존 반지 사이즈 조정'],
     links: [{ to: '/custom', label: '착용 위치에 맞는 반지 제작 상담' }, { to: '/repair', label: '가지고 있는 반지 사이즈 수리 상담' }],
@@ -82,6 +88,15 @@ export const consultationPaths: Record<string, ConsultationPath> = {
     description: '줄이거나 늘릴 수 있는 범위는 소재, 밴드 구조, 보석과 각인 위치에 따라 다릅니다. 실제 반지 상태를 확인한 뒤 작업 방법과 일정을 안내합니다.',
     prompts: ['반지 전체와 안쪽 각인·보석 세팅 사진', '헐거움·조임 등 현재 착용감과 원하는 변화', '이전 수리 이력과 방문 희망일'],
     links: [{ to: '/repair', label: '반지 사이즈 수리·방문 상담 안내' }, { to: '/guide/ring-resizing-repair-time', label: '사이즈 수리 기간을 정하는 기준' }],
+  },
+  '/guide/couple-ring-finger-placement': { ...couple, title: '두 분에게 맞는 커플링을 찾아보세요' },
+  '/guide/ring-spinning-fit-balance-guide': {
+    ...repair,
+    title: '반지가 돌아가는 상황과 착용감을 알려주세요',
+    description: '호수뿐 아니라 반지 폭과 장식의 무게 균형도 함께 확인합니다. 사진만으로 수리 방법을 확정하지 않고, 실제 상태를 확인한 뒤 가능한 작업을 안내합니다.',
+    kakaoLabel: '반지 착용감 카톡 상담',
+    prompts: ['반지 전체·옆면·안쪽 각인 사진', '언제 돌아가는지와 헐거움·조임 여부', '이전 사이즈 조절 이력과 희망 방문일'],
+    links: [{ to: '/repair', label: '반지 수리 상담 안내' }, { to: '/guide/jongno-ring-size-repair', label: '사이즈 조절 전에 확인할 기준' }],
   },
   '/guide/couple-ring-14k-18k-price-difference': couple,
   '/guide/necklace-bracelet-chain-repair': repair,
