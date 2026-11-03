@@ -89,6 +89,47 @@ function browserHarness(path='/', referrer='', storage=makeStorage(), suppliedRo
   const pageviews=()=>Array.from(win.dataLayer||[],args=>Array.from(args)).filter(args=>args[0]==='event'&&args[1]==='page_view')
   return {win,doc,scripts,metas,redirects,naverViews,naverEvents,router,mount,load,move,pageviews}
 }
+// Provider sources are narrow identifiers, not a blanket permission for dotted text.
+for (const source of ['chatgpt.com', 'perplexity.ai', 'ChatGPT.com', 'google', 'chatgpt']) {
+  const query = '?utm_source=' + source + '&utm_medium=referral'
+  assert.equal(policy.hasSafeAnalyticsQuery(query), true)
+  const expectedSource = policy.cleanCampaignSource(source)
+  assert.equal(policy.sanitizeAcquisition({utmSource:source}).utmSource, expectedSource)
+  assert.equal(new URL(policy.analyticsPageLocation('/custom',query,siteConfig.url)).searchParams.get('utm_source'),expectedSource)
+  const entry = browserHarness('/custom'+query, 'https://chatgpt.com/c/PRIVATE_CONVERSATION')
+  entry.mount();entry.load()
+  assert.equal(entry.scripts.length,3)
+  assert.equal(entry.pageviews().length,1)
+  assert.equal(entry.pageviews()[0][2].page_referrer,'https://chatgpt.com/')
+  const config = Array.from(entry.win.dataLayer,args=>Array.from(args)).find(args=>args[0]==='config')
+  assert.equal(config[2].campaign_source,expectedSource)
+  const capture = sourceModule('../composables/useInquiryContext.ts',{...policy,window:entry.win,document:entry.doc,sessionStorage:entry.win.sessionStorage}).useInquiryContext().capture
+  assert.equal(capture().utmSource,expectedSource)
+  const tracking = sourceModule('../composables/useGtag.ts',{...policy,window:entry.win,siteConfig}).useGtag()
+  tracking.trackKakaoClick('custom')
+  const events = Array.from(entry.win.dataLayer,args=>Array.from(args))
+  assert.equal(events.filter(args=>args[1]==='kakao_click').length,1)
+  assert.equal(events.filter(args=>args[1]==='cta_click').length,1)
+  await entry.move('/repair')
+  assert.equal(entry.pageviews().length,2)
+  assert.equal(capture().utmSource,expectedSource,'Tab first-touch attribution survives service navigation')
+  await entry.move('/contact?type=repair&source=service&topic=repair&from=%2Frepair#inquiry-form')
+  assert.equal(entry.pageviews().length,3)
+  assert.equal(capture().utmSource,expectedSource)
+  assert.equal(JSON.stringify(entry.win.dataLayer).includes('PRIVATE_CONVERSATION'),false)
+}
+for (const query of ['?utm_source=person.name','?utm_source=person@example.com','?utm_source=chatgpt.com.evil.example','?utm_source=https://chatgpt.com','?utm_campaign=chatgpt.com','?utm_medium=chatgpt.com','?utm_source=chatgpt.com&utm_source=person@example.com','?utm_source=chatgpt.com&phone=01012345678','?utm_source=chatgpt.com&analytics=off']) {
+  const blocked=browserHarness('/custom'+query);blocked.mount();blocked.load()
+  assert.equal(blocked.scripts.length,0)
+  const tracking=sourceModule('../composables/useGtag.ts',{...policy,window:blocked.win,siteConfig}).useGtag()
+  tracking.trackKakaoClick('custom')
+  assert.equal(blocked.pageviews().length,0)
+  assert.equal(blocked.win.dataLayer?.length || 0,0)
+}
+const plainGpt=browserHarness('/custom','https://chatgpt.com/c/PRIVATE_CONVERSATION')
+plainGpt.mount();plainGpt.load();assert.equal(plainGpt.pageviews().length,1)
+assert.equal(plainGpt.pageviews()[0][2].page_referrer,'https://chatgpt.com/')
+
 const browser=browserHarness('/?utm_source=google&utm_medium=organic','https://www.google.com/search?q=PRIVATE_SEARCH')
 browser.mount();browser.load()
 assert.equal(browser.pageviews().length,1)
@@ -103,7 +144,7 @@ assert.equal(await browser.move('/order/SECRET_TOKEN'),false)
 assert.equal(browser.pageviews().length,2)
 assert.equal(browser.metas.at(-1).content,'no-referrer')
 assert.equal(JSON.stringify(browser.win.dataLayer).includes('SECRET_TOKEN'),false)
-for(const path of ['/order/SECRET_TOKEN','/quote/SECRET_TOKEN','/admin?key=SECRET_TOKEN','/ORDER/SECRET_TOKEN','/Quote/SECRET_TOKEN','/ADMIN?key=SECRET_TOKEN','/%6Frder/SECRET_TOKEN','/order%2FSECRET_TOKEN']) {
+for(const path of ['/order/SECRET_TOKEN','/quote/SECRET_TOKEN','/admin?key=SECRET_TOKEN','/ORDER/SECRET_TOKEN','/Quote/SECRET_TOKEN','/ADMIN?key=SECRET_TOKEN','/%6Frder/SECRET_TOKEN','/order%2FSECRET_TOKEN','/order/SECRET_TOKEN?utm_source=chatgpt.com','/%6Frder/SECRET_TOKEN?utm_source=perplexity.ai']) {
   const privateBrowser=browserHarness(path);privateBrowser.mount();privateBrowser.load()
   assert.equal(privateBrowser.scripts.length,0)
   assert.equal(await privateBrowser.move('/custom'),false)
@@ -150,6 +191,37 @@ assert.equal(policy.takeInquiryTopic('custom',productPath,spa.win.sessionStorage
 assert.equal(spa.redirects.length,0)
 assert.equal(spa.pageviews().filter(args=>args[2].page_location===siteConfig.url+'/contact').length,1)
 assert.equal(JSON.stringify(spa.win.dataLayer).includes('SPA_ORIGINAL_CATALOG_TITLE'),false)
+// A normalized contact PUSH must not overwrite the product. Explicit REPLACE stays replace.
+const settleNavigation = (router, action) => new Promise((resolve, reject) => {
+  const timeout = setTimeout(() => { remove(); reject(new Error('Router navigation timed out')) },1000)
+  const remove = router.afterEach(() => { clearTimeout(timeout); remove(); resolve() })
+  action()
+})
+for (const slug of ['promise-couple-ring','rose-gold-silver-ball-bead-necklace']) {
+  const historyRouter=createRouter({history:createMemoryHistory(),routes:[{path:'/:pathMatch(.*)*',component:{}}]})
+  const category='/gallery#category-'+(slug==='promise-couple-ring'?'ring':'necklace')
+  const product='/gallery/'+slug
+  await historyRouter.push(category);await historyRouter.push(product)
+  const state=browserHarness(product,'',makeStorage(),historyRouter)
+  historyRouter.afterEach(to=>{const url=new URL(to.fullPath,siteConfig.url);Object.assign(state.win.location,{pathname:url.pathname,search:url.search,hash:url.hash})})
+  state.mount();state.load()
+  const destination='/contact?type=custom&source=gallery&topic=CATALOG_TITLE&from='+encodeURIComponent(product)+'#inquiry-form'
+  await historyRouter.push(destination)
+  assert.equal(historyRouter.currentRoute.value.query.topic,'custom')
+  await settleNavigation(historyRouter,()=>historyRouter.back())
+  assert.equal(historyRouter.currentRoute.value.fullPath,product)
+  await settleNavigation(historyRouter,()=>historyRouter.back())
+  assert.equal(historyRouter.currentRoute.value.fullPath,category)
+  await settleNavigation(historyRouter,()=>historyRouter.forward())
+  assert.equal(historyRouter.currentRoute.value.fullPath,product)
+  await settleNavigation(historyRouter,()=>historyRouter.forward())
+  assert.equal(historyRouter.currentRoute.value.hash,'#inquiry-form')
+  assert.equal(policy.takeInquiryTopic('custom',product,state.win.sessionStorage,historyRouter.currentRoute.value.fullPath),'CATALOG_TITLE')
+  await settleNavigation(historyRouter,()=>historyRouter.back())
+  await historyRouter.replace(destination)
+  await settleNavigation(historyRouter,()=>historyRouter.back())
+  assert.equal(historyRouter.currentRoute.value.fullPath,category,'Explicit replace preserves its original intent')
+}
 assert.equal(policy.hasSafeAnalyticsQuery('?q=PII_SENTINEL'),false)
 for (const category of ['전체','가격','비용','기간','수리','관리','선택','소재·보석','주문']) assert.equal(policy.hasSafeAnalyticsQuery('?category='+encodeURIComponent(category)),true)
 const guide=browserHarness('/guide');guide.mount();guide.load();await guide.move('/guide?category='+encodeURIComponent('소재·보석'));assert.equal(guide.redirects.length,0);assert.equal(guide.pageviews().length,1)

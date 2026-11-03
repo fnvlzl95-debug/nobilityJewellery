@@ -5,6 +5,7 @@ import { getGuideCluster, normalizeGuidePath } from '~/data/guide-clusters'
 const props = withDefaults(defineProps<{
   clusterId: GuideClusterId
   currentPath?: string
+  initialVisible?: number
 }>(), {
   currentPath: '',
 })
@@ -13,9 +14,15 @@ const route = useRoute()
 const cluster = computed(() => getGuideCluster(props.clusterId))
 const resolvedCurrentPath = computed(() => props.currentPath || route.fullPath)
 const normalizedCurrentPath = computed(() => normalizeGuidePath(resolvedCurrentPath.value))
-const visibleLinks = computed(() => cluster.value?.links.filter((link) => (
+const allLinks = computed(() => cluster.value?.links.filter((link) => (
   normalizeGuidePath(link.to) !== normalizedCurrentPath.value
 )) ?? [])
+// Keep every link server-rendered; native disclosure reduces the initial reading load.
+const initialLinkCount = computed(() => props.initialVisible === undefined
+  ? allLinks.value.length
+  : Math.max(1, Math.floor(props.initialVisible)))
+const visibleLinks = computed(() => allLinks.value.slice(0, initialLinkCount.value))
+const remainingLinks = computed(() => allLinks.value.slice(initialLinkCount.value))
 const isHub = computed(() => cluster.value && (
   normalizeGuidePath(cluster.value.hubPath) === normalizedCurrentPath.value
 ))
@@ -43,6 +50,21 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
         </NuxtLink>
       </li>
     </ul>
+
+    <details v-if="remainingLinks.length" class="guide-cluster-more">
+      <summary>
+        <span class="more-label">가이드 더 보기 ({{ remainingLinks.length }}개)</span>
+        <span class="less-label">추가 가이드 접기</span>
+      </summary>
+      <ul class="guide-cluster-list">
+        <li v-for="link in remainingLinks" :key="link.to">
+          <NuxtLink :to="link.to">
+            <strong>{{ link.label }}</strong>
+            <span>{{ link.description }}</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </details>
   </section>
 </template>
 
@@ -134,6 +156,30 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
 
 .guide-cluster-list a:hover strong {
   color: #d4b44a;
+}
+
+.guide-cluster-more summary {
+  min-height: 48px;
+  padding: 14px 0;
+  color: #d4b44a;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.guide-cluster-more summary:focus-visible,
+.guide-cluster a:focus-visible {
+  outline: 2px solid #d4b44a;
+  outline-offset: 4px;
+}
+
+.guide-cluster-more .less-label,
+.guide-cluster-more[open] .more-label {
+  display: none;
+}
+
+.guide-cluster-more[open] .less-label {
+  display: inline;
 }
 
 @media (max-width: 680px) {

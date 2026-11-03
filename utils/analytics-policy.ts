@@ -22,7 +22,7 @@ export const isPrivatePath = (pathname: string) => {
 export const shouldTrackAnalytics = (production: boolean, hostname: string, search = '', pathname = '') =>
   production && isAnalyticsHost(hostname) && hasSafeAnalyticsQuery(search) && new URLSearchParams(search).get('analytics') !== 'off' && !isPrivatePath(pathname)
 
-export const analyticsEventVersion = '2026-10-22'
+export const analyticsEventVersion = '2026-11-03'
 
 export const analyticsOptOutKey = 'ng_analytics_off'
 export const analyticsOptOut = (search: string, storage?: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>): boolean => {
@@ -84,7 +84,8 @@ export const normalizeAnalyticsContactUrl = (fullPath: string) => {
 export const hasSafeAnalyticsQuery = (search: string) => {
   for (const [key, value] of new URLSearchParams(search)) {
     if (key === 'analytics' && value === 'off') continue
-    if (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key) && cleanCampaign(value)) continue
+    if (key === 'utm_source' && cleanCampaignSource(value)) continue
+    if (['utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key) && cleanCampaign(value)) continue
     if (['gclid', 'dclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid'].includes(key) && /^[a-zA-Z0-9._~-]{1,512}$/.test(value)) continue
     if (['n_media', 'n_rank', 'n_ad_group', 'n_ad', 'n_keyword_id', 'n_campaign', 'n_campaign_type', 'n_ad_group_type', 'n_match', 'n_network'].includes(key) && /^[a-zA-Z0-9_-]{1,120}$/.test(value)) continue
     if (key === 'type' && services.includes(value)) continue
@@ -120,7 +121,8 @@ export const analyticsReferrer = (value: string, origin: string) => {
 export const analyticsPageLocation = (pathname: string, search: string, origin: string) => {
   const query = new URLSearchParams()
   for (const [key, value] of new URLSearchParams(search)) {
-    if (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key) && cleanCampaign(value)) query.append(key, value)
+    if (key === 'utm_source' && cleanCampaignSource(value)) query.append(key, cleanCampaignSource(value))
+    if (['utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key) && cleanCampaign(value)) query.append(key, value)
     if (['gclid', 'dclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid'].includes(key) && /^[a-zA-Z0-9._~-]{1,512}$/.test(value)) query.append(key, value)
   }
   return origin + cleanPublicPath(pathname) + (query.size ? '?' + query.toString() : '')
@@ -130,6 +132,15 @@ export const analyticsPageLocation = (pathname: string, search: string, origin: 
 export const cleanCampaign = (value: unknown): string => {
   if (typeof value !== 'string' || !/^[a-zA-Z][a-zA-Z0-9_-]{0,79}$/.test(value)) return ''
   return value
+}
+
+// Only verified provider identifiers may contain dots. Do not widen campaign labels
+// to arbitrary domains: they can contain a person's name or other private text.
+const campaignSourceDomains = new Set(['chatgpt.com', 'perplexity.ai'])
+export const cleanCampaignSource = (value: unknown): string => {
+  if (typeof value !== 'string') return ''
+  const source = value.toLowerCase()
+  return campaignSourceDomains.has(source) ? source : cleanCampaign(value)
 }
 
 export interface AcquisitionContext {
@@ -145,7 +156,7 @@ export const sanitizeAcquisition = (value: unknown): AcquisitionContext => {
   return {
     landingPath: cleanPublicPath(v.landingPath),
     referrerHost: typeof v.referrerHost === 'string' && /^[a-zA-Z0-9.-]{1,120}$/.test(v.referrerHost) ? v.referrerHost : '',
-    utmSource: cleanCampaign(v.utmSource),
+    utmSource: cleanCampaignSource(v.utmSource),
     utmMedium: cleanCampaign(v.utmMedium),
     utmCampaign: cleanCampaign(v.utmCampaign),
   }

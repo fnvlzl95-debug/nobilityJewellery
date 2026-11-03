@@ -1,5 +1,5 @@
 import { siteConfig } from '~/config/site'
-import { analyticsOptOut, analyticsPageLocation, analyticsReferrer, cleanCampaign, cleanPublicPath, isPrivatePath, normalizeAnalyticsContactUrl, rememberInquiryTopic, shouldTrackAnalytics } from '~/utils/analytics-policy'
+import { analyticsOptOut, analyticsPageLocation, analyticsReferrer, cleanCampaign, cleanCampaignSource, cleanPublicPath, isPrivatePath, normalizeAnalyticsContactUrl, rememberInquiryTopic, shouldTrackAnalytics } from '~/utils/analytics-policy'
 
 declare global {
   interface Window {
@@ -54,8 +54,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     const normalized = normalizeAnalyticsContactUrl(to.fullPath)
     if (normalized !== to.fullPath) {
       rememberInquiryTopic(to.fullPath, storage)
+      // Preserve the original push/replace intent. Forcing replace here erases
+      // the product page the visitor needs to return to with Back.
       const target = router.resolve(normalized)
-      return { path: target.path, query: target.query, hash: target.hash, replace: true }
+      return { path: target.path, query: target.query, hash: target.hash }
     }
     const destination = new URL(to.fullPath, siteConfig.url)
     const nextOptOut = analyticsOptOut(destination.search, storage)
@@ -83,7 +85,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     send_page_view: false,
     page_location: analyticsPageLocation(window.location.pathname, window.location.search, siteConfig.url),
     page_referrer: initialReferrer,
-    ...(cleanCampaign(campaign.get('utm_source')) ? { campaign_source: cleanCampaign(campaign.get('utm_source')) } : {}),
+    ...(cleanCampaignSource(campaign.get('utm_source')) ? { campaign_source: cleanCampaignSource(campaign.get('utm_source')) } : {}),
     ...(cleanCampaign(campaign.get('utm_medium')) ? { campaign_medium: cleanCampaign(campaign.get('utm_medium')) } : {}),
     ...(cleanCampaign(campaign.get('utm_campaign')) ? { campaign_name: cleanCampaign(campaign.get('utm_campaign')) } : {}),
   })

@@ -9,7 +9,7 @@ definePageMeta({
 const pageTitle = '종로 결혼예물·결혼반지 | 구성·제작기간 상담 | 귀족'
 const pageDescription = '결혼반지만 준비할지, 목걸이·귀걸이와 양가 선물까지 맞출지 필요한 예물부터 정하세요. 종로3가 귀족의 공개 디자인을 비교하고 소재·각인·예산과 촬영·예식일을 상담합니다. 제작은 최소 2주, 견적과 수령 일정은 최종 조건 확인 후 안내합니다.'
 const { trackKakaoClick, trackPageInquiryClick, trackEvent } = useGtag()
-const weddingContact = { path: '/contact', query: { type: 'custom', source: 'wedding_overview', topic: '결혼예물 구성·일정', from: '/wedding' } }
+const weddingContact = { path: '/contact', hash: '#inquiry-form', query: { type: 'custom', source: 'wedding_overview', topic: '결혼예물 구성·일정', from: '/wedding' } }
 const handleWeddingKakao = () => trackKakaoClick('wedding', { placement: 'wedding_intro', intent: 'custom', topic: '결혼예물 구성·일정' })
 const handleWeddingInquiry = () => trackPageInquiryClick('wedding', { placement: 'wedding_overview', intent: 'custom', topic: '결혼예물 구성·일정' })
 const trackWeddingLink = (targetPath: string, placement: string) => trackEvent('consultation_path_click', { source_path: '/wedding', target_path: targetPath, placement })
