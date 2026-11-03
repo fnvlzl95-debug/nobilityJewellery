@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-twist-ring-crossing-design',
+      path: '/guide/ai-twist-ring-crossing-design',
+      title: 'AI 꼬임 반지, 겹치는 선부터 정하기',
+      description: 'AI로 만든 꼬임 반지를 주문하려면 선이 교차하는 위치와 위아래, 고정 구조를 구분하세요. 한 개의 반지인지, 틈과 손바닥 쪽 연결은 어떤지 종로 귀족이 상담 기준을 안내합니다.',
+      keyword: 'AI 꼬임 반지 교차 구조',
+      image: '/Image/guide/ai-twist-ring-crossing-design-hero-2a9c938e.webp',
+      publishedAt: '2026-11-03',
+      category: '주문',
+    },
+  {
       slug: 'ai-ring-design-existing-diamond-fit',
       path: '/guide/ai-ring-design-existing-diamond-fit',
       title: '보유 다이아로 AI 반지 디자인 맞추기',

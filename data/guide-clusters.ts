@@ -210,6 +210,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/threader-earrings-front-back-length-guide', label: '실귀걸이 고르는 법, 앞뒤 길이와 구조', description: '실귀걸이는 상품의 총길이와 착용 후 앞뒤로 내려오는 길이를 나누어 확인하세요' },
       { to: '/guide/ai-ring-design-to-pendant-custom-order', label: 'AI 반지 디자인, 목걸이로 바꿔 맞추기', description: 'AI 반지 디자인이 마음에 들지만 목걸이로 착용하고 싶다면, 남길 모티브와 새로 정할 연결 구조를 구분하세요' },
       { to: '/guide/ai-ring-design-existing-diamond-fit', label: '보유 다이아로 AI 반지 디자인 맞추기', description: '가지고 있는 다이아로 AI 반지를 맞추려면 실물 보석을 기준으로 디자인을 조정하세요' },
+      { to: '/guide/ai-twist-ring-crossing-design', label: 'AI 꼬임 반지, 겹치는 선부터 정하기', description: 'AI로 만든 꼬임 반지를 주문하려면 선이 교차하는 위치와 위아래, 고정 구조를 구분하세요' },
     ],
   },
 ]
