@@ -121,6 +121,11 @@ let fallbackScrollHandler: (() => void) | null = null
 const isScrolled = ref(false)
 // Search stays in memory only: never add free text to URLs, storage or analytics.
 const searchQuery = useState<string>('gallery-search', () => '')
+const searchInput = ref<HTMLInputElement | null>(null)
+const clearSearch = () => {
+  searchQuery.value = ''
+  searchInput.value?.focus()
+}
 const filteredItems = computed(() => filterGalleryItems(galleryItems, searchQuery.value))
 const resultCount = computed(() => filteredItems.value.length)
 const availableCategories = computed(() => availableCategoryData.filter(category => filteredItems.value.some(item => item.category === category.id)))
@@ -203,8 +208,8 @@ onUnmounted(() => {
         <section class="gallery-search" aria-label="디자인 검색">
           <label for="gallery-search">어떤 디자인을 찾으세요?</label>
           <div class="gallery-search-controls">
-            <input id="gallery-search" v-model="searchQuery" type="search" maxlength="80" autocomplete="off" placeholder="예: 커플링, 볼 비즈, 로즈골드" aria-describedby="gallery-search-help gallery-search-results">
-            <button v-if="searchQuery" type="button" @click="searchQuery = ''">검색 지우기</button>
+            <input id="gallery-search" ref="searchInput" v-model="searchQuery" type="search" maxlength="80" autocomplete="off" placeholder="예: 커플링, 볼 비즈, 로즈골드" aria-describedby="gallery-search-help gallery-search-results">
+            <button v-if="searchQuery" type="button" @click="clearSearch">검색 지우기</button>
           </div>
           <p id="gallery-search-help">상품명·디자인 설명·소재·색상으로 찾아보세요. 가격과 제작 사양은 디자인별로 상담해 드립니다.</p>
           <p id="gallery-search-results" role="status" aria-live="polite">{{ resultCount }}개 디자인</p>

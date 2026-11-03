@@ -14,5 +14,7 @@ const page=readFileSync(new URL('../pages/gallery/index.vue',import.meta.url),'u
 assert.ok(page.includes('aria-live="polite"'))
 assert.ok(page.includes('type="search"'))
 assert.ok(page.includes('검색 지우기'))
+assert.ok(page.includes('@click="clearSearch"'))
+assert.ok(page.includes('searchInput.value?.focus()'))
 assert.ok(!/track\w*\([^\n]*searchQuery|[Ss]torage[^\n]*searchQuery|query:[^\n]*searchQuery/.test(page))
 console.log('Published-catalog search, normalization, no-results recovery and local-only search checks passed.')
