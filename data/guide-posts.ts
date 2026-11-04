@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-pet-pendant-custom-likeness',
+      path: '/guide/ai-pet-pendant-custom-likeness',
+      title: 'AI 반려동물 펜던트, 닮은 특징 살려 주문하기',
+      description: 'AI로 만든 강아지·고양이 펜던트를 주문하려면 실제 사진과 비교해 귀·얼굴·꼬리의 특징을 정하세요. 보호자가 착용할 목걸이의 윤곽, 표면 표현, 크기와 종로 귀족 상담 준비를 안내합니다.',
+      keyword: 'AI 반려동물 펜던트 주문제작',
+      image: '/Image/guide/ai-pet-pendant-custom-likeness-hero-1916600c.webp',
+      publishedAt: '2026-11-04',
+      category: '주문',
+    },
+  {
       slug: 'ai-twist-ring-crossing-design',
       path: '/guide/ai-twist-ring-crossing-design',
       title: 'AI 꼬임 반지, 겹치는 선부터 정하기',
