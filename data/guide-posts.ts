@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'bold-dome-ring-width-height-selection',
+      path: '/guide/bold-dome-ring-width-height-selection',
+      title: '볼드 돔 반지, 폭과 높이 고르는 법',
+      description: '볼드 돔 반지는 상단 폭, 둥글게 솟은 높이와 손바닥 쪽 밴드를 나누어 비교하세요. 정면·옆면 사진으로 원하는 볼륨을 정하고, 호수와 안쪽 구조를 확인하는 종로 귀족 구매·주문 가이드입니다.',
+      keyword: '볼드 돔 반지',
+      image: '/Image/guide/bold-dome-ring-width-height-selection-hero-7876a09b.webp',
+      publishedAt: '2026-11-05',
+      category: '주문',
+    },
+  {
       slug: 'ai-pet-pendant-custom-likeness',
       path: '/guide/ai-pet-pendant-custom-likeness',
       title: 'AI 반려동물 펜던트, 닮은 특징 살려 주문하기',
