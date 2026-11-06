@@ -341,7 +341,7 @@ const handleSubmit = async () => {
                   <span class="prep-copy"><strong>착용 목적</strong><span>선물용·데일리용 등 착용하실 상황</span></span>
                 </li>
                 <li>
-                  <span class="prep-copy"><strong>희망 수령일과 예산</strong><span>주문제작 기간은 최소 2주가 필요합니다</span></span>
+                  <span class="prep-copy"><strong>희망 수령일과 예산</strong><span>주문제작 기간은 최소 3주가 필요합니다</span></span>
                 </li>
               </ul>
               <p class="prep-links">

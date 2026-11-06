@@ -337,6 +337,7 @@ export const guidePosts: GuidePostSummary[] = [
       keyword: '커프 팔찌',
       image: '/Image/guide/gold-cuff-bracelet-buying-guide-hero-9201cb5b.webp',
       publishedAt: '2026-09-29',
+      updatedAt: '2026-11-07',
       category: '선택',
     },
   {
@@ -1340,7 +1341,7 @@ export const guidePosts: GuidePostSummary[] = [
     keyword: '결혼반지 가드링',
     image: '/Image/guide/wedding-band-guard-ring-hero.webp',
     publishedAt: '2026-07-12',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-11-07',
     category: '선택',
   },
   {
@@ -1731,12 +1732,12 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'baby-ring-production-time',
     path: '/guide/baby-ring-production-time',
-    title: '돌반지 주문제작 기간 최소 2주｜수령일 맞추는 확인 순서',
-    description: '돌반지 주문제작은 최소 2주가 필요합니다. 디자인·각인·검수와 수령 방법을 확인하고 희망 수령일에 맞춰 상담하세요.',
+    title: '돌반지 주문제작 기간 최소 3주｜수령일 맞추는 확인 순서',
+    description: '돌반지 주문제작은 최소 3주가 필요합니다. 디자인·각인·검수와 수령 방법을 확인하고 희망 수령일에 맞춰 상담하세요.',
     keyword: '돌반지 주문제작 기간',
     image: '/Image/ring/SB0102.webp',
     publishedAt: '2026-02-14',
-    updatedAt: '2026-08-25',
+    updatedAt: '2026-11-07',
     category: '기간',
   },
   {

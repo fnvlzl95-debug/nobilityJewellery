@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 const pageTitle = '종로 결혼예물·결혼반지 | 구성·제작기간 상담 | 귀족'
-const pageDescription = '결혼반지만 준비할지, 목걸이·귀걸이와 양가 선물까지 맞출지 필요한 예물부터 정하세요. 종로3가 귀족의 공개 디자인을 비교하고 소재·각인·예산과 촬영·예식일을 상담합니다. 제작은 최소 2주, 견적과 수령 일정은 최종 조건 확인 후 안내합니다.'
+const pageDescription = '결혼반지만 준비할지, 목걸이·귀걸이와 양가 선물까지 맞출지 필요한 예물부터 정하세요. 종로3가 귀족의 공개 디자인을 비교하고 소재·각인·예산과 촬영·예식일을 상담합니다. 제작은 최소 3주, 견적과 수령 일정은 최종 조건 확인 후 안내합니다.'
 const { trackKakaoClick, trackPageInquiryClick, trackEvent } = useGtag()
 const weddingContact = { path: '/contact', hash: '#inquiry-form', query: { type: 'custom', source: 'wedding_overview', topic: '결혼예물 구성·일정', from: '/wedding' } }
 const handleWeddingKakao = () => trackKakaoClick('wedding', { placement: 'wedding_intro', intent: 'custom', topic: '결혼예물 구성·일정' })
@@ -117,7 +117,7 @@ const materials = [
 const processSteps = [
   { num: '01', title: '상담', desc: '예산, 스타일, 세트 구성 상담' },
   { num: '02', title: '디자인 확정', desc: '샘플 확인 후 세부사항 결정' },
-  { num: '03', title: '제작', desc: '최소 2주, 사양에 따라 추가 기간 안내' },
+  { num: '03', title: '제작', desc: '최소 3주, 사양에 따라 추가 기간 안내' },
   { num: '04', title: '전달', desc: '품질 검수 후 케이스와 함께 전달' }
 ]
 </script>
@@ -154,7 +154,7 @@ const processSteps = [
             </div>
             <div>
               <strong>제작 일정 상담</strong>
-              <p>제작은 최소 2주가 필요하며, 선택 사양과 촬영일·예식일을 함께 확인해 수령 일정을 정합니다.</p>
+              <p>제작은 최소 3주가 필요하며, 선택 사양과 촬영일·예식일을 함께 확인해 수령 일정을 정합니다.</p>
               <NuxtLink to="/guide/wedding-ring-production-time" @click="trackWeddingLink('/guide/wedding-ring-production-time', 'wedding_overview')">일정 기준 보기</NuxtLink>
             </div>
           </div>
@@ -269,7 +269,7 @@ const processSteps = [
               <span class="check-icon">4</span>
               <div class="check-text">
                 <h3>먼저 필요한 날짜</h3>
-                <p>촬영일·예식일·선물일 중 먼저 필요한 날짜를 알려주세요. 제작은 최소 2주가 필요하며, 디자인 확정 후 가능한 수령 일정을 안내합니다.</p>
+                <p>촬영일·예식일·선물일 중 먼저 필요한 날짜를 알려주세요. 제작은 최소 3주가 필요하며, 디자인 확정 후 가능한 수령 일정을 안내합니다.</p>
               </div>
             </div>
           </div>

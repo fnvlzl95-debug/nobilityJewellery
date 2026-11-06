@@ -3,7 +3,7 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pageTitle = '종로 주얼리 주문제작 | 디자인·각인·제작기간 | 귀족'
-const pageDescription = '반지·목걸이·팔찌 주문제작을 종로3가 귀족에서 상담하세요. 공개 제품 사진에서 원하는 디자인과 변경할 부분을 고르고, 소재·색상·각인·희망일을 알려주세요. 제작은 최소 2주를 기준으로 상담하며 최종 견적과 일정은 사양 확인 후 안내합니다.'
+const pageDescription = '반지·목걸이·팔찌 주문제작을 종로3가 귀족에서 상담하세요. 공개 제품 사진에서 원하는 디자인과 변경할 부분을 고르고, 소재·색상·각인·희망일을 알려주세요. 제작은 최소 3주를 기준으로 상담하며 최종 견적과 일정은 사양 확인 후 안내합니다.'
 
 definePageMeta({
   layout: 'landing'
@@ -107,7 +107,7 @@ const process = [
   { num: '01', title: '상담', desc: '원하시는 디자인과 예산을 말씀해주세요' },
   { num: '02', title: '디자인 확정', desc: '샘플 확인 후 세부 사항 결정' },
   { num: '03', title: '제작', desc: '30년 경력 장인이 직접 세공' },
-  { num: '04', title: '완성', desc: '최소 2주 기준, 사양 확인 후 수령 일정 안내' }
+  { num: '04', title: '완성', desc: '최소 3주 기준, 사양 확인 후 수령 일정 안내' }
 ]
 
 const advantages = [

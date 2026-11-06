@@ -33,7 +33,7 @@ const heroImageUrl = `${siteConfig.url}${product.images[0]}`
 const orderText = product.colorOptions.length
   ? `${product.material} 소재, ${product.colorOptions.join('·')} 색상으로 주문제작할 수 있습니다.`
   : `${product.material} 소재로 주문제작합니다.`
-const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 최소 2주를 기준으로 하며 최종 일정은 상담 후 안내합니다.`
+const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 최소 3주를 기준으로 하며 최종 일정은 상담 후 안내합니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
 const activeImageCaption = computed(() => product.imageCaptions?.[activeIndex.value] ?? '')

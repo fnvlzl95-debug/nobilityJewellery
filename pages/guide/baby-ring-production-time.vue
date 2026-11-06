@@ -3,14 +3,14 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/baby-ring-production-time'
-const pageTitle = '돌반지 주문제작 기간 최소 2주｜수령일 맞추는 확인 순서 | 귀족'
-const pageDescription = '돌반지 주문제작은 최소 2주가 필요합니다. 디자인·각인·검수와 수령 방법을 확인하고 희망 수령일에 맞춰 상담하세요.'
+const pageTitle = '돌반지 주문제작 기간 최소 3주｜수령일 맞추는 확인 순서 | 귀족'
+const pageDescription = '돌반지 주문제작은 최소 3주가 필요합니다. 디자인·각인·검수와 수령 방법을 확인하고 희망 수령일에 맞춰 상담하세요.'
 const ogImage = `${siteConfig.url}/Image/ring/SB0102.webp`
 const publishedAt = '2026-02-14'
 const faqItems = [
   {
     "question": "돌반지 주문제작 기간은 얼마나 걸리나요?",
-    "answer": "귀족의 돌반지 주문제작은 최소 2주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다."
+    "answer": "귀족의 돌반지 주문제작은 최소 3주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다."
   },
   {
     "question": "돌잔치 날짜가 정해져 있으면 무엇을 먼저 알려야 하나요?",
@@ -26,18 +26,18 @@ const faqItems = [
   }
 ]
 
-const updatedAt = '2026-08-25'
+const updatedAt = '2026-11-07'
 const quickAnswers = [
-  "귀족의 돌반지 주문제작은 최소 2주가 필요하며, 정확한 수령 가능일은 디자인·각인·주문 확정일 확인 후 안내합니다.",
+  "귀족의 돌반지 주문제작은 최소 3주가 필요하며, 정확한 수령 가능일은 디자인·각인·주문 확정일 확인 후 안내합니다.",
   "돌잔치나 선물 날짜가 있으면 희망 수령일을 가장 먼저 알려주세요.",
   "가능한 일정과 선택 범위는 실제 작업 조건을 확인한 뒤 안내받으세요."
 ]
 
 const sections = [
   {
-    "title": "주문제작은 최소 2주가 필요합니다",
+    "title": "주문제작은 최소 3주가 필요합니다",
     "paragraphs": [
-      "귀족의 모든 주문제작 제품은 최소 2주가 필요하며, 돌반지도 동일합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다.",
+      "귀족의 모든 주문제작 제품은 최소 3주가 필요하며, 돌반지도 동일합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다.",
       "주문제작 장신구에는 설계, 가공, 주조, 세팅, 연마처럼 여러 제작 작업이 포함될 수 있습니다. 실제 돌반지에 적용되는 작업 범위와 일정은 선택한 디자인 및 사양에 따라 상담 시 확인이 필요합니다."
     ],
     "bullets": [
@@ -119,8 +119,8 @@ const relatedLinks = [
 ]
 
 // guide-manager:data:start
-const gmArticleTitle = '돌반지 주문제작 기간 최소 2주｜수령일 맞추는 확인 순서'
-const gmArticleLead = '귀족의 돌반지 주문제작은 최소 2주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다. 돌잔치나 선물 날짜가 있다면 희망 수령일을 먼저 알려주세요.'
+const gmArticleTitle = '돌반지 주문제작 기간 최소 3주｜수령일 맞추는 확인 순서'
+const gmArticleLead = '귀족의 돌반지 주문제작은 최소 3주가 필요합니다. 정확한 수령 가능일은 디자인, 각인, 주문 확정일을 확인한 뒤 전화 또는 카카오톡 상담으로 안내합니다. 돌잔치나 선물 날짜가 있다면 희망 수령일을 먼저 알려주세요.'
 const gmArticleCategory = '기간'
 const gmArticleKeyword = '돌반지 주문제작 기간'
 const gmInquiryType = 'custom' as const

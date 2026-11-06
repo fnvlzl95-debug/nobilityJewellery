@@ -12,7 +12,7 @@ export interface ConsultationPath {
 const custom: ConsultationPath = {
   title: '원하는 디자인에서 제작 상담으로',
   description: '참고 사진과 바꾸고 싶은 부분을 알려주세요. 제작 가능한 범위와 확인할 사항부터 안내합니다.',
-  type: 'custom', prompts: ['원하는 스타일 또는 참고 사진', '새로 제작할지, 가지고 있는 제품을 리폼할지', '희망 수령일 · 제작은 최소 2주'],
+  type: 'custom', prompts: ['원하는 스타일 또는 참고 사진', '새로 제작할지, 가지고 있는 제품을 리폼할지', '희망 수령일 · 제작은 최소 3주'],
   gallerySlugs: ['rose-gold-chunky-chain-pave-lock-necklace', 'gold-layered-chain-bracelet-trio'],
   links: [{ to: '/custom', label: '디자인 변경·맞춤 제작 안내' }],
 }
@@ -25,7 +25,7 @@ const repair: ConsultationPath = {
 const baby: ConsultationPath = {
   title: '돌 선물, 디자인과 일정부터 골라보세요',
   description: '마음에 드는 디자인과 선물할 날짜를 알려주세요. 소재와 주문 조건은 상담으로 안내합니다.',
-  type: 'custom', prompts: ['마음에 드는 디자인', '각인 등 원하는 변경', '선물할 날짜 · 제작은 최소 2주'],
+  type: 'custom', prompts: ['마음에 드는 디자인', '각인 등 원하는 변경', '선물할 날짜 · 제작은 최소 3주'],
   gallerySlugs: ['pure-gold-horse-baby-ring'],
 }
 const couple: ConsultationPath = {
@@ -33,7 +33,7 @@ const couple: ConsultationPath = {
   description: '원하시는 디자인과 예산 범위, 희망 수령일을 알려주세요. 호수를 아직 정하지 않았다면 상담 내용에 미정으로 적어주세요.',
   kakaoLabel: '예산·일정 카톡 상담',
   priceGuidance: ['견적은 상담 시점의 금시세와 소재, 두 반지의 호수·폭·디자인에 따라 달라집니다.', '보석과 각인 등 원하는 변경 사항을 함께 알려주세요. 제작 가능 범위와 비용을 확인한 뒤 결정할 수 있습니다.', '정해 둔 예산 범위가 있다면 먼저 알려주세요. 상세 가격과 중량은 개별 상담에서 안내합니다.'],
-  type: 'custom', prompts: ['두 반지의 예산 범위', '참고 디자인과 선호 색상', '착용할 손가락·호수 (미정 가능)', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 2주'],
+  type: 'custom', prompts: ['두 반지의 예산 범위', '참고 디자인과 선호 색상', '착용할 손가락·호수 (미정 가능)', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 3주'],
   gallerySlugs: ['promise-couple-ring', 'two-tone-lattice-tension-couple-ring'],
   links: [{ to: '/couple-ring', label: '커플링 디자인·각인 상담 안내' }, { to: '/guide/couple-ring-14k-18k-price-difference', label: '14K·18K 견적이 달라지는 기준' }],
 }
@@ -62,7 +62,7 @@ const bracelet: ConsultationPath = {
 
 export const consultationPaths: Record<string, ConsultationPath> = {
   '/custom': custom, '/repair': repair, '/baby-gold': baby, '/couple-ring': couple, '/buy-gold': buying,
-  '/wedding': { ...couple, priceGuidance: undefined, prompts: ['참고 디자인과 선호 색상', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 2주'], title: '예물 구성의 우선순위를 함께 정해보세요', description: '원하는 품목과 스타일, 준비 일정을 기준으로 구성 선택을 돕습니다.', gallerySlugs: ['rose-gold-chain-necklace-bracelet-set'] },
+  '/wedding': { ...couple, priceGuidance: undefined, prompts: ['참고 디자인과 선호 색상', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 3주'], title: '예물 구성의 우선순위를 함께 정해보세요', description: '원하는 품목과 스타일, 준비 일정을 기준으로 구성 선택을 돕습니다.', gallerySlugs: ['rose-gold-chain-necklace-bracelet-set'] },
   '/guide/gold-one-don-gram': { ...buying, title: '무게를 확인한 다음, 어떤 상담이 필요하세요?', description: '돌 선물, 맞춤 제작, 보유한 금의 매입 중 목적에 맞는 안내를 선택하세요. 실제 제품 조건과 금액은 상담에서 확인합니다.', prompts: ['돌 선물·제작·매입 중 상담 목적', '관심 디자인 또는 보유 제품 사진', '희망 수령일 또는 방문일'], links: [{ to: '/buy-gold', label: '금·은 매입 상담' }, { to: '/baby-gold', label: '돌반지 디자인과 주문 안내' }, { to: '/custom', label: '맞춤 제작·리폼 상담' }], gallerySlugs: ['pure-gold-horse-baby-ring'] },
   '/guide/gold-necklace-length-guide': necklace,
   '/guide/bracelet-size-measuring-guide': bracelet,

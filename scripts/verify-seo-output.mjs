@@ -248,7 +248,7 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
     } else if (html.includes('주문 가능 색상')) {
       failures.push(`${pageUrl.pathname}: explicit-material page must not list color options`)
     }
-    if (!html.includes('최소 2주')) failures.push(`${pageUrl.pathname}: visible delivery minimum missing`)
+    if (!html.includes('최소 3주')) failures.push(`${pageUrl.pathname}: visible delivery minimum missing`)
   }
 
   return ogImage ? new URL(ogImage, pageUrl) : null

@@ -44,11 +44,13 @@ const buildPrerenderRoutes = (): string[] => [
 
 const seoUpdatedAt = '2026-10-22'
 // All gallery detail pages received design-specific consultation guidance.
-const galleryTemplateUpdatedAt = '2026-11-06'
+const galleryTemplateUpdatedAt = '2026-11-07'
 const consultationPagesUpdatedAt = '2026-09-05'
+const productionPeriodUpdatedAt = '2026-11-07'
+const productionPeriodPaths = new Set(['/custom', '/wedding', '/baby-gold', '/couple-ring', '/contact', '/wholesale'])
 const revisedServicePaths = new Set(['/wedding', '/buy-gold', '/custom', '/repair', '/couple-ring'])
 const auditRevisedPaths = new Set(['/', '/custom', '/repair', '/baby-gold', '/wedding', '/buy-gold', '/privacy'])
-const serviceLastmod = (path: string) => auditRevisedPaths.has(path)
+const serviceLastmod = (path: string) => productionPeriodPaths.has(path) ? productionPeriodUpdatedAt : auditRevisedPaths.has(path)
   ? '2026-10-22'
   : revisedServicePaths.has(path) ? '2026-10-03' : consultationPagesUpdatedAt
 const sitemapUrls = [
@@ -64,8 +66,8 @@ const sitemapUrls = [
   { loc: '/gallery', lastmod: galleryTemplateUpdatedAt },
   { loc: '/wedding', lastmod: serviceLastmod('/wedding') },
   ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: serviceLastmod(loc) })),
-  { loc: '/contact', lastmod: consultationPagesUpdatedAt },
-  { loc: '/wholesale', lastmod: '2026-10-22' },
+  { loc: '/contact', lastmod: serviceLastmod('/contact') },
+  { loc: '/wholesale', lastmod: serviceLastmod('/wholesale') },
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config

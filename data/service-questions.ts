@@ -18,7 +18,7 @@ export const serviceQuestions: Record<string, ServiceQuestion[]> = {
     },
     {
       question: '제작 기간과 견적은 언제 확정하나요?',
-      answer: '주문제작은 최소 2주를 기준으로 상담하며, 디자인·소재·보석·각인 등 최종 조건에 따라 일정이 달라집니다. 먼저 필요한 날짜를 알려주세요. 기존 주얼리를 활용하는 리폼은 제품의 상태와 활용 가능한 부분도 확인합니다.',
+      answer: '주문제작은 최소 3주를 기준으로 상담하며, 디자인·소재·보석·각인 등 최종 조건에 따라 일정이 달라집니다. 먼저 필요한 날짜를 알려주세요. 기존 주얼리를 활용하는 리폼은 제품의 상태와 활용 가능한 부분도 확인합니다.',
       links: [{ to: '/guide/gold-jewelry-remodeling-cost', label: '기존 주얼리 리폼 전에 확인할 조건' }],
     },
     {
@@ -52,7 +52,7 @@ export const serviceQuestions: Record<string, ServiceQuestion[]> = {
     },
     {
       question: '이름 각인과 선물 날짜는 언제 정하나요?',
-      answer: '이름·날짜 등 원하는 문구와 각인 위치, 선물할 날짜를 상담 때 함께 보내주세요. 주문제작은 최소 2주를 기준으로 하며 디자인 확정 후 가능한 수령 일정을 안내합니다. 각인은 반지의 모티브와 사용 가능한 면을 확인한 뒤 정합니다.',
+      answer: '이름·날짜 등 원하는 문구와 각인 위치, 선물할 날짜를 상담 때 함께 보내주세요. 주문제작은 최소 3주를 기준으로 하며 디자인 확정 후 가능한 수령 일정을 안내합니다. 각인은 반지의 모티브와 사용 가능한 면을 확인한 뒤 정합니다.',
       links: [{ to: '/guide/baby-ring-engraving-cost', label: '돌반지 이름 각인 준비' }, { to: '/guide/baby-ring-production-time', label: '돌반지 제작 일정 확인' }],
     },
     {
@@ -74,7 +74,7 @@ export const serviceQuestions: Record<string, ServiceQuestion[]> = {
     },
     {
       question: '촬영·예식일과 커프스 등 추가 품목은 언제 알려주나요?',
-      answer: '촬영일·예식일 중 먼저 필요한 날짜와 희망 품목을 첫 상담에 알려주세요. 제작은 최소 2주를 기준으로 하며 최종 일정은 사양 확인 후 안내합니다. 커프스는 착용할 셔츠 소매와 원하는 잠금 형태를 따로 확인합니다.',
+      answer: '촬영일·예식일 중 먼저 필요한 날짜와 희망 품목을 첫 상담에 알려주세요. 제작은 최소 3주를 기준으로 하며 최종 일정은 사양 확인 후 안내합니다. 커프스는 착용할 셔츠 소매와 원하는 잠금 형태를 따로 확인합니다.',
       links: [{ to: '/guide/wedding-ring-production-time', label: '결혼반지 제작 일정' }, { to: '/guide/cufflinks-shirt-fastening-selection', label: '신랑 커프스와 셔츠 소매 확인' }],
     },
   ],

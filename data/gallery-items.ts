@@ -24,7 +24,7 @@ export const galleryProductDefaults = {
   material: '14K·18K',
   colorOptions: ['화이트골드', '로즈골드', '옐로우골드'],
   workType: '주문제작',
-  delivery: '최소 2주 · 상담 후 확정',
+  delivery: '최소 3주 · 상담 후 확정',
 } as const
 
 type GalleryItemSource = Omit<GalleryItem, 'colorOptions'> & {
@@ -945,7 +945,7 @@ const galleryItemSource: GalleryItemSource[] = [
     description: '왕관을 쓴 뱀 캐릭터를 두 가지 입체 디자인으로 표현한 돌·백일 기념 아기 반지입니다.',
     material: '24K 순금',
     workType: '주문제작 가능',
-    delivery: '최소 2주',
+    delivery: '최소 3주',
     specs: [
       { label: '디자인', value: '왕관 뱀 캐릭터 2종' },
       { label: '용도', value: '돌·백일 기념 선물' },
@@ -962,7 +962,7 @@ const galleryItemSource: GalleryItemSource[] = [
   },
 ]
 
-// 갤러리 공통 기준: 대부분의 디자인은 14K·18K, 세 가지 골드 색상으로 주문제작하며 제작 기간은 최소 2주다.
+// 갤러리 공통 기준: 대부분의 디자인은 14K·18K, 세 가지 골드 색상으로 주문제작하며 제작 기간은 최소 3주다.
 // 소스의 material은 촬영된 샘플의 사양이므로 '사진 제품 기준'으로 노출하고, 주문 옵션은 공통 기준으로 표기한다.
 // 순금·다이아몬드처럼 소재가 명시된 예외 제품(material이 '14K'로 시작하지 않음)은 소스 값을 그대로 쓰고 색상 옵션을 걸지 않는다.
 const SAMPLE_MATERIAL_LABELS: Record<string, string> = {
