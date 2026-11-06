@@ -213,6 +213,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/ai-twist-ring-crossing-design', label: 'AI 꼬임 반지, 겹치는 선부터 정하기', description: 'AI로 만든 꼬임 반지를 주문하려면 선이 교차하는 위치와 위아래, 고정 구조를 구분하세요' },
       { to: '/guide/ai-pet-pendant-custom-likeness', label: 'AI 반려동물 펜던트, 닮은 특징 살려 주문하기', description: 'AI로 만든 강아지·고양이 펜던트를 주문하려면 실제 사진과 비교해 귀·얼굴·꼬리의 특징을 정하세요' },
       { to: '/guide/bold-dome-ring-width-height-selection', label: '볼드 돔 반지, 폭과 높이 고르는 법', description: '볼드 돔 반지는 상단 폭, 둥글게 솟은 높이와 손바닥 쪽 밴드를 나누어 비교하세요' },
+      { to: '/guide/ai-ribbon-necklace-custom-folds', label: 'AI 리본 목걸이 주문제작, 주름과 꼬리 정하기', description: 'AI로 만든 리본 목걸이를 주문할 때는 넓은 띠의 면, 남길 접힘과 매듭 높이, 꼬리 길이를 나누어 정하세요' },
     ],
   },
 ]

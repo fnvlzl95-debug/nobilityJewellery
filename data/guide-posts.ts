@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-ribbon-necklace-custom-folds',
+      path: '/guide/ai-ribbon-necklace-custom-folds',
+      title: 'AI 리본 목걸이 주문제작, 주름과 꼬리 정하기',
+      description: 'AI로 만든 리본 목걸이를 주문할 때는 넓은 띠의 면, 남길 접힘과 매듭 높이, 꼬리 길이를 나누어 정하세요. 천처럼 보이는 주름을 금속 디자인으로 옮기기 위한 비교표와 종로 귀족 주문 상담 안내입니다.',
+      keyword: 'AI 리본 목걸이 주문제작',
+      image: '/Image/guide/ai-ribbon-necklace-custom-folds-hero-183f533b.webp',
+      publishedAt: '2026-11-06',
+      category: '주문',
+    },
+  {
       slug: 'bold-dome-ring-width-height-selection',
       path: '/guide/bold-dome-ring-width-height-selection',
       title: '볼드 돔 반지, 폭과 높이 고르는 법',
