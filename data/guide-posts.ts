@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gold-bracelet-custom-production-time',
+      path: '/guide/gold-bracelet-custom-production-time',
+      title: '금팔찌 주문제작 기간, 최소 3주와 수령일 확인',
+      description: '금팔찌 주문제작은 최소 3주를 기준으로 상담합니다. 체인·잠금 부속 준비, 길이와 각인 확정, 최종 검수에 따라 달라지는 일정과 종로 귀족에 희망 수령일을 문의하는 방법을 안내합니다.',
+      keyword: '금팔찌 주문제작 기간',
+      image: '/Image/bracelet/slim-paperclip-chain-bracelet-01.webp',
+      publishedAt: '2026-11-07',
+      category: '기간',
+    },
+  {
       slug: 'ai-ribbon-necklace-custom-folds',
       path: '/guide/ai-ribbon-necklace-custom-folds',
       title: 'AI 리본 목걸이 주문제작, 주름과 꼬리 정하기',
