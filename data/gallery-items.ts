@@ -16,6 +16,7 @@ export interface GalleryItem {
   delivery: string
   images: string[]  // 최대 4개 이미지
   imageAlts: string[]  // images와 1:1 대응하는 SEO alt 텍스트
+  imageCaptions?: string[]  // 원본 사진과 보조 이미지의 출처 안내
   specs?: ProductSpec[]  // 상세 페이지 스펙 표
 }
 
@@ -26,7 +27,9 @@ export const galleryProductDefaults = {
   delivery: '최소 2주 · 상담 후 확정',
 } as const
 
-type GalleryItemSource = Omit<GalleryItem, 'colorOptions'>
+type GalleryItemSource = Omit<GalleryItem, 'colorOptions'> & {
+  sampleMaterial?: string | null  // null이면 사진만으로 확인되지 않은 샘플 소재를 표시하지 않음
+}
 
 export interface Category {
   id: string
@@ -36,6 +39,146 @@ export interface Category {
 }
 
 const galleryItemSource: GalleryItemSource[] = [
+  {
+    id: 43,
+    slug: 'milgrain-stone-line-couple-ring',
+    category: 'ring',
+    title: '밀그레인 스톤라인 커플링',
+    titleEn: 'Milgrain Stone Line Couple Rings',
+    description: '매끈한 밴드와 밀그레인 테두리에 중앙 스톤을 더하고, 한쪽 반지에는 작은 스톤 라인을 배치한 커플링입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/ring/milgrain-stone-line-couple-ring-01.webp', '/Image/ring/milgrain-stone-line-couple-ring-02.webp'],
+    imageAlts: ['중앙 스톤과 밀그레인 테두리, 한쪽 밴드의 스톤 라인이 보이는 커플링 원본 사진', '밀그레인 스톤라인 커플링의 AI 배경 보조 이미지'],
+    imageCaptions: ['원본 사진', 'AI 배경 보조 이미지 · 제품 세부 확인은 원본 사진을 기준으로 상담해 주세요.'],
+    specs: [
+      { label: '밴드', value: '유광 중심 면 · 밀그레인 테두리' },
+      { label: '포인트', value: '중앙 스톤 · 한쪽 반지의 작은 스톤 라인' },
+      { label: '스톤 사양', value: '종류·크기는 상담 후 확정' },
+    ],
+  },
+  {
+    id: 44,
+    slug: 'herringbone-texture-couple-ring',
+    category: 'ring',
+    title: '헤링본 텍스처 커플링',
+    titleEn: 'Herringbone Texture Couple Rings',
+    description: '사선이 반복되는 헤링본 느낌의 금속 무늬와 슬림한 스톤 라인을 조합한 커플링입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/ring/herringbone-texture-couple-ring-01.webp', '/Image/ring/herringbone-texture-couple-ring-02.webp'],
+    imageAlts: ['사선 반복 무늬와 한쪽 반지의 스톤 라인을 보여 주는 헤링본 텍스처 커플링 원본 사진', '헤링본 텍스처 커플링의 AI 배경 보조 이미지'],
+    imageCaptions: ['원본 사진', 'AI 배경 보조 이미지 · 제품 세부 확인은 원본 사진을 기준으로 상담해 주세요.'],
+    specs: [
+      { label: '표면', value: '사선이 이어지는 반복 금속 무늬' },
+      { label: '구성', value: '폭이 다른 두 밴드 · 한쪽 스톤 라인' },
+      { label: '상담 항목', value: '각 반지의 폭·호수·스톤 사양' },
+    ],
+  },
+  {
+    id: 45,
+    slug: 'gourd-motif-two-stone-ring',
+    category: 'ring',
+    title: '호리병 모티브 투스톤 반지',
+    titleEn: 'Gourd Motif Two Stone Ring',
+    description: '호리병 모양의 윤곽 안에 크기가 다른 두 스톤을 세로로 배치하고, 두 가지 색감의 슬림 밴드를 연결한 반지입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/ring/gourd-motif-two-stone-ring-01.webp', '/Image/ring/gourd-motif-two-stone-ring-02.webp'],
+    imageAlts: ['호리병 모양 장식 안의 작은 위쪽 스톤과 큰 아래쪽 스톤이 보이는 반지 원본 사진', '호리병 모티브 투스톤 반지의 AI 배경 보조 이미지'],
+    imageCaptions: ['원본 사진', 'AI 배경 보조 이미지 · 제품 세부 확인은 원본 사진을 기준으로 상담해 주세요.'],
+    specs: [
+      { label: '모티브', value: '호리병 형태의 중앙 장식' },
+      { label: '스톤 배치', value: '작은 스톤 위 · 큰 스톤 아래' },
+      { label: '밴드', value: '두 가지 색감의 슬림 밴드' },
+    ],
+  },
+  {
+    id: 46,
+    slug: 'rectangular-stone-pattern-couple-ring',
+    category: 'ring',
+    title: '직사각 스톤 패턴 커플링',
+    titleEn: 'Rectangular Stone Pattern Couple Rings',
+    description: '직사각형 중앙 스톤 양옆으로 촘촘한 금속 패턴을 이어가고, 밀그레인 테두리를 더한 커플링입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/ring/rectangular-stone-pattern-couple-ring-01.webp'],
+    imageAlts: ['직사각형 스톤과 반복 금속 패턴, 밀그레인 테두리가 보이는 커플링 원본 사진'],
+    imageCaptions: ['원본 사진'],
+    specs: [
+      { label: '중앙 장식', value: '가로로 배치한 직사각형 스톤' },
+      { label: '표면', value: '반복 금속 패턴 · 유광 경계선 · 밀그레인' },
+      { label: '상담 항목', value: '밴드 폭·호수·스톤 종류와 크기' },
+    ],
+  },
+  {
+    id: 47,
+    slug: 'ribbon-curved-line-necklace',
+    category: 'necklace',
+    title: '리본 커브라인 목걸이',
+    titleEn: 'Ribbon Curved Line Necklace',
+    description: '한쪽에 자리한 작은 리본과 길게 이어지는 곡선 스톤 라인이 특징인 비대칭 목걸이입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/necklace/ribbon-curved-line-necklace-01.webp'],
+    imageAlts: ['왼쪽의 작은 리본과 오른쪽으로 길게 이어지는 곡선 스톤 장식 목걸이의 원본 착용 사진'],
+    imageCaptions: ['원본 착용 사진'],
+    specs: [
+      { label: '장식', value: '비대칭 리본 · 길게 이어지는 곡선 라인' },
+      { label: '연결', value: '장식 양끝에 연결한 가는 체인' },
+      { label: '상담 항목', value: '전체 길이·착용 위치·스톤 사양' },
+    ],
+  },
+  {
+    id: 48,
+    slug: 'slim-paperclip-chain-bracelet',
+    category: 'bracelet',
+    title: '슬림 페이퍼클립 체인 팔찌',
+    titleEn: 'Slim Paperclip Chain Bracelet',
+    description: '길쭉한 사각 링크가 이어지는 가는 체인 팔찌로, 단정한 선과 열린 링크 형태가 드러나는 디자인입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/bracelet/slim-paperclip-chain-bracelet-01.webp', '/Image/bracelet/slim-paperclip-chain-bracelet-02.webp'],
+    imageAlts: ['길쭉한 사각 링크가 손목을 감싸는 슬림 페이퍼클립 체인 팔찌 원본 착용 사진', '슬림 페이퍼클립 체인 팔찌 착용 사진의 AI 배경 보조 이미지'],
+    imageCaptions: ['원본 착용 사진', 'AI 배경 보조 이미지 · 제품 세부 확인은 원본 사진을 기준으로 상담해 주세요.'],
+    specs: [
+      { label: '링크', value: '길쭉한 사각 오픈 링크' },
+      { label: '디자인', value: '별도 장식 없이 이어지는 슬림 체인' },
+      { label: '상담 항목', value: '손목 둘레·희망 여유·체인 폭·잠금 구성' },
+    ],
+  },
+  {
+    id: 49,
+    slug: 'black-point-rondelle-chain-ring',
+    category: 'ring',
+    title: '블랙 포인트 롱델 체인 반지',
+    titleEn: 'Black Point Rondelle Chain Ring',
+    description: '가는 체인에 블랙 띠와 밝은 스톤 라인이 있는 작은 원통형 장식을 더한 반지입니다.',
+    material: galleryProductDefaults.material,
+    sampleMaterial: null,
+    workType: galleryProductDefaults.workType,
+    delivery: galleryProductDefaults.delivery,
+    images: ['/Image/ring/black-point-rondelle-chain-ring-01.webp'],
+    imageAlts: ['가는 체인과 블랙 띠·밝은 스톤 라인의 원통형 장식이 보이는 체인 반지 원본 착용 사진'],
+    imageCaptions: ['원본 착용 사진'],
+    specs: [
+      { label: '장식', value: '블랙 포인트와 스톤 라인의 원통형 롱델' },
+      { label: '몸체', value: '가는 체인 밴드' },
+      { label: '상담 항목', value: '호수·체인 형태·블랙 부분과 스톤의 소재' },
+    ],
+  },
   {
     id: 1,
     slug: 'promise-couple-ring',
@@ -834,7 +977,7 @@ const SAMPLE_MATERIAL_LABELS: Record<string, string> = {
   '14K Gold / Rose Gold': '14K 옐로우·로즈골드',
 }
 
-export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => {
+export const galleryItems: GalleryItem[] = galleryItemSource.map(({ sampleMaterial, ...item }) => {
   if (!item.material.startsWith('14K')) {
     return {
       ...item,
@@ -842,14 +985,14 @@ export const galleryItems: GalleryItem[] = galleryItemSource.map((item) => {
       delivery: galleryProductDefaults.delivery,
     }
   }
-  const sampleLabel = SAMPLE_MATERIAL_LABELS[item.material] ?? item.material
+  const sampleLabel = sampleMaterial === null ? null : (sampleMaterial ?? SAMPLE_MATERIAL_LABELS[item.material] ?? item.material)
   return {
     ...item,
     material: galleryProductDefaults.material,
     colorOptions: [...galleryProductDefaults.colorOptions],
     workType: galleryProductDefaults.workType,
     delivery: galleryProductDefaults.delivery,
-    specs: [{ label: '사진 제품 기준', value: sampleLabel }, ...(item.specs ?? [])],
+    specs: [...(sampleLabel ? [{ label: '사진 제품 기준', value: sampleLabel }] : []), ...(item.specs ?? [])],
   }
 })
 

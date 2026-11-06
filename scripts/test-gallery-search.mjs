@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { galleryItems } from '../data/gallery-items.ts'
 import { filterGalleryItems } from '../utils/gallery-search.ts'
-assert.equal(filterGalleryItems(galleryItems,'').length,42)
+assert.equal(filterGalleryItems(galleryItems,'').length,galleryItems.length)
 assert.deepEqual(filterGalleryItems(galleryItems,'   '),galleryItems)
 for (const query of ['커플링','볼 비즈','로즈골드']) {
   assert.ok(filterGalleryItems(galleryItems,query).length > 0, query)

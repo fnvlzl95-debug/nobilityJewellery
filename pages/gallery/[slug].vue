@@ -36,6 +36,7 @@ const orderText = product.colorOptions.length
 const metaDescription = `${product.title}. ${product.description} ${orderText} 원하는 디자인 변경과 각인, 수령일을 종로 귀족에 상담하세요. 제작은 최소 2주를 기준으로 하며 최종 일정은 상담 후 안내합니다.`
 
 const altFor = (index: number) => product.imageAlts[index] ?? `${product.title} ${index + 1}번째 이미지`
+const activeImageCaption = computed(() => product.imageCaptions?.[activeIndex.value] ?? '')
 
 useHead({
   title: `${product.title} 주문제작 | 귀족`,
@@ -264,6 +265,8 @@ onUnmounted(() => {
             </span>
           </button>
 
+          <p v-if="activeImageCaption" class="media-caption" aria-live="polite">{{ activeImageCaption }}</p>
+
           <div v-if="hasMultiple" class="thumbs" role="tablist" aria-label="제품 이미지 선택">
             <button
               v-for="(image, index) in product.images"
@@ -404,6 +407,7 @@ onUnmounted(() => {
 
           <div class="lightbox-content">
             <img :src="product.images[activeIndex]" :alt="altFor(activeIndex)" class="lightbox-img" />
+            <p v-if="activeImageCaption" class="lightbox-caption" aria-live="polite">{{ activeImageCaption }}</p>
           </div>
 
           <template v-if="hasMultiple">
@@ -425,6 +429,9 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.media-caption, .lightbox-caption { margin-top:12px; color:var(--gray); font-size:12px; line-height:1.7; }
+.lightbox-caption { color:rgba(250,250,250,.8); text-align:center; }
+.lightbox-content:has(.lightbox-caption) .lightbox-img { max-height:calc(86vh - 56px); }
 .design-consultation { margin:24px 0; padding:22px 0; border-top:1px solid rgba(201,162,39,.35); }
 .design-consultation h2 { font-size:19px; line-height:1.55; color:#e4cf8d; margin-bottom:12px; }
 .design-consultation ul { padding-left:19px; list-style:disc; }

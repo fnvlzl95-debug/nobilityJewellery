@@ -3,6 +3,7 @@ import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, resolve, sep } from 'node:path'
 import { verifyNotFoundDocument, verifyNotFoundResponses } from './verify-not-found.mjs'
 import { readSitemapImageLocations } from './sitemap-image-validation.mjs'
+import { galleryItems } from '../data/gallery-items.ts'
 
 const args = process.argv.slice(2)
 const liveIndex = args.indexOf('--live')
@@ -232,10 +233,15 @@ const verifyGallerySeoDocument = (html, pageUrl, failures) => {
     if (forbiddenProductNamePattern.test(String(ogImageAlt || ''))) {
       failures.push(`${pageUrl.pathname}: fixed color or purity in hero image alt`)
     }
-    // 공통 옵션 제품(14K·18K)은 3색 옵션과 '사진 제품 기준' 샘플 사양을 함께 노출해야 하고,
+    // 공통 옵션 제품은 3색 옵션을 노출하고, 확인된 샘플 사양만 표시해야 한다.
     // 소재가 명시된 예외 제품(순금·다이아 등)은 색상 옵션을 노출하면 안 된다.
     if (html.includes('14K·18K')) {
-      if (!html.includes('사진 제품 기준')) failures.push(`${pageUrl.pathname}: sample spec line missing`)
+      const galleryItem = galleryItems.find((item) => `/gallery/${item.slug}` === pageUrl.pathname.replace(/\/$/, ''))
+      const expectsSampleSpec = galleryItem?.specs?.some((spec) => spec.label === '사진 제품 기준') ?? false
+      if (!galleryItem) failures.push(`${pageUrl.pathname}: gallery catalog entry missing`)
+      if (html.includes('사진 제품 기준') !== expectsSampleSpec) {
+        failures.push(`${pageUrl.pathname}: sample spec must match verified catalog information`)
+      }
       for (const expectedColor of ['화이트골드', '로즈골드', '옐로우골드']) {
         if (!html.includes(expectedColor)) failures.push(`${pageUrl.pathname}: visible color missing ${expectedColor}`)
       }

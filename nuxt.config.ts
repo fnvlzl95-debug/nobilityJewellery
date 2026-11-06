@@ -44,7 +44,7 @@ const buildPrerenderRoutes = (): string[] => [
 
 const seoUpdatedAt = '2026-10-22'
 // All gallery detail pages received design-specific consultation guidance.
-const galleryTemplateUpdatedAt = '2026-10-22'
+const galleryTemplateUpdatedAt = '2026-11-06'
 const consultationPagesUpdatedAt = '2026-09-05'
 const revisedServicePaths = new Set(['/wedding', '/buy-gold', '/custom', '/repair', '/couple-ring'])
 const auditRevisedPaths = new Set(['/', '/custom', '/repair', '/baby-gold', '/wedding', '/buy-gold', '/privacy'])
@@ -61,7 +61,7 @@ const sitemapUrls = [
     lastmod: galleryTemplateUpdatedAt,
   })),
   { loc: '/guide', lastmod: seoUpdatedAt },
-  { loc: '/gallery', lastmod: seoUpdatedAt },
+  { loc: '/gallery', lastmod: galleryTemplateUpdatedAt },
   { loc: '/wedding', lastmod: serviceLastmod('/wedding') },
   ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: serviceLastmod(loc) })),
   { loc: '/contact', lastmod: consultationPagesUpdatedAt },
