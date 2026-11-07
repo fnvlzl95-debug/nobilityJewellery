@@ -43,6 +43,10 @@ const buildPrerenderRoutes = (): string[] => [
 ]
 
 const seoUpdatedAt = '2026-10-22'
+const guideListingUpdatedAt = guidePosts.reduce((latest, guide) => {
+  const changedAt = guide.updatedAt || guide.publishedAt
+  return changedAt > latest ? changedAt : latest
+}, seoUpdatedAt)
 // All gallery detail pages received design-specific consultation guidance.
 const galleryTemplateUpdatedAt = '2026-11-07'
 const consultationPagesUpdatedAt = '2026-09-05'
@@ -62,7 +66,7 @@ const sitemapUrls = [
     loc: `/gallery/${item.slug}`,
     lastmod: galleryTemplateUpdatedAt,
   })),
-  { loc: '/guide', lastmod: seoUpdatedAt },
+  { loc: '/guide', lastmod: guideListingUpdatedAt },
   { loc: '/gallery', lastmod: galleryTemplateUpdatedAt },
   { loc: '/wedding', lastmod: serviceLastmod('/wedding') },
   ...['/', '/custom', '/repair', '/baby-gold', '/couple-ring', '/buy-gold', '/privacy'].map(loc => ({ loc, lastmod: serviceLastmod(loc) })),
