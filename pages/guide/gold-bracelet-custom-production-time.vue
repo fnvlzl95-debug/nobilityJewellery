@@ -5,7 +5,7 @@ import { buildBreadcrumbJsonLd } from '~/utils/seo'
 const pagePath = '/guide/gold-bracelet-custom-production-time'
 const pageTitle = '금팔찌 주문제작 기간, 최소 3주와 수령일 확인 | 귀족'
 const pageDescription = '금팔찌 주문제작은 최소 3주를 기준으로 상담합니다. 체인·잠금 부속 준비, 길이와 각인 확정, 최종 검수에 따라 달라지는 일정과 종로 귀족에 희망 수령일을 문의하는 방법을 안내합니다.'
-const ogImage = `${siteConfig.url}/Image/bracelet/slim-paperclip-chain-bracelet-01.webp`
+const ogImage = `${siteConfig.url}/Image/guide/gold-bracelet-custom-production-time-assortment-hero.webp`
 const publishedAt = '2026-11-07'
 const updatedAt = ''
 const faqItems = [
@@ -162,10 +162,10 @@ const gmArticleCategory = '기간'
 const gmArticleKeyword = '금팔찌 주문제작 기간'
 const gmInquiryType = 'custom' as const
 const gmInquiryTopic = '금팔찌 체인·부속 준비와 제작 수령일 상담'
-const gmHeroAlt = '손목에 착용한 길쭉한 사각 링크의 슬림 체인 팔찌'
-const gmHeroCaption = '귀족 갤러리에 등록된 원본 착용 사진입니다. 원하는 체인 규격과 길이·잠금 구성을 정한 뒤 제작 일정을 상담하세요.'
-const gmHeroWidth = 1187
-const gmHeroHeight = 1467
+const gmHeroAlt = '체인·테니스·뱅글·커프 등 다양한 팔찌 12종을 6개씩 두 줄로 배치한 이미지'
+const gmHeroCaption = '팔찌 12종을 비교하기 위한 AI 생성 예시 이미지입니다. 실제 제작 가능한 디자인과 사양은 상담으로 확인해 주세요.'
+const gmHeroWidth = 1672
+const gmHeroHeight = 941
 const gmReviewedBy = '귀족 주얼리 상담팀'
 const gmSourceNote = '최소 3주는 2026년 11월 7일 확인한 귀족의 주문제작 안내 기준입니다. GIA 자료는 디자인과 제작 조건의 관계, QIMA 자료는 일반적인 장신구 검사 항목을 참고했습니다. 외부 자료가 귀족의 소요 기간이나 특정 검사·인증을 입증하는 것은 아닙니다. 상황별 질문과 문의 문장은 상담 준비를 위한 편집 예시입니다.'
 const gmSources = [
@@ -243,6 +243,7 @@ useHead({
 
 <template>
   <GuideArticleView
+    class="bracelet-production-guide"
     :category="gmArticleCategory"
     :keyword="gmArticleKeyword"
     :inquiry-type="gmInquiryType"
@@ -266,3 +267,11 @@ useHead({
     :sources="gmSources"
   />
 </template>
+
+<style scoped>
+.bracelet-production-guide :deep(.guide-hero-image) {
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+</style>
