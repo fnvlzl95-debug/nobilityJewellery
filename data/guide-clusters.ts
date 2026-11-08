@@ -37,6 +37,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/plated-jewelry-discoloration-care-guide', label: '도금 변색, 닦기 전 원인 확인', description: '오염과 도금 마모 구분법' },
       { to: '/guide/necklace-chain-replacement-guide', label: '목걸이 줄 교체와 펜던트 호환', description: '체인·잠금장치 손상과 펜던트 고리 호환 확인' },
       { to: '/guide/silver-ring-rhodium-plating-guide', label: '은반지 로듐 도금과 재도금 기준', description: '도금 마모와 바탕 은 노출 확인 기준' },
+      { to: '/guide/travel-jewelry-packing-storage', label: '여행 주얼리 보관, 엉킴·분실 줄이는 법', description: '여행 주얼리 보관은 제품별 분리 수납과 수량 확인부터 시작하세요' },
     ],
   },
   {
@@ -216,6 +217,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/ai-ribbon-necklace-custom-folds', label: 'AI 리본 목걸이 주문제작, 주름과 꼬리 정하기', description: 'AI로 만든 리본 목걸이를 주문할 때는 넓은 띠의 면, 남길 접힘과 매듭 높이, 꼬리 길이를 나누어 정하세요' },
       { to: '/guide/gold-bracelet-custom-production-time', label: '금팔찌 주문제작 기간, 최소 3주와 수령일 확인', description: '금팔찌 주문제작은 최소 3주를 기준으로 상담합니다' },
       { to: '/guide/gold-pendant-only-custom-cost', label: '금 펜던트 주문제작 비용, 체인 제외 견적', description: '금 펜던트만 주문할 때는 본체·고리·보석·각인과 보유 체인 연결 작업의 포함 여부를 확인하세요' },
+      { to: '/guide/jongno-jewelry-same-day-purchase-check', label: '종로 귀금속 구매, 당일 수령 확인법', description: '종로 귀금속 구매 후 오늘 바로 받으려면 실제 재고·반지 호수·목걸이 길이·추가 작업을 확인하세요' },
     ],
   },
 ]

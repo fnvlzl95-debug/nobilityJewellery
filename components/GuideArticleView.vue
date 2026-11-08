@@ -93,7 +93,12 @@ const displaySectionTitle = (title: string) => String(title || '')
 const inquiryActionLabel = computed(() => {
   if (effectiveType.value === 'repair') return '수리 문의'
   if (effectiveType.value === 'wholesale') return '도매 상담'
-  if (effectiveType.value === 'other') return '매입 문의'
+  if (effectiveType.value === 'other') {
+    const topic = `${props.inquiryTopic} ${props.keyword}`
+    if (route.path === '/guide/gold-one-don-gram' || topic.includes('매입')) return '매입 문의'
+    if (topic.includes('구매')) return '구매 상담'
+    return '일반 상담'
+  }
   return '주문 상담'
 })
 const contactLink = computed(() => ({

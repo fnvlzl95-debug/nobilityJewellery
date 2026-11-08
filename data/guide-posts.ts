@@ -16,6 +16,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-jewelry-same-day-purchase-check',
+      path: '/guide/jongno-jewelry-same-day-purchase-check',
+      title: '종로 귀금속 구매, 당일 수령 확인법',
+      description: '종로 귀금속 구매 후 오늘 바로 받으려면 실제 재고·반지 호수·목걸이 길이·추가 작업을 확인하세요. 갤러리 사진과 판매 가능한 제품을 구분하고, 귀족 방문 전 수령 가능 시간을 문의하는 방법을 안내합니다.',
+      keyword: '종로 귀금속 당일 구매',
+      image: '/Image/guide/jongno-jewelry-same-day-purchase-check-hero.webp',
+      publishedAt: '2026-11-09',
+      category: '기간',
+    },
+  {
+      slug: 'travel-jewelry-packing-storage',
+      path: '/guide/travel-jewelry-packing-storage',
+      title: '여행 주얼리 보관, 엉킴·분실 줄이는 법',
+      description: '여행 주얼리 보관은 제품별 분리 수납과 수량 확인부터 시작하세요. 목걸이·반지·귀걸이·진주를 나눠 챙기는 표, 보관함을 닫기 전 확인할 점, 숙소와 퇴실 전 체크 순서를 안내합니다.',
+      keyword: '여행 주얼리 보관',
+      image: '/Image/guide/travel-jewelry-packing-storage-hero.webp',
+      publishedAt: '2026-11-09',
+      category: '관리',
+    },
+  {
       slug: 'gold-pendant-only-custom-cost',
       path: '/guide/gold-pendant-only-custom-cost',
       title: '금 펜던트 주문제작 비용, 체인 제외 견적',
