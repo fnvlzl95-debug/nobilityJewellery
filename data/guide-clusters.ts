@@ -215,6 +215,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/bold-dome-ring-width-height-selection', label: '볼드 돔 반지, 폭과 높이 고르는 법', description: '볼드 돔 반지는 상단 폭, 둥글게 솟은 높이와 손바닥 쪽 밴드를 나누어 비교하세요' },
       { to: '/guide/ai-ribbon-necklace-custom-folds', label: 'AI 리본 목걸이 주문제작, 주름과 꼬리 정하기', description: 'AI로 만든 리본 목걸이를 주문할 때는 넓은 띠의 면, 남길 접힘과 매듭 높이, 꼬리 길이를 나누어 정하세요' },
       { to: '/guide/gold-bracelet-custom-production-time', label: '금팔찌 주문제작 기간, 최소 3주와 수령일 확인', description: '금팔찌 주문제작은 최소 3주를 기준으로 상담합니다' },
+      { to: '/guide/gold-pendant-only-custom-cost', label: '금 펜던트 주문제작 비용, 체인 제외 견적', description: '금 펜던트만 주문할 때는 본체·고리·보석·각인과 보유 체인 연결 작업의 포함 여부를 확인하세요' },
     ],
   },
 ]

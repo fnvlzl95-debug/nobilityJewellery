@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gold-pendant-only-custom-cost',
+      path: '/guide/gold-pendant-only-custom-cost',
+      title: '금 펜던트 주문제작 비용, 체인 제외 견적',
+      description: '금 펜던트만 주문할 때는 본체·고리·보석·각인과 보유 체인 연결 작업의 포함 여부를 확인하세요. 체인 제외 견적과 새 목걸이 견적을 같은 조건으로 비교하는 표, 종로 귀족 상담 준비를 안내합니다.',
+      keyword: '금 펜던트 주문제작 비용',
+      image: '/Image/guide/gold-pendant-only-custom-cost-hero.webp',
+      publishedAt: '2026-11-08',
+      category: '비용',
+    },
+  {
       slug: 'gold-bracelet-custom-production-time',
       path: '/guide/gold-bracelet-custom-production-time',
       title: '금팔찌 주문제작 기간, 최소 3주와 수령일 확인',
