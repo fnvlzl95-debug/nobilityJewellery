@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'jongno-necklace-shortening-cost',
+      path: '/guide/jongno-necklace-shortening-cost',
+      title: '종로 목걸이 줄이기 비용, 견적 확인법',
+      description: '종로에서 목걸이 길이를 줄이려면 줄일 길이뿐 아니라 잠금장치 재연결과 부품 교체 범위를 함께 확인하세요. 완성 길이 전달법, 견적 항목, 남는 체인 처리와 수령 점검을 안내합니다.',
+      keyword: '종로 목걸이 줄이기 비용',
+      image: '/Image/guide/jongno-necklace-shortening-cost-hero.webp',
+      publishedAt: '2026-11-10',
+      category: '비용',
+    },
+  {
       slug: 'jongno-jewelry-same-day-purchase-check',
       path: '/guide/jongno-jewelry-same-day-purchase-check',
       title: '종로 귀금속 구매, 당일 수령 확인법',
