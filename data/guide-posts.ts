@@ -16,16 +16,6 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
-      slug: 'jongno-jewelry-warranty-card-check',
-      path: '/guide/jongno-jewelry-warranty-card-check',
-      title: '종로 귀금속 보증서, 사양·AS 확인법',
-      description: '종로 귀금속 보증서를 받았다면 제품 사양과 AS 조건을 나누어 확인하세요. 영수증·보석 감정서와의 역할 차이, 품목별 대조표, 보증서 분실 시 문의 준비까지 안내합니다.',
-      keyword: '종로 귀금속 보증서',
-      image: '/Image/guide/jongno-jewelry-warranty-card-check-hero.webp',
-      publishedAt: '2026-11-10',
-      category: '관리',
-    },
-  {
       slug: 'jongno-jewelry-same-day-purchase-check',
       path: '/guide/jongno-jewelry-same-day-purchase-check',
       title: '종로 귀금속 구매, 당일 수령 확인법',

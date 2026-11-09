@@ -38,7 +38,6 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/necklace-chain-replacement-guide', label: '목걸이 줄 교체와 펜던트 호환', description: '체인·잠금장치 손상과 펜던트 고리 호환 확인' },
       { to: '/guide/silver-ring-rhodium-plating-guide', label: '은반지 로듐 도금과 재도금 기준', description: '도금 마모와 바탕 은 노출 확인 기준' },
       { to: '/guide/travel-jewelry-packing-storage', label: '여행 주얼리 보관, 엉킴·분실 줄이는 법', description: '여행 주얼리 보관은 제품별 분리 수납과 수량 확인부터 시작하세요' },
-      { to: '/guide/jongno-jewelry-warranty-card-check', label: '종로 귀금속 보증서, 사양·AS 확인법', description: '종로 귀금속 보증서를 받았다면 제품 사양과 AS 조건을 나누어 확인하세요' },
     ],
   },
   {
