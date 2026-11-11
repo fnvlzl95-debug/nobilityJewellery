@@ -220,6 +220,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/gold-pendant-only-custom-cost', label: '금 펜던트 주문제작 비용, 체인 제외 견적', description: '금 펜던트만 주문할 때는 본체·고리·보석·각인과 보유 체인 연결 작업의 포함 여부를 확인하세요' },
       { to: '/guide/jongno-jewelry-same-day-purchase-check', label: '종로 귀금속 구매, 당일 수령 확인법', description: '종로 귀금속 구매 후 오늘 바로 받으려면 실제 재고·반지 호수·목걸이 길이·추가 작업을 확인하세요' },
       { to: '/guide/gold-brooch-custom-design-size', label: '금 브로치 주문제작, 도안·크기 정하기', description: '금 브로치 주문제작은 도안의 윤곽, 가로·세로 크기, 보석 위치와 뒷면 잠금부터 상담하세요' },
+      { to: '/guide/single-earring-to-pendant-remodel', label: '한쪽 귀걸이 목걸이 리폼, 가능할까요?', description: '한쪽만 남은 귀걸이를 목걸이로 리폼하려면 장식·보석의 재사용 범위와 펜던트 연결 구조를 확인하세요' },
     ],
   },
 ]

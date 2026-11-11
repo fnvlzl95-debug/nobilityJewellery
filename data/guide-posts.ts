@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'single-earring-to-pendant-remodel',
+      path: '/guide/single-earring-to-pendant-remodel',
+      title: '한쪽 귀걸이 목걸이 리폼, 가능할까요?',
+      description: '한쪽만 남은 귀걸이를 목걸이로 리폼하려면 장식·보석의 재사용 범위와 펜던트 연결 구조를 확인하세요. 종로 귀족에 보낼 사진, 체인 포함 견적과 최소 3주 주문제작 상담 순서를 안내합니다.',
+      keyword: '귀걸이 목걸이 리폼',
+      image: '/Image/guide/single-earring-to-pendant-remodel-hero.webp',
+      publishedAt: '2026-11-12',
+      category: '주문',
+    },
+  {
       slug: 'gold-brooch-custom-design-size',
       path: '/guide/gold-brooch-custom-design-size',
       title: '금 브로치 주문제작, 도안·크기 정하기',

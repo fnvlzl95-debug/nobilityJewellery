@@ -103,5 +103,14 @@ export const consultationPaths: Record<string, ConsultationPath> = {
   '/guide/silver-ring-repair-cost': repair,
   '/guide/gold-ring-repair-cost': repair,
   '/guide/gold-jewelry-remodeling-cost': custom,
+  '/guide/single-earring-to-pendant-remodel': {
+    title: '남은 귀걸이 사진으로 목걸이 리폼 상담하기',
+    description: '귀걸이 사진과 남기고 싶은 부분을 보내주세요. 가능한 제작 방향과 실물로 확인할 항목을 안내합니다.',
+    type: 'custom',
+    kakaoLabel: '귀걸이 사진으로 리폼 상담',
+    prompts: ['귀걸이 앞·옆·뒤 사진과 알고 있는 소재', '살리고 싶은 장식 또는 보석', '보유 체인 사용 또는 새 체인 구매 희망', '예산 범위와 희망 수령일 · 주문제작 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/custom', label: '리폼·주문제작 진행 안내' }],
+  },
   '/guide/platinum-vs-white-gold-difference': couple,
 }
