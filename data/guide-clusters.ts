@@ -219,6 +219,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/gold-bracelet-custom-production-time', label: '금팔찌 주문제작 기간, 최소 3주와 수령일 확인', description: '금팔찌 주문제작은 최소 3주를 기준으로 상담합니다' },
       { to: '/guide/gold-pendant-only-custom-cost', label: '금 펜던트 주문제작 비용, 체인 제외 견적', description: '금 펜던트만 주문할 때는 본체·고리·보석·각인과 보유 체인 연결 작업의 포함 여부를 확인하세요' },
       { to: '/guide/jongno-jewelry-same-day-purchase-check', label: '종로 귀금속 구매, 당일 수령 확인법', description: '종로 귀금속 구매 후 오늘 바로 받으려면 실제 재고·반지 호수·목걸이 길이·추가 작업을 확인하세요' },
+      { to: '/guide/gold-brooch-custom-design-size', label: '금 브로치 주문제작, 도안·크기 정하기', description: '금 브로치 주문제작은 도안의 윤곽, 가로·세로 크기, 보석 위치와 뒷면 잠금부터 상담하세요' },
     ],
   },
 ]

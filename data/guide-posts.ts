@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'gold-brooch-custom-design-size',
+      path: '/guide/gold-brooch-custom-design-size',
+      title: '금 브로치 주문제작, 도안·크기 정하기',
+      description: '금 브로치 주문제작은 도안의 윤곽, 가로·세로 크기, 보석 위치와 뒷면 잠금부터 상담하세요. 종로 귀족에 보낼 참고 자료와 견적 확인 항목, 최소 3주 제작기간을 정리했습니다.',
+      keyword: '금 브로치 주문제작',
+      image: '/Image/guide/gold-brooch-custom-design-size-hero.webp',
+      publishedAt: '2026-11-11',
+      category: '주문',
+    },
+  {
       slug: 'jongno-necklace-shortening-cost',
       path: '/guide/jongno-necklace-shortening-cost',
       title: '종로 목걸이 줄이기 비용, 견적 확인법',
