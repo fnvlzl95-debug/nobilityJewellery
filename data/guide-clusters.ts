@@ -39,6 +39,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/silver-ring-rhodium-plating-guide', label: '은반지 로듐 도금과 재도금 기준', description: '도금 마모와 바탕 은 노출 확인 기준' },
       { to: '/guide/travel-jewelry-packing-storage', label: '여행 주얼리 보관, 엉킴·분실 줄이는 법', description: '여행 주얼리 보관은 제품별 분리 수납과 수량 확인부터 시작하세요' },
       { to: '/guide/jongno-necklace-shortening-cost', label: '종로 목걸이 줄이기 비용, 견적 확인법', description: '종로에서 목걸이 길이를 줄이려면 줄일 길이뿐 아니라 잠금장치 재연결과 부품 교체 범위를 함께 확인하세요' },
+      { to: '/guide/ring-personal-engraving-removal', label: '반지 각인 지우기, 깊이·두께부터 확인합니다', description: '반지 안쪽 개인 문구를 연마로 지우는 원리와 각인 깊이·밴드 두께·안쪽 장식을 먼저 보는 이유, 새 문구 위치를 정하는 기준과 상담 때 보낼 사진을 정리했습니다' },
     ],
   },
   {
@@ -221,6 +222,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/jongno-jewelry-same-day-purchase-check', label: '종로 귀금속 구매, 당일 수령 확인법', description: '종로 귀금속 구매 후 오늘 바로 받으려면 실제 재고·반지 호수·목걸이 길이·추가 작업을 확인하세요' },
       { to: '/guide/gold-brooch-custom-design-size', label: '금 브로치 주문제작, 도안·크기 정하기', description: '금 브로치 주문제작은 도안의 윤곽, 가로·세로 크기, 보석 위치와 뒷면 잠금부터 상담하세요' },
       { to: '/guide/single-earring-to-pendant-remodel', label: '한쪽 귀걸이 목걸이 리폼, 가능할까요?', description: '한쪽만 남은 귀걸이를 목걸이로 리폼하려면 장식·보석의 재사용 범위와 펜던트 연결 구조를 확인하세요' },
+      { to: '/guide/heirloom-gold-remodel-material-continuity', label: '금 리폼, 물려받은 금 사용 방식부터 정하세요', description: '물려받은 금으로 리폼할 때 원제품 일부를 남길지, 가져온 금을 재료로 쓸지, 금의 가치를 제작비에 반영할지 구분하고 순도·중량 확인과 공정별 확인 질문을 정리했습니다' },
     ],
   },
 ]

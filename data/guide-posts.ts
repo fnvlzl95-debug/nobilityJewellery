@@ -16,6 +16,26 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'heirloom-gold-remodel-material-continuity',
+      path: '/guide/heirloom-gold-remodel-material-continuity',
+      title: '금 리폼, 물려받은 금 사용 방식부터 정하세요',
+      description: '물려받은 금으로 리폼할 때 원제품 일부를 남길지, 가져온 금을 재료로 쓸지, 금의 가치를 제작비에 반영할지 구분하고 순도·중량 확인과 공정별 확인 질문을 정리했습니다.',
+      keyword: '물려받은 금 리폼',
+      image: '/Image/guide/heirloom-gold-remodel-material-continuity-hero-6e458495.webp',
+      publishedAt: '2026-11-13',
+      category: '주문',
+    },
+  {
+      slug: 'ring-personal-engraving-removal',
+      path: '/guide/ring-personal-engraving-removal',
+      title: '반지 각인 지우기, 깊이·두께부터 확인합니다',
+      description: '반지 안쪽 개인 문구를 연마로 지우는 원리와 각인 깊이·밴드 두께·안쪽 장식을 먼저 보는 이유, 새 문구 위치를 정하는 기준과 상담 때 보낼 사진을 정리했습니다.',
+      keyword: '반지 각인 지우기',
+      image: '/Image/guide/ring-personal-engraving-removal-hero-bc17ed7b.webp',
+      publishedAt: '2026-11-13',
+      category: '수리',
+    },
+  {
       slug: 'single-earring-to-pendant-remodel',
       path: '/guide/single-earring-to-pendant-remodel',
       title: '한쪽 귀걸이 목걸이 리폼, 가능할까요?',
