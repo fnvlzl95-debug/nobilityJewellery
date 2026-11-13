@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'diamond-ring-lower-setting-remodel',
+      path: '/guide/diamond-ring-lower-setting-remodel',
+      title: '다이아 반지 낮추기, 리세팅 전 확인할 것',
+      description: '다이아 반지 높이가 불편하다면 보석을 잡는 부분과 옆면 구조부터 확인하세요. 낮은 세팅 리폼의 검토 범위, 견적 항목, 종로 귀족 사진 상담과 최소 3주 제작 기준을 안내합니다.',
+      keyword: '다이아 반지 낮추기',
+      image: '/Image/guide/diamond-ring-lower-setting-remodel-hero.webp',
+      publishedAt: '2026-11-14',
+      category: '주문',
+    },
+  {
       slug: 'heirloom-gold-remodel-material-continuity',
       path: '/guide/heirloom-gold-remodel-material-continuity',
       title: '금 리폼, 물려받은 금 사용 방식부터 정하세요',

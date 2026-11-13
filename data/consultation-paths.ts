@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/diamond-ring-lower-setting-remodel': {
+    title: '반지 옆면 사진으로 낮은 세팅 상담하기',
+    description: '현재 반지에서 불편한 점과 유지하고 싶은 부분을 알려주세요. 구조와 보석 상태를 확인해 리폼 가능 범위와 견적을 상담합니다.',
+    type: 'custom',
+    kakaoLabel: '반지 높이·리폼 카톡 상담',
+    prompts: ['반지 정면·옆면·안쪽 사진과 알고 있는 소재', '옷에 걸리는 위치와 불편함이 시작된 시점', '유지할 보석·밴드와 원하는 디자인', '예산 범위와 희망 수령일 · 주문제작 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/custom', label: '리폼·주문제작 가능 범위 안내' }, { to: '/contact', label: '종로 매장 위치와 방문 문의' }],
+  },
   '/custom': custom, '/repair': repair, '/baby-gold': baby, '/couple-ring': couple, '/buy-gold': buying,
   '/wedding': { ...couple, priceGuidance: undefined, prompts: ['참고 디자인과 선호 색상', '각인 등 원하는 변경', '희망 수령일 · 제작은 최소 3주'], title: '예물 구성의 우선순위를 함께 정해보세요', description: '원하는 품목과 스타일, 준비 일정을 기준으로 구성 선택을 돕습니다.', gallerySlugs: ['rose-gold-chain-necklace-bracelet-set'] },
   '/guide/gold-one-don-gram': { ...buying, title: '무게를 확인한 다음, 어떤 상담이 필요하세요?', description: '돌 선물, 맞춤 제작, 보유한 금의 매입 중 목적에 맞는 안내를 선택하세요. 실제 제품 조건과 금액은 상담에서 확인합니다.', prompts: ['돌 선물·제작·매입 중 상담 목적', '관심 디자인 또는 보유 제품 사진', '희망 수령일 또는 방문일'], links: [{ to: '/buy-gold', label: '금·은 매입 상담' }, { to: '/baby-gold', label: '돌반지 디자인과 주문 안내' }, { to: '/custom', label: '맞춤 제작·리폼 상담' }], gallerySlugs: ['pure-gold-horse-baby-ring'] },
