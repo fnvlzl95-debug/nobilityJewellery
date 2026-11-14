@@ -20,10 +20,10 @@ const questions = computed(() => serviceQuestions[props.path] || [])
 
 <style scoped>
 .service-questions { margin: 0 0 64px; }
-.service-questions h2 { margin: 0 0 24px; color: #fafafa; font-size: clamp(23px, 4vw, 30px); font-weight: 700; }
-.service-answer { padding: 24px 0; border-top: 1px solid rgba(250, 250, 250, .12); }
-.service-answer h3 { margin: 0 0 12px; color: #fafafa; font-size: 18px; line-height: 1.6; font-weight: 600; }
-.service-answer p { max-width: 76ch; color: rgba(250, 250, 250, .78); font-size: 15px; line-height: 1.85; word-break: keep-all; overflow-wrap: anywhere; }
+.service-questions h2 { margin: 0 0 24px; color: #f5f0e6; font-size: clamp(23px, 4vw, 30px); font-weight: 700; }
+.service-answer { padding: 24px 0; border-top: 1px solid rgba(245, 240, 230, .12); }
+.service-answer h3 { margin: 0 0 12px; color: #f5f0e6; font-size: 18px; line-height: 1.6; font-weight: 600; }
+.service-answer p { max-width: 76ch; color: rgba(245, 240, 230, .78); font-size: 15px; line-height: 1.85; word-break: keep-all; overflow-wrap: anywhere; }
 .service-answer ul { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 0; margin: 12px 0 0; list-style: none; }
 .service-answer a { display: inline-block; padding: 10px 0; color: #d8b868; line-height: 1.6; text-underline-offset: 4px; text-decoration: underline; }
 .service-answer a:focus-visible { outline: 2px solid #d8b868; outline-offset: 4px; }

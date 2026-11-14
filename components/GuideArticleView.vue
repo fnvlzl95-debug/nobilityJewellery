@@ -341,15 +341,15 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 </template>
 
 <style scoped>
-.guide-purpose { margin:24px 0; padding:16px 0; border:0; color:#fafafa; }
+.guide-purpose { margin:24px 0; padding:16px 0; border:0; color:#f5f0e6; }
 .guide-purpose legend { margin-bottom:12px; }
 .guide-purpose button { padding:10px 14px; margin:0 8px 8px 0; border:1px solid #c9a227; background:transparent; color:inherit; min-height:44px; cursor:pointer; }
-.guide-purpose button[aria-pressed="true"] { color:#0a0a0a; background:#c9a227; }
+.guide-purpose button[aria-pressed="true"] { color:#1a1613; background:#c9a227; }
 
 .guide-page {
   min-height: 100dvh;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   padding: 120px 20px 80px;
   /* 본문은 고딕(Pretendard)으로 — 장문 가독성, 제목은 아래에서 명조로 환원 */
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
@@ -375,7 +375,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   gap: 6px;
   margin-bottom: 20px;
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -392,7 +392,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   margin-top: 36px;
   padding: 12px 20px;
   border: 1px solid rgba(201, 162, 39, 0.45);
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   font-size: 14px;
   transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -423,7 +423,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 }
 
 .guide-lead {
-  color: rgba(250, 250, 250, 0.88);
+  color: rgba(245, 240, 230, 0.88);
   font-size: clamp(16px, 1.06rem, 18px);
   line-height: 1.85;
   margin-bottom: 18px;
@@ -435,7 +435,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   gap: 14px;
   margin-bottom: 22px;
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
 }
 
 .guide-hero-image {
@@ -449,7 +449,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   margin: 8px 0 0;
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
 }
 
 /* ── 위젯 공통: 좌측 골드 액센트(테두리 박스 대신) ── */
@@ -475,7 +475,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .quick-answer li {
   margin-bottom: 8px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.92);
+  color: rgba(245, 240, 230, 0.92);
 }
 
 /* ── 슬림 인라인 CTA(상단 큰 박스 대체) ── */
@@ -493,7 +493,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-cta-inline-label {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.85);
+  color: rgba(245, 240, 230, 0.85);
 }
 
 .guide-cta-inline-links {
@@ -504,7 +504,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .cta-pill {
   text-decoration: none;
-  color: #fafafa;
+  color: #f5f0e6;
   border: 1px solid rgba(201, 162, 39, 0.45);
   padding: 8px 16px;
   font-size: 13px;
@@ -521,7 +521,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .cta-pill-primary {
   background: #c9a227;
   border-color: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
   font-weight: 700;
 }
 
@@ -529,15 +529,15 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .guide-toc {
   margin-bottom: 44px;
   padding: 16px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(250, 245, 236, 0.1);
+  border-bottom: 1px solid rgba(250, 245, 236, 0.1);
 }
 
 .guide-toc-label {
   margin: 0 0 8px;
   font-size: 12px;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.55);
+  color: rgba(245, 240, 230, 0.55);
 }
 
 .guide-toc ol {
@@ -554,7 +554,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 }
 
 .guide-toc a {
-  color: rgba(250, 250, 250, 0.82);
+  color: rgba(245, 240, 230, 0.82);
   text-decoration: none;
   line-height: 1.7;
 }
@@ -576,7 +576,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   margin: 0 0 18px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(201, 162, 39, 0.28);
-  color: #fafafa;
+  color: #f5f0e6;
   font-size: clamp(20px, 3.5vw, 28px);
   line-height: 1.4;
 }
@@ -593,7 +593,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   font-size: clamp(16px, 1.06rem, 18px);
   line-height: 1.9;
   margin: 0 0 16px;
-  color: rgba(250, 250, 250, 0.92);
+  color: rgba(245, 240, 230, 0.92);
 }
 
 .article-section a {
@@ -612,15 +612,15 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   max-width: 100%;
   overflow-x: auto;
   margin: 24px 0;
-  border: 1px solid rgba(250, 250, 250, 0.18);
+  border: 1px solid rgba(245, 240, 230, 0.18);
   border-radius: 6px;
 }
 .article-table-scroll:focus-visible { outline: 2px solid #d4b44a; outline-offset: 4px; }
 .article-table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.75; }
 .article-table caption { padding: 12px 16px; text-align: left; font-weight: 600; color: #d4b44a; }
-.article-table th, .article-table td { min-width: 125px; padding: 14px 16px; vertical-align: top; text-align: left; border-top: 1px solid rgba(250, 250, 250, 0.15); }
-.article-table th { background: rgba(250, 250, 250, 0.06); color: #fafafa; }
-.article-table td { color: rgba(250, 250, 250, 0.9); }
+.article-table th, .article-table td { min-width: 125px; padding: 14px 16px; vertical-align: top; text-align: left; border-top: 1px solid rgba(245, 240, 230, 0.15); }
+.article-table th { background: rgba(245, 240, 230, 0.06); color: #f5f0e6; }
+.article-table td { color: rgba(245, 240, 230, 0.9); }
 
 .quick-answer li::marker,
 .article-bullets li::marker,
@@ -632,7 +632,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .article-bullets li {
   margin-bottom: 10px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.9);
+  color: rgba(245, 240, 230, 0.9);
 }
 
 .article-image {
@@ -650,7 +650,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   margin-top: 8px;
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
 }
 
 /* ── 주의: 좌측 경고색 액센트 ── */
@@ -681,14 +681,14 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .guide-caution li {
   margin-bottom: 8px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.9);
+  color: rgba(245, 240, 230, 0.9);
 }
 
 .guide-sources {
   margin-bottom: 44px;
   padding: 20px 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.1);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  border-top: 1px solid rgba(245, 240, 230, 0.1);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
 }
 
 .guide-sources h2 {
@@ -698,7 +698,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-sources p,
 .guide-sources li {
-  color: rgba(250, 250, 250, 0.74);
+  color: rgba(245, 240, 230, 0.74);
   font-size: 13px;
   line-height: 1.75;
 }
@@ -738,7 +738,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-faq-item {
   padding: 18px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(250, 245, 236, 0.08);
 }
 
 .guide-faq-item:first-child {
@@ -750,13 +750,13 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   margin: 0 0 8px;
   font-size: 16px;
   line-height: 1.6;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .guide-faq-item p {
   margin: 0;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.86);
+  color: rgba(245, 240, 230, 0.86);
 }
 
 /* ── 관련 페이지 ── */
@@ -776,7 +776,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
   gap: 8px;
   padding: 16px;
   text-decoration: none;
-  color: #fafafa;
+  color: #f5f0e6;
   border: 1px solid rgba(201, 162, 39, 0.3);
   background: rgba(201, 162, 39, 0.05);
   transition: transform 0.2s ease, border-color 0.2s ease;
@@ -793,7 +793,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .related-card span {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
   line-height: 1.55;
 }
 
@@ -813,7 +813,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 .guide-bottom-cta p {
   margin: 0 0 16px;
   line-height: 1.85;
-  color: rgba(250, 250, 250, 0.88);
+  color: rgba(245, 240, 230, 0.88);
 }
 
 .guide-bottom-links {
@@ -824,7 +824,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-bottom-links a {
   text-decoration: none;
-  color: #0a0a0a;
+  color: #1a1613;
   background: #c9a227;
   border: 1px solid #c9a227;
   font-weight: 700;
@@ -834,7 +834,7 @@ const handleGuideLinkClick = (event: MouseEvent) => {
 
 .guide-bottom-links a:last-child {
   background: transparent;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 @media (max-width: 720px) {

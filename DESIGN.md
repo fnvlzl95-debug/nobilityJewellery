@@ -1,27 +1,27 @@
 ---
 name: 귀족 Noblesse
-description: 종로 귀금속 도매점의 다크 럭셔리 웹 — Noir Opulence
+description: 종로 귀금속 도매점의 다크 럭셔리 웹 — Noir Opulence (웜블랙·웜화이트)
 colors:
-  black: "#0a0a0a"
-  black-light: "#111111"
-  black-lighter: "#1a1a1a"
+  black: "#1a1613"
+  black-light: "#211d19"
+  black-lighter: "#2a2521"
   gold: "#c9a227"
   gold-light: "#d4b44a"
   gold-dark: "#a68820"
   champagne: "#f5e6cc"
-  white: "#fafafa"
-  gray: "#888888"
-  gray-dark: "#444444"
-  gray-darker: "#2a2a2a"
-  surface-raised: "rgba(250, 250, 250, 0.02)"
-  hairline: "rgba(250, 250, 250, 0.08)"
+  white: "#f5f0e6"
+  gray: "#8d857a"
+  gray-dark: "#544d46"
+  gray-darker: "#3a342f"
+  surface-raised: "rgba(245, 240, 230, 0.02)"
+  hairline: "rgba(245, 240, 230, 0.08)"
   gold-hairline: "rgba(201, 162, 39, 0.35)"
   gold-wash: "rgba(201, 162, 39, 0.1)"
-  scrim: "rgba(10, 10, 10, 0.62)"
-  scrim-soft: "rgba(10, 10, 10, 0.3)"
-  black-warm: "#1a1510"
-  gold-label: "#120e06"
-  champagne-highlight: "rgba(255, 249, 232, 0.85)"
+  scrim: "rgba(26, 22, 19, 0.62)"
+  scrim-soft: "rgba(26, 22, 19, 0.3)"
+  black-warm: "#2a2521"
+  gold-label: "#221e1a"
+  champagne-highlight: "rgba(250, 245, 236, 0.85)"
   champagne-hairline: "rgba(255, 243, 210, 0.5)"
   caution: "#ffb4b4"
   caution-hairline: "rgba(255, 168, 168, 0.6)"
@@ -263,20 +263,20 @@ components:
 
 ## Colors
 
-- 바닥은 `black` `#0a0a0a`. 카드/입력면처럼 살짝 떠 있는 면은 배경색을 바꾸지 않고 `surface-raised`(흰색 2% 알파)를 덮는다. 이미지 자리표시자만 `black-light` `#111111`.
+- 바닥은 `black` `#1a1613`(웜블랙, 2026-11-14에 순수 검정 계열 `#0a0a0a`에서 변경). 카드/입력면처럼 살짝 떠 있는 면은 배경색을 바꾸지 않고 `surface-raised`(흰색 2% 알파)를 덮는다. 이미지 자리표시자만 `black-light` `#211d19`.
 - `gold` `#c9a227`은 **행동과 강조 전용**이다. 본문 텍스트에 쓰지 않는다. 호버 시 `gold-light` `#d4b44a`로 올린다.
-- 텍스트 위계는 `white` `#fafafa` → `gray` `#888888` 두 단계면 충분하다. `gray-dark`는 비활성·구분선급에만.
+- 텍스트 위계는 `white` `#f5f0e6`(웜화이트) → `gray` `#8d857a` 두 단계면 충분하다. `gray-dark`는 비활성·구분선급에만.
 - `champagne` `#f5e6cc`는 골드보다 부드러운 강조가 필요할 때만 쓰는 예비 색이다.
 - 경계선은 색이 아니라 알파다: 중립 `hairline`(흰색 8%), 골드 강조 `gold-hairline`(골드 35%).
-- 사진 위에 UI를 얹을 때만 `scrim`(`rgba(10, 10, 10, 0.62)`)을 쓴다. 순수 검정이 아니라 `black` `#0a0a0a` 기반이라 페이지 바닥과 같은 온도로 가라앉는다. 카드의 `+N` 배지와 상세 페이지 확대 버튼이 이걸 공유한다. 사진 위가 아닌 곳에는 쓰지 않는다 — 떠 있는 면은 `surface-raised`다. 그림자·텍스트 그림자처럼 옅게 깔 때는 `scrim-soft`(30%).
-- **순수 검정(`#000`)을 쓰지 않는다.** 이 사이트의 검정은 전부 `#0a0a0a` 계열이다. `rgba(0,0,0,…)`이 보이면 `rgba(10,10,10,…)`으로 바꾼다.
+- 사진 위에 UI를 얹을 때만 `scrim`(`rgba(26, 22, 19, 0.62)`)을 쓴다. 순수 검정이 아니라 `black` `#1a1613` 기반이라 페이지 바닥과 같은 온도로 가라앉는다. 카드의 `+N` 배지와 상세 페이지 확대 버튼이 이걸 공유한다. 사진 위가 아닌 곳에는 쓰지 않는다 — 떠 있는 면은 `surface-raised`다. 그림자·텍스트 그림자처럼 옅게 깔 때는 `scrim-soft`(30%).
+- **순수 검정(`#000`)을 쓰지 않는다.** 이 사이트의 검정은 전부 웜블랙 `#1a1613` 계열이다. `rgba(0,0,0,…)`이나 `rgba(10,10,10,…)`이 보이면 `rgba(26,22,19,…)`로, 흰색 `rgba(250,250,250,…)`은 `rgba(245,240,230,…)`으로 바꾼다.
 - 포커스 링은 전역 단일 정책 — `outline: 2px solid var(--gold); outline-offset: 2px`. 재정의 금지.
 
 ### 브랜드 고정색 (변경 금지)
 
 - `kakao-yellow` `#FEE500` + `kakao-label` `#3C1E1E` — 카카오톡 버튼 전용. **카카오 브랜드 가이드가 지정한 값이라 톤을 맞추려고 건드리면 안 된다.** 사이트 전체에서 이 조합 하나만 쓴다(예전에 `#2f1b12`/`#fee500`으로 갈려 있던 걸 통일했다).
-- 골드 그라디언트 CTA(모바일 전환 바)만 자체 팔레트를 쓴다: 라벨 `gold-label` `#120e06`, 테두리 `champagne-hairline`, 호버 테두리 `champagne-highlight`. 금색 배경 위에서는 흰 글자가 읽히지 않아 어두운 따뜻한 색이 필요하다.
-- `black-warm` `#1a1510`은 랜딩 CTA 배경 그라디언트의 중간 정지점 전용이다.
+- 골드 그라디언트 CTA(모바일 전환 바)만 자체 팔레트를 쓴다: 라벨 `gold-label` `#221e1a`, 테두리 `champagne-hairline`, 호버 테두리 `champagne-highlight`. 금색 배경 위에서는 흰 글자가 읽히지 않아 어두운 따뜻한 색이 필요하다.
+- `black-warm` `#2a2521`은 랜딩 CTA 배경 그라디언트의 중간 정지점 전용이다.
 
 ### 의미색
 

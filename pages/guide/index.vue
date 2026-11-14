@@ -374,10 +374,10 @@ useHead(() => ({
 
 <style scoped>
 .guide-search { margin:28px 0; }
-.guide-search label { display:block; margin-bottom:10px; color:#fafafa; }
+.guide-search label { display:block; margin-bottom:10px; color:#f5f0e6; }
 .guide-search div { display:flex; gap:10px; }
-.guide-search input { flex:1; min-width:0; padding:12px; border:1px solid #7c7047; background:#161616; color:#fafafa; }
-.guide-search button { padding:12px 20px; background:#c9a227; color:#111; border:0; cursor:pointer; }
+.guide-search input { flex:1; min-width:0; padding:12px; border:1px solid #7c7047; background:#26211e; color:#f5f0e6; }
+.guide-search button { padding:12px 20px; background:#c9a227; color:#211d19; border:0; cursor:pointer; }
 .guide-empty { padding:32px 0; border-top:1px solid var(--gray-darker); }
 .guide-empty h2 { margin-bottom:12px; font-size:20px; }
 .guide-empty p { margin-bottom:16px; color:var(--gray); }
@@ -385,8 +385,8 @@ useHead(() => ({
 
 .guide-list-page {
   min-height: 100vh;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   padding: 120px 20px 80px;
   font-family: var(--font-body);
 }
@@ -414,7 +414,7 @@ useHead(() => ({
 }
 
 .guide-header p {
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
   line-height: 1.8;
 }
 
@@ -427,7 +427,7 @@ useHead(() => ({
 
 .guide-header-btn {
   text-decoration: none;
-  color: #fafafa;
+  color: #f5f0e6;
   border: 1px solid rgba(201, 162, 39, 0.45);
   padding: 10px 14px;
   font-size: 14px;
@@ -435,7 +435,7 @@ useHead(() => ({
 
 .guide-header-btn-primary {
   background: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
   border-color: #c9a227;
   font-weight: 700;
 }
@@ -453,7 +453,7 @@ useHead(() => ({
   flex: 0 0 auto;
   margin: 0;
   padding-bottom: 13px;
-  color: rgba(250, 250, 250, 0.52);
+  color: rgba(245, 240, 230, 0.52);
   font-size: 12px;
   letter-spacing: 0.04em;
 }
@@ -485,7 +485,7 @@ useHead(() => ({
   padding: 0 14px;
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
-  color: rgba(250, 250, 250, 0.64);
+  color: rgba(245, 240, 230, 0.64);
   text-decoration: none;
   white-space: nowrap;
   scroll-snap-align: center;
@@ -493,14 +493,14 @@ useHead(() => ({
 }
 
 .guide-category-link small {
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   font-size: 11px;
   transition: color 0.2s ease;
 }
 
 .guide-category-link:hover,
 .guide-category-link:focus-visible {
-  color: #fafafa;
+  color: #f5f0e6;
   border-color: rgba(201, 162, 39, 0.5);
 }
 
@@ -520,8 +520,8 @@ useHead(() => ({
   gap: 18px;
   margin: 0 0 22px;
   padding: 16px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
-  color: rgba(250, 250, 250, 0.76);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
+  color: rgba(245, 240, 230, 0.76);
   font-size: 14px;
   line-height: 1.75;
 }
@@ -543,7 +543,7 @@ useHead(() => ({
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 14px;
-  color: rgba(250, 250, 250, 0.58);
+  color: rgba(245, 240, 230, 0.58);
   font-size: 13px;
   scroll-margin-top: 104px;
   outline: none;
@@ -554,7 +554,7 @@ useHead(() => ({
 }
 
 .guide-list-meta strong {
-  color: #fafafa;
+  color: #f5f0e6;
   font-weight: 600;
 }
 
@@ -572,7 +572,7 @@ useHead(() => ({
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: #fafafa;
+  color: #f5f0e6;
   border: 1px solid rgba(201, 162, 39, 0.35);
   background: rgba(201, 162, 39, 0.06);
   transition: transform 0.2s ease, border-color 0.2s ease;
@@ -600,7 +600,7 @@ useHead(() => ({
   align-self: flex-start;       /* flex 컬럼에서 배지가 가로로 늘어나지 않게 */
   display: inline-block;
   font-size: 11px;
-  color: #0a0a0a;
+  color: #1a1613;
   background: #c9a227;
   padding: 3px 8px;
   margin-bottom: 10px;
@@ -615,7 +615,7 @@ useHead(() => ({
   font-size: 22px;
   font-weight: 700;             /* 제목을 굵게 — 설명과 위계 분리 */
   line-height: 1.35;
-  color: #fafafa;
+  color: #f5f0e6;
   margin: 0 0 8px;
 }
 
@@ -625,7 +625,7 @@ useHead(() => ({
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: calc(1.7em * 2);  /* 설명도 항상 2줄 높이 */
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
   line-height: 1.7;
   margin: 0 0 12px;
 }
@@ -633,7 +633,7 @@ useHead(() => ({
 .guide-card small {
   margin-top: auto;             /* 날짜를 카드 하단에 고정 */
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 .guide-pagination {
@@ -650,7 +650,7 @@ useHead(() => ({
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  color: rgba(250, 250, 250, 0.78);
+  color: rgba(245, 240, 230, 0.78);
   text-decoration: none;
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -665,7 +665,7 @@ useHead(() => ({
 
 .guide-pagination-control:not(.is-disabled):hover,
 .guide-pagination-control:not(.is-disabled):focus-visible {
-  color: #fafafa;
+  color: #f5f0e6;
   border-color: #c9a227;
   background: rgba(201, 162, 39, 0.08);
 }
@@ -694,7 +694,7 @@ useHead(() => ({
 }
 
 .guide-pagination-page.is-current {
-  color: #0a0a0a;
+  color: #1a1613;
   background: #c9a227;
   border-color: #c9a227;
   font-weight: 700;
@@ -705,13 +705,13 @@ useHead(() => ({
   align-items: center;
   justify-content: center;
   width: 28px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 .guide-pagination-status {
   display: none;
   min-width: 70px;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
   text-align: center;
   font-size: 13px;
 }
@@ -790,7 +790,7 @@ useHead(() => ({
 .guide-all-list {
   margin-top: 72px;
   padding-top: 40px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .guide-all-list summary {
@@ -834,7 +834,7 @@ useHead(() => ({
 .guide-all-group a {
   font-size: 14px;
   line-height: 1.7;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
   text-decoration: none;
   transition: color 0.2s;
 }

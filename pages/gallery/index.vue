@@ -353,18 +353,18 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.gallery-search { margin-bottom: 28px; padding: 20px; border: 1px solid #353025; border-radius: 12px; }
+.gallery-search { margin-bottom: 28px; padding: 20px; border: 1px solid #453e39; border-radius: 12px; }
 .gallery-search label { display: block; margin-bottom: 10px; font-weight: 600; }
 .gallery-search-controls { display: flex; flex-wrap: wrap; gap: 10px; }
-.gallery-search input { flex: 1 1 220px; min-width: 0; width: 100%; padding: 12px; border: 1px solid #666; border-radius: 6px; color: #fafafa; background: #181818; font-size: 16px; }
-.gallery-search button { padding: 10px 14px; min-height: 44px; border: 1px solid #bfa26c; border-radius: 6px; color: #fafafa; background: #28231b; }
+.gallery-search input { flex: 1 1 220px; min-width: 0; width: 100%; padding: 12px; border: 1px solid #6a645c; border-radius: 6px; color: #f5f0e6; background: #28231f; font-size: 16px; }
+.gallery-search button { padding: 10px 14px; min-height: 44px; border: 1px solid #bfa26c; border-radius: 6px; color: #f5f0e6; background: #38322d; }
 .gallery-search input:focus-visible, .gallery-search button:focus-visible { outline: 2px solid #dfc487; outline-offset: 3px; }
-.gallery-search p { margin: 10px 0 0; color: #bbb; font-size: 14px; line-height: 1.6; }
+.gallery-search p { margin: 10px 0 0; color: #c2b7a8; font-size: 14px; line-height: 1.6; }
 .gallery-search .gallery-search-empty { color: #e5d3ad; }
 /* ===== Base ===== */
 .page {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   min-height: 100vh;
   font-family: var(--font-body);
   overflow-x: hidden;
@@ -406,7 +406,7 @@ onUnmounted(() => {
   font-family: var(--font-body);
   font-size: clamp(30px, 4vw, 44px);
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin: 0;
 }
 
@@ -421,21 +421,21 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 300;
   letter-spacing: 0.16em;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
   text-transform: uppercase;
 }
 
 .gallery-count-copy {
   font-size: 13px;
   line-height: 1.7;
-  color: rgba(250, 250, 250, 0.62);
+  color: rgba(245, 240, 230, 0.62);
 }
 
 /* ===== Tab Bar ===== */
 .tab-bar {
   display: flex;
   gap: 10px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
   margin-bottom: 32px;
   padding-bottom: 18px;
   overflow-x: auto;
@@ -453,19 +453,19 @@ onUnmounted(() => {
   gap: 10px;
   flex-shrink: 0;
   padding: 12px 18px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 300;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
   text-decoration: none;
   transition: all 0.3s;
   white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: #fafafa;
+  color: #f5f0e6;
   border-color: rgba(201, 162, 39, 0.45);
   background: rgba(201, 162, 39, 0.08);
 }
@@ -498,7 +498,7 @@ onUnmounted(() => {
 }
 
 .category-link {
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   border: 1px solid rgba(201, 162, 39, 0.35);
   padding: 10px 14px;
@@ -516,7 +516,7 @@ onUnmounted(() => {
   max-width: 900px;
   font-size: 15px;
   line-height: 1.9;
-  color: rgba(250, 250, 250, 0.78);
+  color: rgba(245, 240, 230, 0.78);
 }
 
 .category-actions {
@@ -531,7 +531,7 @@ onUnmounted(() => {
   justify-content: center;
   min-height: 48px;
   padding: 0 18px;
-  color: #0a0a0a;
+  color: #1a1613;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
@@ -553,11 +553,11 @@ onUnmounted(() => {
 }
 
 .category-meta span {
-  border: 1px solid rgba(250, 250, 250, 0.08);
-  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  background: rgba(245, 240, 230, 0.02);
   padding: 6px 10px;
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.64);
+  color: rgba(245, 240, 230, 0.64);
 }
 
 /* ===== Product Grid ===== */
@@ -569,8 +569,8 @@ onUnmounted(() => {
 
 .product-card {
   display: flex;
-  border: 1px solid rgba(250, 250, 250, 0.08);
-  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  background: rgba(245, 240, 230, 0.02);
   transition: transform 0.3s, border-color 0.3s;
 }
 
@@ -595,8 +595,8 @@ onUnmounted(() => {
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  background: #111;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+  background: #211d19;
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .card-image img {
@@ -621,8 +621,8 @@ onUnmounted(() => {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(10, 10, 10, 0.62); /* scrim — --black 기반, 상세 페이지 .media-zoom과 동일 */
-  color: rgba(250, 250, 250, 0.8);
+  background: rgba(26, 22, 19, 0.62); /* scrim — --black 기반, 상세 페이지 .media-zoom과 동일 */
+  color: rgba(245, 240, 230, 0.8);
   font-size: 12px;
   font-weight: 300;
   padding: 3px 7px;
@@ -643,7 +643,7 @@ onUnmounted(() => {
   font-size: 16px;
   font-weight: 600;             /* 제목을 굵게 — 아래 텍스트와 위계 분리 */
   line-height: 1.35;
-  color: #fafafa;               /* 가장 밝게 */
+  color: #f5f0e6;               /* 가장 밝게 */
   margin: 0 0 4px;
 }
 
@@ -652,7 +652,7 @@ onUnmounted(() => {
   font-size: 12px;
   font-weight: 400;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin: 0 0 12px;
 }
 
@@ -660,7 +660,7 @@ onUnmounted(() => {
   margin: 0 0 14px;
   font-size: 13px;
   line-height: 1.7;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -678,7 +678,7 @@ onUnmounted(() => {
 
 .card-meta-list div {
   padding-top: 10px;
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .card-meta-list dt {
@@ -686,14 +686,14 @@ onUnmounted(() => {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
 }
 
 .card-meta-list dd {
   margin: 0;
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.82);
+  color: rgba(245, 240, 230, 0.82);
 }
 
 /* ===== Help ===== */
@@ -720,7 +720,7 @@ onUnmounted(() => {
 .gallery-help-card li {
   font-size: 14px;
   line-height: 1.85;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
 }
 
 .gallery-help-card ul {
@@ -737,7 +737,7 @@ onUnmounted(() => {
 
 .gallery-help-links a {
   text-decoration: none;
-  color: #fafafa;
+  color: #f5f0e6;
   border: 1px solid rgba(201, 162, 39, 0.35);
   padding: 10px 14px;
   font-size: 13px;
@@ -770,14 +770,14 @@ onUnmounted(() => {
 .gallery-footer {
   margin-top: 64px;
   padding-top: 32px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .footer-note {
   font-size: 13px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin-bottom: 24px;
 }
 

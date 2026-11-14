@@ -139,7 +139,7 @@ onBeforeUnmount(() => {
   gap: 16px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .doc-fields {

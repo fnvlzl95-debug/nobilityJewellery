@@ -430,12 +430,12 @@ onUnmounted(() => {
 
 <style scoped>
 .media-caption, .lightbox-caption { margin-top:12px; color:var(--gray); font-size:12px; line-height:1.7; }
-.lightbox-caption { color:rgba(250,250,250,.8); text-align:center; }
+.lightbox-caption { color:rgba(245, 240, 230, .8); text-align:center; }
 .lightbox-content:has(.lightbox-caption) .lightbox-img { max-height:calc(86vh - 56px); }
 .design-consultation { margin:24px 0; padding:22px 0; border-top:1px solid rgba(201,162,39,.35); }
 .design-consultation h2 { font-size:19px; line-height:1.55; color:#e4cf8d; margin-bottom:12px; }
 .design-consultation ul { padding-left:19px; list-style:disc; }
-.design-consultation li { color:rgba(250,250,250,.8); font-size:14px; line-height:1.8; margin:8px 0; }
+.design-consultation li { color:rgba(245, 240, 230, .8); font-size:14px; line-height:1.8; margin:8px 0; }
 .consultation-scope { color:var(--gray); font-size:13px; line-height:1.8; margin-top:14px; }
 .consultation-links { display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:12px; }
 .consultation-links a { display:inline-flex; align-items:center; min-height:44px; color:var(--gold); font-size:13px; line-height:1.6; text-underline-offset:4px; }
@@ -483,7 +483,7 @@ onUnmounted(() => {
   justify-content: center;
   align-self: stretch;
   margin: 0 12px;
-  color: rgba(250, 250, 250, 0.32);
+  color: rgba(245, 240, 230, 0.32);
   content: '/';
   line-height: 1;
 }
@@ -530,7 +530,7 @@ onUnmounted(() => {
   aspect-ratio: 1;
   overflow: hidden;
   padding: 0;
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   background: var(--black-light);
   cursor: zoom-in;
   transition: border-color 0.3s var(--ease-out-quart);
@@ -560,8 +560,8 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   color: var(--white);
-  background: rgba(10, 10, 10, 0.62);
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  background: rgba(26, 22, 19, 0.62);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
@@ -585,7 +585,7 @@ onUnmounted(() => {
   height: 84px;
   padding: 0;
   overflow: hidden;
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   background: var(--black-light);
   cursor: pointer;
   transition: border-color 0.25s var(--ease-out-quart), opacity 0.25s var(--ease-out-quart);
@@ -600,7 +600,7 @@ onUnmounted(() => {
 
 .thumb:hover {
   opacity: 1;
-  border-color: rgba(250, 250, 250, 0.24);
+  border-color: rgba(245, 240, 230, 0.24);
 }
 
 .thumb-active {
@@ -622,7 +622,7 @@ onUnmounted(() => {
   margin: 24px 0 0;
   font-size: 16px;
   line-height: 1.7;
-  color: rgba(250, 250, 250, 0.78);
+  color: rgba(245, 240, 230, 0.78);
 }
 
 .facts {
@@ -630,8 +630,8 @@ onUnmounted(() => {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin: 32px 0 0;
-  background: rgba(250, 250, 250, 0.08);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .fact {
@@ -667,8 +667,8 @@ onUnmounted(() => {
   align-items: center;
   min-height: 34px;
   padding: 6px 10px;
-  border: 1px solid rgba(250, 250, 250, 0.12);
-  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.12);
+  background: rgba(245, 240, 230, 0.02);
   color: var(--white);
   font-size: 13px;
   line-height: 1.4;
@@ -688,7 +688,7 @@ onUnmounted(() => {
 
 .specs-list {
   margin: 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .spec {
@@ -696,7 +696,7 @@ onUnmounted(() => {
   grid-template-columns: 110px minmax(0, 1fr);
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .spec dt {
@@ -801,7 +801,7 @@ onUnmounted(() => {
 .related {
   margin-top: 120px;
   padding-top: 40px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .related-title {
@@ -821,8 +821,8 @@ onUnmounted(() => {
 .related-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(250, 250, 250, 0.08);
-  background: rgba(250, 250, 250, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  background: rgba(245, 240, 230, 0.02);
   text-decoration: none;
   transition: border-color 0.3s var(--ease-out-quart);
 }
@@ -835,7 +835,7 @@ onUnmounted(() => {
   aspect-ratio: 1;
   overflow: hidden;
   background: var(--black-light);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .related-image img {
@@ -891,7 +891,7 @@ onUnmounted(() => {
   display: grid;
   place-items: center;
   padding: 40px;
-  background: rgba(10, 10, 10, 0.94);
+  background: rgba(26, 22, 19, 0.94);
 }
 
 .lightbox-content {
@@ -916,7 +916,7 @@ onUnmounted(() => {
   height: 44px;
   color: var(--white);
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   cursor: pointer;
   transition: border-color 0.25s var(--ease-out-quart), color 0.25s var(--ease-out-quart);
 }

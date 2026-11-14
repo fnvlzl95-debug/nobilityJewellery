@@ -248,7 +248,7 @@ useHead({
 
 .don-summary > p {
   margin: 0 0 22px;
-  color: rgba(250, 250, 250, 0.86);
+  color: rgba(245, 240, 230, 0.86);
   font-size: 15px;
   line-height: 1.75;
 }
@@ -265,7 +265,7 @@ useHead({
 
 .don-summary caption {
   margin-bottom: 10px;
-  color: rgba(250, 250, 250, 0.62);
+  color: rgba(245, 240, 230, 0.62);
   font-size: 12px;
   text-align: left;
 }
@@ -273,18 +273,18 @@ useHead({
 .don-summary th,
 .don-summary td {
   padding: 11px 14px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
   text-align: left;
 }
 
 .don-summary th {
-  color: rgba(250, 250, 250, 0.68);
+  color: rgba(245, 240, 230, 0.68);
   font-size: 12px;
   font-weight: 600;
 }
 
 .don-summary td:last-child {
-  color: #fafafa;
+  color: #f5f0e6;
   font-weight: 700;
 }
 

@@ -264,8 +264,8 @@ const engravingOptions = [
 
 <style scoped>
 .page {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   min-height: 100vh;
 }
@@ -285,15 +285,15 @@ const engravingOptions = [
 }
 
 .nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
+  background: rgba(26, 22, 19, 0.95);
   backdrop-filter: blur(20px);
   padding: 16px clamp(20px, 5vw, 60px);
 }
 
 .nav-logo { text-decoration: none; }
-.logo-text { font-size: 24px; font-weight: 700; color: #fafafa; letter-spacing: 0.1em; }
-.nav-link { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; color: rgba(250, 250, 250, 0.7); text-decoration: none; transition: color 0.3s; }
-.nav-link:hover, .nav-link.active { color: #fafafa; }
+.logo-text { font-size: 24px; font-weight: 700; color: #f5f0e6; letter-spacing: 0.1em; }
+.nav-link { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; color: rgba(245, 240, 230, 0.7); text-decoration: none; transition: color 0.3s; }
+.nav-link:hover, .nav-link.active { color: #f5f0e6; }
 
 
 /* Main */
@@ -303,19 +303,19 @@ const engravingOptions = [
 /* Header */
 .page-header { text-align: center; margin-bottom: 48px; }
 .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a227; margin-bottom: 16px; }
-.title { font-size: clamp(32px, 5vw, 48px); font-weight: 300; color: #fafafa; margin-bottom: 20px; }
-.desc { font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(250, 250, 250, 0.6); }
+.title { font-size: clamp(32px, 5vw, 48px); font-weight: 300; color: #f5f0e6; margin-bottom: 20px; }
+.desc { font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(245, 240, 230, 0.6); }
 
 /* Hero Images */
 .hero-images { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 80px; }
 @media (max-width: 600px) { .hero-images { grid-template-columns: 1fr; } }
-.hero-item { aspect-ratio: 4/3; overflow: hidden; border: 1px solid rgba(250, 250, 250, 0.1); }
+.hero-item { aspect-ratio: 4/3; overflow: hidden; border: 1px solid rgba(245, 240, 230, 0.1); }
 .hero-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
 .hero-item:hover img { transform: scale(1.05); }
 
 /* Section Title */
-.section-title { font-size: 24px; font-weight: 300; color: #fafafa; text-align: center; margin-bottom: 16px; }
-.section-desc { font-size: 14px; color: rgba(250, 250, 250, 0.5); text-align: center; margin-bottom: 40px; }
+.section-title { font-size: 24px; font-weight: 300; color: #f5f0e6; text-align: center; margin-bottom: 16px; }
+.section-desc { font-size: 14px; color: rgba(245, 240, 230, 0.5); text-align: center; margin-bottom: 40px; }
 
 /* Why Section */
 .why-section { margin-bottom: 80px; }
@@ -324,16 +324,16 @@ const engravingOptions = [
 @media (max-width: 500px) { .why-grid { grid-template-columns: 1fr; } }
 .why-item { text-align: center; padding: 32px 20px; background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(201, 162, 39, 0.02) 100%); border: 1px solid rgba(201, 162, 39, 0.2); }
 .why-item h3 { font-size: 18px; font-weight: 700; color: #c9a227; margin-bottom: 8px; }
-.why-item p { font-size: 13px; color: rgba(250, 250, 250, 0.6); line-height: 1.5; }
+.why-item p { font-size: 13px; color: rgba(245, 240, 230, 0.6); line-height: 1.5; }
 
 /* Types */
 .types-section { margin-bottom: 80px; }
 .types-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
 @media (max-width: 800px) { .types-grid { grid-template-columns: 1fr; } }
-.type-card { padding: 32px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); transition: all 0.3s; }
+.type-card { padding: 32px; background: rgba(245, 240, 230, 0.02); border: 1px solid rgba(245, 240, 230, 0.06); transition: all 0.3s; }
 .type-card:hover { border-color: rgba(201, 162, 39, 0.3); }
-.type-title { font-size: 20px; font-weight: 700; color: #fafafa; margin-bottom: 12px; }
-.type-desc { font-size: 14px; color: rgba(250, 250, 250, 0.6); line-height: 1.7; margin-bottom: 20px; }
+.type-title { font-size: 20px; font-weight: 700; color: #f5f0e6; margin-bottom: 12px; }
+.type-desc { font-size: 14px; color: rgba(245, 240, 230, 0.6); line-height: 1.7; margin-bottom: 20px; }
 .type-features { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .type-features li { font-size: 11px; color: #c9a227; padding: 6px 12px; background: rgba(201, 162, 39, 0.1); border: 1px solid rgba(201, 162, 39, 0.2); }
 
@@ -341,51 +341,51 @@ const engravingOptions = [
 .materials-section { margin-bottom: 80px; }
 .materials-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
 @media (max-width: 800px) { .materials-grid { grid-template-columns: repeat(2, 1fr); } }
-.material-card { padding: 24px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); text-align: center; }
-.material-name { font-size: 14px; font-weight: 700; color: #fafafa; margin-bottom: 8px; display: block; }
-.material-desc { font-size: 12px; color: rgba(250, 250, 250, 0.5); }
+.material-card { padding: 24px; background: rgba(245, 240, 230, 0.02); border: 1px solid rgba(245, 240, 230, 0.06); text-align: center; }
+.material-name { font-size: 14px; font-weight: 700; color: #f5f0e6; margin-bottom: 8px; display: block; }
+.material-desc { font-size: 12px; color: rgba(245, 240, 230, 0.5); }
 
 /* Occasions */
 .occasions-section { margin-bottom: 80px; }
 .occasions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
 @media (max-width: 800px) { .occasions-grid { grid-template-columns: repeat(2, 1fr); } }
-.occasion-card { padding: 24px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); text-align: center; }
+.occasion-card { padding: 24px; background: rgba(245, 240, 230, 0.02); border: 1px solid rgba(245, 240, 230, 0.06); text-align: center; }
 .occasion-card h3 { font-size: 16px; font-weight: 700; color: #c9a227; margin-bottom: 8px; }
-.occasion-card p { font-size: 13px; color: rgba(250, 250, 250, 0.5); }
+.occasion-card p { font-size: 13px; color: rgba(245, 240, 230, 0.5); }
 
 /* Engraving */
 .engraving-section { margin-bottom: 80px; }
 .engraving-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 600px) { .engraving-grid { grid-template-columns: 1fr; } }
 .engraving-card { display: flex; flex-direction: column; align-items: center; padding: 32px; background: rgba(201, 162, 39, 0.05); border: 1px solid rgba(201, 162, 39, 0.15); }
-.engraving-type { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: rgba(250, 250, 250, 0.5); margin-bottom: 12px; }
+.engraving-type { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: rgba(245, 240, 230, 0.5); margin-bottom: 12px; }
 .engraving-example { font-size: 24px; font-weight: 300; color: #c9a227; }
 
 /* Gallery */
 .gallery-section { margin-bottom: 80px; }
 .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
 @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-.gallery-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(250, 250, 250, 0.1); transition: all 0.3s; }
+.gallery-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(245, 240, 230, 0.1); transition: all 0.3s; }
 .gallery-grid img:hover { border-color: rgba(201, 162, 39, 0.3); }
 .gallery-cta { text-align: center; margin-top: 32px; }
 .btn-text { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #c9a227; text-decoration: none; transition: gap 0.3s; }
 .btn-text:hover { gap: 12px; }
 
 /* CTA */
-.cta-section { text-align: center; padding: 60px 40px; background: rgba(250, 250, 250, 0.02); border: 1px solid rgba(250, 250, 250, 0.06); margin-bottom: 40px; }
-.cta-section h3 { font-size: 24px; font-weight: 300; color: #fafafa; margin-bottom: 12px; }
-.cta-section p { font-size: 14px; color: rgba(250, 250, 250, 0.6); margin-bottom: 32px; line-height: 1.7; }
+.cta-section { text-align: center; padding: 60px 40px; background: rgba(245, 240, 230, 0.02); border: 1px solid rgba(245, 240, 230, 0.06); margin-bottom: 40px; }
+.cta-section h3 { font-size: 24px; font-weight: 300; color: #f5f0e6; margin-bottom: 12px; }
+.cta-section p { font-size: 14px; color: rgba(245, 240, 230, 0.6); margin-bottom: 32px; line-height: 1.7; }
 .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.btn-gold { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #0a0a0a; background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%); text-decoration: none; transition: all 0.3s; }
+.btn-gold { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #1a1613; background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%); text-decoration: none; transition: all 0.3s; }
 .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.3); }
-.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #fafafa; background: transparent; border: 1px solid rgba(250, 250, 250, 0.3); text-decoration: none; transition: all 0.3s; }
+.btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 14px; font-weight: 700; color: #f5f0e6; background: transparent; border: 1px solid rgba(245, 240, 230, 0.3); text-decoration: none; transition: all 0.3s; }
 .btn-outline:hover { border-color: #c9a227; color: #c9a227; transform: translateY(-2px); }
 
 /* Location */
-.location-info { text-align: center; padding: 32px; border-top: 1px solid rgba(250, 250, 250, 0.06); }
+.location-info { text-align: center; padding: 32px; border-top: 1px solid rgba(245, 240, 230, 0.06); }
 .location-info h4 { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; color: #c9a227; margin-bottom: 16px; }
-.location-info .address { font-size: 16px; color: #fafafa; margin-bottom: 8px; }
-.location-info .hours { font-size: 14px; color: rgba(250, 250, 250, 0.6); }
+.location-info .address { font-size: 16px; color: #f5f0e6; margin-bottom: 8px; }
+.location-info .hours { font-size: 14px; color: rgba(245, 240, 230, 0.6); }
 
 /* Footer */
 </style>

@@ -150,7 +150,7 @@ const handleMobileMenuPhoneClick = () => {
 }
 
 .nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
+  background: rgba(26, 22, 19, 0.95);
   backdrop-filter: blur(20px);
 }
 
@@ -161,7 +161,7 @@ const handleMobileMenuPhoneClick = () => {
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.1em;
 }
 
@@ -178,14 +178,14 @@ const handleMobileMenuPhoneClick = () => {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 /* Mobile Toggle */
@@ -203,7 +203,7 @@ const handleMobileMenuPhoneClick = () => {
 .nav-toggle span {
   width: 28px;
   height: 2px;
-  background: #fafafa;
+  background: #f5f0e6;
   transition: all 0.3s;
 }
 
@@ -235,7 +235,7 @@ const handleMobileMenuPhoneClick = () => {
 .mobile-menu-overlay {
   position: fixed;
   inset: 0;
-  background: #0a0a0a;
+  background: #1a1613;
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -315,7 +315,7 @@ const handleMobileMenuPhoneClick = () => {
   font-family: var(--font-body);
   font-size: 32px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.2em;
 }
 
@@ -339,14 +339,14 @@ const handleMobileMenuPhoneClick = () => {
   padding: 20px 0;
   background: none;
   border: none;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s;
 }
 
 .mobile-menu-link:first-child {
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .mobile-menu-link:hover,
@@ -369,7 +369,7 @@ const handleMobileMenuPhoneClick = () => {
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   transition: color 0.3s;
 }
 
@@ -377,7 +377,7 @@ const handleMobileMenuPhoneClick = () => {
   font-family: var(--font-body);
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.02em;
   transition: color 0.3s;
 }
@@ -395,7 +395,7 @@ const handleMobileMenuPhoneClick = () => {
   font-family: var(--font-body);
   font-size: 18px;
   font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-decoration: none;
   letter-spacing: 0.05em;
   transition: color 0.3s;

@@ -96,8 +96,8 @@ export const siteConfig = {
     primary: '#c9a227',      // 골드
     primaryLight: '#d4b44a',
     primaryDark: '#a68820',
-    background: '#0a0a0a',   // 블랙
-    text: '#fafafa',         // 화이트
+    background: '#1a1613',   // 웜블랙
+    text: '#f5f0e6',         // 웜화이트
   },
 
   // OG 이미지 (소셜 공유용)

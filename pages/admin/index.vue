@@ -680,7 +680,7 @@ onMounted(async () => {
 .admin .tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-bottom: 1px solid rgba(250, 250, 250, 0.14);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.14);
 }
 
 .admin .tab {
@@ -725,8 +725,8 @@ onMounted(async () => {
 
 .admin .panel {
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .stack {
@@ -762,8 +762,8 @@ onMounted(async () => {
   font-family: inherit;
   line-height: 1.5;
   color: var(--white);
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   border-radius: 0;
 }
 
@@ -883,8 +883,8 @@ onMounted(async () => {
 
 .admin .order-card {
   padding: 20px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .order-card.is-new {
@@ -905,8 +905,8 @@ onMounted(async () => {
   font-weight: 600;
   line-height: 1.5;
   color: var(--gray);
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 /* 운영자가 확인할 차례인 주문만 골드로 띄운다 */
@@ -952,7 +952,7 @@ onMounted(async () => {
 
 .admin .order-meta {
   margin: 14px 0 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .order-meta > div {
@@ -960,7 +960,7 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 16px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .order-meta dt {

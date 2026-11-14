@@ -73,7 +73,7 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
   margin: 52px 0;
   padding: 28px 0 0;
   border-top: 1px solid rgba(201, 162, 39, 0.42);
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .guide-cluster-heading {
@@ -86,14 +86,14 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
 
 .guide-cluster h2 {
   margin: 0 0 8px;
-  color: #fafafa;
+  color: #f5f0e6;
   font-size: clamp(20px, 3vw, 24px);
 }
 
 .guide-cluster-heading p {
   max-width: 62ch;
   margin: 0;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
   font-size: 14px;
   line-height: 1.7;
 }
@@ -118,13 +118,13 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
   list-style: none;
 }
 
 .guide-cluster-list li {
   min-width: 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .guide-cluster-list li:nth-child(odd) {
@@ -133,14 +133,14 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
 
 .guide-cluster-list li:nth-child(even) {
   padding-left: 18px;
-  border-left: 1px solid rgba(250, 250, 250, 0.08);
+  border-left: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .guide-cluster-list a {
   display: grid;
   gap: 5px;
   padding: 16px 0;
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
 }
 
@@ -149,7 +149,7 @@ const titleId = computed(() => `guide-cluster-${props.clusterId}`)
 }
 
 .guide-cluster-list span {
-  color: rgba(250, 250, 250, 0.62);
+  color: rgba(245, 240, 230, 0.62);
   font-size: 12px;
   line-height: 1.55;
 }

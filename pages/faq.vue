@@ -240,8 +240,8 @@ onUnmounted(() => {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
@@ -282,7 +282,7 @@ onUnmounted(() => {
   font-family: var(--font-body);
   font-size: clamp(32px, 5vw, 44px);
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -291,7 +291,7 @@ onUnmounted(() => {
   font-size: 15px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 .link-inline {
@@ -320,20 +320,20 @@ onUnmounted(() => {
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.15);
+  border: 1px solid rgba(245, 240, 230, 0.15);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .category-btn:hover {
-  color: #fafafa;
-  border-color: rgba(250, 250, 250, 0.6);
+  color: #f5f0e6;
+  border-color: rgba(245, 240, 230, 0.6);
 }
 
 .category-btn.active {
-  color: #0a0a0a;
+  color: #1a1613;
   background: #c9a227;
   border-color: #c9a227;
 }
@@ -348,7 +348,7 @@ onUnmounted(() => {
 }
 
 .faq-item {
-  background: #0a0a0a;
+  background: #1a1613;
 }
 
 .faq-question {
@@ -373,7 +373,7 @@ onUnmounted(() => {
   font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
-  color: #fafafa;
+  color: #f5f0e6;
   line-height: 1.5;
 }
 
@@ -419,7 +419,7 @@ onUnmounted(() => {
   font-size: 15px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 /* ===== Related Guide ===== */
@@ -433,13 +433,13 @@ onUnmounted(() => {
 .faq-guide-links h2 {
   font-size: 20px;
   font-weight: 400;
-  color: #fafafa;
+  color: #f5f0e6;
   margin: 0 0 10px;
 }
 
 .faq-guide-links p {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin: 0 0 16px;
 }
 
@@ -456,8 +456,8 @@ onUnmounted(() => {
   padding: 12px;
   text-decoration: none;
   border: 1px solid rgba(201, 162, 39, 0.35);
-  background: rgba(10, 10, 10, 0.6);
-  color: #fafafa;
+  background: rgba(26, 22, 19, 0.6);
+  color: #f5f0e6;
   transition: border-color 0.25s, transform 0.25s;
 }
 
@@ -472,7 +472,7 @@ onUnmounted(() => {
 
 .faq-guide-card span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
 }
 
 /* ===== CTA ===== */
@@ -483,7 +483,7 @@ onUnmounted(() => {
 
 .cta-text {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin-bottom: 20px;
 }
 
@@ -493,7 +493,7 @@ onUnmounted(() => {
   gap: 8px;
   padding: 16px 32px;
   background: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.05em;

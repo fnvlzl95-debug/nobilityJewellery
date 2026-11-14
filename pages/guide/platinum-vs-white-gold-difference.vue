@@ -204,7 +204,7 @@ useHead({
 
 .metal-summary > p {
   margin: 0 0 20px;
-  color: rgba(250, 250, 250, 0.86);
+  color: rgba(245, 240, 230, 0.86);
   font-size: 15px;
   line-height: 1.75;
 }
@@ -221,7 +221,7 @@ useHead({
 
 .metal-summary caption {
   margin-bottom: 10px;
-  color: rgba(250, 250, 250, 0.62);
+  color: rgba(245, 240, 230, 0.62);
   font-size: 12px;
   text-align: left;
 }
@@ -229,13 +229,13 @@ useHead({
 .metal-summary th,
 .metal-summary td {
   padding: 12px 14px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
   text-align: left;
   vertical-align: top;
 }
 
 .metal-summary thead th {
-  color: rgba(250, 250, 250, 0.68);
+  color: rgba(245, 240, 230, 0.68);
   font-size: 12px;
 }
 
@@ -246,7 +246,7 @@ useHead({
 }
 
 .metal-summary td {
-  color: rgba(250, 250, 250, 0.84);
+  color: rgba(245, 240, 230, 0.84);
   font-size: 13px;
   line-height: 1.65;
 }

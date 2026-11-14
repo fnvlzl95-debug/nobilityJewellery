@@ -65,21 +65,21 @@ const handleKakaoClick = () => {
 .cta-section {
   text-align: center;
   padding: 60px 40px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   margin-bottom: 40px;
 }
 
 .cta-section h3 {
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 12px;
 }
 
 .cta-section p {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin-bottom: 32px;
   line-height: 1.7;
 }
@@ -123,7 +123,7 @@ const handleKakaoClick = () => {
 }
 
 .btn-gold {
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
 }
 

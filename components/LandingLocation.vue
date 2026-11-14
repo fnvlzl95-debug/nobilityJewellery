@@ -14,7 +14,7 @@ import { siteConfig } from '~/config/site'
 .location-info {
   text-align: center;
   padding: 32px;
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .location-info h4 {
@@ -27,12 +27,12 @@ import { siteConfig } from '~/config/site'
 
 .location-info .address {
   font-size: 16px;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .location-info .hours {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 </style>

@@ -521,8 +521,8 @@ select.form-input { color-scheme: dark; }
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
@@ -580,7 +580,7 @@ select.form-input { color-scheme: dark; }
   font-family: var(--font-body);
   font-size: clamp(36px, 6vw, 52px);
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -589,7 +589,7 @@ select.form-input { color-scheme: dark; }
   font-size: 15px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin-bottom: 32px;
 }
 
@@ -608,7 +608,7 @@ select.form-input { color-scheme: dark; }
 
 .kakao-cta:hover {
   transform: translateX(4px);
-  box-shadow: 0 12px 32px rgba(10, 10, 10, 0.3);
+  box-shadow: 0 12px 32px rgba(26, 22, 19, 0.3);
 }
 
 .kakao-icon {
@@ -677,18 +677,18 @@ select.form-input { color-scheme: dark; }
   align-items: center;
   gap: 10px;
   margin-bottom: 32px;
-  color: rgba(250, 250, 250, 0.58);
+  color: rgba(245, 240, 230, 0.58);
   font-size: 13px;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .phone-link strong {
-  color: #fafafa;
+  color: #f5f0e6;
   font-weight: 600;
 }
 
-.field-help { margin-top: 8px; font-size: 12px; line-height: 1.6; color: rgba(250, 250, 250, 0.65); }
+.field-help { margin-top: 8px; font-size: 12px; line-height: 1.6; color: rgba(245, 240, 230, 0.65); }
 
 .phone-link:hover,
 .phone-link:focus-visible {
@@ -712,28 +712,28 @@ select.form-input { color-scheme: dark; }
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 .info-value {
   font-size: 14px;
   font-weight: 300;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
 }
 
 /* 상담 전 준비 안내 */
 .prep-block {
   margin-top: 40px;
   padding-top: 32px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .prep-title {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #fafafa;
+  color: #f5f0e6;
   margin: 0 0 16px;
 }
 
@@ -751,7 +751,7 @@ select.form-input { color-scheme: dark; }
   gap: 12px;
   align-items: start;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .prep-list li::before {
@@ -775,14 +775,14 @@ select.form-input { color-scheme: dark; }
   font-size: 14px;
   font-weight: 600;
   line-height: 1.5;
-  color: rgba(250, 250, 250, 0.9);
+  color: rgba(245, 240, 230, 0.9);
 }
 
 .prep-copy > span {
   display: block;
   font-size: 13px;
   line-height: 1.65;
-  color: rgba(250, 250, 250, 0.58);
+  color: rgba(245, 240, 230, 0.58);
   word-break: keep-all;
 }
 
@@ -790,7 +790,7 @@ select.form-input { color-scheme: dark; }
   margin: 20px 0 0;
   font-size: 13px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.55);
+  color: rgba(245, 240, 230, 0.55);
 }
 
 .prep-links a {
@@ -845,8 +845,8 @@ select.form-input { color-scheme: dark; }
 /* ===== Form Side ===== */
 .form-side {
   scroll-margin-top: 112px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   padding: clamp(24px, 4vw, 40px);
   min-width: 0;
 }
@@ -859,7 +859,7 @@ select.form-input { color-scheme: dark; }
 
 .form-heading {
   padding-bottom: 22px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .form-heading > span {
@@ -879,7 +879,7 @@ select.form-input { color-scheme: dark; }
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.03em;
-  color: #fafafa;
+  color: #f5f0e6;
   word-break: keep-all;
 }
 
@@ -887,7 +887,7 @@ select.form-input { color-scheme: dark; }
   margin: 0;
   font-size: 14px;
   line-height: 1.7;
-  color: rgba(250, 250, 250, 0.56);
+  color: rgba(245, 240, 230, 0.56);
   word-break: keep-all;
 }
 
@@ -924,14 +924,14 @@ select.form-input { color-scheme: dark; }
   margin-bottom: 8px;
   font-size: 20px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .inquiry-context p {
   margin: 0;
   font-size: 14px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
 }
 
 .honeypot-field {
@@ -952,7 +952,7 @@ select.form-input { color-scheme: dark; }
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: rgba(250, 250, 250, 0.85);
+  color: rgba(245, 240, 230, 0.85);
 }
 
 .type-fieldset {
@@ -1006,8 +1006,8 @@ select.form-input { color-scheme: dark; }
   align-items: center;
   gap: 4px;
   padding: 16px 12px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1045,7 +1045,7 @@ select.form-input { color-scheme: dark; }
 .type-label {
   font-size: 14px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .type-label-en {
@@ -1053,15 +1053,15 @@ select.form-input { color-scheme: dark; }
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
 }
 
 .type-option.active .type-label {
-  color: #0a0a0a;
+  color: #1a1613;
 }
 
 .type-option.active .type-label-en {
-  color: rgba(10, 10, 10, 0.6);
+  color: rgba(26, 22, 19, 0.6);
 }
 
 .form-input {
@@ -1071,20 +1071,20 @@ select.form-input { color-scheme: dark; }
   font-size: 15px;
   font-family: inherit;
   font-weight: 300;
-  color: #fafafa;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  color: #f5f0e6;
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.1);
   outline: none;
   transition: all 0.3s;
 }
 
 .form-input:focus {
   border-color: rgba(201, 162, 39, 0.5);
-  background: rgba(250, 250, 250, 0.04);
+  background: rgba(245, 240, 230, 0.04);
 }
 
 .form-input::placeholder {
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 .form-textarea {
@@ -1093,9 +1093,9 @@ select.form-input { color-scheme: dark; }
   font-size: 15px;
   font-family: inherit;
   font-weight: 300;
-  color: #fafafa;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  color: #f5f0e6;
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.1);
   outline: none;
   resize: none;
   height: 120px;
@@ -1105,11 +1105,11 @@ select.form-input { color-scheme: dark; }
 
 .form-textarea:focus {
   border-color: rgba(201, 162, 39, 0.5);
-  background: rgba(250, 250, 250, 0.04);
+  background: rgba(245, 240, 230, 0.04);
 }
 
 .form-textarea::placeholder {
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 .form-footer {
@@ -1155,7 +1155,7 @@ select.form-input { color-scheme: dark; }
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.2);
+  border: 1px solid rgba(245, 240, 230, 0.2);
   color: transparent;
   transition: all 0.3s;
 }
@@ -1163,13 +1163,13 @@ select.form-input { color-scheme: dark; }
 .consent-check input:checked + .check-box {
   background: #c9a227;
   border-color: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
 }
 
 .check-label {
   font-size: 13px;
   line-height: 1.6;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .check-label a {
@@ -1184,7 +1184,7 @@ select.form-input { color-scheme: dark; }
   padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   cursor: pointer;
@@ -1219,7 +1219,7 @@ select.form-input { color-scheme: dark; }
   align-items: center;
   justify-content: center;
   background: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
   margin-bottom: 24px;
 }
 
@@ -1227,13 +1227,13 @@ select.form-input { color-scheme: dark; }
   font-family: var(--font-body);
   font-size: 28px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .success-desc {
   font-size: 15px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin-bottom: 12px;
 }
 
@@ -1242,7 +1242,7 @@ select.form-input { color-scheme: dark; }
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
   letter-spacing: 0.04em;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
 }
 
 .btn-reset {
@@ -1251,9 +1251,9 @@ select.form-input { color-scheme: dark; }
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #fafafa;
+  color: #f5f0e6;
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.3);
+  border: 1px solid rgba(245, 240, 230, 0.3);
   cursor: pointer;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1263,7 +1263,7 @@ select.form-input { color-scheme: dark; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(250, 250, 250, 0.1);
+  background: rgba(245, 240, 230, 0.1);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1275,7 +1275,7 @@ select.form-input { color-scheme: dark; }
 }
 
 .btn-reset:hover {
-  border-color: rgba(250, 250, 250, 0.6);
+  border-color: rgba(245, 240, 230, 0.6);
 }
 
 .btn-reset:hover::before {

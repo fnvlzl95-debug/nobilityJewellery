@@ -86,8 +86,8 @@ const handleError = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   position: relative;
   overflow: hidden;
@@ -121,7 +121,7 @@ const handleError = () => {
 
 .error-message {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin-bottom: 40px;
   line-height: 1.7;
 }
@@ -136,7 +136,7 @@ const handleError = () => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   cursor: pointer;
@@ -170,7 +170,7 @@ const handleError = () => {
 
 .error-cta-link:hover {
   border-color: #c9a227;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .error-links {
@@ -183,7 +183,7 @@ const handleError = () => {
 
 .error-links a {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
   text-decoration: none;
   transition: color 0.3s;
 }

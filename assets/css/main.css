@@ -12,17 +12,17 @@
 @layer base {
   :root {
     /* Colors - Noir Opulence */
-    --black: #0a0a0a;
-    --black-light: #111111;
-    --black-lighter: #1a1a1a;
+    --black: #1a1613;
+    --black-light: #211d19;
+    --black-lighter: #2a2521;
     --gold: #c9a227;
     --gold-light: #d4b44a;
     --gold-dark: #a68820;
     --champagne: #f5e6cc;
-    --white: #fafafa;
-    --gray: #888888;
-    --gray-dark: #444444;
-    --gray-darker: #2a2a2a;
+    --white: #f5f0e6;
+    --gray: #8d857a;
+    --gray-dark: #544d46;
+    --gray-darker: #3a342f;
 
     /* Typography — Noblesse UI (기존 글꼴의 콘텐츠별 서브셋) */
     --font-display: 'Noblesse UI', -apple-system, BlinkMacSystemFont,
@@ -343,7 +343,7 @@
     text-decoration: none;
     color: var(--white);
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(250, 245, 236, 0.3);
     transition: all 0.4s var(--ease-out-expo);
   }
 
@@ -372,7 +372,7 @@
 
   .nav-luxury.scrolled {
     padding: 16px var(--gutter);
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(26, 22, 19, 0.95);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
   }
@@ -383,7 +383,7 @@
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(250, 245, 236, 0.7);
     text-decoration: none;
     background: none;
     border: none;
