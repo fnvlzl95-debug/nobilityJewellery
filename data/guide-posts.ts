@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'thin-gold-ring-shank-repair',
+      path: '/guide/thin-gold-ring-shank-repair',
+      title: '금반지 얇아짐, 밴드 보강 수리 상담 기준',
+      description: '금반지 손바닥 쪽이 얇아지거나 반복해서 휘면 밴드의 남은 두께와 손상 범위를 확인하세요. 보강·부분 교체 상담 기준, 견적과 사진 준비, 종로 귀족 문의 방법을 안내합니다.',
+      keyword: '반지 보강 수리',
+      image: '/Image/guide/thin-gold-ring-shank-repair-hero.webp',
+      publishedAt: '2026-11-15',
+      category: '수리',
+    },
+  {
       slug: 'diamond-ring-lower-setting-remodel',
       path: '/guide/diamond-ring-lower-setting-remodel',
       title: '다이아 반지 낮추기, 리세팅 전 확인할 것',

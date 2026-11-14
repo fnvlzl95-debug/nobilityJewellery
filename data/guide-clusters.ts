@@ -40,6 +40,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/travel-jewelry-packing-storage', label: '여행 주얼리 보관, 엉킴·분실 줄이는 법', description: '여행 주얼리 보관은 제품별 분리 수납과 수량 확인부터 시작하세요' },
       { to: '/guide/jongno-necklace-shortening-cost', label: '종로 목걸이 줄이기 비용, 견적 확인법', description: '종로에서 목걸이 길이를 줄이려면 줄일 길이뿐 아니라 잠금장치 재연결과 부품 교체 범위를 함께 확인하세요' },
       { to: '/guide/ring-personal-engraving-removal', label: '반지 각인 지우기, 깊이·두께부터 확인합니다', description: '반지 안쪽 개인 문구를 연마로 지우는 원리와 각인 깊이·밴드 두께·안쪽 장식을 먼저 보는 이유, 새 문구 위치를 정하는 기준과 상담 때 보낼 사진을 정리했습니다' },
+      { to: '/guide/thin-gold-ring-shank-repair', label: '금반지 얇아짐, 밴드 보강 수리 상담 기준', description: '금반지 손바닥 쪽이 얇아지거나 반복해서 휘면 밴드의 남은 두께와 손상 범위를 확인하세요' },
     ],
   },
   {

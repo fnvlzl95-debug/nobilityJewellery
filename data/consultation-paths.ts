@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/thin-gold-ring-shank-repair': {
+    title: '얇아진 반지 밴드 사진으로 수리 상담하기',
+    description: '손바닥 쪽 밴드와 옆면 사진에 이전 수리 이력을 함께 보내주세요. 실물 점검에 필요한 내용과 보강 가능한 범위를 상담합니다.',
+    type: 'repair',
+    kakaoLabel: '반지 밴드 보강 카톡 상담',
+    prompts: ['반지 전체·아래쪽·옆면과 안쪽 각인 사진', '얇아짐·휘어짐·벌어짐 등 현재 상태', '이전 수리 이력과 보존할 장식·문구', '현재 착용감과 희망 수령일'],
+    gallerySlugs: [],
+    links: [{ to: '/repair', label: '수리 가능 범위와 방문 상담 안내' }, { to: '/guide/gold-ring-repair-cost', label: '금반지 수리 견적 항목 확인' }],
+  },
   '/guide/diamond-ring-lower-setting-remodel': {
     title: '반지 옆면 사진으로 낮은 세팅 상담하기',
     description: '현재 반지에서 불편한 점과 유지하고 싶은 부분을 알려주세요. 구조와 보석 상태를 확인해 리폼 가능 범위와 견적을 상담합니다.',
