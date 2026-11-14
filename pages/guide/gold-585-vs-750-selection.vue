@@ -3,8 +3,8 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/gold-585-vs-750-selection'
-const pageTitle = '585와 750 각인을 읽고 14K·18K 선택 기준 정하는 법 | 귀족'
-const pageDescription = '585와 750 각인이 각각 14K와 18K를 뜻하는 이유를 확인하고, 금 함량과 착용 목적을 기준으로 선택 조건을 정리합니다.'
+const pageTitle = '금 585는 14K, 750은 18K: 각인 뜻과 선택 기준 | 귀족'
+const pageDescription = '금 585는 금 함량 58.5%인 14K, 750은 75.0%인 18K를 뜻하는 천분율 각인입니다. 두 표기의 금 함량 차이와 착용 목적에 따른 선택 기준을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/gold-585-vs-750-selection-hero.webp`
 const publishedAt = '2026-08-19'
 const updatedAt = ''
@@ -104,7 +104,7 @@ const relatedLinks = [
 ]
 
 // guide-manager:data:start
-const gmArticleTitle = '585와 750 각인을 읽고 14K·18K 선택 기준 정하는 법'
+const gmArticleTitle = '금 585는 14K, 750은 18K: 각인 뜻과 선택 기준'
 const gmArticleLead = '반지나 목걸이에 585 또는 750이 찍혀 있다면 금 함량부터 확인할 수 있습니다. 천분율 기준으로 585는 금 함량 58.5%인 14K에 해당하고, 750은 금 함량 75.0%인 18K에 해당합니다. 어느 쪽이 더 적합한지는 금 함량을 얼마나 중요하게 보는지, 착용 목적이 무엇인지, 합금 특성에 관한 설명은 어떠한지를 함께 확인한 뒤 정하는 것이 좋습니다.'
 const gmArticleCategory = '선택'
 const gmArticleKeyword = '585 750 14K 18K 선택'

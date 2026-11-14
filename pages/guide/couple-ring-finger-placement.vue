@@ -3,8 +3,8 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/couple-ring-finger-placement'
-const pageTitle = '커플링은 어느 손가락에 낄까 | 귀족'
-const pageDescription = '커플링과 결혼반지는 착용 손가락만으로 확정해 구분하기 어렵습니다. 대표적인 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.'
+const pageTitle = '커플링 손가락 위치: 왼손·오른손 약지와 결혼반지 차이 | 귀족'
+const pageDescription = '커플링은 정해진 손가락이 없어 왼손·오른손 약지 등 두 사람이 정한 위치에 낍니다. 결혼반지의 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/couple-ring-finger-placement-hero-5e9b2e70.webp`
 const publishedAt = '2026-09-09'
 const updatedAt = '2026-10-03'
@@ -190,7 +190,7 @@ const relatedLinks = [
 const articleImages = [ogImage, ...sections.flatMap(({ image }) => image?.src ? [`${siteConfig.url}${image.src}`] : [])]
 
 // guide-manager:data:start
-const gmArticleTitle = '커플링은 어느 손가락에 낄까'
+const gmArticleTitle = '커플링 손가락 위치: 왼손·오른손 약지와 결혼반지 차이'
 const gmArticleLead = '커플링은 정해진 손가락이 있는 반지가 아니므로 연인의 합의에 따라 왼손이나 오른손 약지, 또는 다른 손가락에 착용할 수 있습니다. 결혼반지도 지역과 문화에 따라 착용 손이 달라질 수 있어 손가락보다 반지의 의미와 착용자의 설명을 함께 확인하는 것이 적절합니다.'
 const gmArticleCategory = '선택'
 const gmArticleKeyword = '커플링 손가락'
