@@ -3,7 +3,7 @@ import { siteConfig } from '~/config/site'
 import { buildBreadcrumbJsonLd } from '~/utils/seo'
 
 const pagePath = '/guide/bracelet-size-measuring-guide'
-const pageTitle = '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정 | 귀족'
+const pageTitle = '손목 둘레 재는 법과 팔찌 사이즈: 여유 길이·뱅글 측정 | 귀족'
 const pageDescription = '체인 팔찌는 손목 둘레와 실제 착용 길이를 구분해 확인하세요. 뱅글은 손을 통과하는 안쪽 지름이 중요합니다. 측정 위치, 기존 팔찌 실측, 제품별 사이즈표 확인 순서를 정리했습니다.'
 const ogImage = `${siteConfig.url}/Image/guide/bracelet-size-measurement-hero.webp`
 const publishedAt = '2026-07-22'
@@ -155,7 +155,7 @@ const relatedLinks = [
 
 const updatedAt = '2026-09-05'
 // guide-manager:data:start
-const gmArticleTitle = '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정'
+const gmArticleTitle = '손목 둘레 재는 법과 팔찌 사이즈: 여유 길이·뱅글 측정'
 const gmArticleLead = '팔찌 사이즈는 손목 둘레에 일정한 숫자만 더해서 정하기 어렵습니다. 체인형 팔찌는 손목 둘레와 실제 체결 길이를 따로 살펴봐야 하며, 폐쇄형 뱅글은 손을 통과하는 가장 넓은 부분과 제품 안쪽 치수를 확인해야 합니다.'
 const gmArticleCategory = '선택'
 const gmArticleKeyword = '팔찌 사이즈 재는 법'

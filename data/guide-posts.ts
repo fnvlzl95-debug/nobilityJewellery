@@ -698,8 +698,8 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'couple-ring-finger-placement',
     path: '/guide/couple-ring-finger-placement',
-    title: '커플링은 어느 손가락에 낄까',
-    description: '커플링과 결혼반지는 착용 손가락만으로 확정해 구분하기 어렵습니다. 대표적인 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.',
+    title: '커플링 손가락 위치: 왼손·오른손 약지와 결혼반지 차이',
+    description: '커플링은 정해진 손가락이 없어 왼손·오른손 약지 등 두 사람이 정한 위치에 낍니다. 결혼반지의 착용 관습과 두 반지의 의미 차이, 상담 전 확인할 내용을 정리했습니다.',
     keyword: '커플링 손가락',
     image: '/Image/guide/couple-ring-finger-placement-hero-5e9b2e70.webp',
     publishedAt: '2026-09-09',
@@ -900,8 +900,8 @@ export const guidePosts: GuidePostSummary[] = [
   {
       slug: 'gold-585-vs-750-selection',
       path: '/guide/gold-585-vs-750-selection',
-      title: '585와 750 각인을 읽고 14K·18K 선택 기준 정하는 법',
-      description: '585와 750 각인이 각각 14K와 18K를 뜻하는 이유를 확인하고, 금 함량과 착용 목적을 기준으로 선택 조건을 정리합니다.',
+      title: '금 585는 14K, 750은 18K: 각인 뜻과 선택 기준',
+      description: '금 585는 금 함량 58.5%인 14K, 750은 75.0%인 18K를 뜻하는 천분율 각인입니다. 두 표기의 금 함량 차이와 착용 목적에 따른 선택 기준을 정리했습니다.',
       keyword: '585 750 14K 18K 선택',
       image: '/Image/guide/gold-585-vs-750-selection-hero.webp',
       publishedAt: '2026-08-19',
@@ -1287,7 +1287,7 @@ export const guidePosts: GuidePostSummary[] = [
   {
     slug: 'bracelet-size-measuring-guide',
     path: '/guide/bracelet-size-measuring-guide',
-    title: '팔찌 사이즈 재는 법 | 손목 둘레·여유 길이·뱅글 측정',
+    title: '손목 둘레 재는 법과 팔찌 사이즈: 여유 길이·뱅글 측정',
     description: '체인 팔찌는 손목 둘레와 실제 착용 길이를 구분해 확인하세요. 뱅글은 손을 통과하는 안쪽 지름이 중요합니다. 측정 위치, 기존 팔찌 실측, 제품별 사이즈표 확인 순서를 정리했습니다.',
     keyword: '팔찌 사이즈 재는 법',
     image: '/Image/guide/bracelet-size-measurement-hero.webp',
