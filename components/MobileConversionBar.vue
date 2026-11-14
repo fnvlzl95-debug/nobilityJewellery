@@ -146,9 +146,9 @@ const handleNaverMapClick = () => {
   grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr) minmax(0, 0.95fr);
   gap: 8px;
   padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(10, 10, 10, 0.94);
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: rgba(26, 22, 19, 0.94);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
+  box-shadow: inset 0 1px 0 rgba(250, 245, 236, 0.05);
   backdrop-filter: blur(18px);
 }
 
@@ -164,12 +164,12 @@ const handleNaverMapClick = () => {
   min-width: 0;
   min-height: 52px;
   padding: 0 10px;
-  color: #fafafa;
+  color: #f5f0e6;
   font-size: 13px;
   font-weight: 700;
   line-height: 1;
   text-decoration: none;
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease, background-color 0.24s ease;
 }
 
@@ -200,7 +200,7 @@ const handleNaverMapClick = () => {
 
 .conversion-action-phone,
 .conversion-action-map {
-  background: rgba(250, 250, 250, 0.035);
+  background: rgba(245, 240, 230, 0.035);
 }
 
 .conversion-action-phone svg,
@@ -259,14 +259,14 @@ const handleNaverMapClick = () => {
     width: 100%;
     min-height: var(--cta-height);
     padding: 0 var(--cta-pad-x);
-    color: #120e06;
+    color: #221e1a;
     /* 샴페인 하이라이트 → 골드 → 딥골드: 광택 있는 금 느낌 */
     background: linear-gradient(135deg, var(--champagne) 0%, var(--gold-light) 24%, var(--gold) 58%, var(--gold-dark) 100%);
     border: 1px solid rgba(255, 243, 210, 0.5);
     box-shadow:
-      0 0 0 1px rgba(10, 10, 10, 0.55),  /* 밝은 배경에서도 윤곽이 서게 */
-      0 12px 28px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 250, 235, 0.42);
+      0 0 0 1px rgba(26, 22, 19, 0.55),  /* 밝은 배경에서도 윤곽이 서게 */
+      0 12px 28px rgba(16, 13, 10, 0.45),
+      inset 0 1px 0 rgba(250, 245, 236, 0.42);
   }
 
   /* 금속 광택이 훑고 지나가는 효과 */
@@ -276,7 +276,7 @@ const handleNaverMapClick = () => {
     inset: 0 auto 0 0;
     z-index: 0;
     width: 40%;
-    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    background: linear-gradient(100deg, transparent, rgba(250, 245, 236, 0.5), transparent);
     transform: translateX(-160%) skewX(-18deg);
     pointer-events: none;
     animation: kakao-sheen 5.6s ease-in-out 1.8s infinite;
@@ -290,11 +290,11 @@ const handleNaverMapClick = () => {
   .conversion-action-kakao:hover,
   .conversion-action-kakao:focus-visible {
     transform: translateY(-2px);
-    border-color: rgba(255, 249, 232, 0.85);
+    border-color: rgba(250, 245, 236, 0.85);
     box-shadow:
-      0 0 0 1px rgba(10, 10, 10, 0.55),
-      0 16px 34px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 250, 235, 0.55);
+      0 0 0 1px rgba(26, 22, 19, 0.55),
+      0 16px 34px rgba(16, 13, 10, 0.5),
+      inset 0 1px 0 rgba(250, 245, 236, 0.55);
   }
 
   .conversion-action-kakao:active {
@@ -304,7 +304,7 @@ const handleNaverMapClick = () => {
   .conversion-action-kakao svg {
     width: var(--cta-icon);
     height: var(--cta-icon);
-    filter: drop-shadow(0 1px 0 rgba(255, 252, 240, 0.35));
+    filter: drop-shadow(0 1px 0 rgba(250, 245, 236, 0.35));
   }
 
   .kakao-mobile-label {
@@ -329,7 +329,7 @@ const handleNaverMapClick = () => {
     font-size: var(--cta-sub);
     font-weight: 700;
     letter-spacing: 0.03em;
-    color: rgba(18, 14, 6, 0.62);
+    color: rgba(34, 30, 26, 0.62);
   }
 
   .kakao-desktop-copy strong {

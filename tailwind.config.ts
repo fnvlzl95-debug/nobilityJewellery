@@ -17,9 +17,9 @@ export default {
     extend: {
       colors: {
         black: {
-          DEFAULT: '#0a0a0a',
-          light: '#111111',
-          lighter: '#1a1a1a',
+          DEFAULT: '#1a1613',
+          light: '#211d19',
+          lighter: '#2a2521',
         },
         gold: {
           light: '#d4b44a',
@@ -27,7 +27,7 @@ export default {
           dark: '#a68820',
         },
         white: {
-          DEFAULT: '#fafafa',
+          DEFAULT: '#f5f0e6',
         },
       },
       fontFamily: {

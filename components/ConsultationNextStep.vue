@@ -55,10 +55,10 @@ const copyBrief = async () => {
 </template>
 
 <style scoped>
-.consultation-next { color:#fafafa; margin:40px 0; padding:28px 0; border-top:1px solid rgba(201,162,39,.5); border-bottom:1px solid rgba(201,162,39,.25); text-align:left; }
+.consultation-next { color:#f5f0e6; margin:40px 0; padding:28px 0; border-top:1px solid rgba(201,162,39,.5); border-bottom:1px solid rgba(201,162,39,.25); text-align:left; }
 .eyebrow { color:#d4b44a; font-size:12px; letter-spacing:.08em; margin:0 0 10px; }
 h2 { font-size:clamp(22px,3.3vw,30px); line-height:1.45; margin:0 0 12px; word-break:keep-all; }
-p,li { color:rgba(250,250,250,.8); line-height:1.8; font-size:15px; }
+p,li { color:rgba(245, 240, 230, .8); line-height:1.8; font-size:15px; }
 ul { padding-left:20px; list-style:disc; margin:20px 0; }
 .designs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:24px 0; }
 .designs a { display:flex; flex-direction:column; gap:8px; color:inherit; text-decoration:none; }
@@ -67,10 +67,10 @@ ul { padding-left:20px; list-style:disc; margin:20px 0; }
 .context-links { display:flex; gap:14px; flex-wrap:wrap; margin:18px 0; }
 .context-links a { color:#d4b44a; text-underline-offset:4px; font-size:14px; padding:8px 0; }
 .actions { display:flex; gap:10px; flex-wrap:wrap; }
-.actions a,.actions button { min-height:44px; padding:11px 16px; border:1px solid rgba(201,162,39,.45); background:transparent; color:#fafafa; text-decoration:none; font:inherit; font-size:14px; cursor:pointer; }
-.actions .primary { color:#0a0a0a; background:#c9a227; font-weight:700; }
+.actions a,.actions button { min-height:44px; padding:11px 16px; border:1px solid rgba(201,162,39,.45); background:transparent; color:#f5f0e6; text-decoration:none; font:inherit; font-size:14px; cursor:pointer; }
+.actions .primary { color:#1a1613; background:#c9a227; font-weight:700; }
 .actions :focus-visible,.designs a:focus-visible { outline:2px solid #d4b44a; outline-offset:4px; }
-.price-guidance { padding:18px; margin:20px 0; background:var(--surface-raised, rgba(250,250,250,.02)); border:1px solid var(--hairline, rgba(250,250,250,.08)); }
+.price-guidance { padding:18px; margin:20px 0; background:var(--surface-raised, rgba(245, 240, 230, .02)); border:1px solid var(--hairline, rgba(245, 240, 230, .08)); }
 .price-guidance h3 { font-size:17px; margin:0 0 10px; }
 .price-guidance p { margin:8px 0; }
 .copy-note { font-size:13px; margin-bottom:0; }

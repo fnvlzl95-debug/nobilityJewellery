@@ -292,8 +292,8 @@ const processSteps = [
 
 .product-card {
   padding: 32px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   transition: all 0.3s;
 }
 
@@ -304,13 +304,13 @@ const processSteps = [
 .product-header {
   margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
 }
 
 .product-title {
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 4px;
 }
 
@@ -321,7 +321,7 @@ const processSteps = [
 
 .product-desc {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   line-height: 1.7;
   margin-bottom: 20px;
 }
@@ -365,8 +365,8 @@ const processSteps = [
   flex-direction: column;
   align-items: center;
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   color: inherit;
   text-decoration: none;
   transition: all 0.3s;
@@ -381,7 +381,7 @@ const processSteps = [
 }
 
 .zodiac-card.is-linked:hover {
-  background: rgba(250, 250, 250, 0.04);
+  background: rgba(245, 240, 230, 0.04);
   border-color: rgba(201, 162, 39, 0.5);
 }
 
@@ -412,19 +412,19 @@ const processSteps = [
 
 .zodiac-year {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin-bottom: 4px;
 }
 
 .zodiac-sign {
   font-size: 16px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .zodiac-note {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-align: center;
   margin-top: 24px;
 }
@@ -465,12 +465,12 @@ const processSteps = [
 
 .guide-link-card strong {
   font-size: 15px;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .guide-link-card span {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
   line-height: 1.6;
 }
 

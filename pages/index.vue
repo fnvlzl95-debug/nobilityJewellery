@@ -819,8 +819,8 @@ const handleNaverMapClick = () => {
 <style scoped>
 /* ===== Base ===== */
 .page {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   overflow-x: hidden;
   max-width: 100vw;
@@ -900,9 +900,9 @@ const handleNaverMapClick = () => {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 10, 10, 0.7) 0%,
-    rgba(10, 10, 10, 0.8) 40%,
-    rgba(10, 10, 10, 0.75) 100%
+    rgba(26, 22, 19, 0.7) 0%,
+    rgba(26, 22, 19, 0.8) 40%,
+    rgba(26, 22, 19, 0.75) 100%
   );
 }
 
@@ -963,8 +963,8 @@ const handleNaverMapClick = () => {
   font-size: clamp(100px, 20vw, 200px);
   font-weight: 300;
   line-height: 1;
-  color: #fafafa;
-  text-shadow: 0 4px 40px rgba(10, 10, 10, 0.3);
+  color: #f5f0e6;
+  text-shadow: 0 4px 40px rgba(26, 22, 19, 0.3);
   opacity: 0;
   transform: translateY(60px);
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -986,7 +986,7 @@ const handleNaverMapClick = () => {
   font-size: clamp(16px, 2vw, 22px);
   font-weight: 300;
   letter-spacing: 0.2em;
-  color: rgba(250, 250, 250, 0.8);
+  color: rgba(245, 240, 230, 0.8);
   margin-bottom: 48px;
   opacity: 0;
   transform: translateY(20px);
@@ -1023,7 +1023,7 @@ const handleNaverMapClick = () => {
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   border: none;
   cursor: pointer;
@@ -1055,7 +1055,7 @@ const handleNaverMapClick = () => {
 .btn-magnetic .btn-text {
   position: relative;
   z-index: 1;
-  color: #0a0a0a;
+  color: #1a1613;
 }
 
 .btn-glow {
@@ -1064,7 +1064,7 @@ const handleNaverMapClick = () => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(250, 245, 236, 0.25), transparent);
   z-index: 2;
   transition: left 0.5s ease;
 }
@@ -1102,7 +1102,7 @@ const handleNaverMapClick = () => {
 
 .btn-outline-gold:hover {
   border-color: #c9a227;
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .btn-outline-gold:hover::before {
@@ -1141,7 +1141,7 @@ const handleNaverMapClick = () => {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 .scroll-line {
@@ -1213,7 +1213,7 @@ const handleNaverMapClick = () => {
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 300;
   line-height: 1.3;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 24px;
 }
 
@@ -1227,7 +1227,7 @@ const handleNaverMapClick = () => {
   font-size: 16px;
   font-weight: 300;
   line-height: 1.9;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 /* ═══════════════════════════════════════════════════════════
    섹션 공통 — 목업(mocks/home-redesign.html) 기준
@@ -1237,7 +1237,7 @@ const handleNaverMapClick = () => {
   padding: clamp(52px, 7vw, 84px) 0;
 }
 
-/* 카드 경계 — 기본 hairline(0.08)은 #0a0a0a 배경에서 거의 보이지 않아 한 단계 밝게 잡는다 */
+/* 카드 경계 — 기본 hairline(0.08)은 #1a1613 배경에서 거의 보이지 않아 한 단계 밝게 잡는다 */
 .section-block {
   --card-line: rgba(245, 230, 204, 0.16);
   --card-line-hover: rgba(201, 162, 39, 0.5);
@@ -1348,7 +1348,7 @@ const handleNaverMapClick = () => {
   min-height: 150px;
   padding: 16px;
   background: var(--black-lighter);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   text-decoration: none;
   color: inherit;
   transition: border-color 0.25s var(--ease-out-quart),
@@ -1367,7 +1367,7 @@ const handleNaverMapClick = () => {
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .tile-icon svg {
@@ -1387,7 +1387,7 @@ const handleNaverMapClick = () => {
 .about-panel {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   background: var(--black-light);
 }
 
@@ -1399,7 +1399,7 @@ const handleNaverMapClick = () => {
 .about-text {
   font-size: 15px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.72);
+  color: rgba(245, 240, 230, 0.72);
   margin-bottom: 10px;
 }
 
@@ -1408,12 +1408,12 @@ const handleNaverMapClick = () => {
   flex-wrap: wrap;
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .about-stat {
   padding: 0 clamp(16px, 3vw, 40px);
-  border-left: 1px solid rgba(250, 250, 250, 0.08);
+  border-left: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .about-stat:first-child { padding-left: 0; border-left: none; }
@@ -1443,7 +1443,7 @@ const handleNaverMapClick = () => {
   transition: border-color 0.4s var(--ease-out-quart), background-color 0.4s var(--ease-out-quart);
 }
 
-.cat-card:hover { border-color: var(--card-line-hover); background: #201c14; }
+.cat-card:hover { border-color: var(--card-line-hover); background: #302b26; }
 
 .cat-media {
   display: block;
@@ -1522,7 +1522,7 @@ const handleNaverMapClick = () => {
   transition: border-color 0.4s var(--ease-out-quart), background-color 0.4s var(--ease-out-quart);
 }
 
-.preview-card:hover { border-color: var(--card-line-hover); background: #201c14; }
+.preview-card:hover { border-color: var(--card-line-hover); background: #302b26; }
 
 .preview-media {
   display: block;
@@ -1586,8 +1586,8 @@ const handleNaverMapClick = () => {
 /* ===== Guide ===== */
 .section-guide {
   background: var(--black-light);
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -1599,7 +1599,7 @@ const handleNaverMapClick = () => {
   min-height: 132px;
   padding: 20px;
   background: var(--black);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   text-decoration: none;
   color: inherit;
   transition: border-color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
@@ -1651,7 +1651,7 @@ const handleNaverMapClick = () => {
 .repair-panel {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   background: var(--black-light);
 }
 
@@ -1682,14 +1682,14 @@ const handleNaverMapClick = () => {
   align-items: center;
   padding: 16px;
   max-width: 250px;
-  background: rgba(10, 10, 10, 0.62);
+  background: rgba(26, 22, 19, 0.62);
   border: 1px solid rgba(201, 162, 39, 0.35);
   backdrop-filter: blur(4px);
 }
 
 .repair-badge svg { flex: 0 0 22px; width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
 .repair-badge b { display: block; font-size: 14px; font-weight: 700; color: var(--white); }
-.repair-badge span span { font-size: 13px; color: rgba(250, 250, 250, 0.72); line-height: 1.45; }
+.repair-badge span span { font-size: 13px; color: rgba(245, 240, 230, 0.72); line-height: 1.45; }
 
 /* ===== Buy Gold + Calculator ===== */
 .buy-row {
@@ -1703,7 +1703,7 @@ const handleNaverMapClick = () => {
 .calc-panel {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
   background: var(--black-light);
   padding: clamp(24px, 3vw, 32px);
 }
@@ -1720,8 +1720,8 @@ const handleNaverMapClick = () => {
 /* ===== FAQ ===== */
 .section-faq {
   background: var(--black-light);
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .faq-grid {
@@ -1786,7 +1786,7 @@ const handleNaverMapClick = () => {
   position: relative;
   padding: clamp(72px, 10vw, 128px) 0;
   overflow: hidden;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .cta-bg {
@@ -1809,8 +1809,8 @@ const handleNaverMapClick = () => {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.72) 45%, rgba(10, 10, 10, 0.5) 100%),
-    linear-gradient(180deg, rgba(10, 10, 10, 0.35) 0%, rgba(10, 10, 10, 0.15) 45%, rgba(10, 10, 10, 0.55) 100%);
+    linear-gradient(90deg, rgba(26, 22, 19, 0.9) 0%, rgba(26, 22, 19, 0.72) 45%, rgba(26, 22, 19, 0.5) 100%),
+    linear-gradient(180deg, rgba(26, 22, 19, 0.35) 0%, rgba(26, 22, 19, 0.15) 45%, rgba(26, 22, 19, 0.55) 100%);
 }
 
 /* 샴페인 헤어라인 액자 */
@@ -2006,7 +2006,7 @@ const handleNaverMapClick = () => {
 /* ===== Location Section ===== */
 .section-location {
   padding: clamp(52px, 7vw, 84px) 0;
-  background: #0a0a0a;
+  background: #1a1613;
   overflow: hidden;
 }
 
@@ -2027,7 +2027,7 @@ const handleNaverMapClick = () => {
   font-size: clamp(24px, 3vw, 32px);
   font-style: normal;
   line-height: 1.6;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 32px;
 }
 
@@ -2047,9 +2047,9 @@ const handleNaverMapClick = () => {
   align-items: baseline;
   gap: 20px;
   padding: 18px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
   font-size: 15px;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
 }
 
 .info-label {
@@ -2058,11 +2058,11 @@ const handleNaverMapClick = () => {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 .contact-info a {
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   transition: color 0.3s;
   display: inline-flex;
@@ -2074,7 +2074,7 @@ const handleNaverMapClick = () => {
 }
 
 .link-parking {
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -2092,17 +2092,17 @@ const handleNaverMapClick = () => {
   padding: 14px 28px;
   font-size: 13px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.2);
+  border: 1px solid rgba(245, 240, 230, 0.2);
   text-decoration: none;
   transition: all 0.3s;
 }
 
 .btn-map:hover {
-  background: #fafafa;
-  color: #0a0a0a;
-  border-color: #fafafa;
+  background: #f5f0e6;
+  color: #1a1613;
+  border-color: #f5f0e6;
 }
 
 .location-visual {
@@ -2113,7 +2113,7 @@ const handleNaverMapClick = () => {
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  background: #111;
+  background: #211d19;
   border: 1px solid rgba(201, 162, 39, 0.2);
 }
 
@@ -2134,8 +2134,8 @@ const handleNaverMapClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #111;
-  color: rgba(250, 250, 250, 0.5);
+  background: #211d19;
+  color: rgba(245, 240, 230, 0.5);
   font-size: 14px;
 }
 /* ===== Reveal Animations ===== */
@@ -2179,7 +2179,7 @@ const handleNaverMapClick = () => {
 .mobile-menu-overlay {
   position: fixed;
   inset: 0;
-  background: #0a0a0a;
+  background: #1a1613;
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -2259,7 +2259,7 @@ const handleNaverMapClick = () => {
   font-family: var(--font-body);
   font-size: 32px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.2em;
 }
 
@@ -2283,14 +2283,14 @@ const handleNaverMapClick = () => {
   padding: 20px 0;
   background: none;
   border: none;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.06);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s;
 }
 
 .mobile-menu-link:first-child {
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .mobile-menu-link:hover,
@@ -2314,7 +2314,7 @@ const handleNaverMapClick = () => {
   font-size: 11px;
   font-weight: 300;
   letter-spacing: 0.1em;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   transition: color 0.3s;
 }
 
@@ -2322,7 +2322,7 @@ const handleNaverMapClick = () => {
   font-family: var(--font-body);
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.02em;
   transition: color 0.3s;
 }
@@ -2345,7 +2345,7 @@ const handleNaverMapClick = () => {
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   text-decoration: none;
   transition: all 0.3s;
@@ -2360,7 +2360,7 @@ const handleNaverMapClick = () => {
   font-family: var(--font-body);
   font-size: 18px;
   font-weight: 300;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-decoration: none;
   letter-spacing: 0.05em;
   transition: color 0.3s;

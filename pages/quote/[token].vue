@@ -155,7 +155,7 @@ useHead({
 /* ===== 요약 ===== */
 .detail-list {
   margin: 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .detail-row {
@@ -164,7 +164,7 @@ useHead({
   justify-content: space-between;
   gap: 16px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .detail-row dt {
@@ -187,7 +187,7 @@ useHead({
 /* ===== 견적서 이미지 — 흰 종이 문서를 그대로 올린다 ===== */
 .quote-sheet {
   display: block;
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   line-height: 0;
 }
 
@@ -248,8 +248,8 @@ useHead({
 /* ===== 취소 ===== */
 .status-box {
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .status-desc {

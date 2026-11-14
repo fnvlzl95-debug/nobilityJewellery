@@ -53,9 +53,9 @@ const footerLinks = [
 
 <style scoped>
 .footer {
-  background: #050505;
+  background: #15110f;
   padding: 48px clamp(20px, 5vw, 60px);
-  border-top: 1px solid rgba(250, 250, 250, 0.05);
+  border-top: 1px solid rgba(245, 240, 230, 0.05);
 }
 
 .footer-inner {
@@ -71,13 +71,13 @@ const footerLinks = [
   gap: 24px;
   margin-bottom: 24px;
   padding-bottom: 24px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.05);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.05);
 }
 
 .footer-brand {
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   letter-spacing: 0.1em;
 }
@@ -90,13 +90,13 @@ const footerLinks = [
 
 .footer-nav a {
   font-size: clamp(13px, 2vw, 15px);
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-nav a:hover {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .footer-info {
@@ -108,7 +108,7 @@ const footerLinks = [
 
 .footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
 }
 
 .footer-tel {
@@ -117,7 +117,7 @@ const footerLinks = [
 }
 
 .footer-tel:hover {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .footer-bottom {
@@ -130,16 +130,16 @@ const footerLinks = [
 
 .copyright {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
 }
 
 .privacy-link {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
   text-decoration: none;
 }
 
 .privacy-link:hover {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 </style>

@@ -147,8 +147,8 @@ useHead({
 <style scoped>
 .page {
   min-height: 100vh;
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
 }
 
@@ -170,7 +170,7 @@ useHead({
 
 .back-link a {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -188,7 +188,7 @@ useHead({
 
 .page-date {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   margin-bottom: 48px;
 }
 
@@ -201,14 +201,14 @@ useHead({
 .content section h2 {
   font-size: 18px;
   font-weight: 500;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 16px;
 }
 
 .content section p {
   font-size: 15px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
 }
 
 .content section ul {
@@ -219,13 +219,13 @@ useHead({
 .content section li {
   font-size: 15px;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin-bottom: 8px;
 }
 
 .info-box {
-  background: rgba(250, 250, 250, 0.05);
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  background: rgba(245, 240, 230, 0.05);
+  border: 1px solid rgba(245, 240, 230, 0.1);
   padding: 24px;
   margin-top: 16px;
 }

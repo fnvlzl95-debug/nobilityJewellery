@@ -18,8 +18,8 @@
 
 <style>
 .page-landing {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   min-height: 100vh;
 }
@@ -55,7 +55,7 @@
   font-family: var(--font-display);
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 20px;
 }
 
@@ -63,14 +63,14 @@
   font-size: 16px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 .page-landing .hero-image {
   margin-bottom: 80px;
   aspect-ratio: 16/9;
   overflow: hidden;
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  border: 1px solid rgba(245, 240, 230, 0.1);
 }
 
 .page-landing .hero-image img {
@@ -82,14 +82,14 @@
 .page-landing .section-title {
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   text-align: center;
   margin-bottom: 16px;
 }
 
 .page-landing .section-desc {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-align: center;
   margin-bottom: 40px;
 }
@@ -138,7 +138,7 @@
 .page-landing .advantage-item h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
@@ -149,7 +149,7 @@
 .page-landing .why-item p,
 .page-landing .advantage-item p {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   line-height: 1.5;
 }
 
@@ -215,8 +215,8 @@
 .page-landing .process-step {
   text-align: center;
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .page-landing .step-num {
@@ -231,13 +231,13 @@
 .page-landing .step-title {
   font-size: 16px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .page-landing .step-desc {
   font-size: clamp(12px, 2.5vw, 14px);
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   line-height: 1.6;
 }
 
@@ -259,7 +259,7 @@
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  border: 1px solid rgba(245, 240, 230, 0.1);
   transition: all 0.3s;
 }
 
@@ -317,8 +317,8 @@
 
 .page-landing .related-card {
   padding: 32px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -340,13 +340,13 @@
 .page-landing .related-card h3 {
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .page-landing .related-card p {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
 }
 
 /* 섹션 마진 */

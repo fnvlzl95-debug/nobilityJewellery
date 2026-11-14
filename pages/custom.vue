@@ -267,8 +267,8 @@ const advantages = [
 
 <style scoped>
 .page {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #1a1613;
+  color: #f5f0e6;
   font-family: var(--font-body);
   min-height: 100vh;
 }
@@ -288,7 +288,7 @@ const advantages = [
 }
 
 .nav-luxury.scrolled {
-  background: rgba(10, 10, 10, 0.95);
+  background: rgba(26, 22, 19, 0.95);
   backdrop-filter: blur(20px);
   padding: 16px clamp(20px, 5vw, 60px);
 }
@@ -300,7 +300,7 @@ const advantages = [
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   letter-spacing: 0.1em;
 }
 
@@ -314,14 +314,14 @@ const advantages = [
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: rgba(250, 250, 250, 0.7);
+  color: rgba(245, 240, 230, 0.7);
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 @media (max-width: 768px) {
@@ -361,7 +361,7 @@ const advantages = [
 .title {
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 20px;
 }
 
@@ -369,14 +369,14 @@ const advantages = [
   font-size: 16px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 /* Section Title */
 .section-title {
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   text-align: center;
   margin-bottom: 40px;
 }
@@ -420,7 +420,7 @@ const advantages = [
 
 .advantage-desc {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   line-height: 1.5;
 }
 
@@ -445,15 +445,15 @@ const advantages = [
   display: flex;
   flex-direction: column;
   padding: 32px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   color: inherit;
   text-decoration: none;
   transition: all 0.3s;
 }
 
 .type-card:hover {
-  background: rgba(250, 250, 250, 0.04);
+  background: rgba(245, 240, 230, 0.04);
   border-color: rgba(201, 162, 39, 0.3);
 }
 
@@ -481,13 +481,13 @@ const advantages = [
 .type-title {
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 12px;
 }
 
 .type-desc {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   line-height: 1.7;
   margin-bottom: 20px;
 }
@@ -573,8 +573,8 @@ const advantages = [
 .step {
   text-align: center;
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .step-num {
@@ -589,13 +589,13 @@ const advantages = [
 .step-title {
   font-size: 16px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .step-desc {
   font-size: clamp(12px, 2.5vw, 14px);
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   line-height: 1.6;
 }
 
@@ -615,8 +615,8 @@ const advantages = [
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 @media (max-width: 600px) {
@@ -635,7 +635,7 @@ const advantages = [
 
 .material-desc {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 /* Gallery */
@@ -659,7 +659,7 @@ const advantages = [
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  border: 1px solid rgba(245, 240, 230, 0.1);
   transition: all 0.3s;
 }
 
@@ -691,21 +691,21 @@ const advantages = [
 .custom-cta {
   text-align: center;
   padding: 60px 40px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.06);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.06);
   margin-bottom: 40px;
 }
 
 .custom-cta h3 {
   font-size: 24px;
   font-weight: 300;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 12px;
 }
 
 .custom-cta p {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
   margin-bottom: 32px;
   line-height: 1.7;
 }
@@ -724,7 +724,7 @@ const advantages = [
   padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
-  color: #0a0a0a;
+  color: #1a1613;
   background: linear-gradient(135deg, #d4b44a 0%, #c9a227 50%, #a68820 100%);
   text-decoration: none;
   transition: all 0.3s;
@@ -742,9 +742,9 @@ const advantages = [
   padding: 16px 32px;
   font-size: 14px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   background: transparent;
-  border: 1px solid rgba(250, 250, 250, 0.3);
+  border: 1px solid rgba(245, 240, 230, 0.3);
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -759,7 +759,7 @@ const advantages = [
 .location-info {
   text-align: center;
   padding: 32px;
-  border-top: 1px solid rgba(250, 250, 250, 0.06);
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
 }
 
 .location-info h4 {
@@ -772,20 +772,20 @@ const advantages = [
 
 .location-info .address {
   font-size: 16px;
-  color: #fafafa;
+  color: #f5f0e6;
   margin-bottom: 8px;
 }
 
 .location-info .hours {
   font-size: 14px;
-  color: rgba(250, 250, 250, 0.6);
+  color: rgba(245, 240, 230, 0.6);
 }
 
 /* Footer */
 .footer {
-  background: #050505;
+  background: #15110f;
   padding: 48px clamp(20px, 5vw, 60px);
-  border-top: 1px solid rgba(250, 250, 250, 0.05);
+  border-top: 1px solid rgba(245, 240, 230, 0.05);
 }
 
 .footer-inner {
@@ -801,13 +801,13 @@ const advantages = [
   gap: 24px;
   margin-bottom: 24px;
   padding-bottom: 24px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.05);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.05);
 }
 
 .footer-brand {
   font-size: 20px;
   font-weight: 700;
-  color: #fafafa;
+  color: #f5f0e6;
   text-decoration: none;
   letter-spacing: 0.1em;
 }
@@ -820,13 +820,13 @@ const advantages = [
 
 .footer-nav a {
   font-size: 13px;
-  color: rgba(250, 250, 250, 0.5);
+  color: rgba(245, 240, 230, 0.5);
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-nav a:hover {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 
 .footer-info {
@@ -835,7 +835,7 @@ const advantages = [
 
 .footer-info span {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
 }
 
 .footer-bottom {
@@ -848,16 +848,16 @@ const advantages = [
 
 .copyright {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
 }
 
 .privacy-link {
   font-size: 12px;
-  color: rgba(250, 250, 250, 0.65);
+  color: rgba(245, 240, 230, 0.65);
   text-decoration: none;
 }
 
 .privacy-link:hover {
-  color: #fafafa;
+  color: #f5f0e6;
 }
 </style>

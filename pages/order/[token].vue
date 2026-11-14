@@ -513,7 +513,7 @@ const handleSubmit = async () => {
 /* ===== 상품·계좌 정의 목록 ===== */
 .detail-list {
   margin: 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.08);
+  border-top: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .detail-row {
@@ -522,7 +522,7 @@ const handleSubmit = async () => {
   justify-content: space-between;
   gap: 16px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.08);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .detail-row dt {
@@ -607,15 +607,15 @@ const handleSubmit = async () => {
   font-family: inherit;
   line-height: 1.5;
   color: var(--white);
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   border-radius: 0;
   transition: border-color 0.3s, background-color 0.3s;
 }
 
 .form-input:focus {
   border-color: rgba(201, 162, 39, 0.35);
-  background: rgba(250, 250, 250, 0.04);
+  background: rgba(245, 240, 230, 0.04);
 }
 
 .form-input::placeholder {
@@ -643,7 +643,7 @@ const handleSubmit = async () => {
 }
 
 .address-search {
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  border: 1px solid rgba(245, 240, 230, 0.14);
 }
 
 /* 검색 화면(iframe)이 뜨기 전 자리 — 이후 높이는 서비스의 onresize 값으로 맞춘다 */
@@ -659,7 +659,7 @@ const handleSubmit = async () => {
   color: var(--gray);
   background: transparent;
   border: 0;
-  border-top: 1px solid rgba(250, 250, 250, 0.14);
+  border-top: 1px solid rgba(245, 240, 230, 0.14);
   cursor: pointer;
 }
 
@@ -740,7 +740,7 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(250, 250, 250, 0.3);
+  border: 1px solid rgba(245, 240, 230, 0.3);
   color: transparent;
   transition: background-color 0.3s, border-color 0.3s;
 }
@@ -811,8 +811,8 @@ const handleSubmit = async () => {
 }
 
 .status-box.is-closed {
-  background: rgba(250, 250, 250, 0.02);
-  border-color: rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border-color: rgba(245, 240, 230, 0.08);
 }
 
 .status-desc {
@@ -835,8 +835,8 @@ const handleSubmit = async () => {
 /* ===== 입금 계좌 ===== */
 .payment {
   padding: 24px;
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .payment .detail-list {

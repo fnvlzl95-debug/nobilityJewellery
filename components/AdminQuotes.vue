@@ -609,8 +609,8 @@ onMounted(() => {
   font-family: inherit;
   font-weight: 600;
   color: var(--gray);
-  background: rgba(250, 250, 250, 0.02);
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  background: rgba(245, 240, 230, 0.02);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
@@ -681,7 +681,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(250, 250, 250, 0.3);
+  border: 1px solid rgba(245, 240, 230, 0.3);
   color: transparent;
 }
 
@@ -744,7 +744,7 @@ onMounted(() => {
   min-width: 0;
   margin: 0;
   padding: 16px;
-  border: 1px solid rgba(250, 250, 250, 0.08);
+  border: 1px solid rgba(245, 240, 230, 0.08);
 }
 
 .admin .quote-item legend {
@@ -790,7 +790,7 @@ onMounted(() => {
 
 /* 견적서는 흰 종이 문서다 — 어두운 화면 위에 종이 그대로 올린다 */
 .admin .quote-preview {
-  border: 1px solid rgba(250, 250, 250, 0.14);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   line-height: 0;
 }
 

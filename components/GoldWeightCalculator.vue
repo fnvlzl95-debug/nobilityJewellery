@@ -129,9 +129,9 @@ const calcPureGold = computed(() => {
 .weight-calculator {
   margin-top: 48px;
   padding: 40px;
-  color: #fafafa;
+  color: #f5f0e6;
   text-align: left;
-  background: rgba(250, 250, 250, 0.02);
+  background: rgba(245, 240, 230, 0.02);
   border: 1px solid rgba(201, 162, 39, 0.24);
 }
 
@@ -155,7 +155,7 @@ const calcPureGold = computed(() => {
 }
 
 .calculator-label {
-  color: rgba(250, 250, 250, 0.85);
+  color: rgba(245, 240, 230, 0.85);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -171,9 +171,9 @@ const calcPureGold = computed(() => {
   flex: 1;
   min-width: 0;
   padding: 14px 16px;
-  border: 1px solid rgba(250, 250, 250, 0.14);
-  color: #fafafa;
-  background: rgba(250, 250, 250, 0.04);
+  border: 1px solid rgba(245, 240, 230, 0.14);
+  color: #f5f0e6;
+  background: rgba(245, 240, 230, 0.04);
   font: inherit;
   font-size: 18px;
   appearance: textfield;
@@ -194,9 +194,9 @@ const calcPureGold = computed(() => {
 .calculator-toggle button {
   min-height: 46px;
   padding: 10px 18px;
-  border: 1px solid rgba(250, 250, 250, 0.14);
-  color: rgba(250, 250, 250, 0.78);
-  background: rgba(250, 250, 250, 0.03);
+  border: 1px solid rgba(245, 240, 230, 0.14);
+  color: rgba(245, 240, 230, 0.78);
+  background: rgba(245, 240, 230, 0.03);
   cursor: pointer;
   font: inherit;
   font-size: 14px;
@@ -210,7 +210,7 @@ const calcPureGold = computed(() => {
 
 .calculator-toggle button.active {
   border-color: #c9a227;
-  color: #0a0a0a;
+  color: #1a1613;
   background: #c9a227;
 }
 
@@ -241,7 +241,7 @@ const calcPureGold = computed(() => {
 }
 
 .calculator-result-label {
-  color: rgba(250, 250, 250, 0.68);
+  color: rgba(245, 240, 230, 0.68);
   font-size: 12px;
 }
 
@@ -253,12 +253,12 @@ const calcPureGold = computed(() => {
 
 .calculator-result-divider {
   width: 1px;
-  background: rgba(250, 250, 250, 0.12);
+  background: rgba(245, 240, 230, 0.12);
 }
 
 .calculator-note {
   margin: 20px 0 0;
-  color: rgba(250, 250, 250, 0.66);
+  color: rgba(245, 240, 230, 0.66);
   font-size: 12px;
   line-height: 1.7;
 }
