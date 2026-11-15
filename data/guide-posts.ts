@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'pierced-earrings-to-clip-on-remodel',
+      path: '/guide/pierced-earrings-to-clip-on-remodel',
+      title: '귀걸이 귀찌로 바꾸기, 리폼 전 확인할 것',
+      description: '귀걸이를 귀찌로 바꾸고 싶다면 침과 장식의 연결 구조부터 확인하세요. 컨버터와 부속 교체의 차이, 디자인·착용감·비용 확인 사항과 종로 귀족 사진 상담 준비를 안내합니다.',
+      keyword: '귀걸이 귀찌로 바꾸기',
+      image: '/Image/guide/pierced-earrings-to-clip-on-remodel-hero.webp',
+      publishedAt: '2026-11-16',
+      category: '수리',
+    },
+  {
       slug: 'thin-gold-ring-shank-repair',
       path: '/guide/thin-gold-ring-shank-repair',
       title: '금반지 얇아짐, 밴드 보강 수리 상담 기준',

@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/pierced-earrings-to-clip-on-remodel': {
+    title: '귀걸이 사진으로 귀찌 변경 상담하기',
+    description: '앞장식을 살리고 싶은 귀걸이를 보여주세요. 연결 구조와 클립 부속을 확인해 변경 가능 범위와 준비사항을 안내합니다.',
+    type: 'repair',
+    kakaoLabel: '귀찌 변경 카톡 상담',
+    prompts: ['귀걸이 한 쌍의 정면·옆면·뒷면 사진', '소재와 보존할 앞장식·원상태 유지 희망 여부', '한쪽 또는 한 쌍 변경과 원하는 착용 방식', '예산 범위와 희망 수령일'],
+    gallerySlugs: [],
+    links: [{ to: '/repair', label: '귀걸이 수리·리폼 상담 안내' }, { to: '/guide/custom-earrings-production-time', label: '새 귀걸이 주문제작 일정 확인' }],
+  },
   '/guide/thin-gold-ring-shank-repair': {
     title: '얇아진 반지 밴드 사진으로 수리 상담하기',
     description: '손바닥 쪽 밴드와 옆면 사진에 이전 수리 이력을 함께 보내주세요. 실물 점검에 필요한 내용과 보강 가능한 범위를 상담합니다.',
