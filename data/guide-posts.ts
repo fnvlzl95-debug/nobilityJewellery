@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'custom-pearl-earrings-pair-matching',
+      path: '/guide/custom-pearl-earrings-pair-matching',
+      title: '진주 귀걸이 주문제작, 한 쌍 맞추는 법',
+      description: '진주 귀걸이 주문제작은 한 쌍의 크기·색·광택과 착용 형태부터 정하세요. 보유 진주 활용, 스터드·드롭 선택, 14K·18K 견적과 최소 3주 일정, 종로 귀족 사진 상담 준비를 안내합니다.',
+      keyword: '진주 귀걸이 주문제작',
+      image: '/Image/guide/custom-pearl-earrings-pair-matching-hero.webp',
+      publishedAt: '2026-11-17',
+      category: '주문',
+    },
+  {
       slug: 'pierced-earrings-to-clip-on-remodel',
       path: '/guide/pierced-earrings-to-clip-on-remodel',
       title: '귀걸이 귀찌로 바꾸기, 리폼 전 확인할 것',

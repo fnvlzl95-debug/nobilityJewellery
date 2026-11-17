@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/custom-pearl-earrings-pair-matching': {
+    title: '원하는 진주 귀걸이로 제작 상담하기',
+    description: '참고 사진이나 보유 진주 사진을 보내주세요. 한 쌍의 조합과 착용 형태를 확인해 제작 범위와 견적을 상담합니다.',
+    type: 'custom',
+    kakaoLabel: '진주 귀걸이 제작 카톡 상담',
+    prompts: ['원하는 귀걸이 또는 보유 진주 사진', '새 진주 선택·보유 진주 활용과 한 쌍 구성', '스터드·드롭 형태, 금속 소재와 색상', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/custom', label: '주얼리 주문제작 상담 안내' }, { to: '/guide/pearl-value-factors', label: '진주 한 쌍의 품질 비교 기준' }],
+  },
   '/guide/pierced-earrings-to-clip-on-remodel': {
     title: '귀걸이 사진으로 귀찌 변경 상담하기',
     description: '앞장식을 살리고 싶은 귀걸이를 보여주세요. 연결 구조와 클립 부속을 확인해 변경 가능 범위와 준비사항을 안내합니다.',
