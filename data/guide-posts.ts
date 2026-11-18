@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'custom-tie-clip-length-engraving',
+      path: '/guide/custom-tie-clip-length-engraving',
+      title: '넥타이핀 주문제작, 길이와 각인 정하는 법',
+      description: '넥타이핀 주문제작 전 착용 위치에서 타이 폭을 재고 앞판 길이와 각인 위치를 골라보세요. 신랑 예물 타이핀 소재·클립·견적과 종로 귀족 사진 상담 준비를 안내합니다.',
+      keyword: '넥타이핀 주문제작',
+      image: '/Image/guide/custom-tie-clip-length-engraving-hero.webp',
+      publishedAt: '2026-11-18',
+      category: '주문',
+    },
+  {
       slug: 'custom-pearl-earrings-pair-matching',
       path: '/guide/custom-pearl-earrings-pair-matching',
       title: '진주 귀걸이 주문제작, 한 쌍 맞추는 법',

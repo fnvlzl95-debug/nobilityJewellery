@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/custom-tie-clip-length-engraving': {
+    title: '넥타이 사진으로 타이핀 제작 상담하기',
+    description: '자주 매는 넥타이와 원하는 각인 문구를 보내주세요. 착용 위치에 맞춰 앞판 길이와 부속, 소재를 상담합니다.',
+    type: 'custom',
+    kakaoLabel: '넥타이핀 제작 카톡 상담',
+    prompts: ['착용할 넥타이 사진과 핀 위치의 폭', '앞판 길이와 각인할 이니셜', '소재·마감과 커프스 세트 여부', '예산과 수령 희망일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/wedding', label: '신랑 예물 구성 보기' }, { to: '/custom', label: '주문제작 일정과 상담 안내' }],
+  },
   '/guide/custom-pearl-earrings-pair-matching': {
     title: '원하는 진주 귀걸이로 제작 상담하기',
     description: '참고 사진이나 보유 진주 사진을 보내주세요. 한 쌍의 조합과 착용 형태를 확인해 제작 범위와 견적을 상담합니다.',

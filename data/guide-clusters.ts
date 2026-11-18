@@ -227,6 +227,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/heirloom-gold-remodel-material-continuity', label: '금 리폼, 물려받은 금 사용 방식부터 정하세요', description: '물려받은 금으로 리폼할 때 원제품 일부를 남길지, 가져온 금을 재료로 쓸지, 금의 가치를 제작비에 반영할지 구분하고 순도·중량 확인과 공정별 확인 질문을 정리했습니다' },
       { to: '/guide/diamond-ring-lower-setting-remodel', label: '다이아 반지 낮추기, 리세팅 전 확인할 것', description: '다이아 반지 높이가 불편하다면 보석을 잡는 부분과 옆면 구조부터 확인하세요' },
       { to: '/guide/custom-pearl-earrings-pair-matching', label: '진주 귀걸이 주문제작, 한 쌍 맞추는 법', description: '진주 귀걸이 주문제작은 한 쌍의 크기·색·광택과 착용 형태부터 정하세요' },
+      { to: '/guide/custom-tie-clip-length-engraving', label: '넥타이핀 주문제작, 길이와 각인 정하는 법', description: '넥타이핀 주문제작 전 착용 위치에서 타이 폭을 재고 앞판 길이와 각인 위치를 골라보세요' },
     ],
   },
 ]
