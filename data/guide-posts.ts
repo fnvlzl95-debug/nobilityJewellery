@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ai-signet-ring-seal-design-direction',
+      path: '/guide/ai-signet-ring-seal-design-direction',
+      title: 'AI 시그넷 반지 주문제작, 문양 방향 정하는 법',
+      description: 'AI로 만든 문양으로 시그넷 반지를 주문할 때 반지 위에서 보이는 방향과 왁스에 찍히는 방향을 비교하세요. 제비 도안 예시로 좌우 반전, 각인할 선, 종로 제작 상담에 보낼 자료를 정리했습니다.',
+      keyword: '시그넷 반지 주문제작',
+      image: '/Image/guide/ai-signet-ring-seal-design-direction-hero.webp',
+      publishedAt: '2026-11-19',
+      category: '주문',
+    },
+  {
       slug: 'custom-tie-clip-length-engraving',
       path: '/guide/custom-tie-clip-length-engraving',
       title: '넥타이핀 주문제작, 길이와 각인 정하는 법',

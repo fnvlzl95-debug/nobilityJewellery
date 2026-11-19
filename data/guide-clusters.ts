@@ -228,6 +228,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/diamond-ring-lower-setting-remodel', label: '다이아 반지 낮추기, 리세팅 전 확인할 것', description: '다이아 반지 높이가 불편하다면 보석을 잡는 부분과 옆면 구조부터 확인하세요' },
       { to: '/guide/custom-pearl-earrings-pair-matching', label: '진주 귀걸이 주문제작, 한 쌍 맞추는 법', description: '진주 귀걸이 주문제작은 한 쌍의 크기·색·광택과 착용 형태부터 정하세요' },
       { to: '/guide/custom-tie-clip-length-engraving', label: '넥타이핀 주문제작, 길이와 각인 정하는 법', description: '넥타이핀 주문제작 전 착용 위치에서 타이 폭을 재고 앞판 길이와 각인 위치를 골라보세요' },
+      { to: '/guide/ai-signet-ring-seal-design-direction', label: 'AI 시그넷 반지 주문제작, 문양 방향 정하는 법', description: 'AI로 만든 문양으로 시그넷 반지를 주문할 때 반지 위에서 보이는 방향과 왁스에 찍히는 방향을 비교하세요' },
     ],
   },
 ]

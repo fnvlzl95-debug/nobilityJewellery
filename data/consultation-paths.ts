@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/ai-signet-ring-seal-design-direction': {
+    title: 'AI 문양으로 시그넷 반지 제작 상담하기',
+    description: '원본 시안에 부리나 글자의 방향을 표시해 보내주세요. 원하는 용도와 윗면 크기에 맞춰 제작 범위를 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '시그넷 반지 제작 카톡 상담',
+    prompts: ['AI 원본과 반지 또는 왁스 기준 방향', '꼭 남길 문양과 정확한 이니셜', '윗면 크기와 희망 소재, 반지 호수', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/signet-ring-face-shape-selection-guide', label: '시그넷 반지 모양 비교' }, { to: '/custom', label: '종로 주문제작 안내' }],
+  },
   '/guide/custom-tie-clip-length-engraving': {
     title: '넥타이 사진으로 타이핀 제작 상담하기',
     description: '자주 매는 넥타이와 원하는 각인 문구를 보내주세요. 착용 위치에 맞춰 앞판 길이와 부속, 소재를 상담합니다.',
