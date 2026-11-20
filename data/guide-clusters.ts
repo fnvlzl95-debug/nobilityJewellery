@@ -229,6 +229,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/custom-pearl-earrings-pair-matching', label: '진주 귀걸이 주문제작, 한 쌍 맞추는 법', description: '진주 귀걸이 주문제작은 한 쌍의 크기·색·광택과 착용 형태부터 정하세요' },
       { to: '/guide/custom-tie-clip-length-engraving', label: '넥타이핀 주문제작, 길이와 각인 정하는 법', description: '넥타이핀 주문제작 전 착용 위치에서 타이 폭을 재고 앞판 길이와 각인 위치를 골라보세요' },
       { to: '/guide/ai-signet-ring-seal-design-direction', label: 'AI 시그넷 반지 주문제작, 문양 방향 정하는 법', description: 'AI로 만든 문양으로 시그넷 반지를 주문할 때 반지 위에서 보이는 방향과 왁스에 찍히는 방향을 비교하세요' },
+      { to: '/guide/custom-constellation-necklace-star-layout', label: '별자리 목걸이 주문제작, 어느 별에 보석을 넣을까?', description: '별자리 목걸이 주문제작을 위한 도안 준비법입니다' },
     ],
   },
 ]

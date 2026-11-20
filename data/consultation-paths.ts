@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/custom-constellation-necklace-star-layout': {
+    title: '별자리 도안으로 목걸이 제작 상담하기',
+    description: '기준이 될 별 그림과 보석을 놓고 싶은 위치를 보내주세요. 펜던트 크기와 각인 범위를 확인해 견적을 안내합니다.',
+    type: 'custom',
+    kakaoLabel: '별자리 목걸이 카톡 상담',
+    prompts: ['별자리 기준 그림과 AI 시안', '각인할 점과 보석을 넣을 별', '펜던트 지름·소재·체인 포함 여부', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/gold-pendant-only-custom-cost', label: '펜던트 단품 견적 안내' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/ai-signet-ring-seal-design-direction': {
     title: 'AI 문양으로 시그넷 반지 제작 상담하기',
     description: '원본 시안에 부리나 글자의 방향을 표시해 보내주세요. 원하는 용도와 윗면 크기에 맞춰 제작 범위를 확인합니다.',

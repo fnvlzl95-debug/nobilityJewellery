@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'custom-constellation-necklace-star-layout',
+      path: '/guide/custom-constellation-necklace-star-layout',
+      title: '별자리 목걸이 주문제작, 어느 별에 보석을 넣을까?',
+      description: '별자리 목걸이 주문제작을 위한 도안 준비법입니다. AI 시안에서 남길 별의 위치, 점 각인과 보석 세팅, 펜던트 실제 크기를 비교하고 종로 귀족에 견적을 문의해 보세요.',
+      keyword: '별자리 목걸이 주문제작',
+      image: '/Image/guide/custom-constellation-necklace-star-layout-hero.webp',
+      publishedAt: '2026-11-20',
+      category: '주문',
+    },
+  {
       slug: 'ai-signet-ring-seal-design-direction',
       path: '/guide/ai-signet-ring-seal-design-direction',
       title: 'AI 시그넷 반지 주문제작, 문양 방향 정하는 법',
