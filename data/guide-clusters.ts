@@ -230,6 +230,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/custom-tie-clip-length-engraving', label: '넥타이핀 주문제작, 길이와 각인 정하는 법', description: '넥타이핀 주문제작 전 착용 위치에서 타이 폭을 재고 앞판 길이와 각인 위치를 골라보세요' },
       { to: '/guide/ai-signet-ring-seal-design-direction', label: 'AI 시그넷 반지 주문제작, 문양 방향 정하는 법', description: 'AI로 만든 문양으로 시그넷 반지를 주문할 때 반지 위에서 보이는 방향과 왁스에 찍히는 방향을 비교하세요' },
       { to: '/guide/custom-constellation-necklace-star-layout', label: '별자리 목걸이 주문제작, 어느 별에 보석을 넣을까?', description: '별자리 목걸이 주문제작을 위한 도안 준비법입니다' },
+      { to: '/guide/alexandrite-ring-color-change-lighting', label: '알렉산드라이트 반지, 두 조명에서 고르는 법', description: '알렉산드라이트 반지의 색 변화가 궁금하다면 같은 돌을 주광과 백열등에서 비교하세요' },
     ],
   },
 ]

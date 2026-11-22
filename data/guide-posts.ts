@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'alexandrite-ring-color-change-lighting',
+      path: '/guide/alexandrite-ring-color-change-lighting',
+      title: '알렉산드라이트 반지, 두 조명에서 고르는 법',
+      description: '알렉산드라이트 반지의 색 변화가 궁금하다면 같은 돌을 주광과 백열등에서 비교하세요. 천연·합성 표기, 감별서에서 확인할 항목과 종로 주문제작 상담 질문을 정리했습니다.',
+      keyword: '알렉산드라이트 반지',
+      image: '/Image/guide/alexandrite-ring-color-change-lighting-hero.webp',
+      publishedAt: '2026-11-22',
+      category: '소재·보석',
+    },
+  {
       slug: 'custom-constellation-necklace-star-layout',
       path: '/guide/custom-constellation-necklace-star-layout',
       title: '별자리 목걸이 주문제작, 어느 별에 보석을 넣을까?',

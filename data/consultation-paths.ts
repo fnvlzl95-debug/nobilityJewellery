@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/alexandrite-ring-color-change-lighting': {
+    title: '원하는 색으로 알렉산드라이트 반지 상담하기',
+    description: '보유석 사진이나 원하는 색을 보내 주세요. 보석 준비 여부와 실물 확인 방법, 반지 제작 범위를 상담합니다.',
+    type: 'custom',
+    kakaoLabel: '알렉산드라이트 반지 카톡 상담',
+    prompts: ['주광과 백열등에서 선호하는 색', '보유석 여부와 감별서·치수', '천연 또는 합성 선호와 반지 소재', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/gemstone-grading-vs-identification-report', label: '보석 감별서 확인법' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/custom-constellation-necklace-star-layout': {
     title: '별자리 도안으로 목걸이 제작 상담하기',
     description: '기준이 될 별 그림과 보석을 놓고 싶은 위치를 보내주세요. 펜던트 크기와 각인 범위를 확인해 견적을 안내합니다.',
