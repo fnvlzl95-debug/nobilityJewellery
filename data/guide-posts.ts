@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'diamond-stud-earrings-pair-total-carat',
+      path: '/guide/diamond-stud-earrings-pair-total-carat',
+      title: '1캐럿 다이아 귀걸이, 한쪽은 몇 부일까?',
+      description: '1캐럿 다이아 귀걸이가 한쪽 5부인지 한 알 1캐럿인지 알아보세요. 한 쌍 총중량과 중심석 중량을 계산하는 표, 반벌 가격과 헤일로 세팅 견적을 구분하는 질문을 담았습니다.',
+      keyword: '1캐럿 다이아 귀걸이',
+      image: '/Image/guide/diamond-stud-earrings-pair-total-carat-hero.webp',
+      publishedAt: '2026-11-23',
+      category: '가격',
+    },
+  {
       slug: 'alexandrite-ring-color-change-lighting',
       path: '/guide/alexandrite-ring-color-change-lighting',
       title: '알렉산드라이트 반지, 두 조명에서 고르는 법',

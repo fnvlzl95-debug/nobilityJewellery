@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/diamond-stud-earrings-pair-total-carat': {
+    title: '다이아 귀걸이 한 쌍 견적 상담하기',
+    description: '한쪽에 원하는 중량과 세팅 사진을 보내 주세요. 중심석과 주변석, 금속과 뒷마개를 포함한 구성을 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '다이아 귀걸이 한 쌍 카톡 상담',
+    prompts: ['한쪽 중심석 중량과 한 쌍 총중량', '천연 또는 랩그로운 다이아 선호', '주변석·금속·뒷마개 구성', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/custom-earrings-production-time', label: '한 쌍 제작 일정 확인' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/alexandrite-ring-color-change-lighting': {
     title: '원하는 색으로 알렉산드라이트 반지 상담하기',
     description: '보유석 사진이나 원하는 색을 보내 주세요. 보석 준비 여부와 실물 확인 방법, 반지 제작 범위를 상담합니다.',
