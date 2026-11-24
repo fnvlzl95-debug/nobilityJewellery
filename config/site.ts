@@ -81,8 +81,9 @@ export const siteConfig = {
     defaultProduct: '귀족 주문제작',
     // 주문서를 만들 때 고르는 입금 계좌. 첫 번째가 기본이다. id는 DB(orders.account)에 저장되니 바꾸지 않는다.
     accounts: [
-      { id: 'toss', bank: '토스뱅크', account: '1000-4335-7794', accountHolder: '박도현' },
+      // 토스뱅크(id 'toss')는 2026-11-24에 뺐다. 그 계좌로 만든 옛 주문서는 기본 계좌(첫 번째)로 보인다.
       { id: 'kakao', bank: '카카오뱅크', account: '3333-03-1680316', accountHolder: '박도현' },
+      { id: 'shinhan', bank: '신한은행', account: '100-025-236861', accountHolder: '박승태(귀족)' },
     ],
     // 주문서·입금확인서 공급자 칸에 적는 전화번호. 문서를 만들 때 고른다 (첫 번째가 기본).
     documentPhones: [
