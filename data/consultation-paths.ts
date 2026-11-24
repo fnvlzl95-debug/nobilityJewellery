@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/mother-of-pearl-necklace-pendant-selection': {
+    title: '원하는 자개 빛깔로 목걸이 상담하기',
+    description: '마음에 드는 자개의 결이나 평소 쓰는 펜던트 사진을 보내 주세요. 자개가 보이는 폭과 금테, 체인 구성을 함께 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '자개 목걸이 카톡 상담',
+    prompts: ['원하는 자개의 바탕색과 반사빛', '자개 노출 폭과 금테 포함 크기', '펜던트 단품 또는 체인 포함 여부', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: ['rose-gold-compass-star-bangle'],
+    links: [{ to: '/guide/gold-pendant-only-custom-cost', label: '펜던트 단품 견적 안내' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/diamond-stud-earrings-pair-total-carat': {
     title: '다이아 귀걸이 한 쌍 견적 상담하기',
     description: '한쪽에 원하는 중량과 세팅 사진을 보내 주세요. 중심석과 주변석, 금속과 뒷마개를 포함한 구성을 확인합니다.',

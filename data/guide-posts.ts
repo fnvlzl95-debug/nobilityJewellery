@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'mother-of-pearl-necklace-pendant-selection',
+      path: '/guide/mother-of-pearl-necklace-pendant-selection',
+      title: '자개 목걸이, 빛깔과 펜던트 크기 고르는 법',
+      description: '흰 자개 목걸이를 고를 때 정면의 바탕색과 기울였을 때의 반사빛을 비교하세요. 자개가 드러나는 폭, 고리를 포함한 길이, 체인 포함 여부를 확인하는 방법입니다.',
+      keyword: '자개 목걸이',
+      image: '/Image/guide/mother-of-pearl-necklace-pendant-selection-hero.webp',
+      publishedAt: '2026-11-24',
+      category: '소재·보석',
+    },
+  {
       slug: 'diamond-stud-earrings-pair-total-carat',
       path: '/guide/diamond-stud-earrings-pair-total-carat',
       title: '1캐럿 다이아 귀걸이, 한쪽은 몇 부일까?',

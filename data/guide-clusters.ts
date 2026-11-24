@@ -232,6 +232,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/custom-constellation-necklace-star-layout', label: '별자리 목걸이 주문제작, 어느 별에 보석을 넣을까?', description: '별자리 목걸이 주문제작을 위한 도안 준비법입니다' },
       { to: '/guide/alexandrite-ring-color-change-lighting', label: '알렉산드라이트 반지, 두 조명에서 고르는 법', description: '알렉산드라이트 반지의 색 변화가 궁금하다면 같은 돌을 주광과 백열등에서 비교하세요' },
       { to: '/guide/diamond-stud-earrings-pair-total-carat', label: '1캐럿 다이아 귀걸이, 한쪽은 몇 부일까?', description: '1캐럿 다이아 귀걸이가 한쪽 5부인지 한 알 1캐럿인지 알아보세요' },
+      { to: '/guide/mother-of-pearl-necklace-pendant-selection', label: '자개 목걸이, 빛깔과 펜던트 크기 고르는 법', description: '흰 자개 목걸이를 고를 때 정면의 바탕색과 기울였을 때의 반사빛을 비교하세요' },
     ],
   },
 ]
