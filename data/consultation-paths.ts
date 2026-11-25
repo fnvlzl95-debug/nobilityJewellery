@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/ring-holder-necklace-wedding-band-fit': {
+    title: '내 반지에 맞는 링홀더 목걸이 상담하기',
+    description: '반지의 정면과 옆면, 체인 끝장식 사진을 보내 주세요. 원하는 탈착 방식과 제작 가능한 구조를 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '링홀더 목걸이 카톡 상담',
+    prompts: ['반지 안지름과 밴드 폭·두께', '보석 옆면과 함께 걸 반지 개수', '체인 끝장식과 원하는 탈착 방식', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/necklace-chain-replacement-guide', label: '체인과 펜던트 호환 확인' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/mother-of-pearl-necklace-pendant-selection': {
     title: '원하는 자개 빛깔로 목걸이 상담하기',
     description: '마음에 드는 자개의 결이나 평소 쓰는 펜던트 사진을 보내 주세요. 자개가 보이는 폭과 금테, 체인 구성을 함께 확인합니다.',

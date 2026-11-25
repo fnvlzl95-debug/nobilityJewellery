@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'ring-holder-necklace-wedding-band-fit',
+      path: '/guide/ring-holder-necklace-wedding-band-fit',
+      title: '링홀더 목걸이, 내 결혼반지가 들어갈까?',
+      description: '결혼반지를 목걸이로 걸 때 반지 안지름, 밴드 폭·두께, 보석 옆면을 확인하세요. 체인에 바로 거는 방식과 링홀더 펜던트의 차이, 종로 제작 상담에 보낼 사진을 안내합니다.',
+      keyword: '링홀더 목걸이',
+      image: '/Image/guide/ring-holder-necklace-wedding-band-fit-hero.webp',
+      publishedAt: '2026-11-25',
+      category: '선택',
+    },
+  {
       slug: 'mother-of-pearl-necklace-pendant-selection',
       path: '/guide/mother-of-pearl-necklace-pendant-selection',
       title: '자개 목걸이, 빛깔과 펜던트 크기 고르는 법',
