@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'hidden-halo-ring-side-profile',
+      path: '/guide/hidden-halo-ring-side-profile',
+      title: '히든 헤일로 반지, 옆면에서 확인할 3가지',
+      description: '히든 헤일로 반지는 작은 다이아가 중심석 아래에 놓입니다. 일반 헤일로와의 차이, 옆면의 보석 줄과 세팅 높이, 웨딩밴드가 닿는 위치를 보고 주문하는 방법입니다.',
+      keyword: '히든 헤일로 반지',
+      image: '/Image/guide/hidden-halo-ring-side-profile-hero.webp',
+      publishedAt: '2026-11-26',
+      category: '주문',
+    },
+  {
       slug: 'ring-holder-necklace-wedding-band-fit',
       path: '/guide/ring-holder-necklace-wedding-band-fit',
       title: '링홀더 목걸이, 내 결혼반지가 들어갈까?',

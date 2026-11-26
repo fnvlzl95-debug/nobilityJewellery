@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/hidden-halo-ring-side-profile': {
+    title: '히든 헤일로 반지 옆면으로 제작 상담하기',
+    description: '원하는 옆면 장식과 함께 낄 웨딩밴드 사진을 보내 주세요. 중심석과 받침 구조에 맞는 높이를 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '히든 헤일로 반지 카톡 상담',
+    prompts: ['중심석 모양과 보유석 치수', '옆면 보석 줄과 밴드 장식 여부', '함께 낄 웨딩밴드 옆면 사진', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/wedding-band-guard-ring-guide', label: '겹쳐 낄 반지 높이 확인' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/ring-holder-necklace-wedding-band-fit': {
     title: '내 반지에 맞는 링홀더 목걸이 상담하기',
     description: '반지의 정면과 옆면, 체인 끝장식 사진을 보내 주세요. 원하는 탈착 방식과 제작 가능한 구조를 확인합니다.',

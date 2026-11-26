@@ -234,6 +234,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/diamond-stud-earrings-pair-total-carat', label: '1캐럿 다이아 귀걸이, 한쪽은 몇 부일까?', description: '1캐럿 다이아 귀걸이가 한쪽 5부인지 한 알 1캐럿인지 알아보세요' },
       { to: '/guide/mother-of-pearl-necklace-pendant-selection', label: '자개 목걸이, 빛깔과 펜던트 크기 고르는 법', description: '흰 자개 목걸이를 고를 때 정면의 바탕색과 기울였을 때의 반사빛을 비교하세요' },
       { to: '/guide/ring-holder-necklace-wedding-band-fit', label: '링홀더 목걸이, 내 결혼반지가 들어갈까?', description: '결혼반지를 목걸이로 걸 때 반지 안지름, 밴드 폭·두께, 보석 옆면을 확인하세요' },
+      { to: '/guide/hidden-halo-ring-side-profile', label: '히든 헤일로 반지, 옆면에서 확인할 3가지', description: '히든 헤일로 반지는 작은 다이아가 중심석 아래에 놓입니다' },
     ],
   },
 ]
