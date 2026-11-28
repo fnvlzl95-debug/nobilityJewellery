@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/inside-out-diamond-hoop-earrings': {
+    title: '다이아 링귀걸이의 앞뒤 세팅 상담하기',
+    description: '편하게 착용하는 링의 외경과 보석을 넣고 싶은 면을 알려 주세요. 원하는 크기에서 가능한 세팅 구간을 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '다이아 링귀걸이 카톡 상담',
+    prompts: ['착용 중인 후프의 외경과 한쪽 무게', '보석을 넣을 앞면과 뒤 안쪽 구간', '소재와 다이아 종류', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/earring-closure-selection-guide', label: '귀걸이 잠금 방식' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/tanzanite-necklace-blue-violet-color': {
     title: '원하는 빛깔로 탄자나이트 목걸이 상담하기',
     description: '마음에 드는 청보라색 사진과 원하는 보석 크기를 보내 주세요. 후보석 확보와 펜던트 제작 가능 범위를 확인합니다.',

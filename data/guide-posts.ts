@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'inside-out-diamond-hoop-earrings',
+      path: '/guide/inside-out-diamond-hoop-earrings',
+      title: '다이아 링귀걸이, 인사이드 아웃 세팅 고르는 법',
+      description: '다이아 링귀걸이의 앞쪽 바깥면과 뒤쪽 안쪽 면을 사진으로 구분해 보세요. 인사이드 아웃 후프의 보석 배치, 지름, 한 쌍 견적을 비교하는 방법입니다.',
+      keyword: '다이아 링귀걸이',
+      image: '/Image/guide/inside-out-diamond-hoop-earrings-hero.webp',
+      publishedAt: '2026-11-28',
+      category: '선택',
+    },
+  {
       slug: 'tanzanite-necklace-blue-violet-color',
       path: '/guide/tanzanite-necklace-blue-violet-color',
       title: '탄자나이트 목걸이, 파란빛과 보랏빛 고르는 법',
