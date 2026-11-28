@@ -235,6 +235,7 @@ export const guideClusters: GuideCluster[] = [
       { to: '/guide/mother-of-pearl-necklace-pendant-selection', label: '자개 목걸이, 빛깔과 펜던트 크기 고르는 법', description: '흰 자개 목걸이를 고를 때 정면의 바탕색과 기울였을 때의 반사빛을 비교하세요' },
       { to: '/guide/ring-holder-necklace-wedding-band-fit', label: '링홀더 목걸이, 내 결혼반지가 들어갈까?', description: '결혼반지를 목걸이로 걸 때 반지 안지름, 밴드 폭·두께, 보석 옆면을 확인하세요' },
       { to: '/guide/hidden-halo-ring-side-profile', label: '히든 헤일로 반지, 옆면에서 확인할 3가지', description: '히든 헤일로 반지는 작은 다이아가 중심석 아래에 놓입니다' },
+      { to: '/guide/tanzanite-necklace-blue-violet-color', label: '탄자나이트 목걸이, 파란빛과 보랏빛 고르는 법', description: '12월 탄생석 탄자나이트 목걸이에서 파란빛과 보랏빛이 함께 보이는 이유를 알아보세요' },
     ],
   },
 ]

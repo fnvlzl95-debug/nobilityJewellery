@@ -16,6 +16,16 @@ export interface GuidePostSummary {
 
 export const guidePosts: GuidePostSummary[] = [
   {
+      slug: 'tanzanite-necklace-blue-violet-color',
+      path: '/guide/tanzanite-necklace-blue-violet-color',
+      title: '탄자나이트 목걸이, 파란빛과 보랏빛 고르는 법',
+      description: '12월 탄생석 탄자나이트 목걸이에서 파란빛과 보랏빛이 함께 보이는 이유를 알아보세요. 펜던트 정면색과 실제 크기를 비교하고 열처리 여부를 확인하는 주문 가이드입니다.',
+      keyword: '탄자나이트 목걸이',
+      image: '/Image/guide/tanzanite-necklace-blue-violet-color-hero.webp',
+      publishedAt: '2026-11-27',
+      category: '소재·보석',
+    },
+  {
       slug: 'hidden-halo-ring-side-profile',
       path: '/guide/hidden-halo-ring-side-profile',
       title: '히든 헤일로 반지, 옆면에서 확인할 3가지',

@@ -61,6 +61,15 @@ const bracelet: ConsultationPath = {
 }
 
 export const consultationPaths: Record<string, ConsultationPath> = {
+  '/guide/tanzanite-necklace-blue-violet-color': {
+    title: '원하는 빛깔로 탄자나이트 목걸이 상담하기',
+    description: '마음에 드는 청보라색 사진과 원하는 보석 크기를 보내 주세요. 후보석 확보와 펜던트 제작 가능 범위를 확인합니다.',
+    type: 'custom',
+    kakaoLabel: '탄자나이트 목걸이 카톡 상담',
+    prompts: ['정면에서 원하는 파란빛과 보랏빛', '선호하는 보석 모양과 가로·세로 치수', '체인 포함 여부와 기존 끝장식 사진', '예산과 희망 수령일 · 제작은 최소 3주'],
+    gallerySlugs: [],
+    links: [{ to: '/guide/gold-pendant-only-custom-cost', label: '체인 제외 펜던트 견적' }, { to: '/custom', label: '종로 주문제작 과정' }],
+  },
   '/guide/hidden-halo-ring-side-profile': {
     title: '히든 헤일로 반지 옆면으로 제작 상담하기',
     description: '원하는 옆면 장식과 함께 낄 웨딩밴드 사진을 보내 주세요. 중심석과 받침 구조에 맞는 높이를 확인합니다.',
